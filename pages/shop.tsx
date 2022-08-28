@@ -1,14 +1,14 @@
 import Layout from "../components/Layout";
 
-export default function Home(){
+export default function Shop(){
   return (
     <div>
-      <h2>Lego</h2>
+      <h2>Shop</h2>
     </div>
   )
 }
 
-Home.getLayout = function getLayout(page: React.ReactElement){
+Shop.getLayout = function getLayout(page: React.ReactElement){
   return(
     <Layout>{page}</Layout>
   )
