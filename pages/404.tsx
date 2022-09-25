@@ -18,7 +18,7 @@ export default function NotFound(){
         <button onClick={() => router.push(`/`)}>
           <span>Go to Homepage
               <FontAwesomeIcon icon={faAngleRight} width="15px" height="15px"
-              style={{position:'relative', top:'2.7px', marginLeft:'5px'}}></FontAwesomeIcon>
+              style={{position:'relative', marginLeft:'5px', display:'inline'}}></FontAwesomeIcon>
           </span>
         </button>
       </div>

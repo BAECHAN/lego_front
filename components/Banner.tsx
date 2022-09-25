@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ButtonClose from "./ButtonClose";
+import FontAwesomeAngleRight from "./FontAwesomeAngleRight";
 
 export default function Banner() {
 
@@ -12,8 +11,7 @@ export default function Banner() {
       <Link href="/">
         <a>
           보러가기
-        <FontAwesomeIcon icon={faAngleRight} width="15px" height="15px"
-            style={{position:'relative', marginLeft:'5px', display:'inline'}} />
+          <FontAwesomeAngleRight />        
         </a>
       </Link>
       <span style={{flexGrow:1}}></span>

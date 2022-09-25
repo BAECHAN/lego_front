@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import React, { ReactElement, useState } from "react";
-import NavBar from "../components/NavBar";
 import Helmet from "./Helmet";
 import Banner from "./Banner";
+import Header from "./Header";
 
 export default function Layout({ children } : React.PropsWithChildren) : ReactElement {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function Layout({ children } : React.PropsWithChildren) : ReactEl
         pathname={router.pathname.slice(1, router.pathname.length)}
       ></Helmet>
       <Banner />
-      <NavBar />
+      <Header />
       <div>{children}</div>
     </div>
   );

@@ -1,38 +1,45 @@
 import Link from "next/link";
-import Image from "next/image";
+import { useRouter } from "next/router";
+import FontAwesomeAngleRight from "./FontAwesomeAngleRight";
 
-export default function NavBar() {
+export default function Navbar() {
+
+  const router = useRouter();
+  const [home,series] = ["홈","시리즈별"];
   return(
-    <nav>
-      <Link href="/">
-        <a>
-          <Image src="/main.svg" width="50px" height="50px" alt="메인으로" />
-        </a>
-      </Link>
-      <Link href="/shop">
-        <a>Shop</a>
-      </Link>
-      
-      <style jsx>{`
-        nav{
-          display:flex;
-          align-content: center;    
+    <div className="p-3">
+      {
+        router.pathname === "/"
+        ? <span>{home}</span>
+        : <Link href="/">
+            <a>
+              {home}
+            </a>
+          </Link>
+      }
+      <FontAwesomeAngleRight />
+      {
+        router.pathname === "/themes"
+        ? <span>{series}</span>
+        : <Link href="/themes">
+            <a>
+              {series}
+            </a>
+          </Link>
+      }
 
-          align-items: center;
-          padding: 10px;
-          font-size:20px;
-          background-color: rgb(255, 207, 0);
-        }
+      <style jsx>{`
         a{
-          margin: 0px 10px;
-          line-height:15px;
+          color: #006db7;
         }
         a:hover{
+          text-decoration: underline;
+        }
+        span{
+          color: black;
           font-weight:700;
         }
-        
       `}</style>
-    </nav>
-    
+    </div>
   )
 }
