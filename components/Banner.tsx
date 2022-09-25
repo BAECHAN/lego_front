@@ -2,12 +2,14 @@ import Link from "next/link";
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ButtonClose from "./ButtonClose";
+import { useRef } from "react";
 
 export default function Banner() {
+
   return(
     <div className="banner">
       <span style={{flexGrow:1}}></span>
-      <p>8월 신제품 출시!</p>
+      <p>11월 신제품 출시!</p>
       <Link href="/">
         <a>
           보러가기
