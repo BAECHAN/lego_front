@@ -10,7 +10,7 @@ export default function Header() {
         </a>
       </Link>
       <Link href="/themes">
-        <a>themes</a>
+        <a>시리즈</a>
       </Link>
       
       <style jsx>{`

@@ -11,11 +11,12 @@ export default function Themes(){
     theme_id : number;
     theme_title : string;
     thumbnail_link : string;
+    theme_dscrp: string;
   }
   let [themes, setThemes] = useState<Theme[]>([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/index")
+    axios.get("http://localhost:5000/getTheme")
     .then((response) => {
       if( response.status === 200){
         setThemes(response.data);
@@ -33,14 +34,15 @@ export default function Themes(){
         {
           themes.map( (item, index) => {
             return(
-              <li key={index} className="m-5">
-                <Link href="/">
+              <li key={index} className="m-5 w-1/4">
+                <Link href={`/`}>
                   <a>
                     <Image src={item.thumbnail_link}
-                    width="300px" height="150px" alt={item.theme_title +'_썸네일'} />
+                    width="300px" height="150px" alt={item.theme_title +'_썸네일'} className="hover:opacity-70"/>
                   </a>
                 </Link>
                 <strong>{item.theme_title}</strong>
+                <i className="text-sm">{item.theme_dscrp}</i>
               </li>
             )
           })
