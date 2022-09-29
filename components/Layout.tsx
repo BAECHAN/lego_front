@@ -1,11 +1,13 @@
-import { useRouter } from "next/router";
-import React, { ReactElement, useState } from "react";
-import Helmet from "./Helmet";
-import Banner from "./Banner";
-import Header from "./Header";
+import { useRouter } from 'next/router'
+import React, { ReactElement, useState } from 'react'
+import Helmet from './Helmet'
+import Banner from './Banner'
+import Header from './Header'
 
-export default function Layout({ children } : React.PropsWithChildren) : ReactElement {
-  const router = useRouter();
+export default function Layout({
+  children,
+}: React.PropsWithChildren): ReactElement {
+  const router = useRouter()
 
   return (
     <div>
@@ -16,5 +18,5 @@ export default function Layout({ children } : React.PropsWithChildren) : ReactEl
       <Header />
       <div>{children}</div>
     </div>
-  );
+  )
 }

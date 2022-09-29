@@ -1,9 +1,11 @@
-import { ReactElement } from "react";
-import { useRouter } from "next/router";
-import Helmet from "./Helmet";
+import { ReactElement } from 'react'
+import { useRouter } from 'next/router'
+import Helmet from './Helmet'
 
-export default function NoLayout({ children } : React.PropsWithChildren) : ReactElement {
-  const router = useRouter();
+export default function NoLayout({
+  children,
+}: React.PropsWithChildren): ReactElement {
+  const router = useRouter()
 
   return (
     <>
@@ -12,5 +14,5 @@ export default function NoLayout({ children } : React.PropsWithChildren) : React
       ></Helmet>
       <div>{children}</div>
     </>
-  );
+  )
 }

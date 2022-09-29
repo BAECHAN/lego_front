@@ -1,8 +1,8 @@
-import Link from "next/link";
-import Image from "next/image";
+import Link from 'next/link'
+import Image from 'next/image'
 
 export default function Header() {
-  return(
+  return (
     <header>
       <Link href="/">
         <a>
@@ -12,27 +12,25 @@ export default function Header() {
       <Link href="/themes">
         <a>시리즈</a>
       </Link>
-      
+
       <style jsx>{`
-        header{
-          display:flex;
-          align-content: center;    
+        header {
+          display: flex;
+          align-content: center;
 
           align-items: center;
           padding: 10px;
-          font-size:20px;
+          font-size: 20px;
           background-color: rgb(255, 207, 0);
         }
-        a{
+        a {
           margin: 0px 10px;
-          line-height:15px;
+          line-height: 15px;
         }
-        a:hover{
-          font-weight:700;
+        a:hover {
+          font-weight: 700;
         }
-        
       `}</style>
     </header>
-    
   )
 }

@@ -1,11 +1,7 @@
-type HelmetType={
-  pathname : string;
+type HelmetType = {
+  pathname: string
 }
 
 export default function Sidebar() {
-  return (
-    <div>
-      
-    </div>
-  );
+  return <div></div>
 }

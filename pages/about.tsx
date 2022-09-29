@@ -1,6 +1,6 @@
-import Layout from "../components/Layout";
+import Layout from '../components/Layout'
 
-export default function About(){
+export default function About() {
   return (
     <div>
       <h2>About</h2>
@@ -8,8 +8,6 @@ export default function About(){
   )
 }
 
-About.getLayout = function getLayout(page: React.ReactElement){
-  return(
-    <Layout>{page}</Layout>
-  )
+About.getLayout = function getLayout(page: React.ReactElement) {
+  return <Layout>{page}</Layout>
 }
