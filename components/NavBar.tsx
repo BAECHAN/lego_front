@@ -3,13 +3,13 @@ import { useRouter } from 'next/router'
 import FontAwesomeAngleRight from './FontAwesomeAngleRight'
 
 type Props = {
-  currentPage : string;
+  currentPage? : string | string[] | undefined;
 }
 
-export default function Navbar({currentPage}:Props) {
+export default function Navbar(prop:Props) {
 
   const router = useRouter();
-  const [home, series, theme] = ['홈', '시리즈별', currentPage];
+  const [home, series, theme] = ['홈', '시리즈별', prop.currentPage];
 
   return (
     <div className="p-3">

@@ -7,7 +7,8 @@ import { useRouter } from 'next/router';
 export default function Theme(){
   const router = useRouter();
   const {theme} = router.query;
-  console.log(router.query.title_ko);
+
+  console.log(router.query)
   
   return(
     <div>
