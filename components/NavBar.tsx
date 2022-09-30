@@ -2,9 +2,15 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import FontAwesomeAngleRight from './FontAwesomeAngleRight'
 
-export default function Navbar() {
-  const router = useRouter()
-  const [home, series] = ['홈', '시리즈별']
+type Props = {
+  currentPage : string;
+}
+
+export default function Navbar({currentPage}:Props) {
+
+  const router = useRouter();
+  const [home, series, theme] = ['홈', '시리즈별', currentPage];
+
   return (
     <div className="p-3">
       {router.pathname === '/' ? (
@@ -14,13 +20,33 @@ export default function Navbar() {
           <a>{home}</a>
         </Link>
       )}
-      <FontAwesomeAngleRight />
+      
       {router.pathname === '/themes' ? (
-        <span>{series}</span>
+        <>
+          <FontAwesomeAngleRight />
+          <span>{series}</span>
+        </>
       ) : (
-        <Link href="/themes">
-          <a>{series}</a>
-        </Link>
+        <>
+          <FontAwesomeAngleRight />
+          <Link href="/themes">
+            <a>{series}</a>
+          </Link>
+        </>
+      )}
+      
+
+      {router.pathname === '/themes/[theme]' ? (
+        <>
+          <FontAwesomeAngleRight />
+          <span>{theme}</span>
+        </>
+      ) : (
+        <>
+          <Link href={`/themes/${theme}`}>
+            <a>{theme}</a>
+          </Link>
+        </>
       )}
 
       <style jsx>{`

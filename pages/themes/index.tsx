@@ -1,15 +1,16 @@
-import Layout from '../components/Layout'
+import Layout from '../../components/Layout'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import Navbar from '../components/Navbar'
+import Navbar from '../../components/Navbar'
 import Link from 'next/link'
 import Image from 'next/image'
 
 export default function Themes() {
   type Theme = {
-    theme_id: number
-    theme_title: string
-    thumbnail_link: string
+    theme_id: number,
+    theme_title: string,
+    theme_title_en: string,
+    thumbnail_link: string,
     theme_dscrp: string
   }
   let [themes, setThemes] = useState<Theme[]>([])
@@ -19,7 +20,8 @@ export default function Themes() {
       .get('http://localhost:5000/getTheme')
       .then((response) => {
         if (response.status === 200) {
-          setThemes(response.data)
+          setThemes(response.data);
+          console.log(response.data);
         }
       })
       .catch((error) => {
@@ -35,7 +37,7 @@ export default function Themes() {
         {themes.map((item, index) => {
           return (
             <li key={index} className="m-5 w-1/4">
-              <Link href={`/`}>
+              <Link href={`/themes/${item.theme_title_en}?title_ko=${item.theme_title}`}>
                 <a>
                   <Image
                     src={item.thumbnail_link}
