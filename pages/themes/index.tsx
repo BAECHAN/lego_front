@@ -5,19 +5,21 @@ import Navbar from '../../components/Navbar'
 import Link from 'next/link'
 import Image from 'next/image'
 
+type Theme = {
+  theme_id: number,
+  theme_title: string,
+  theme_title_en: string,
+  thumbnail_link: string,
+  theme_dscrp: string
+}
+
 export default function Themes() {
-  type Theme = {
-    theme_id: number,
-    theme_title: string,
-    theme_title_en: string,
-    thumbnail_link: string,
-    theme_dscrp: string
-  }
+
   let [themes, setThemes] = useState<Theme[]>([])
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/getTheme')
+      .get('http://localhost:5000/getThemes')
       .then((response) => {
         if (response.status === 200) {
           setThemes(response.data);
@@ -25,7 +27,7 @@ export default function Themes() {
         }
       })
       .catch((error) => {
-        console.log(error.response)
+        console.error(error.response)
       })
   }, [])
 
@@ -34,22 +36,22 @@ export default function Themes() {
       <Navbar />
       <h2>시리즈별</h2>
       <ul>
-        {themes.map((item, index) => {
+        {themes.map((theme, index) => {
           return (
             <li key={index} className="m-5 w-1/4">
-              <Link href={`/themes/${item.theme_title_en}?title_ko=${item.theme_title}`}>
+              <Link href={`/themes/${theme.theme_title_en}?title_ko=${theme.theme_title}`}>
                 <a>
                   <Image
-                    src={item.thumbnail_link}
+                    src={theme.thumbnail_link}
                     width="300px"
                     height="150px"
-                    alt={item.theme_title + '_썸네일'}
+                    alt={theme.theme_title + '_썸네일'}
                     className="hover:opacity-70"
                   />
                 </a>
               </Link>
-              <strong>{item.theme_title}</strong>
-              <i className="text-sm">{item.theme_dscrp}</i>
+              <strong>{theme.theme_title}</strong>
+              <i className="text-sm">{theme.theme_dscrp}</i>
             </li>
           )
         })}
