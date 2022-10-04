@@ -1,7 +1,3 @@
-export default function Item(){
-  return(
-    <div>
-      
-    </div>
-  )
+export default function Item() {
+  return <div>item</div>
 }

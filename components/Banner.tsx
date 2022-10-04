@@ -14,7 +14,7 @@ export default function Banner() {
         </a>
       </Link>
       <span style={{ flexGrow: 1 }}></span>
-      <ButtonClose />
+      <ButtonClose purpose="bannerClose" title="오늘 하루 보지 않기" />
 
       <style jsx>{`
         .banner {

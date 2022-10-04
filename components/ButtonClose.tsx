@@ -2,10 +2,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSquareXmark } from '@fortawesome/free-solid-svg-icons'
 import React from 'react'
 
-export default function ButtonClose() {
+type BtnCloseType = {
+  purpose?: string
+  title?: string
+}
+
+export default function ButtonClose(prop: BtnCloseType) {
   function parentElmtClose(e: React.SyntheticEvent) {
     if (e.currentTarget.parentElement?.innerHTML != undefined) {
       e.currentTarget.parentElement.className += ' none'
+      if (prop.purpose === 'bannerClose') {
+      }
     }
   }
 
@@ -16,6 +23,7 @@ export default function ButtonClose() {
         onClick={(event) => {
           parentElmtClose(event)
         }}
+        title={prop.title}
       >
         <FontAwesomeIcon icon={faSquareXmark} width="25px" height="25px" />
       </span>
