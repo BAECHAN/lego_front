@@ -47,28 +47,33 @@ export default function Theme() {
       <Navbar currentPage={router.query.title_ko} />
       <h2 className="theme-name">{theme}</h2>
 
-      <div className="main">
+      <div className="flex">
         <Sidebar />
-        <ul>
+        <ul className="flex flex-wrap">
           {items.map((item, index) => {
             return (
               <li key={index} className="item-box">
                 <div id={String(item.product_id)}>
-                  <div className="item-img mb-20">
+                  <div className="item-img mb-12">
                     <Image
                       src={item.image}
                       width="300%"
                       height="150%"
                       alt={item.title}
                       priority
+                      placeholder="blur"
+                      blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc
+                      SJAAAADUlEQVR42mN8sFeoHgAGZAIwFY0DHwAAAABJRU5ErkJggg==`}
+                      layout="responsive"
                     />
                   </div>
-                  <h2>{item.title}</h2>
-                  <br />
-                  <h2>{`${item.price.toLocaleString('ko-KR')} 원`}</h2>
-                  <button type="button" className="add-to-cart">
-                    장바구니 담기
-                  </button>
+                  <div className="item-content">
+                    <h2>{item.title}</h2>
+                    <h2>{`${item.price.toLocaleString('ko-KR')} 원`}</h2>
+                    <button type="button" className="add-to-cart">
+                      장바구니 담기
+                    </button>
+                  </div>
                 </div>
               </li>
             )
@@ -76,22 +81,14 @@ export default function Theme() {
         </ul>
       </div>
       <style jsx>{`
-        .main {
-          display: flex;
-        }
         .item-box {
           width: 33%;
           border: 1px solid #ddd;
           padding: 15px;
         }
-        .item-box > div * {
-          margin-top: 5px;
+        .item-content > * {
+          margin: 10px 0px;
         }
-        ul {
-          display: flex;
-          flex-wrap: wrap;
-        }
-
         li {
           width: 300px;
           height: 400px;

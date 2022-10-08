@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export default function Header() {
   return (
-    <header>
+    <header className="flex content-center items-center p-3 text-xl bg-yellow-400">
       <Link href="/">
         <a>
           <Image src="/main.svg" width="50px" height="50px" alt="메인으로" />
@@ -14,15 +14,6 @@ export default function Header() {
       </Link>
 
       <style jsx>{`
-        header {
-          display: flex;
-          align-content: center;
-
-          align-items: center;
-          padding: 10px;
-          font-size: 20px;
-          background-color: rgb(255, 207, 0);
-        }
         a {
           margin: 0px 10px;
           line-height: 15px;

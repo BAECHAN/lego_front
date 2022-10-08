@@ -6,15 +6,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 type Theme = {
-  theme_id: number,
-  theme_title: string,
-  theme_title_en: string,
-  thumbnail_link: string,
+  theme_id: number
+  theme_title: string
+  theme_title_en: string
+  thumbnail_link: string
   theme_dscrp: string
 }
 
 export default function Themes() {
-
   let [themes, setThemes] = useState<Theme[]>([])
 
   useEffect(() => {
@@ -22,8 +21,8 @@ export default function Themes() {
       .get('http://localhost:5000/getThemes')
       .then((response) => {
         if (response.status === 200) {
-          setThemes(response.data);
-          console.log(response.data);
+          setThemes(response.data)
+          console.log(response.data)
         }
       })
       .catch((error) => {
@@ -34,12 +33,16 @@ export default function Themes() {
   return (
     <div>
       <Navbar />
-      <h2>시리즈별</h2>
-      <ul>
+      <h2 className="bg-sky-600	text-white p-3 text-3xl text-center">
+        시리즈별
+      </h2>
+      <ul className="flex justify-around flex-wrap">
         {themes.map((theme, index) => {
           return (
             <li key={index} className="m-5 w-1/4">
-              <Link href={`/themes/${theme.theme_title_en}?title_ko=${theme.theme_title}`}>
+              <Link
+                href={`/themes/${theme.theme_title_en}?title_ko=${theme.theme_title}`}
+              >
                 <a>
                   <Image
                     src={theme.thumbnail_link}
@@ -47,34 +50,25 @@ export default function Themes() {
                     height="150px"
                     alt={theme.theme_title + '_썸네일'}
                     className="hover:opacity-70"
+                    placeholder="blur"
+                    blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc
+                    SJAAAADUlEQVR42mN8sFeoHgAGZAIwFY0DHwAAAABJRU5ErkJggg==`}
+                    layout="responsive"
                   />
                 </a>
               </Link>
-              <strong>{theme.theme_title}</strong>
+              <Link
+                href={`/themes/${theme.theme_title_en}?title_ko=${theme.theme_title}`}
+              >
+                <a className="block text-center my-2 font-bold hover:text-blue-600">
+                  {theme.theme_title}
+                </a>
+              </Link>
               <i className="text-sm">{theme.theme_dscrp}</i>
             </li>
           )
         })}
       </ul>
-
-      <style jsx>{`
-        h2 {
-          background-color: rgb(0, 109, 183);
-          color: #fff;
-          padding: 10px;
-          font-size: 30px;
-          text-align: center;
-        }
-        ul {
-          display: flex;
-          justify-content: space-around;
-          flex-wrap: wrap;
-        }
-        strong {
-          display: block;
-          text-align: center;
-        }
-      `}</style>
     </div>
   )
 }

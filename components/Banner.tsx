@@ -6,9 +6,9 @@ export default function Banner() {
   return (
     <div className="banner">
       <span style={{ flexGrow: 1 }}></span>
-      <p>11월 신제품 출시!</p>
+      <p className="mx-2 my-3">11월 신제품 출시!</p>
       <Link href="/">
-        <a>
+        <a className="hover:text-blue-600">
           보러가기
           <FontAwesomeAngleRight />
         </a>
@@ -28,12 +28,6 @@ export default function Banner() {
           font-size: 20px;
           font-weight: 700;
           text-decoration: line;
-        }
-        a:hover {
-          color: #0084e0;
-        }
-        p {
-          margin: 0px 10px;
         }
       `}</style>
     </div>
