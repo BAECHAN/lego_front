@@ -2,82 +2,74 @@ import Layout from '../../components/Layout'
 import Sidebar from '../../components/Sidebar'
 import Navbar from '../../components/Navbar'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useQuery } from '@tanstack/react-query'
 
-type Item = {
-  product_id: number
-  title: string
-  image: string
-  price: number
-  ages: number
-  product_number: number
-  date_released: Date
-  sale_enabled: number
-  discounting: boolean
-  rate_discount: number
-  ea: number
+import { ThemeT, ProductT } from 'types'
+
+export async function getServerSideProps(context: any) {
+  return {
+    props: context.query,
+  }
 }
 
-export default function Theme() {
-  const router = useRouter()
-  const { theme } = router.query
-
-  console.log(router.query)
-
-  let [items, setItems] = useState<Item[]>([])
-
-  useEffect(() => {
-    axios
-      .get('http://localhost:5000/getItems?theme_id=13')
-      .then((response) => {
-        if (response.status === 200) {
-          setItems(response.data)
-        }
-      })
-      .catch((error) => {
-        console.error(error.reponse)
-      })
-  }, [])
+export default function Theme(props: ThemeT) {
+  const { data: products } = useQuery<ProductT[]>(
+    ['http://localhost:5000/api/getProductList'],
+    async () => {
+      const res = await fetch(
+        `http://localhost:5000/api/getProductList?theme_id=${props.theme_id}`
+      )
+      return res.json()
+    },
+    {
+      onSuccess: (data) => console.log(data),
+      onError: (e) => console.log(e),
+    }
+  )
 
   return (
     <div>
-      <Navbar currentPage={router.query.title_ko} />
-      <h2 className="theme-name">{theme}</h2>
-
+      <Navbar currentPage={props.theme_title} />
       <div className="flex">
         <Sidebar />
         <ul className="flex flex-wrap">
-          {items.map((item, index) => {
-            return (
-              <li key={index} className="item-box">
-                <div id={String(item.product_id)}>
-                  <div className="item-img mb-12">
-                    <Image
-                      src={item.image}
-                      width="300%"
-                      height="150%"
-                      alt={item.title}
-                      priority
-                      placeholder="blur"
-                      blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc
-                      SJAAAADUlEQVR42mN8sFeoHgAGZAIwFY0DHwAAAABJRU5ErkJggg==`}
-                      layout="responsive"
-                    />
+          {products &&
+            products.map((product, index) => {
+              return (
+                <li key={index} className="item-box">
+                  <div id={String(product.product_id)}>
+                    <div className="item-img mb-12">
+                      <Link href={`/products/${product.product_number}`}>
+                        <a>
+                          <Image
+                            src={product.image}
+                            width="300%"
+                            height="150%"
+                            alt={product.title}
+                            priority
+                            placeholder="blur"
+                            blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc
+                          SJAAAADUlEQVR42mN8sFeoHgAGZAIwFY0DHwAAAABJRU5ErkJggg==`}
+                            quality={100}
+                            layout="responsive"
+                          />
+                        </a>
+                      </Link>
+                    </div>
+                    <div className="item-content">
+                      <h2>{product.title}</h2>
+                      <h2>{`${product.price.toLocaleString('ko-KR')} 원`}</h2>
+                      <button type="button" className="add-to-cart">
+                        장바구니 담기
+                      </button>
+                    </div>
                   </div>
-                  <div className="item-content">
-                    <h2>{item.title}</h2>
-                    <h2>{`${item.price.toLocaleString('ko-KR')} 원`}</h2>
-                    <button type="button" className="add-to-cart">
-                      장바구니 담기
-                    </button>
-                  </div>
-                </div>
-              </li>
-            )
-          })}
+                </li>
+              )
+            })}
         </ul>
       </div>
       <style jsx>{`

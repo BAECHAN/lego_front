@@ -4,7 +4,7 @@ type HelmetType = {
 
 export default function Sidebar() {
   return (
-    <aside className="sidebar m-5 border border-gray-300 border-solid">
+    <aside className="sidebar mx-5 border border-gray-300 border-solid">
       <div className="w-52">
         <button type="button" className="btn-reset-option">
           초기화
