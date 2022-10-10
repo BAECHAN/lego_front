@@ -10,7 +10,9 @@ export type ProductT = {
   discounting: boolean
   rate_discount: number
   ea: number
-  dtl_img_list: string[]
+
+  product_info: ProductT
+  product_img_list: string[]
 }
 
 export type ThemeT = {

@@ -1,10 +1,11 @@
 import Layout from '../../components/Layout'
-import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Image from 'next/image'
-
 import { useQuery } from '@tanstack/react-query'
 import { ProductT } from 'types'
+import Carousel from 'nuka-carousel'
+import Navbar from '@components/Navbar'
+import { useState } from 'react'
 
 export async function getServerSideProps(context: any) {
   return {
@@ -29,25 +30,103 @@ export default function Product(props: any) {
     }
   )
 
+  const [carouselIdx, setCarouselIdx] = useState(0)
+
   return (
-    <>
-      {product
-        ? product.dtl_img_list &&
-          product.dtl_img_list.map((img, index) => {
-            return (
-              <Image
-                key={index}
-                src={img}
-                alt={String(index)}
-                width="1600px"
-                height="1200px"
-                priority
-                quality={100}
-              />
-            )
-          })
-        : null}
-    </>
+    <div>
+      <Navbar currentPage={props.theme_title} />
+      <div className="prod-main flex flex-wrap">
+        <div className="prod-img w-8/12">
+          <Carousel
+            autoplay
+            autoplayInterval={5000}
+            pauseOnHover
+            wrapAround
+            withoutControls={true}
+            zoomScale={0.85}
+            animation="zoom"
+            cellSpacing={100}
+            slideIndex={carouselIdx}
+          >
+            {product
+              ? product.product_img_list &&
+                product.product_img_list.map((img, index) => {
+                  return (
+                    <Image
+                      key={index}
+                      src={img}
+                      alt={String(index)}
+                      width="700px"
+                      height="400px"
+                      priority
+                      quality={100}
+                    />
+                  )
+                })
+              : null}
+          </Carousel>
+          <div className="text-center flex">
+            {product
+              ? product.product_img_list &&
+                product.product_img_list.map((img, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="cursor-pointer"
+                      onClick={() => setCarouselIdx(index)}
+                    >
+                      <Image
+                        src={img}
+                        alt={String(index)}
+                        width="80px"
+                        height="80px"
+                        priority
+                        quality={100}
+                      />
+                    </div>
+                  )
+                })
+              : null}
+          </div>
+        </div>
+        <div className="prod-buy w-4/12">
+          <p className="text-3xl break-normal">
+            {product?.product_info?.title}
+          </p>
+          <b className="text-2xl">{`${product?.product_info?.price?.toLocaleString(
+            'ko-KR'
+          )} 원`}</b>
+          <button type="button" className="add-to-cart">
+            장바구니 담기
+          </button>
+        </div>
+        <div className="prod-detail w-full h-96 ">디테일</div>
+      </div>
+      <style jsx>{`
+        .prod-main > * {
+          border: 1px solid #ddd;
+          padding: 15px;
+        }
+
+        .add-to-cart {
+          width: 100%;
+          background-color: rgb(253, 128, 36);
+          border-color: rgb(253, 128, 36);
+          color: rgb(0, 0, 0);
+          border-width: 2px;
+          padding: 0.9375rem;
+          border-style: solid;
+          border-radius: 4px;
+          border-collapse: collapse;
+          text-align: center;
+          font-weight: 700;
+        }
+        .add-to-cart:hover {
+          color: white;
+          opacity: 0.7;
+        }
+      `}</style>
+    </div>
   )
 }
 
