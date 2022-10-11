@@ -60,7 +60,9 @@ export default function Theme(props: ThemeT) {
                       </Link>
                     </div>
                     <div className="item-content">
-                      <h2>{product.title}</h2>
+                      <Link href={`/products/${product.product_number}`}>
+                        <a className="prod-title">{product.title}</a>
+                      </Link>
                       <h2>{`${product.price.toLocaleString('ko-KR')} 원`}</h2>
                       <button type="button" className="add-to-cart">
                         장바구니 담기
@@ -102,6 +104,10 @@ export default function Theme(props: ThemeT) {
         .add-to-cart:hover {
           color: white;
           opacity: 0.7;
+        }
+
+        a.prod-title:hover {
+          text-decoration: underline;
         }
       `}</style>
     </div>
