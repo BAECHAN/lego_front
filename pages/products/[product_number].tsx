@@ -12,9 +12,6 @@ import {
   faPlus,
   faMinus,
   faHeart as faHeartSolid,
-  faCakeCandles,
-  faCubes,
-  faHashtag,
 } from '@fortawesome/free-solid-svg-icons'
 
 export async function getServerSideProps(context: any) {
@@ -127,25 +124,22 @@ export default function Product(props: any) {
           </div>
           <div className="prod-attr">
             <div>
-              <div>
-                <FontAwesomeIcon icon={faCakeCandles} />
+              <div className="text-2xl mb-3">
+                {product?.product_info?.ages}+
               </div>
-              <div>{product?.product_info?.ages}+</div>
-              <span>연령</span>
+              <span className="text-base">연령</span>
             </div>
             <div>
-              <div>
-                <FontAwesomeIcon icon={faCubes} />
+              <div className="text-2xl mb-3">
+                {product?.product_info?.pieces}
               </div>
-              <div>{product?.product_info?.pieces}+</div>
-              <span>부품수</span>
+              <span className="text-base">부품수</span>
             </div>
             <div>
-              <div>
-                <FontAwesomeIcon icon={faHashtag} />
+              <div className="text-2xl mb-3">
+                {product?.product_info?.product_number}
               </div>
-              <div>{product?.product_info?.product_number}+</div>
-              <span>제품명</span>
+              <span className="text-base">제품명</span>
             </div>
           </div>
         </div>
@@ -163,7 +157,7 @@ export default function Product(props: any) {
               <p className="text-green-600">구매 가능</p>
             ) : null}
           </div>
-          <div className="flex">
+          <div className="flex mb-5">
             <div className="prod-buy-quantity">
               <button
                 onClick={(event) => handleClickQuantity(event, 'minus')}
@@ -248,8 +242,9 @@ export default function Product(props: any) {
         .prod-attr {
           display: flex;
           justify-content: space-around;
-          border: 1px solid #ddd;
           width: 300px;
+          margin: 20px auto;
+          text-align: center;
         }
 
         .add-to-cart {
