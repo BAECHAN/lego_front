@@ -7,8 +7,15 @@ import Carousel from 'nuka-carousel'
 import Navbar from '@components/Navbar'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { faMinus } from '@fortawesome/free-solid-svg-icons'
+import { faHeart } from '@fortawesome/free-regular-svg-icons'
+import {
+  faPlus,
+  faMinus,
+  faHeart as faHeartSolid,
+  faCakeCandles,
+  faCubes,
+  faHashtag,
+} from '@fortawesome/free-solid-svg-icons'
 
 export async function getServerSideProps(context: any) {
   return {
@@ -17,6 +24,12 @@ export async function getServerSideProps(context: any) {
 }
 
 export default function Product(props: any) {
+  const [carouselIdx, setCarouselIdx] = useState(0)
+  let [quantity, setQuantity] = useState(1)
+  let [minusDisabled, setMinusDisabled] = useState(false)
+  let [plusDisabled, setPlusDisabled] = useState(false)
+  let [like, setLike] = useState(false)
+
   const { data: product } = useQuery<ProductT>(
     ['http://localhost:5000/api/getProductInfo'],
     async () => {
@@ -32,11 +45,6 @@ export default function Product(props: any) {
       onError: (e) => console.log(e),
     }
   )
-
-  const [carouselIdx, setCarouselIdx] = useState(0)
-  let [quantity, setQuantity] = useState(1)
-  let [minusDisabled, setMinusDisabled] = useState(false)
-  let [plusDisabled, setPlusDisabled] = useState(false)
 
   const handleClickQuantity = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -54,6 +62,10 @@ export default function Product(props: any) {
         setMinusDisabled(false)
       }
     }
+  }
+
+  const handleClickLike = () => {
+    setLike(!like)
   }
 
   return (
@@ -113,6 +125,29 @@ export default function Product(props: any) {
                 })
               : null}
           </div>
+          <div className="prod-attr">
+            <div>
+              <div>
+                <FontAwesomeIcon icon={faCakeCandles} />
+              </div>
+              <div>{product?.product_info?.ages}+</div>
+              <span>연령</span>
+            </div>
+            <div>
+              <div>
+                <FontAwesomeIcon icon={faCubes} />
+              </div>
+              <div>{product?.product_info?.pieces}+</div>
+              <span>부품수</span>
+            </div>
+            <div>
+              <div>
+                <FontAwesomeIcon icon={faHashtag} />
+              </div>
+              <div>{product?.product_info?.product_number}+</div>
+              <span>제품명</span>
+            </div>
+          </div>
         </div>
         <div className="prod-buy w-4/12">
           <div className="my-10">
@@ -159,9 +194,28 @@ export default function Product(props: any) {
               {`구매 가능 수량 ${product?.product_info?.ea} 개`}
             </div>
           </div>
-          <button type="button" className="add-to-cart">
-            장바구니 담기
-          </button>
+          <div className="flex">
+            <button type="button" className="add-to-cart">
+              장바구니 담기
+            </button>
+            <button
+              type="button"
+              className="w-16"
+              onClick={() => handleClickLike()}
+            >
+              {like === false ? (
+                <FontAwesomeIcon
+                  icon={faHeart}
+                  className="ml-5 w-4 text-blue-700"
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faHeartSolid}
+                  className="ml-5 w-4 text-blue-700"
+                />
+              )}
+            </button>
+          </div>
         </div>
         <div className="prod-detail w-full h-96 ">디테일</div>
       </div>
@@ -190,6 +244,12 @@ export default function Product(props: any) {
           width: 80px;
           text-align: center;
           user-select: none;
+        }
+        .prod-attr {
+          display: flex;
+          justify-content: space-around;
+          border: 1px solid #ddd;
+          width: 300px;
         }
 
         .add-to-cart {

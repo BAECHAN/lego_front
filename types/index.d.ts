@@ -3,6 +3,7 @@ export type ProductT = {
   title: string
   image: string
   price: number
+  pieces: number
   ages: number
   product_number: number
   date_released: Date
