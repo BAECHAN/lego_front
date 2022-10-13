@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export default function Header() {
   return (
-    <header className="flex content-center items-center p-3 text-xl bg-yellow-400">
+    <header className="flex items-center p-3 text-xl bg-yellow-400">
       <Link href="/">
         <a>
           <Image src="/main.svg" width="50px" height="50px" alt="메인으로" />

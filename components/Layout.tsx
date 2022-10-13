@@ -3,6 +3,8 @@ import React, { ReactElement, useState } from 'react'
 import Helmet from './Helmet'
 import Banner from './Banner'
 import Header from './Header'
+import Footer from './Footer'
+import ScrollTopButton from './ScrollTopButton'
 
 export default function Layout({
   children,
@@ -17,6 +19,8 @@ export default function Layout({
       <Banner />
       <Header />
       <div>{children}</div>
+      <Footer />
+      <ScrollTopButton />
     </div>
   )
 }
