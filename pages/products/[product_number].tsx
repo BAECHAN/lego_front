@@ -25,7 +25,7 @@ export default function Product(props: any) {
   let [quantity, setQuantity] = useState(1)
   let [minusDisabled, setMinusDisabled] = useState(false)
   let [plusDisabled, setPlusDisabled] = useState(false)
-  let [like, setLike] = useState(false)
+  let [wish, setWish] = useState(false)
   let [detailOpen, setDetailOpen] = useState(false)
 
   const { data: product } = useQuery<ProductT>(
@@ -63,14 +63,14 @@ export default function Product(props: any) {
   }
 
   const handleClickLike = () => {
-    setLike(!like)
+    setWish(!wish)
   }
 
   return (
     <div>
       <Navbar currentPage={props.theme_title} />
       <div className="prod-main flex flex-wrap">
-        <div className="prod-img w-8/12 p-4">
+        <div className="prod-img w-8/12 p-4 ">
           <Carousel
             autoplay
             autoplayInterval={5000}
@@ -95,6 +95,7 @@ export default function Product(props: any) {
                       priority
                       quality={100}
                       layout="responsive"
+                      className="hover:scale-110"
                     />
                   )
                 })
@@ -202,7 +203,7 @@ export default function Product(props: any) {
               className="w-16"
               onClick={() => handleClickLike()}
             >
-              {like === false ? (
+              {wish === false ? (
                 <FontAwesomeIcon
                   icon={faHeart}
                   className="ml-5 w-4 text-blue-700"
@@ -239,20 +240,88 @@ export default function Product(props: any) {
           </button>
           {detailOpen ? (
             <div className="prod-features">
-              어린이 FC 바르셀로나 팬이 열광할 만한 브릭헤즈™ 모델이 나왔어요.
-              세계적으로 많은 팬을 자랑하는 축구 클럽에 어서 들어오세요! 3가지의
-              피부색, 4가지의 머리 색깔, 그리고 스파이크, 포니테일, 모호크, 삭발
-              등의 여러 가지 헤어스타일을 어떻게 조합하여 나만의 모습을
-              연출해볼까요? 끝으로 유명한 클럽의 문장이 앞면에 박힌 유니폼을
-              입히고, 스티커 시트 2매를 이용해 마음에 드는 등번호를 붙여주세요.
-              레고® 브릭헤즈™ 세트를 통해 FC 바르셀로나의 선수가 되어보아요 -
-              10세 이상의 사용자에게 적합하며, 세계적인 축구 팀의 선수를
-              내손으로 직접 조립하는 즐거움을 안겨줍니다 맞춤형 모델 – 3가지의
-              피부색, 4가지의 머리 색깔, 그리고 여러 가지 헤어스타일을 선택할 수
-              있습니다. 2장의 스티커 시트를 이용해 유니폼의 번호를 골라 붙이세요
-              놀이와 전시 – 모델의 크기는 세운 자세에서 높이 8cm이며, FC
-              바르셀로나 팬의 즐거움을 더해줄 작은 골대와 축구공이 함께 들어
-              있습니다
+              <div className="w-2/3">
+                <p>
+                  레고® 테크닉 에어버스 H175 구조 헬리콥터(42145) 장난감 세트를
+                  통해 탐구열에 불타는 11세 이상의 아이들에게 헬리콥터의 작동
+                  원리를 가르쳐주세요. 다양하고 멋진 온갖 기능과 부품이 어떻게
+                  합쳐져서 탐색/구조용 탑승기계가 만들어지는지 알아보자고요.
+                </p>
+
+                <p>
+                  사실감과 정교함
+                  <br />
+                  에어버스 H175 구조 헬리콥터 모델의 기능이 매우 다양하며, 현실
+                  세계의 헬리콥터와 다름없는 모습을 보여줍니다. 모터(포함되어
+                  있음)의 힘으로 모델이 작동하는 모습이 마치 실제 기계를
+                  눈앞에서 보는 느낌이에요. 속도 가감 설정이 가능한 회전날개와
+                  꼬리날개, 접이식 랜딩기어, 윈치, 엔진 등의 부품이 어떻게
+                  움직이는지 보이나요? 그 외에도, 로터 블레이드의 피치 제어를
+                  위한 경사판, 조종석 도어, 조수석 슬라이딩 도어, 열고 닫히는
+                  전후의 카울링 등 볼수록 재미있는 다양한 수동 기능이 탑재되어
+                  있습니다.
+                </p>
+
+                <p>
+                  엔지니어링 세계와의 첫 만남
+                  <br />
+                  레고® 테크닉 조립 장난감은 작동 방식과 메커니즘이 매우
+                  사실적으로디자인되어 어린 레고 사용자도 쉽게 이해할 수 있을 뿐
+                  아니라, 현실적인 방식으로 공학의 세계를 배우기에도 더없이
+                  적합합니다.
+                </p>
+                <ul>
+                  <li>
+                    헬리콥터의 작동 원리를 배워보아요 – 레고® 테크닉 에어버스
+                    H175 구조 헬리콥터(42145) 탐색/구조 헬리콥터 장난감 모델
+                    세트를 통해 11세 이상의 아이들에게 헬리콥터의 작동 원리를
+                    하나하나 알아가는 즐거움을 안겨주세요
+                  </li>
+                  <li>
+                    전동 기능 – 회전날개와 꼬리날개를 돌리고 속도를 가감
+                    조절하고 랜딩기어를 접거나 펴고 윈치와 엔진을 작동하는 등,
+                    모터(포함되어 있음)의 힘으로 다양한 기능을 작동할 수
+                    있습니다
+                  </li>
+                  <li>
+                    수동 기능 – 경사판을 이용해 로터 블레이드의 피치를 제어하고,
+                    전후의 카울링을 열거나 닫고, 로터와 엔진의 조향 메커니즘을
+                    살펴볼 수 있습니다
+                  </li>
+                  <li>
+                    여닫이식 도어 – 열고 닫을 수 있는 조종석 도어와 조수석의
+                    슬라이딩 도어가 장착되어 있습니다
+                  </li>
+                  <li>
+                    11세 이상의 아이들을 위한 선물 – 도전의욕이 충만한 아이들을
+                    위한 조립 프로젝트로 이 헬리콥터 장난감 세트를 추천합니다
+                  </li>
+                  <li>
+                    치수 – 높이 24cm, 길이 72cm, 폭 13cm 크기의 레고® 테크닉
+                    조립 모델이 들어있습니다
+                  </li>
+                  <li>
+                    배터리와 모터 – 배터리 구동식 헬리콥터 장난감의 작동을 위해
+                    1.5v LR6(AA) 배터리(포함되어 있음) 6개가 필요하며, 아울러
+                    모터 1개가 세트에 들어 있습니다
+                  </li>
+                  <li>
+                    엔지니어링 세계로의 첫걸음 - 레고® 테크닉 조립 모델은 작동
+                    방식과 메커니즘이 매우 사실적이며, 어린 레고 사용자에게
+                    공학의 세계를 가르쳐주기에 매우 좋습니다
+                  </li>
+                  <li>
+                    뛰어난 품질 – 레고® 테크닉 부품은 엄격한 산업 표준을
+                    충족하며, 일관성과 호환성, 그리고 매번 견고하게 결합된다는
+                    특성을 보장합니다
+                  </li>
+                  <li>
+                    안전 우선 – 레고® 테크닉 부품은 떨어뜨리고 가열하고 부수고
+                    비틀고 분석하는 과정을 통해 가장 엄격한 글로벌 안전 기준을
+                    충족합니다
+                  </li>
+                </ul>
+              </div>
             </div>
           ) : null}
         </div>

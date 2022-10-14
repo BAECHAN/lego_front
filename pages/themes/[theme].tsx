@@ -41,13 +41,13 @@ export default function Theme(props: ThemeT) {
               return (
                 <li key={index} className="item-box">
                   <div id={String(product.product_id)}>
-                    <div className="item-img mb-12">
+                    <div className="item-img mb-12 scale-75 hover:scale-90 transition-all ease-in-out">
                       <Link href={`/products/${product.product_number}`}>
                         <a>
                           <Image
                             src={product.image}
-                            width="300%"
-                            height="150%"
+                            width="40vw"
+                            height="20vw"
                             alt={product.title}
                             priority
                             placeholder="blur"
@@ -81,11 +81,10 @@ export default function Theme(props: ThemeT) {
           padding: 15px;
         }
         .item-content > * {
-          margin: 10px 0px;
+          margin: 13px 0px;
         }
         li {
           width: 300px;
-          height: 400px;
         }
 
         .add-to-cart {

@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
-    <div
-      className="flex justify-center items-center
+    <footer
+      className="flex justify-center items-center relative bottom-0
     w-full h-48 p-3 bg-indigo-900 text-white  font-semibold"
     >
       <span>
@@ -11,6 +11,6 @@ export default function Footer() {
           https://github.com/BAECHAN/lego_front
         </pre>
       </span>
-    </div>
+    </footer>
   )
 }

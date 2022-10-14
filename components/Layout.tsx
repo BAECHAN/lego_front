@@ -12,13 +12,13 @@ export default function Layout({
   const router = useRouter()
 
   return (
-    <div>
+    <div className="relative min-h-screen">
       <Helmet
         pathname={router.pathname.slice(1, router.pathname.length)}
       ></Helmet>
       <Banner />
       <Header />
-      <div>{children}</div>
+      <div className="flex-1 pb-48">{children}</div>
       <Footer />
       <ScrollTopButton />
     </div>
