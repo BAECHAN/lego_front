@@ -4,7 +4,7 @@ import Helmet from './Helmet'
 import Banner from './Banner'
 import Header from './Header'
 import Footer from './Footer'
-import ScrollTopButton from './ScrollTopButton'
+import ButtonScrollTop from './ButtonScrollTop'
 
 export default function Layout({
   children,
@@ -12,15 +12,15 @@ export default function Layout({
   const router = useRouter()
 
   return (
-    <div className="relative min-h-screen">
+    <div className="flex flex-col h-auto relative">
       <Helmet
         pathname={router.pathname.slice(1, router.pathname.length)}
       ></Helmet>
       <Banner />
       <Header />
-      <div className="flex-1 pb-48">{children}</div>
+      <div className="overflow-hidden relative">{children}</div>
       <Footer />
-      <ScrollTopButton />
+      <ButtonScrollTop />
     </div>
   )
 }

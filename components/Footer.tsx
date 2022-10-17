@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer
-      className="flex justify-center items-center relative bottom-0
+      className="flex justify-center items-center
     w-full h-48 p-3 bg-indigo-900 text-white  font-semibold"
     >
       <span>
