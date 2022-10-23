@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import ButtonWish from '@components/buttonWish'
+import axios from 'axios'
 
 export async function getServerSideProps(context: any) {
   return {
@@ -27,16 +28,12 @@ export default function Product(props: any) {
   const { data: product } = useQuery<ProductT>(
     ['http://localhost:5000/api/getProductInfo'],
     async () => {
-      const res = await fetch(
+      const res = await axios.get(
         `http://localhost:5000/api/getProductInfo?product_number=${Number(
           props.product_number
         )}`
       )
-      return res.json()
-    },
-    {
-      onSuccess: (data) => console.log(data),
-      onError: (e) => console.log(e),
+      return res.data
     }
   )
 
@@ -302,10 +299,6 @@ export default function Product(props: any) {
               </ul>
             </div>
           </div>
-        </div>
-        <div className="prod-recommend">
-          <b>추천제품</b>
-          <ul></ul>
         </div>
       </div>
       <style jsx>{`

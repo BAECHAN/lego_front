@@ -4,13 +4,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { ThemeT } from 'types/index'
+import axios from 'axios'
 
 export default function Themes() {
   const { data: themes } = useQuery<ThemeT[]>(
     ['http://localhost:5000/api/getThemeList'],
     async () => {
-      const res = await fetch('http://localhost:5000/api/getThemeList')
-      return res.json()
+      const res = await axios.get('http://localhost:5000/api/getThemeList')
+      return res.data
     },
     {
       onSuccess: (data) => console.log(data),
