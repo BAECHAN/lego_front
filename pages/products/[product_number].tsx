@@ -63,7 +63,7 @@ export default function Product(props: any) {
     <div>
       <Navbar currentPage={props.theme_title} />
       <div className="prod-main flex flex-wrap">
-        <div className="prod-img w-8/12 p-4 ">
+        <div className="prod-img w-8/12 p-4">
           <Carousel
             autoplay
             autoplayInterval={5000}
@@ -94,7 +94,7 @@ export default function Product(props: any) {
                 })
               : null}
           </Carousel>
-          <div className="text-center flex">
+          <div className="text-center flex justify-around">
             {product
               ? product.product_img_list &&
                 product.product_img_list.map((img, index) => {
