@@ -43,6 +43,21 @@ export default function Theme(props: ThemeT) {
   return (
     <div>
       <Navbar currentPage={props.theme_title} />
+
+      <div className="list-summary flex mx-7 my-3">
+        <div className="list-count">
+          {data?.pages[0].productListCount}개 제품 표시
+        </div>
+        <div className="flex-grow" />
+        <div className="list-sort">
+          <select id="listSort" className="border rounded">
+            <option>판매순</option>
+            <option>높은금액순</option>
+            <option>낮은금액순</option>
+            <option>신제품순</option>
+          </select>
+        </div>
+      </div>
       <div className="flex">
         <Sidebar />
         <div className="mr-5">

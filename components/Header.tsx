@@ -12,6 +12,10 @@ export default function Header() {
       <Link href="/themes">
         <a>시리즈</a>
       </Link>
+      <div className="flex-grow" />
+      <Link href="/login">
+        <a className="text-sm">로그인</a>
+      </Link>
 
       <style jsx>{`
         a {

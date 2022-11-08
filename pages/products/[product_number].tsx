@@ -1,5 +1,4 @@
 import Layout from '../../components/Layout'
-import Head from 'next/head'
 import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { ProductT } from 'types'
@@ -8,7 +7,7 @@ import Navbar from '@components/Navbar'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
-import ButtonWish from '@components/buttonWish'
+import ButtonWish from '@components/ButtonWish'
 import axios from 'axios'
 
 export async function getServerSideProps(context: any) {
@@ -22,7 +21,6 @@ export default function Product(props: any) {
   let [quantity, setQuantity] = useState(1)
   let [minusDisabled, setMinusDisabled] = useState(false)
   let [plusDisabled, setPlusDisabled] = useState(false)
-  let [wish, setWish] = useState(false)
   let [detailOpen, setDetailOpen] = useState(true)
 
   const { data: product } = useQuery<ProductT>(
@@ -53,10 +51,6 @@ export default function Product(props: any) {
         setMinusDisabled(false)
       }
     }
-  }
-
-  const handleClickLike = () => {
-    setWish(!wish)
   }
 
   return (

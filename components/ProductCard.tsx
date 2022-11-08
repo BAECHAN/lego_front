@@ -1,7 +1,7 @@
 import { ProductT } from 'types'
 import Image from 'next/image'
 import Link from 'next/link'
-import ButtonWish from './buttonWish'
+import ButtonWish from './ButtonWish'
 
 export default function ProductCard(props: { product: ProductT; key: number }) {
   return (
