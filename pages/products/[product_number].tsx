@@ -54,7 +54,7 @@ export default function Product(props: any) {
   }
 
   return (
-    <div>
+    <div className="px-32">
       <Navbar currentPage={props.theme_title} />
       <div className="prod-main flex flex-wrap">
         <div className="prod-img w-8/12 p-4">

@@ -23,3 +23,7 @@ export type ThemeT = {
   thumbnail_link: string
   theme_dscrp: string
 }
+
+export type ChildrenT = {
+  propChildren: React.ReactNode
+}

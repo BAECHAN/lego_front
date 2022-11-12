@@ -20,7 +20,7 @@ export default function Themes() {
   )
 
   return (
-    <div>
+    <div className="px-32">
       <Navbar />
       <h2 className="bg-sky-600	text-white p-3 text-3xl text-center">
         시리즈별
@@ -29,7 +29,7 @@ export default function Themes() {
         {themes &&
           themes.map((theme) => {
             return (
-              <li key={theme.theme_id} className="m-5 w-1/4">
+              <li key={theme.theme_id} className="m-5 w-1/5">
                 <Link
                   href={`/themes/${theme.theme_title_en}?theme_title=${theme.theme_title}&theme_id=${theme.theme_id}`}
                 >

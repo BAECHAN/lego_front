@@ -4,6 +4,7 @@ import Helmet from './Helmet'
 import Banner from './Banner'
 import Header from './Header'
 import Footer from './Footer'
+import Contents from './Contents'
 import ButtonScrollTop from './ButtonScrollTop'
 
 export default function Layout({
@@ -18,7 +19,7 @@ export default function Layout({
       ></Helmet>
       <Banner />
       <Header />
-      <div className="overflow-hidden relative">{children}</div>
+      <Contents propChildren={children}></Contents>
       <Footer />
       <ButtonScrollTop />
     </div>
