@@ -80,7 +80,7 @@ export default function Theme(props: ThemeT) {
                 disabled={!hasNextPage || isFetchingNextPage}
               >
                 {isFetchingNextPage
-                  ? 'Loading more...'
+                  ? '불러오는 중...'
                   : hasNextPage
                   ? '더보기'
                   : '없음'}

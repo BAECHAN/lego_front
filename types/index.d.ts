@@ -27,3 +27,7 @@ export type ThemeT = {
 export type ChildrenT = {
   propChildren: React.ReactNode
 }
+
+export type inputRegExpT = {
+  [key: string]: RegExp
+}

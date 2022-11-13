@@ -4,48 +4,59 @@ import Image from 'next/image'
 
 export default function Login() {
   return (
-    <div className="flex justify-center items-center w-full bg-gray-200 h-[38rem]">
-      <form name="loginForm" className="h-full relative top-[20%]">
-        <div id="loginBox" className="login-box">
-          <Link href="/">
-            <a>
-              <Image
-                src="/main.svg"
-                width="50px"
-                height="50px"
-                alt="메인으로"
-              />
-            </a>
-          </Link>
-          <input type="text" placeholder="아이디" />
-          <input type="password" placeholder="비밀번호" />
-          <button>로그인</button>
-          <div className="flex text-xs w-72">
-            <Link href="/login/create_account">
-              <a className="hover:underline">회원가입</a>
+    <div>
+      <div className="flex justify-center items-center w-full bg-gray-200 h-[38rem]">
+        <div className="h-full relative top-[20%]">
+          <form name="loginForm" className="login-box">
+            <Link href="/">
+              <a>
+                <Image
+                  src="/main.svg"
+                  width="50px"
+                  height="50px"
+                  alt="메인으로"
+                />
+              </a>
             </Link>
-            <div className="flex-grow" />
-            <Link href="/login/find_account">
-              <a className="hover:underline">계정 찾기</a>
-            </Link>
-            <Link href="/login/find_password">
-              <a className="hover:underline">비밀번호 찾기</a>
-            </Link>
-          </div>
+            <label>
+              이메일 주소
+              <br />
+              <input type="text" placeholder="예) lego@lego.co.kr" />
+            </label>
+            <label>
+              비밀번호
+              <br />
+              <input type="password" />
+            </label>
+
+            <button>로그인</button>
+
+            <div className="flex text-xs w-72 justify-between">
+              <Link href="/login/create_account">
+                <a className="hover:underline">회원가입</a>
+              </Link>
+              <div className="flex-grow" />
+              <Link href="/login/find_account">
+                <a className="hover:underline mr-3">계정 찾기</a>
+              </Link>
+              <Link href="/login/find_password">
+                <a className="hover:underline">비밀번호 찾기</a>
+              </Link>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
       <style jsx>{`
         .login-box {
           min-width: 400px;
           vertical-align: middle;
-          border: 1px solid gray;
           display: flex;
           flex-direction: column;
           align-items: center;
           padding: 20px;
 
-          * {
-            margin: 10px;
+          > * {
+            margin: 8px 0px;
           }
 
           input {
@@ -59,7 +70,6 @@ export default function Login() {
             box-sizing: border-box;
             outline: 0;
             border: 0;
-            margin: 0;
             cursor: pointer;
             user-select: none;
             vertical-align: middle;
