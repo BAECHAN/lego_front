@@ -24,6 +24,13 @@ export type ThemeT = {
   theme_dscrp: string
 }
 
+export type UserT = {
+  email: string
+  name: string
+  image: string
+  grade: number
+}
+
 export type ChildrenT = {
   propChildren: React.ReactNode
 }

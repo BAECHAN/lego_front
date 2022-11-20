@@ -3,6 +3,7 @@ import { ReactElement } from 'react'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { RecoilRoot } from 'recoil'
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactElement
@@ -26,7 +27,7 @@ export default function MyApp({
 
   return (
     <QueryClientProvider client={queryClient}>
-      {getLayout(<Component {...pageProps} />)}
+      <RecoilRoot>{getLayout(<Component {...pageProps} />)}</RecoilRoot>
     </QueryClientProvider>
   )
 }
