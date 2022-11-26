@@ -35,6 +35,14 @@ export type ChildrenT = {
   propChildren: React.ReactNode
 }
 
-export type inputRegExpT = {
+export type InputRegExpT = {
   [key: string]: RegExp
+}
+
+export type SubmitT = {
+  email: string
+  pw: string
+  pwChk: string
+  nickname: string
+  result: number
 }

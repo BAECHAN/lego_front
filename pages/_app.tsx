@@ -17,7 +17,7 @@ export default function MyApp({
   Component,
   pageProps,
 }: AppPropsWithLayout): ReactElement {
-  const getLayout = Component.getLayout || ((page) => page)
+  const getLayout = Component.getLayout || ((page: any) => page)
 
   const queryClient = new QueryClient({
     defaultOptions: {

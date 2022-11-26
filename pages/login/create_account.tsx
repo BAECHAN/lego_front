@@ -2,18 +2,22 @@ import Layout from '@components/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
+import { v1 } from 'uuid'
 
-import React, { ChangeEvent, useState } from 'react'
-import { inputRegExpT, UserT } from 'types'
+import React, { ChangeEvent, useState, useEffect } from 'react'
+import { InputRegExpT, UserT, SubmitT } from 'types'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import { atom, selector, useRecoilValue } from 'recoil'
+import { resolve } from 'node:path/win32'
 
 export default function CreateAccount() {
-  const [inputs, setInputs] = useState({
+  const [inputs, setInputs] = useState<SubmitT>({
     email: '',
     pw: '',
     pwChk: '',
     nickname: '',
+    result: 0,
   })
 
   const [inputsPass, setInputsPass] = useState({
@@ -25,7 +29,7 @@ export default function CreateAccount() {
 
   const { email, pw, pwChk, nickname } = inputs
 
-  const inputRegExp: inputRegExpT = {
+  const inputRegExp: InputRegExpT = {
     email:
       /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
     pw: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/,
@@ -42,21 +46,27 @@ export default function CreateAccount() {
       })
   }
 
-  const { data, refetch } = useQuery<UserT>(
-    ['http://localhost:5000/api/getUserChk'],
-    async () => {
-      const res = await axios.get(
-        'http://localhost:5000/api/getUserChk?email=' + email
-      )
-      return res.data
-    },
-    {
-      onSuccess: (data) => console.log(data),
-      onError: (e) => console.log(e),
-    }
-  )
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
+  const [submitResult, setSubmitResult] = useState(0)
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const emailOverLapChk = () => {
+    return new Promise((resolve, reject) => {
+      axios
+        .get('http://localhost:5000/api/getUserChk?email=' + email)
+        .then((response) => {
+          console.log(response.data)
+          console.log(response.data.result == 1)
+          response.data == 1 ? resolve('F') : resolve('T')
+        })
+        .catch((error) => {
+          reject('F')
+        })
+    })
+  }
+
+  useEffect(() => {}, [inputs])
+
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name, style } = e.target
 
     setInputs({
@@ -64,13 +74,16 @@ export default function CreateAccount() {
       [name]: value.trim(),
     })
 
+    console.log(inputs)
+
     if (value.trim().length > 0) {
       const regExp = inputRegExp[name]
 
       if (name == 'email') {
         if (regExp.test(value)) {
-          refetch()
-
+          console.log(email)
+          let ddd = await emailOverLapChk()
+          console.log(ddd)
           isPass(true, e)
         } else {
           isPass(false, e)
@@ -118,11 +131,42 @@ export default function CreateAccount() {
     }
   }
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setDisabledSubmit(true)
+    event.preventDefault()
+
+    let hasFalseIndex = Object.values(inputsPass).indexOf(false)
+
+    console.log(emailOverLapChk)
+
+    if (hasFalseIndex == 0) {
+      alert('이메일 주소를 확인해주시기 바랍니다.')
+      setDisabledSubmit(false)
+      return false
+    } else if (hasFalseIndex == 1) {
+      alert('비밀번호를 확인해주시기 바랍니다.')
+      setDisabledSubmit(false)
+      return false
+    } else if (hasFalseIndex == 2) {
+      alert('비밀번호확인을 확인해주시기 바랍니다.')
+      setDisabledSubmit(false)
+      return false
+    } else if (hasFalseIndex == 3) {
+      alert('닉네임을 확인해주시기 바랍니다.')
+      setDisabledSubmit(false)
+      return false
+    }
+
+    await new Promise((response) => setTimeout(response, 1000))
+    alert(`변경된 패스워드: ${pw}`)
+    setDisabledSubmit(false)
+  }
+
   return (
     <div>
       <div className="flex justify-center items-center w-full bg-gray-200 h-[38rem]">
         <div className="h-full relative top-[10%]">
-          <form name="loginForm" className="login-box">
+          <form name="loginForm" className="login-box" onSubmit={handleSubmit}>
             <Link href="/">
               <a>
                 <Image
@@ -246,7 +290,13 @@ export default function CreateAccount() {
                 닉네임 양식이 맞지 않습니다.
               </span>
             )}
-            <button className="btnCreateAccount">회원가입</button>
+            <button
+              type="submit"
+              className="btnCreateAccount"
+              disabled={disabledSubmit}
+            >
+              회원가입
+            </button>
           </form>
         </div>
       </div>
