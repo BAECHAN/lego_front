@@ -2,14 +2,11 @@ import Layout from '@components/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
-import { v1 } from 'uuid'
 
-import React, { ChangeEvent, useState, useEffect } from 'react'
-import { InputRegExpT, UserT, SubmitT } from 'types'
-import { useQuery } from '@tanstack/react-query'
+import React, { ChangeEvent, useState } from 'react'
+import { InputRegExpT, SubmitT } from 'types'
 import axios from 'axios'
-import { atom, selector, useRecoilValue } from 'recoil'
-import { resolve } from 'node:path/win32'
+import { useQuery } from '@tanstack/react-query'
 
 export default function CreateAccount() {
   const [inputs, setInputs] = useState<SubmitT>({
@@ -49,41 +46,33 @@ export default function CreateAccount() {
   const [disabledSubmit, setDisabledSubmit] = useState(false)
   const [submitResult, setSubmitResult] = useState(0)
 
-  const emailOverLapChk = () => {
-    return new Promise((resolve, reject) => {
-      axios
-        .get('http://localhost:5000/api/getUserChk?email=' + email)
-        .then((response) => {
-          console.log(response.data)
-          console.log(response.data.result == 1)
-          response.data == 1 ? resolve('F') : resolve('T')
-        })
-        .catch((error) => {
-          reject('F')
-        })
-    })
+  const [isEmailOverlap, setIsEmailOverlap] = useState(false)
+
+  const handleBlur = () => {
+    axios
+      .get('http://localhost:5000/api/getEmailChk?email=' + email)
+      .then((response) => {
+        response.data.result == 1
+          ? setIsEmailOverlap(true)
+          : setIsEmailOverlap(false)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
-
-  useEffect(() => {}, [inputs])
-
-  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const { value, name, style } = e.target
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target
 
     setInputs({
       ...inputs,
       [name]: value.trim(),
     })
 
-    console.log(inputs)
-
     if (value.trim().length > 0) {
       const regExp = inputRegExp[name]
 
       if (name == 'email') {
         if (regExp.test(value)) {
-          console.log(email)
-          let ddd = await emailOverLapChk()
-          console.log(ddd)
           isPass(true, e)
         } else {
           isPass(false, e)
@@ -137,28 +126,39 @@ export default function CreateAccount() {
 
     let hasFalseIndex = Object.values(inputsPass).indexOf(false)
 
-    console.log(emailOverLapChk)
-
-    if (hasFalseIndex == 0) {
-      alert('이메일 주소를 확인해주시기 바랍니다.')
+    if (hasFalseIndex >= 0) {
+      if (hasFalseIndex == 0) {
+        alert('이메일 주소를 확인해주시기 바랍니다.')
+        document.getElementById('email')?.focus()
+      } else if (hasFalseIndex == 1) {
+        alert('비밀번호를 확인해주시기 바랍니다.')
+        document.getElementById('pw')?.focus()
+      } else if (hasFalseIndex == 2) {
+        alert('비밀번호확인을 확인해주시기 바랍니다.')
+        document.getElementById('pwChk')?.focus()
+      } else if (hasFalseIndex == 3) {
+        alert('닉네임을 확인해주시기 바랍니다.')
+        document.getElementById('nickname')?.focus()
+      }
       setDisabledSubmit(false)
       return false
-    } else if (hasFalseIndex == 1) {
-      alert('비밀번호를 확인해주시기 바랍니다.')
-      setDisabledSubmit(false)
-      return false
-    } else if (hasFalseIndex == 2) {
-      alert('비밀번호확인을 확인해주시기 바랍니다.')
-      setDisabledSubmit(false)
-      return false
-    } else if (hasFalseIndex == 3) {
-      alert('닉네임을 확인해주시기 바랍니다.')
-      setDisabledSubmit(false)
-      return false
+    } else {
+      if (isEmailOverlap) {
+        alert(
+          '이미 가입된 이메일입니다.\r로그인 하시거나 비밀번호가 기억이 나지 않으시다면 비밀번호찾기를 이용해주시기 바랍니다.'
+        )
+        document.getElementById('email')?.focus()
+        setDisabledSubmit(false)
+        return false
+      }
     }
 
-    await new Promise((response) => setTimeout(response, 1000))
-    alert(`변경된 패스워드: ${pw}`)
+    /**
+     * 'http://localhost:5000/api/createUser'
+     *
+     * useMutation으로 axios.post 요청 예정
+     */
+
     setDisabledSubmit(false)
   }
 
@@ -183,22 +183,45 @@ export default function CreateAccount() {
               <br />
               <input
                 type="text"
+                id="email"
                 name="email"
                 className={
                   email.length == 0
                     ? 'border-gray-500 border-2 border-solid'
-                    : inputsPass.emailPass
+                    : inputsPass.emailPass && !isEmailOverlap
                     ? 'border-green-500 border-2 border-solid'
                     : 'border-red-500 border-2 border-solid'
                 }
                 title="이메일"
                 value={email}
                 onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="예) lego@lego.co.kr"
               />
             </label>
             {inputsPass.emailPass || email.length == 0 ? (
-              ''
+              isEmailOverlap ? (
+                <>
+                  <span className="text-red-500 self-start ml-4">
+                    이미 가입된 이메일입니다.
+                  </span>
+                  <div className="ml-10">
+                    <Link href="/login">
+                      <a className="text-sm hover:underline hover:text-blue-600">
+                        로그인
+                      </a>
+                    </Link>
+                    <span className="mx-5">|</span>
+                    <Link href="/find_password">
+                      <a className="text-sm hover:underline hover:text-blue-600">
+                        비밀번호찾기
+                      </a>
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                ''
+              )
             ) : (
               <span className="text-red-500 self-start ml-4">
                 이메일 양식이 맞지 않습니다.
@@ -210,6 +233,7 @@ export default function CreateAccount() {
               <br />
               <input
                 type="text"
+                id="pw"
                 name="pw"
                 className={
                   pw.length == 0
@@ -228,7 +252,7 @@ export default function CreateAccount() {
             {inputsPass.pwPass || pw.length == 0 ? (
               ''
             ) : (
-              <span className="text-red-500 self-start ml-4">
+              <span className="text-red-500 ml-4">
                 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
               </span>
             )}
@@ -269,6 +293,7 @@ export default function CreateAccount() {
               <br />
               <input
                 type="text"
+                id="nickname"
                 name="nickname"
                 className={
                   nickname.length == 0
@@ -347,7 +372,8 @@ export default function CreateAccount() {
           text-decoration: none;
           background-color: rgb(255, 207, 0);
 
-          :hover {
+          :hover,
+          :focus {
             background-color: black;
             color: white;
           }

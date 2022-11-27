@@ -18,7 +18,7 @@ export default function ButtonClose(prop: BtnCloseType) {
 
   return (
     <>
-      <span
+      <button
         className="mr-5 -ml-5 text-gray-500 hover:cursor-pointer hover:text-black"
         onClick={(event) => {
           parentElmtClose(event)
@@ -26,7 +26,7 @@ export default function ButtonClose(prop: BtnCloseType) {
         title={prop.title}
       >
         <FontAwesomeIcon icon={faSquareXmark} width="25px" height="25px" />
-      </span>
+      </button>
       <style jsx>{``}</style>
     </>
   )
