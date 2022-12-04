@@ -39,7 +39,7 @@ export type InputRegExpT = {
   [key: string]: RegExp
 }
 
-export type SubmitT = {
+export type UserSubmitT = {
   email: string
   pw: string
   pwChk: string

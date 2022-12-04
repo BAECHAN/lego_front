@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import { ReactElement } from 'react'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
+import { SessionProvider } from 'next-auth/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RecoilRoot } from 'recoil'
 
@@ -15,7 +16,7 @@ type AppPropsWithLayout = AppProps & {
 
 export default function MyApp({
   Component,
-  pageProps,
+  pageProps: { session, ...pageProps },
 }: AppPropsWithLayout): ReactElement {
   const getLayout = Component.getLayout || ((page: any) => page)
 
@@ -26,8 +27,10 @@ export default function MyApp({
   })
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <RecoilRoot>{getLayout(<Component {...pageProps} />)}</RecoilRoot>
-    </QueryClientProvider>
+    <SessionProvider session={session}>
+      <QueryClientProvider client={queryClient}>
+        <RecoilRoot>{getLayout(<Component {...pageProps} />)}</RecoilRoot>
+      </QueryClientProvider>
+    </SessionProvider>
   )
 }

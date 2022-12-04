@@ -4,12 +4,12 @@ import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 
 import React, { ChangeEvent, useState } from 'react'
-import { InputRegExpT, SubmitT } from 'types'
+import { InputRegExpT, UserSubmitT } from 'types'
 import axios from 'axios'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 export default function CreateAccount() {
-  const [inputs, setInputs] = useState<SubmitT>({
+  const [inputs, setInputs] = useState<UserSubmitT>({
     email: '',
     pw: '',
     pwChk: '',
@@ -48,7 +48,7 @@ export default function CreateAccount() {
 
   const [isEmailOverlap, setIsEmailOverlap] = useState(false)
 
-  const handleBlur = () => {
+  const handleBlurEmail = () => {
     axios
       .get('http://localhost:5000/api/getEmailChk?email=' + email)
       .then((response) => {
@@ -63,10 +63,18 @@ export default function CreateAccount() {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target
 
-    setInputs({
-      ...inputs,
-      [name]: value.trim(),
-    })
+    if (name == 'pw' || name == 'pwChk') {
+      setInputs({
+        ...inputs,
+        [name]: value.trim(),
+        // [name]: crypto.createChi(value.trim(),"123").toString()
+      })
+    } else {
+      setInputs({
+        ...inputs,
+        [name]: value.trim(),
+      })
+    }
 
     if (value.trim().length > 0) {
       const regExp = inputRegExp[name]
@@ -100,7 +108,7 @@ export default function CreateAccount() {
           isPass(false, e)
         }
       } else if (name == 'pwChk') {
-        if (pw == pwChk) {
+        if (pw == e.currentTarget.value) {
           isPass(true, e)
         } else {
           isPass(false, e)
@@ -152,15 +160,32 @@ export default function CreateAccount() {
         return false
       }
     }
-
-    /**
-     * 'http://localhost:5000/api/createUser'
-     *
-     * useMutation으로 axios.post 요청 예정
-     */
+    createAccountAPI.mutate(inputs)
 
     setDisabledSubmit(false)
   }
+
+  const createAccountAPI = useMutation(
+    (userInfo: UserSubmitT) =>
+      axios.post(
+        'http://localhost:5000/api/createAccount',
+        JSON.stringify(userInfo),
+        {
+          headers: { 'Content-Type': `application/json; charset=utf-8` },
+        }
+      ),
+    {
+      onSuccess: () => {
+        alert('회원가입되었습니다.\r로그인 페이지로 이동합니다.')
+        location.href = '/login'
+      },
+      onError: (error) => {
+        console.log(error)
+        alert('회원가입이 실패하였습니다.')
+        return false
+      },
+    }
+  )
 
   return (
     <div>
@@ -195,7 +220,7 @@ export default function CreateAccount() {
                 title="이메일"
                 value={email}
                 onChange={handleChange}
-                onBlur={handleBlur}
+                onBlur={handleBlurEmail}
                 placeholder="예) lego@lego.co.kr"
               />
             </label>
