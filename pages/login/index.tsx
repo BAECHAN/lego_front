@@ -2,18 +2,53 @@ import Layout from '@components/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react'
+import Router from 'next/router'
 
 export default function Login() {
-  const handleClickLogin = () => {
-    let frm = document.querySelector('form[name=loginForm]')
-    console.log(frm)
+  const login = async (e: any) => {
+    // 원래 실행되는 이벤트 취소
+    e.preventDefault()
+    // Form 안에서 이메일, 패스워드 가져오기
+    const email = e.target.email.value
+    const password = e.target.password.value
+
+    console.log(email, password)
+
+    if (!email) {
+      alert('이메일 주소를 입력해주세요.')
+      document.getElementById('email')?.focus()
+      return false
+    } else if (!password) {
+      alert('비밀번호를 입력해주세요.')
+      document.getElementById('password')?.focus()
+      return false
+    }
+
+    const response = await signIn('email-password-credential', {
+      email,
+      password,
+      redirect: false,
+    })
+    console.log(response)
+
+    if (response !== undefined) {
+      if (response.ok) {
+        Router.push('/')
+      } else {
+        if (response.status === 401) {
+          alert('아이디 혹은 패스워드를 확인하세요.')
+          document.getElementById('password')?.focus()
+          return false
+        }
+      }
+    }
   }
 
   return (
     <div>
       <div className="flex justify-center items-center w-full bg-gray-200 h-[38rem]">
         <div className="h-full relative top-[20%]">
-          <form name="loginForm" className="login-box">
+          <form onSubmit={login} className="login-box">
             <Link href="/">
               <a>
                 <Image
@@ -27,17 +62,20 @@ export default function Login() {
             <label>
               이메일 주소
               <br />
-              <input type="text" id="email" placeholder="예) lego@lego.co.kr" />
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="예) lego@lego.co.kr"
+              />
             </label>
             <label>
               비밀번호
               <br />
-              <input type="password" id="password" />
+              <input type="password" name="password" id="password" />
             </label>
 
-            <button type="button" id="loginBtn" onClick={handleClickLogin}>
-              로그인
-            </button>
+            <button type="submit">로그인</button>
 
             <div className="flex text-xs w-72 justify-between">
               <Link href="/login/create_account">

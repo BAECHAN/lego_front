@@ -6,23 +6,26 @@ export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
+      id: 'email-password-credential',
       name: 'Email / Password',
       credentials: {
-        username: {
-          label: '이메일',
-          type: 'text',
+        email: {
+          label: 'Email',
+          type: 'email',
           placeholder: 'johndoe@test.com',
         },
-        password: { label: '비밀번호', type: 'password' },
+        password: { label: 'Password', type: 'password' },
       },
       authorize: async (credentials, req) => {
         let url = process.env.SERVER_URL + '/api/getLoginChk'
 
+        console.log(credentials)
+
         let res: any = await axios
           .get(url, {
             params: {
-              email: credentials?.username,
-              pw: credentials?.password,
+              email: credentials?.email,
+              password: credentials?.password,
             },
           })
           .then((response) => {

@@ -25,9 +25,7 @@ export default function Header() {
           <button onClick={() => signOut()}>로그아웃</button>
         </div>
       ) : (
-        <Link href="/api/auth/signin">
-          <a>로그인</a>
-        </Link>
+        <button onClick={() => signIn()}>로그인</button>
       )}
 
       <style jsx>{`
