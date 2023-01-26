@@ -1,8 +1,14 @@
 import Layout from '@components/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useSession, signIn, signOut } from 'next-auth/react'
 
 export default function Login() {
+  const handleClickLogin = () => {
+    let frm = document.querySelector('form[name=loginForm]')
+    console.log(frm)
+  }
+
   return (
     <div>
       <div className="flex justify-center items-center w-full bg-gray-200 h-[38rem]">
@@ -21,15 +27,17 @@ export default function Login() {
             <label>
               이메일 주소
               <br />
-              <input type="text" placeholder="예) lego@lego.co.kr" />
+              <input type="text" id="email" placeholder="예) lego@lego.co.kr" />
             </label>
             <label>
               비밀번호
               <br />
-              <input type="password" />
+              <input type="password" id="password" />
             </label>
 
-            <button>로그인</button>
+            <button type="button" id="loginBtn" onClick={handleClickLogin}>
+              로그인
+            </button>
 
             <div className="flex text-xs w-72 justify-between">
               <Link href="/login/create_account">

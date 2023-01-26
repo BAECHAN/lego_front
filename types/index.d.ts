@@ -1,3 +1,9 @@
+import internal from 'stream'
+
+export type ObjT_Str = {
+  [key: string]: string
+}
+
 export type ProductT = {
   product_id: number
   title: string
@@ -25,9 +31,15 @@ export type ThemeT = {
 }
 
 export type UserT = {
+  id: number
   email: string
   name: string
   image: string
+  date_created: Date
+  account_expired: number
+  account_locked: number
+  account_withdraw: number
+  date_withdraw: Date
   grade: number
 }
 

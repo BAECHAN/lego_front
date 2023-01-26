@@ -1,7 +1,7 @@
 import Layout from '../components/Layout'
 export default function Home() {
   return (
-    <div>
+    <div className="min-h-600">
       <h2>Lego</h2>
     </div>
   )

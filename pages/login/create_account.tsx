@@ -7,6 +7,7 @@ import React, { ChangeEvent, useState } from 'react'
 import { InputRegExpT, UserSubmitT } from 'types'
 import axios from 'axios'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import Router from 'next/router'
 
 export default function CreateAccount() {
   const [inputs, setInputs] = useState<UserSubmitT>({
@@ -177,7 +178,8 @@ export default function CreateAccount() {
     {
       onSuccess: () => {
         alert('회원가입되었습니다.\r로그인 페이지로 이동합니다.')
-        location.href = '/login'
+        Router.push('/login')
+        //location.href = '/login'
       },
       onError: (error) => {
         console.log(error)

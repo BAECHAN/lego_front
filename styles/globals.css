@@ -14,3 +14,7 @@ body {
   height: 100%;
 }
 
+.min-h-600 {
+  min-height: 602px
+}
+
