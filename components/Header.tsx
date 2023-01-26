@@ -20,11 +20,13 @@ export default function Header() {
         <div className="flex space-x-4">
           <span>{session.user?.name}님</span>
           <button type="button">마이페이지</button>
+          <div />
+          <div />
           <button onClick={() => signOut()}>로그아웃</button>
         </div>
       ) : (
         <Link href="/api/auth/signin">
-          <a className="text-sm">로그인</a>
+          <a>로그인</a>
         </Link>
       )}
 

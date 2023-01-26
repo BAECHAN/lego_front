@@ -3,6 +3,7 @@ import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 export default NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: 'Email / Password',
@@ -17,7 +18,7 @@ export default NextAuth({
       authorize: async (credentials, req) => {
         let url = process.env.SERVER_URL + '/api/getLoginChk'
 
-        let res = await axios
+        let res: any = await axios
           .get(url, {
             params: {
               email: credentials?.username,
@@ -25,7 +26,6 @@ export default NextAuth({
             },
           })
           .then((response) => {
-            console.log(response.data)
             const user = response.data.result
 
             if (user) {
@@ -41,7 +41,12 @@ export default NextAuth({
             }
             return error
           })
-        return res
+
+        if (res.email && res.name) {
+          return res
+        } else {
+          return null
+        }
       },
     }),
   ],
@@ -49,8 +54,7 @@ export default NextAuth({
     maxAge: 30 * 60, // 30 min
   },
   pages: {
-    //signIn: '/signin',
-    signOut: '/signin',
+    signIn: '/login',
     error: '/signin',
   },
 })
