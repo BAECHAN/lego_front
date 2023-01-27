@@ -29,11 +29,13 @@ export default function Header() {
       )}
 
       <style jsx>{`
-        a {
+        a,
+        button {
           margin: 0px 10px;
           line-height: 15px;
         }
-        a:hover {
+        a:hover,
+        button:hover {
           font-weight: 700;
         }
       `}</style>

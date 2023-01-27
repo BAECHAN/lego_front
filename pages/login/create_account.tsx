@@ -8,6 +8,7 @@ import { InputRegExpT, UserSubmitT } from 'types'
 import axios from 'axios'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import Router from 'next/router'
+import crypto from 'crypto-js'
 
 export default function CreateAccount() {
   const [inputs, setInputs] = useState<UserSubmitT>({
@@ -161,8 +162,19 @@ export default function CreateAccount() {
         return false
       }
     }
-    createAccountAPI.mutate(inputs)
 
+    const secretKey = process.env.NEXT_PUBLIC_CRYPT_KEY
+    if (secretKey !== undefined) {
+      setInputs({
+        ...inputs,
+        pw: crypto.AES.encrypt(inputs.pw, secretKey).toString(),
+      })
+    } else {
+      alert('secretKey is undefined')
+      return false
+    }
+
+    createAccountAPI.mutate(inputs)
     setDisabledSubmit(false)
   }
 
