@@ -18,13 +18,16 @@ export async function getServerSideProps(context: any) {
 const take = 15
 export default function Theme(props: ThemeT) {
   const [page, setPage] = useState(1)
+  const [filter, setFilter] = useState({
+    sort: '',
+  })
 
   const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useInfiniteQuery(
-      ['getProductList'],
+      ['getProductList', filter],
       async ({ pageParam = 0 }) => {
         const res = await axios.get(
-          `http://localhost:5000/api/getProductList?theme_id=${props.theme_id}&page=${pageParam}&take=${take}`
+          `http://localhost:5000/api/getProductList?theme_id=${props.theme_id}&page=${pageParam}&take=${take}&sort=${filter.sort}`
         )
         return res.data
       },
@@ -51,11 +54,19 @@ export default function Theme(props: ThemeT) {
           </div>
           <div className="flex-grow" />
           <div className="list-sort">
-            <select id="listSort" className="border rounded">
-              <option>판매순</option>
-              <option>높은금액순</option>
-              <option>낮은금액순</option>
-              <option>신제품순</option>
+            <select
+              id="listSort"
+              className="border rounded"
+              onChange={(event) => {
+                setFilter({ sort: event.currentTarget.value })
+                setPage(1)
+              }}
+            >
+              <option value="newItem">신제품 순</option>
+              <option value="ascPrice">가격 낮은 순</option>
+              <option value="descPrice">가격 높은 순</option>
+              <option value="descPieces">구성품 많은 순</option>
+              <option value="ascKorean">가나다 순</option>
             </select>
           </div>
         </div>
