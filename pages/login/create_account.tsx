@@ -275,7 +275,7 @@ export default function CreateAccount() {
               <FontAwesomeAsterisk />
               <br />
               <input
-                type="text"
+                type="password"
                 id="pw"
                 name="pw"
                 className={
@@ -305,7 +305,7 @@ export default function CreateAccount() {
               <FontAwesomeAsterisk />
               <br />
               <input
-                type="text"
+                type="password"
                 id="pwChk"
                 name="pwChk"
                 className={

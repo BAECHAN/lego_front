@@ -4,16 +4,26 @@ import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react'
 import Router from 'next/router'
 import crypto from 'crypto-js'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useState } from 'react'
 
 export default function Login() {
+  const [isShowPw, setIsShowPw] = useState(false)
+  const handleClickEye = () => {
+    setIsShowPw(!isShowPw)
+
+    isShowPw
+      ? document.getElementById('password')?.setAttribute('type', 'password')
+      : document.getElementById('password')?.setAttribute('type', 'text')
+  }
+
   const login = async (e: any) => {
     // 원래 실행되는 이벤트 취소
     e.preventDefault()
     // Form 안에서 이메일, 패스워드 가져오기
     let email = e.target.email.value
     let password = e.target.password.value
-
-    console.log(email, password)
 
     if (!email) {
       alert('이메일 주소를 입력해주세요.')
@@ -39,7 +49,6 @@ export default function Login() {
       password,
       redirect: false,
     })
-    console.log(response)
 
     if (response !== undefined) {
       if (response.ok) {
@@ -89,6 +98,21 @@ export default function Login() {
                 id="password"
                 autoComplete="off"
               />
+              {isShowPw ? (
+                <FontAwesomeIcon
+                  icon={faEyeSlash}
+                  onClick={handleClickEye}
+                  cursor="pointer"
+                  className="w-5 relative ml-[304px] -mt-[26px]"
+                ></FontAwesomeIcon>
+              ) : (
+                <FontAwesomeIcon
+                  icon={faEye}
+                  onClick={handleClickEye}
+                  cursor="pointer"
+                  className="w-5 relative ml-[304px] -mt-[26px]"
+                ></FontAwesomeIcon>
+              )}
             </label>
 
             <button type="submit">로그인</button>
@@ -129,6 +153,7 @@ export default function Login() {
             padding: 5px;
           }
           button {
+            margin-top: 17px;
             box-sizing: border-box;
             outline: 0;
             border: 0;
