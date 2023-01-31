@@ -3,14 +3,15 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react'
 import Router from 'next/router'
+import crypto from 'crypto-js'
 
 export default function Login() {
   const login = async (e: any) => {
     // 원래 실행되는 이벤트 취소
     e.preventDefault()
     // Form 안에서 이메일, 패스워드 가져오기
-    const email = e.target.email.value
-    const password = e.target.password.value
+    let email = e.target.email.value
+    let password = e.target.password.value
 
     console.log(email, password)
 
@@ -21,6 +22,15 @@ export default function Login() {
     } else if (!password) {
       alert('비밀번호를 입력해주세요.')
       document.getElementById('password')?.focus()
+      return false
+    }
+
+    const secretKey = process.env.NEXT_PUBLIC_CRYPT_KEY
+    if (secretKey !== undefined) {
+      password = crypto.HmacSHA512(password, secretKey).toString()
+      console.log(password)
+    } else {
+      alert('secretKey is undefined')
       return false
     }
 
@@ -67,12 +77,18 @@ export default function Login() {
                 name="email"
                 id="email"
                 placeholder="예) lego@lego.co.kr"
+                autoComplete="off"
               />
             </label>
             <label>
               비밀번호
               <br />
-              <input type="password" name="password" id="password" />
+              <input
+                type="password"
+                name="password"
+                id="password"
+                autoComplete="off"
+              />
             </label>
 
             <button type="submit">로그인</button>

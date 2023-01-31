@@ -16,7 +16,6 @@ export default function CreateAccount() {
     pw: '',
     pwChk: '',
     nickname: '',
-    result: 0,
   })
 
   const [inputsPass, setInputsPass] = useState({
@@ -26,7 +25,7 @@ export default function CreateAccount() {
     nicknamePass: false,
   })
 
-  const { email, pw, pwChk, nickname } = inputs
+  let { email, pw, pwChk, nickname } = inputs
 
   const inputRegExp: InputRegExpT = {
     email:
@@ -165,16 +164,20 @@ export default function CreateAccount() {
 
     const secretKey = process.env.NEXT_PUBLIC_CRYPT_KEY
     if (secretKey !== undefined) {
-      setInputs({
-        ...inputs,
-        pw: crypto.AES.encrypt(inputs.pw, secretKey).toString(),
-      })
+      pw = crypto.HmacSHA512(pw, secretKey).toString()
     } else {
       alert('secretKey is undefined')
       return false
     }
 
-    createAccountAPI.mutate(inputs)
+    const userInfo = {
+      email,
+      pw,
+      pwChk,
+      nickname,
+    }
+
+    createAccountAPI.mutate(userInfo)
     setDisabledSubmit(false)
   }
 
@@ -236,6 +239,7 @@ export default function CreateAccount() {
                 onChange={handleChange}
                 onBlur={handleBlurEmail}
                 placeholder="예) lego@lego.co.kr"
+                autoComplete="off"
               />
             </label>
             {inputsPass.emailPass || email.length == 0 ? (
@@ -286,6 +290,7 @@ export default function CreateAccount() {
                 onChange={handleChange}
                 onBlur={handleChange}
                 placeholder="8~16자 영문 대 소문자, 숫자, 특수문자"
+                autoComplete="off"
               />
             </label>
             {inputsPass.pwPass || pw.length == 0 ? (
@@ -315,6 +320,7 @@ export default function CreateAccount() {
                 onChange={handleChange}
                 onBlur={handleChange}
                 placeholder="8~16자 영문 대 소문자, 숫자, 특수문자"
+                autoComplete="off"
               />
             </label>
             {pwChk.length == 0 ? (
@@ -345,6 +351,7 @@ export default function CreateAccount() {
                 value={nickname}
                 onChange={handleChange}
                 placeholder="2글자 이상 한글 또는 영문"
+                autoComplete="off"
               />
             </label>
             {inputsPass.nicknamePass || nickname.length == 0 ? (

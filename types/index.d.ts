@@ -56,5 +56,4 @@ export type UserSubmitT = {
   pw: string
   pwChk: string
   nickname: string
-  result: number
 }
