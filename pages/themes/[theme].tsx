@@ -1,5 +1,5 @@
 import Layout from '../../components/Layout'
-import Sidebar from '../../components/Sidebar'
+import Sidebar from '../../components/SidebarFilter'
 import Navbar from '../../components/Navbar'
 
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
