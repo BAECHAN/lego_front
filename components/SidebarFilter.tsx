@@ -1,4 +1,4 @@
-import FontAwesomeAngleUpDown from './FontAwesomeAngleUpDown'
+import SidebarFilterDropDown from './SidebarFilterDropDown'
 
 type HelmetType = {
   pathname: string
@@ -7,7 +7,7 @@ type HelmetType = {
 export default function SidebarFilter() {
   return (
     <aside className="filter mx-5 border border-gray-300 border-solid">
-      <div className="w-52">
+      <div className="w-60">
         <button type="button" className="btn-reset-option">
           초기화
         </button>
@@ -23,7 +23,7 @@ export default function SidebarFilter() {
           <hr />
 
           <div>
-            <FontAwesomeAngleUpDown label="가격(원)" />
+            <SidebarFilterDropDown label="가격(원)" />
           </div>
           <hr />
         </div>
