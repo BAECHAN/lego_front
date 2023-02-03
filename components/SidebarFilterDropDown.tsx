@@ -16,7 +16,7 @@ export default function SidebarFilterDropDown(prop: { label: string }) {
   })
 
   return (
-    <button onClick={() => setIsOpen(!isOpen)}>
+    <button onClick={() => setIsOpen(!isOpen)} className="btn-dropdown">
       <span className="btn-label">{prop.label}</span>
       <FontAwesomeIcon
         icon={isOpen ? faAngleUp : faAngleDown}
@@ -29,10 +29,9 @@ export default function SidebarFilterDropDown(prop: { label: string }) {
           display: 'inline',
         }}
       />
-
       <div>
         {prop.label == '가격(원)' ? (
-          <ul className={isOpen ? '' : 'hidden'}>
+          <ul className={isOpen ? 'open' : ''}>
             <li>
               <input type="checkbox" id="price1" />
               <label htmlFor="price1">0원 - 25,000 원 </label>
@@ -62,7 +61,18 @@ export default function SidebarFilterDropDown(prop: { label: string }) {
         }
 
         ul {
-          margin-top: 15px;
+          padding-top: 0px;
+          width: 100%;
+          height: 0;
+          opacity: 0;
+          transition: all ease-in-out 0.2s;
+          overflow: hidden;
+        }
+
+        ul.open {
+          padding-top: 15px;
+          height: auto;
+          opacity: 1;
         }
 
         li {
