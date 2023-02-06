@@ -1,8 +1,8 @@
 import Layout from '../../components/Layout'
-import Sidebar from '../../components/SidebarFilter'
+import SidebarFilter from '../../components/SidebarFilter'
 import Navbar from '../../components/Navbar'
 
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import axios from 'axios'
 
 import { ThemeT, ProductT } from 'types'
@@ -22,21 +22,25 @@ export default function Theme(props: ThemeT) {
     sort: '',
   })
 
-  const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
-    useInfiniteQuery(
-      ['getProductList', filter],
-      async ({ pageParam = 0 }) => {
-        const res = await axios.get(
-          `http://localhost:5000/api/getProductList?theme_id=${props.theme_id}&page=${pageParam}&take=${take}&sort=${filter.sort}`
-        )
-        return res.data
-      },
-      {
-        onSuccess: (data) => console.log(data),
-        onError: (e) => console.log(e),
-        getNextPageParam: (lastPage) => !lastPage.isLast ?? undefined,
-      }
-    )
+  const {
+    data: productList,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery(
+    ['getProductList'],
+    async ({ pageParam = 0 }) => {
+      const res = await axios.get(
+        `http://localhost:5000/api/getProductList?theme_id=${props.theme_id}&page=${pageParam}&take=${take}&sort=${filter.sort}`
+      )
+      return res.data
+    },
+    {
+      onSuccess: (data) => console.log(data),
+      onError: (e) => console.log(e),
+      getNextPageParam: (lastPage) => !lastPage.isLast ?? undefined,
+    }
+  )
 
   const handleClickMoreProduct = () => {
     fetchNextPage({ pageParam: page })
@@ -46,11 +50,10 @@ export default function Theme(props: ThemeT) {
   return (
     <div className="px-32">
       <Navbar currentPage={props.theme_title} />
-
       <div>
         <div className="list-summary flex mx-7 my-3">
           <div className="list-count">
-            {data?.pages[0].productListCount}개 제품 표시
+            {productList?.pages[0].productListCount}개 제품 표시
           </div>
           <div className="flex-grow" />
           <div className="list-sort">
@@ -71,10 +74,10 @@ export default function Theme(props: ThemeT) {
           </div>
         </div>
         <div className="flex">
-          <Sidebar />
+          <SidebarFilter themes={props} />
           <div className="mr-5">
             <ul className="flex flex-wrap">
-              {data?.pages.map((page, index) => (
+              {productList?.pages.map((page, index) => (
                 <React.Fragment key={index}>
                   {page.productList.map((product: ProductT, index: number) => {
                     return <ProductCard product={product} key={index} />

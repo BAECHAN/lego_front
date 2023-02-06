@@ -1,14 +1,12 @@
 import Layout from '../../components/Layout'
 import Image from 'next/image'
-import { useQuery } from '@tanstack/react-query'
-import { ProductT } from 'types'
 import Carousel from 'nuka-carousel'
 import Navbar from '@components/Navbar'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import ButtonWish from '@components/ButtonWish'
-import axios from 'axios'
+import useProducts from 'pages/api/query/useProducts'
 
 export async function getServerSideProps(context: any) {
   return {
@@ -23,17 +21,7 @@ export default function Product(props: any) {
   let [plusDisabled, setPlusDisabled] = useState(false)
   let [detailOpen, setDetailOpen] = useState(true)
 
-  const { data: product } = useQuery<ProductT>(
-    ['http://localhost:5000/api/getProductInfo'],
-    async () => {
-      const res = await axios.get(
-        `http://localhost:5000/api/getProductInfo?product_number=${Number(
-          props.product_number
-        )}`
-      )
-      return res.data
-    }
-  )
+  const { data: product } = useProducts(props)
 
   const handleClickQuantity = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -70,8 +58,8 @@ export default function Product(props: any) {
             slideIndex={carouselIdx}
           >
             {product
-              ? product.product_img_list &&
-                product.product_img_list.map((img, index) => {
+              ? product?.product_img_list &&
+                product?.product_img_list.map((img: string, index: number) => {
                   return (
                     <Image
                       key={index}
@@ -91,7 +79,7 @@ export default function Product(props: any) {
           <div className="text-center flex justify-around">
             {product
               ? product.product_img_list &&
-                product.product_img_list.map((img, index) => {
+                product.product_img_list.map((img: string, index: number) => {
                   return (
                     <div
                       key={index}

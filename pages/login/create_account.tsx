@@ -6,7 +6,7 @@ import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 import React, { ChangeEvent, useState } from 'react'
 import { InputRegExpT, UserSubmitT } from 'types'
 import axios from 'axios'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import Router from 'next/router'
 import crypto from 'crypto-js'
 

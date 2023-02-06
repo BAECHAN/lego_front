@@ -2,22 +2,10 @@ import Layout from '../../components/Layout'
 import Navbar from '../../components/Navbar'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useQuery } from '@tanstack/react-query'
-import { ThemeT } from 'types/index'
-import axios from 'axios'
+import useThemes from 'pages/api/query/useThemes'
 
 export default function Themes() {
-  const { data: themes } = useQuery<ThemeT[]>(
-    ['http://localhost:5000/api/getThemeList'],
-    async () => {
-      const res = await axios.get('http://localhost:5000/api/getThemeList')
-      return res.data
-    },
-    {
-      onSuccess: (data) => console.log(data),
-      onError: (e) => console.log(e),
-    }
-  )
+  const { data: themes } = useThemes()
 
   return (
     <div className="px-32">

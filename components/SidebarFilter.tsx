@@ -1,17 +1,18 @@
-import SidebarFilterDropDown from './SidebarFilterDropDown'
+import { ThemeT } from 'types'
+import SidebarFilterAccordian from './SidebarFilterAccordion'
 
 type HelmetType = {
   pathname: string
 }
 
-export default function SidebarFilter() {
+export default function SidebarFilter(props: { themes: ThemeT }) {
   return (
     <aside className="filter mx-5 border border-gray-300 border-solid">
       <div className="w-60">
         <button type="button" className="btn-reset-option">
           초기화
         </button>
-        <div className="filter-option">
+        <div className="filter-option my-3">
           <div>
             <ul>
               <li>
@@ -21,11 +22,18 @@ export default function SidebarFilter() {
             </ul>
           </div>
           <hr />
-
           <div>
-            <SidebarFilterDropDown label="가격(원)" />
+            <SidebarFilterAccordian label="가격(원)" themes={props.themes} />
+            <hr />
+            <SidebarFilterAccordian label="연령" themes={props.themes} />
+            <hr />
+            <SidebarFilterAccordian label="구매가능" themes={props.themes} />
+            <hr />
+            <SidebarFilterAccordian label="할인여부" themes={props.themes} />
+            <hr />
+            <SidebarFilterAccordian label="부품수" themes={props.themes} />
+            <hr />
           </div>
-          <hr />
         </div>
       </div>
 
@@ -44,7 +52,7 @@ export default function SidebarFilter() {
         }
 
         aside.filter .filter-option > div {
-          padding: 10px 0px 10px 5px;
+          padding: 0px 0px 10px 5px;
         }
 
         aside.filter label {
