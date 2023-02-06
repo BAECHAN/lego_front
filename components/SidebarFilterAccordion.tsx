@@ -426,6 +426,10 @@ export default function SidebarFilterAccordian(prop: {
           opacity: 1;
         }
 
+        li {
+          display: flex;
+        }
+
         input[type='checkbox'] {
           width: 25px;
           height: 25px;
@@ -434,8 +438,8 @@ export default function SidebarFilterAccordian(prop: {
         }
 
         label {
+          width: 100%;
           position: relative;
-          top: -7px;
           cursor: pointer;
           user-select: none;
           :hover {
