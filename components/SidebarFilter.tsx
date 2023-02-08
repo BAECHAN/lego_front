@@ -1,19 +1,24 @@
 import { ThemeT } from 'types'
 import SidebarFilterAccordian from './SidebarFilterAccordion'
-
+import SidebarFilterSelected from './SidebarFilterSelected'
+import { useRecoilValue } from 'recoil'
+import { selectedFilterSelector } from 'state/atoms'
 type HelmetType = {
   pathname: string
 }
 
 export default function SidebarFilter(props: { themes: ThemeT }) {
+  const selectedFilter = useRecoilValue(selectedFilterSelector)
+
   return (
-    <aside className="filter mx-5 border border-gray-300 border-solid">
+    <aside className="filter mx-5 h-full">
       <div className="w-60">
-        <button type="button" className="btn-reset-option">
-          초기화
-        </button>
-        <div className="filter-option my-3">
-          <div>
+        <div className="filter-option mb-3">
+          {Object.values(selectedFilter).indexOf(1) > -1 ? (
+            <SidebarFilterSelected />
+          ) : null}
+          <hr />
+          <div className="my-3 leading-3">
             <ul>
               <li>
                 <input type="checkbox" id="ea" />
@@ -22,18 +27,16 @@ export default function SidebarFilter(props: { themes: ThemeT }) {
             </ul>
           </div>
           <hr />
-          <div>
-            <SidebarFilterAccordian label="가격(원)" themes={props.themes} />
-            <hr />
-            <SidebarFilterAccordian label="연령" themes={props.themes} />
-            <hr />
-            <SidebarFilterAccordian label="구매가능" themes={props.themes} />
-            <hr />
-            <SidebarFilterAccordian label="할인여부" themes={props.themes} />
-            <hr />
-            <SidebarFilterAccordian label="부품수" themes={props.themes} />
-            <hr />
-          </div>
+          <SidebarFilterAccordian label="가격(원)" themes={props.themes} />
+          <hr />
+          <SidebarFilterAccordian label="연령" themes={props.themes} />
+          <hr />
+          <SidebarFilterAccordian label="구매가능" themes={props.themes} />
+          <hr />
+          <SidebarFilterAccordian label="할인여부" themes={props.themes} />
+          <hr />
+          <SidebarFilterAccordian label="부품수" themes={props.themes} />
+          <hr />
         </div>
       </div>
 
@@ -51,9 +54,9 @@ export default function SidebarFilter(props: { themes: ThemeT }) {
           accent-color: orange;
         }
 
-        aside.filter .filter-option > div {
+        /* aside.filter .filter-option > div {
           padding: 0px 0px 10px 5px;
-        }
+        } */
 
         aside.filter label {
           position: relative;

@@ -8,6 +8,7 @@ import axios from 'axios'
 import { ThemeT, ProductT } from 'types'
 import ProductCard from '@components/ProductCard'
 import React, { useState } from 'react'
+import useFilters from 'pages/api/query/useFilters'
 
 export async function getServerSideProps(context: any) {
   return {
@@ -16,6 +17,7 @@ export async function getServerSideProps(context: any) {
 }
 
 const take = 15
+
 export default function Theme(props: ThemeT) {
   const [page, setPage] = useState(1)
   const [filter, setFilter] = useState({
@@ -47,13 +49,15 @@ export default function Theme(props: ThemeT) {
     setPage(page + 1)
   }
 
+  const { data: filters } = useFilters(props)
+
   return (
     <div className="px-32">
       <Navbar currentPage={props.theme_title} />
       <div>
         <div className="list-summary flex mx-7 my-3">
           <div className="list-count">
-            {productList?.pages[0].productListCount}개 제품 표시
+            {filters?.productFilter.length}개 제품 표시
           </div>
           <div className="flex-grow" />
           <div className="list-sort">

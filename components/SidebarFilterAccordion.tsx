@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState, useEffect } from 'react'
 import useFilters from 'pages/api/query/useFilters'
 import { ProductFilterCountT, ProductFilterT, ThemeT } from 'types'
+import { selectedFilterSelector } from 'state/atoms'
+import { useRecoilState } from 'recoil'
 
 export default function SidebarFilterAccordian(prop: {
   label: string
@@ -24,7 +26,7 @@ export default function SidebarFilterAccordian(prop: {
 
   const data: ProductFilterT[] = filters?.productFilter
 
-  let filterCount = {
+  let filterCount: ProductFilterCountT = {
     filter_price1: 0,
     filter_price2: 0,
     filter_price3: 0,
@@ -136,7 +138,7 @@ export default function SidebarFilterAccordian(prop: {
       // 250 ~ 500개 미만
       ++filterCount.filter_pieces3
     } else if (item.filter_pieces === 4) {
-      // 500 ~ 1,000개 미만
+      // 500 ~ 1,000개 미만onChange
       ++filterCount.filter_pieces4
     } else if (item.filter_pieces === 5) {
       // 1,000 ~ 2,000개 미만
@@ -147,7 +149,16 @@ export default function SidebarFilterAccordian(prop: {
     }
   })
 
-  console.log(filterCount)
+  const [selectedFilter, setSelectedFilter] = useRecoilState(
+    selectedFilterSelector
+  )
+
+  const handleChangeCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedFilter({
+      ...selectedFilter,
+      [e.currentTarget.id]: e.currentTarget.checked ? 1 : 0,
+    })
+  }
 
   return (
     <button
@@ -173,7 +184,11 @@ export default function SidebarFilterAccordian(prop: {
           <ul className={isOpen ? 'open' : ''}>
             {filterCount.filter_price1 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_price1" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_price1"
+                />
                 <label htmlFor="filter_price1">
                   0원 - 19,999원 <span>[{filterCount.filter_price1}]</span>
                 </label>
@@ -181,7 +196,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_price2 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_price2" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_price2"
+                />
                 <label htmlFor="filter_price2">
                   20,000원 - 49,999원 <span>[{filterCount.filter_price2}]</span>
                 </label>
@@ -189,7 +208,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_price3 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_price3" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_price3"
+                />
                 <label htmlFor="filter_price3">
                   50,000원 - 99,999원 <span>[{filterCount.filter_price3}]</span>
                 </label>
@@ -197,7 +220,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_price4 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_price4" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_price4"
+                />
                 <label htmlFor="filter_price4">
                   100,000원 - 199,999원{' '}
                   <span>[{filterCount.filter_price4}]</span>
@@ -206,7 +233,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_price5 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_price5" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_price5"
+                />
                 <label htmlFor="filter_price5">
                   200,000원+ <span>[{filterCount.filter_price5}]</span>
                 </label>
@@ -221,7 +252,11 @@ export default function SidebarFilterAccordian(prop: {
           <ul className={isOpen ? 'open' : ''}>
             {filterCount.filter_ages7 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_ages7" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_ages7"
+                />
                 <label htmlFor="filter_ages7">
                   2+ <span>[{filterCount.filter_ages7}]</span>
                 </label>
@@ -229,7 +264,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_ages6 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_ages6" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_ages6"
+                />
                 <label htmlFor="filter_ages6">
                   4+ <span>[{filterCount.filter_ages6}]</span>
                 </label>
@@ -237,7 +276,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_ages5 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_ages5" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_ages5"
+                />
                 <label htmlFor="filter_ages5">
                   6+ <span>[{filterCount.filter_ages5}]</span>
                 </label>
@@ -245,7 +288,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_ages4 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_ages4" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_ages4"
+                />
                 <label htmlFor="filter_ages4">
                   9+ <span>[{filterCount.filter_ages4}]</span>
                 </label>
@@ -253,7 +300,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_ages3 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_ages3" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_ages3"
+                />
                 <label htmlFor="filter_ages3">
                   14+ <span>[{filterCount.filter_ages3}]</span>
                 </label>
@@ -261,7 +312,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_ages2 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_ages2" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_ages2"
+                />
                 <label htmlFor="filter_ages2">
                   16+ <span>[{filterCount.filter_ages2}]</span>
                 </label>
@@ -269,7 +324,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_ages1 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_ages1" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_ages1"
+                />
                 <label htmlFor="filter_ages1">
                   18+ <span>[{filterCount.filter_ages1}]</span>
                 </label>
@@ -285,14 +344,18 @@ export default function SidebarFilterAccordian(prop: {
             {/* {
                 filterCount.filter_sale_enabled1 > 0 
                 ? <li>
-                    <input type="checkbox" id="filter_sale_enabled1" />
+                    <input type="checkbox" onInput={handleChangeCheck}  id="filter_sale_enabled1" />
                     <label htmlFor="filter_sale_enabled1">단종 <span>[{filterCount.filter_sale_enabled1}]</span></label>
                   </li>
                 : null
               } */}
             {filterCount.filter_sale_enabled2 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_sale_enabled2" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_sale_enabled2"
+                />
                 <label htmlFor="filter_sale_enabled2">
                   구매가능 <span>[{filterCount.filter_sale_enabled2}]</span>
                 </label>
@@ -300,7 +363,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_sale_enabled3 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_sale_enabled3" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_sale_enabled3"
+                />
                 <label htmlFor="filter_sale_enabled3">
                   출시예정 <span>[{filterCount.filter_sale_enabled3}]</span>
                 </label>
@@ -308,7 +375,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_sale_enabled4 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_sale_enabled4" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_sale_enabled4"
+                />
                 <label htmlFor="filter_sale_enabled4">
                   일시품절 <span>[{filterCount.filter_sale_enabled4}]</span>
                 </label>
@@ -323,7 +394,11 @@ export default function SidebarFilterAccordian(prop: {
           <ul className={isOpen ? 'open' : ''}>
             {filterCount.filter_discounting1 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_discounting1" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_discounting1"
+                />
                 <label htmlFor="filter_discounting1">
                   정가 <span>[{filterCount.filter_discounting1}]</span>
                 </label>
@@ -331,7 +406,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_discounting2 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_discounting2" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_discounting2"
+                />
                 <label htmlFor="filter_discounting2">
                   할인중 <span>[{filterCount.filter_discounting2}]</span>
                 </label>
@@ -346,7 +425,11 @@ export default function SidebarFilterAccordian(prop: {
           <ul className={isOpen ? 'open' : ''}>
             {filterCount.filter_pieces1 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_pieces1" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_pieces1"
+                />
                 <label htmlFor="filter_pieces1">
                   1-99 <span>[{filterCount.filter_pieces1}]</span>
                 </label>
@@ -354,7 +437,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_pieces2 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_pieces2" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_pieces2"
+                />
                 <label htmlFor="filter_pieces2">
                   100-249 <span>[{filterCount.filter_pieces2}]</span>
                 </label>
@@ -362,7 +449,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_pieces3 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_pieces3" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_pieces3"
+                />
                 <label htmlFor="filter_pieces3">
                   250-499 <span>[{filterCount.filter_pieces3}]</span>
                 </label>
@@ -370,7 +461,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_pieces4 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_pieces4" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_pieces4"
+                />
                 <label htmlFor="filter_pieces4">
                   500-999 <span>[{filterCount.filter_pieces4}]</span>
                 </label>
@@ -378,7 +473,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_pieces5 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_pieces5" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_pieces5"
+                />
                 <label htmlFor="filter_pieces5">
                   1000-1999 <span>[{filterCount.filter_pieces5}]</span>
                 </label>
@@ -386,7 +485,11 @@ export default function SidebarFilterAccordian(prop: {
             ) : null}
             {filterCount.filter_pieces6 > 0 ? (
               <li>
-                <input type="checkbox" id="filter_pieces6" />
+                <input
+                  type="checkbox"
+                  onInput={handleChangeCheck}
+                  id="filter_pieces6"
+                />
                 <label htmlFor="filter_pieces6">
                   2000+ <span>[{filterCount.filter_pieces6}]</span>
                 </label>
