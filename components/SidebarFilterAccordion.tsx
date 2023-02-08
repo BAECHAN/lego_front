@@ -5,6 +5,7 @@ import useFilters from 'pages/api/query/useFilters'
 import { ProductFilterCountT, ProductFilterT, ThemeT } from 'types'
 import { selectedFilterSelector } from 'state/atoms'
 import { useRecoilState } from 'recoil'
+import useProductsList from 'pages/api/query/useProductsList'
 
 export default function SidebarFilterAccordian(prop: {
   label: string
@@ -152,6 +153,8 @@ export default function SidebarFilterAccordian(prop: {
   const [selectedFilter, setSelectedFilter] = useRecoilState(
     selectedFilterSelector
   )
+
+  const { data: productList, refetch } = useProductsList(prop.themes)
 
   const handleChangeCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedFilter({

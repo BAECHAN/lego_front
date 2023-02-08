@@ -2,6 +2,21 @@ import { atom, selector } from 'recoil'
 import { ProductFilterCountT } from 'types'
 import { v1 } from 'uuid'
 
+const sortAtom = atom<string>({
+  key: `sortAtom/${v1()}`,
+  default: '',
+})
+
+export const sortSelector = selector<string>({
+  key: `sortSelector/${v1()}`,
+  get: ({ get }) => {
+    return get(sortAtom)
+  },
+  set: ({ set }, newValue) => {
+    set(sortAtom, newValue)
+  },
+})
+
 const selectedFilterAtom = atom<ProductFilterCountT>({
   key: `selectedFilterAtom/${v1()}`,
   default: {
@@ -42,8 +57,7 @@ const selectedFilterAtom = atom<ProductFilterCountT>({
 export const selectedFilterSelector = selector<ProductFilterCountT>({
   key: `selectedFilterSelector/${v1()}`,
   get: ({ get }) => {
-    const count = get(selectedFilterAtom)
-    return count
+    return get(selectedFilterAtom)
   },
   set: ({ set }, newValue) => {
     set(selectedFilterAtom, newValue)

@@ -2,13 +2,13 @@ import Layout from '../../components/Layout'
 import SidebarFilter from '../../components/SidebarFilter'
 import Navbar from '../../components/Navbar'
 
-import { useInfiniteQuery } from '@tanstack/react-query'
-import axios from 'axios'
-
 import { ThemeT, ProductT } from 'types'
 import ProductCard from '@components/ProductCard'
 import React, { useState } from 'react'
 import useFilters from 'pages/api/query/useFilters'
+import { sortSelector } from 'state/atoms'
+import { useRecoilState } from 'recoil'
+import useProductsList from 'pages/api/query/useProductsList'
 
 export async function getServerSideProps(context: any) {
   return {
@@ -16,33 +16,16 @@ export async function getServerSideProps(context: any) {
   }
 }
 
-const take = 15
-
 export default function Theme(props: ThemeT) {
   const [page, setPage] = useState(1)
-  const [filter, setFilter] = useState({
-    sort: '',
-  })
+  const [sort, setSort] = useRecoilState(sortSelector)
 
   const {
     data: productList,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useInfiniteQuery(
-    ['getProductList'],
-    async ({ pageParam = 0 }) => {
-      const res = await axios.get(
-        `http://localhost:5000/api/getProductList?theme_id=${props.theme_id}&page=${pageParam}&take=${take}&sort=${filter.sort}`
-      )
-      return res.data
-    },
-    {
-      onSuccess: (data) => console.log(data),
-      onError: (e) => console.log(e),
-      getNextPageParam: (lastPage) => !lastPage.isLast ?? undefined,
-    }
-  )
+  } = useProductsList(props)
 
   const handleClickMoreProduct = () => {
     fetchNextPage({ pageParam: page })
@@ -57,7 +40,7 @@ export default function Theme(props: ThemeT) {
       <div>
         <div className="list-summary flex mx-7 my-3">
           <div className="list-count">
-            {filters?.productFilter.length}개 제품 표시
+            {productList?.pages[0].productListCount}개 제품 표시
           </div>
           <div className="flex-grow" />
           <div className="list-sort">
@@ -65,7 +48,7 @@ export default function Theme(props: ThemeT) {
               id="listSort"
               className="border rounded"
               onChange={(event) => {
-                setFilter({ sort: event.currentTarget.value })
+                setSort(event.currentTarget.value)
                 setPage(1)
               }}
             >
@@ -83,7 +66,7 @@ export default function Theme(props: ThemeT) {
             <ul className="flex flex-wrap">
               {productList?.pages.map((page, index) => (
                 <React.Fragment key={index}>
-                  {page.productList.map((product: ProductT, index: number) => {
+                  {page.productList?.map((product: ProductT, index: number) => {
                     return <ProductCard product={product} key={index} />
                   })}
                 </React.Fragment>
