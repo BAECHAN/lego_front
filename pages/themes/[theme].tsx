@@ -4,10 +4,9 @@ import Navbar from '../../components/Navbar'
 
 import { ThemeT, ProductT } from 'types'
 import ProductCard from '@components/ProductCard'
-import React, { useState } from 'react'
-import useFilters from 'pages/api/query/useFilters'
-import { sortSelector } from 'state/atoms'
-import { useRecoilState } from 'recoil'
+import React, { useEffect, useState } from 'react'
+import { selectedFilterSelector, sortSelector } from 'state/atoms'
+import { useRecoilState, useResetRecoilState } from 'recoil'
 import useProductsList from 'pages/api/query/useProductsList'
 
 export async function getServerSideProps(context: any) {
@@ -32,7 +31,11 @@ export default function Theme(props: ThemeT) {
     setPage(page + 1)
   }
 
-  const { data: filters } = useFilters(props)
+  const recoilReset = useResetRecoilState(selectedFilterSelector)
+
+  useEffect(() => {
+    recoilReset()
+  }, [])
 
   return (
     <div className="px-32">
@@ -62,13 +65,19 @@ export default function Theme(props: ThemeT) {
         </div>
         <div className="flex">
           <SidebarFilter themes={props} />
-          <div className="mr-5">
+          <div className="mr-5 w-full">
             <ul className="flex flex-wrap">
               {productList?.pages.map((page, index) => (
                 <React.Fragment key={index}>
-                  {page.productList?.map((product: ProductT, index: number) => {
-                    return <ProductCard product={product} key={index} />
-                  })}
+                  {page.productList.length > 0 ? (
+                    page.productList?.map(
+                      (product: ProductT, index: number) => {
+                        return <ProductCard product={product} key={index} />
+                      }
+                    )
+                  ) : (
+                    <div className="text-xl">해당하는 상품이 없습니다.</div>
+                  )}
                 </React.Fragment>
               ))}
             </ul>

@@ -18,15 +18,6 @@ export default function SidebarFilter(props: { themes: ThemeT }) {
             <SidebarFilterSelected />
           ) : null}
           <hr />
-          <div className="my-3 leading-3">
-            <ul>
-              <li>
-                <input type="checkbox" id="ea" />
-                <label htmlFor="ea">재고 있는 상품만 표시</label>
-              </li>
-            </ul>
-          </div>
-          <hr />
           <SidebarFilterAccordian label="가격(원)" themes={props.themes} />
           <hr />
           <SidebarFilterAccordian label="연령" themes={props.themes} />
