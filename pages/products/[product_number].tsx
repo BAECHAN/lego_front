@@ -41,6 +41,8 @@ export default function Product(props: any) {
     }
   }
 
+  console.log(product)
+
   return (
     <div className="px-32">
       <Navbar currentPage={props.theme_title} />
@@ -121,15 +123,40 @@ export default function Product(props: any) {
           </div>
         </div>
         <div className="prod-buy w-4/12 p-4">
-          <div className="my-10">
+          <div className="item-sale">
+            {product?.product_info?.discounting == 1 &&
+            product?.product_info?.rate_discount > 0 ? (
+              <span className="bg-red-600 text-white p-1">
+                - {product?.product_info?.rate_discount}%
+              </span>
+            ) : (
+              <span className="invisible">invisible</span>
+            )}
+          </div>
+          <div className="mt-5 mb-10">
             <p className="text-3xl break-normal">
               {product?.product_info?.title}
             </p>
           </div>
           <div className="my-5">
-            <b className="text-2xl">{`${product?.product_info?.price?.toLocaleString(
-              'ko-KR'
-            )} 원`}</b>
+            <div>
+              {product?.product_info?.discounting == 1 &&
+              product?.product_info?.rate_discount > 0 ? (
+                <span>
+                  <b className="line-through text-xl">{`${product?.product_info?.price.toLocaleString(
+                    'ko-KR'
+                  )} 원`}</b>
+                  <b className="text-red-600 text-2xl ml-3">{`${(
+                    product?.product_info?.price *
+                    (1 - Number(product?.product_info?.rate_discount) / 100)
+                  ).toLocaleString('ko-KR')} 원`}</b>
+                </span>
+              ) : (
+                <b className="text-2xl">{`${product?.product_info?.price?.toLocaleString(
+                  'ko-KR'
+                )} 원`}</b>
+              )}
+            </div>
             {product?.product_info?.sale_enabled === 1 ? (
               <p className="text-green-600">구매 가능</p>
             ) : product?.product_info?.sale_enabled === 9 ? (

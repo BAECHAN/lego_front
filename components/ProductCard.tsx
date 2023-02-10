@@ -26,12 +26,36 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
             </a>
           </Link>
         </div>
+        <div className="item-sale mb-3">
+          {props.product.discounting == 1 && props.product.rate_discount > 0 ? (
+            <span className="bg-red-600 text-white p-1">
+              - {props.product.rate_discount}%
+            </span>
+          ) : (
+            <span className="invisible">invisible</span>
+          )}
+        </div>
         <div className="item-content">
           <Link href={`/products/${props.product.product_number}`}>
             <a className="prod-title">{props.product.title}</a>
           </Link>
           <div>
-            <b>{`${props.product.price.toLocaleString('ko-KR')} 원`}</b>
+            {props.product.discounting == 1 &&
+            props.product.rate_discount > 0 ? (
+              <span>
+                <b className="line-through">{`${props.product.price.toLocaleString(
+                  'ko-KR'
+                )} 원`}</b>
+                <b className="text-red-600 text-lg ml-3">{`${(
+                  props.product.price *
+                  (1 - Number(props.product.rate_discount) / 100)
+                ).toLocaleString('ko-KR')} 원`}</b>
+              </span>
+            ) : (
+              <b className="text-lg">{`${props.product.price.toLocaleString(
+                'ko-KR'
+              )} 원`}</b>
+            )}
           </div>
           <button type="button" className="add-to-cart">
             장바구니 담기
