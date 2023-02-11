@@ -57,9 +57,20 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
               )} 원`}</b>
             )}
           </div>
-          <button type="button" className="add-to-cart">
-            장바구니 담기
-          </button>
+
+          {props.product.sale_enabled == 1 ? (
+            <button type="button" className="add-to-cart">
+              장바구니 담기
+            </button>
+          ) : props.product.sale_enabled == 9 ? (
+            <div className="text-red-600 text-lg text-center pt-7 font-bold">
+              일시품절
+            </div>
+          ) : props.product.sale_enabled == 8 ? (
+            <div className="text-blue-500 text-lg text-center pt-7 font-bold">
+              출시예정
+            </div>
+          ) : null}
         </div>
       </div>
       <style jsx>{`
@@ -93,8 +104,13 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
           opacity: 0.7;
         }
 
-        a.prod-title:hover {
-          text-decoration: underline;
+        a.prod-title {
+          display: inline-block;
+          width: 100%;
+          height: 40px;
+          :hover {
+            text-decoration: underline;
+          }
         }
       `}</style>
     </li>

@@ -165,42 +165,52 @@ export default function Product(props: any) {
               <p className="text-orange-600">출시 예정</p>
             ) : null}
           </div>
-          <div className="flex mb-5">
-            <div className="prod-buy-quantity">
-              <button
-                onClick={(event) => handleClickQuantity(event, 'minus')}
-                disabled={minusDisabled}
-              >
-                <FontAwesomeIcon
-                  icon={faMinus}
-                  className={`w-5 ${
-                    minusDisabled ? 'opacity-20' : 'opacity-100'
-                  }`}
-                />
-              </button>
-              <div>{quantity}</div>
-              <button
-                onClick={(event) => handleClickQuantity(event, 'plus')}
-                disabled={plusDisabled}
-              >
-                <FontAwesomeIcon
-                  icon={faPlus}
-                  className={`w-5 ${
-                    plusDisabled ? 'opacity-20' : 'opacity-100'
-                  }`}
-                />
-              </button>
+          {product?.product_info?.sale_enabled === 1 ? (
+            <div className="flex mb-5">
+              <div className="prod-buy-quantity">
+                <button
+                  onClick={(event) => handleClickQuantity(event, 'minus')}
+                  disabled={minusDisabled}
+                >
+                  <FontAwesomeIcon
+                    icon={faMinus}
+                    className={`w-5 ${
+                      minusDisabled ? 'opacity-20' : 'opacity-100'
+                    }`}
+                  />
+                </button>
+                <div>{quantity}</div>
+                <button
+                  onClick={(event) => handleClickQuantity(event, 'plus')}
+                  disabled={plusDisabled}
+                >
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    className={`w-5 ${
+                      plusDisabled ? 'opacity-20' : 'opacity-100'
+                    }`}
+                  />
+                </button>
+              </div>
+              <div className="grow"></div>
+              <div className="p-3">
+                {`구매 가능 수량 ${product?.product_info?.ea} 개`}
+              </div>
             </div>
-            <div className="grow"></div>
-            <div className="p-3">
-              {`구매 가능 수량 ${product?.product_info?.ea} 개`}
-            </div>
-          </div>
+          ) : null}
+
           <div className="flex">
-            <button type="button" className="add-to-cart">
-              장바구니 담기
-            </button>
-            <div className="m-auto">
+            {product?.product_info?.sale_enabled === 1 ? (
+              <button type="button" className="add-to-cart">
+                장바구니 담기
+              </button>
+            ) : null}
+
+            <div
+              className={
+                product?.product_info?.sale_enabled === 1 ? 'm-auto' : ''
+              }
+            >
               <ButtonWish text={false} />
             </div>
           </div>

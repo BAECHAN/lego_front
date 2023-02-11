@@ -14,7 +14,7 @@ export default function ButtonWish(props: { text: boolean }) {
     <button
       type="button"
       className="flex justify-start cursor-pointer"
-      onClick={() => handleClickLike()}
+      onClick={handleClickLike}
     >
       {wish === false ? (
         <FontAwesomeIcon icon={faHeart} className="ml-5 w-4 text-blue-700" />

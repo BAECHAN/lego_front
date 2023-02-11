@@ -14,7 +14,7 @@ export default function SidebarFilterAccordian(prop: {
   const [isOpen, setIsOpen] = useState(true)
 
   useEffect(() => {
-    const elmntLi = document.querySelectorAll('li')
+    const elmntLi = document.querySelectorAll('.filter-option li')
 
     elmntLi.forEach((element) => {
       element.addEventListener('click', function (event) {
