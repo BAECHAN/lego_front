@@ -1,14 +1,19 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import FontAwesomeAngleRight from './FontAwesomeAngleRight'
+import { ProductT, ThemeT } from 'types'
+import { useRecoilValue } from 'recoil'
+import { themeSelector } from 'state/atoms'
 
-type Props = {
-  currentPage?: string | string[] | undefined
-}
-
-export default function Navbar(prop: Props) {
+export default function Navbar(prop: { productInfo?: ProductT }) {
   const router = useRouter()
-  const [home, series, theme] = ['홈', '시리즈별', prop.currentPage]
+
+  const [home, series, theme, productInfo] = [
+    '홈',
+    '시리즈별',
+    useRecoilValue(themeSelector),
+    prop?.productInfo,
+  ]
 
   return (
     <div className="p-3">
@@ -25,54 +30,38 @@ export default function Navbar(prop: Props) {
           <FontAwesomeAngleRight />
           <span>{series}</span>
         </>
-      ) : (
+      ) : null}
+
+      {router.pathname === '/themes/[theme_title_en]' ? (
         <>
           <FontAwesomeAngleRight />
-          <Link href="/themes">
+          <Link href={`/themes`}>
             <a>{series}</a>
           </Link>
-        </>
-      )}
 
-      {/* {router.pathname === '/products' ? (
-        <>
           <FontAwesomeAngleRight />
-          <span>{series}</span>
+          <span>{theme?.theme_title}</span>
         </>
-      ) : (
-        <>
-          <FontAwesomeAngleRight />
-          <Link href="/products">
-            <a>{series}</a>
-          </Link>
-        </>
-      )} */}
-
-      {router.pathname === '/themes/[theme]' ? (
-        <>
-          <FontAwesomeAngleRight />
-          <span>{theme}</span>
-        </>
-      ) : (
-        <>
-          <Link href={`/themes/${theme}`}>
-            <a>{theme}</a>
-          </Link>
-        </>
-      )}
+      ) : null}
 
       {router.pathname === '/products/[product_number]' ? (
         <>
           <FontAwesomeAngleRight />
-          <span>{theme}</span>
-        </>
-      ) : (
-        <>
-          <Link href={`/themes/${theme}`}>
-            <a>{theme}</a>
+          <Link href={`/themes`}>
+            <a>{series}</a>
           </Link>
+
+          <FontAwesomeAngleRight />
+          <Link
+            href={`/themes/${theme.theme_title_en}?theme_title=${theme?.theme_title}&theme_id=${theme?.theme_id}`}
+          >
+            <a>{theme?.theme_title}</a>
+          </Link>
+
+          <FontAwesomeAngleRight />
+          <span>{productInfo?.title}</span>
         </>
-      )}
+      ) : null}
 
       <style jsx>{`
         a {

@@ -5,7 +5,11 @@ import Navbar from '../../components/Navbar'
 import { ThemeT, ProductT } from 'types'
 import ProductCard from '@components/ProductCard'
 import React, { useEffect, useState } from 'react'
-import { selectedFilterSelector, sortSelector } from 'state/atoms'
+import {
+  selectedFilterSelector,
+  sortSelector,
+  themeSelector,
+} from 'state/atoms'
 import { useRecoilState, useResetRecoilState } from 'recoil'
 import useProductsList from 'pages/api/query/useProductsList'
 
@@ -18,6 +22,7 @@ export async function getServerSideProps(context: any) {
 export default function Theme(props: ThemeT) {
   const [page, setPage] = useState(1)
   const [sort, setSort] = useRecoilState(sortSelector)
+  const [theme, setTheme] = useRecoilState(themeSelector)
 
   const {
     data: productList,
@@ -35,11 +40,12 @@ export default function Theme(props: ThemeT) {
 
   useEffect(() => {
     recoilReset()
+    setTheme(props)
   }, [])
 
   return (
     <div className="px-32">
-      <Navbar currentPage={props.theme_title} />
+      <Navbar />
       <div>
         <div className="list-summary flex mx-7 my-3">
           <div className="list-count">

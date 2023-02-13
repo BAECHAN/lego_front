@@ -36,7 +36,7 @@ export default function Themes() {
                   </a>
                 </Link>
                 <Link
-                  href={`/themes/${theme.theme_title_en}?title_ko=${theme.theme_title}&theme_id=${theme.theme_id}`}
+                  href={`/themes/${theme.theme_title_en}?theme_title=${theme.theme_title}&theme_id=${theme.theme_id}`}
                 >
                   <a className="block text-center my-2 font-bold hover:text-blue-600">
                     {theme.theme_title}

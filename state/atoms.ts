@@ -1,6 +1,27 @@
 import { atom, selector } from 'recoil'
-import { ProductFilterCountT } from 'types'
+import { ProductFilterCountT, ThemeT } from 'types'
 import { v1 } from 'uuid'
+
+const themeAtom = atom<ThemeT>({
+  key: `themeAtom/${v1()}`,
+  default: {
+    theme_id: 0,
+    theme_title: '',
+    theme_title_en: '',
+    thumbnail_link: '',
+    theme_dscrp: '',
+  },
+})
+
+export const themeSelector = selector<ThemeT>({
+  key: `themeSelector/${v1()}`,
+  get: ({ get }) => {
+    return get(themeAtom)
+  },
+  set: ({ set }, newValue) => {
+    set(themeAtom, newValue)
+  },
+})
 
 const sortAtom = atom<string>({
   key: `sortAtom/${v1()}`,

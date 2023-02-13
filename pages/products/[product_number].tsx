@@ -2,11 +2,14 @@ import Layout from '../../components/Layout'
 import Image from 'next/image'
 import Carousel from 'nuka-carousel'
 import Navbar from '@components/Navbar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import ButtonWish from '@components/ButtonWish'
 import useProducts from 'pages/api/query/useProducts'
+import axios from 'axios'
+import { useRecoilState } from 'recoil'
+import { themeSelector } from 'state/atoms'
 
 export async function getServerSideProps(context: any) {
   return {
@@ -22,6 +25,7 @@ export default function Product(props: any) {
   let [detailOpen, setDetailOpen] = useState(true)
 
   const { data: product } = useProducts(props)
+  const [theme, setTheme] = useRecoilState(themeSelector)
 
   const handleClickQuantity = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -41,11 +45,20 @@ export default function Product(props: any) {
     }
   }
 
-  console.log(product)
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:5000/api/getThemeByProduct?product_number=${Number(
+          props.product_number
+        )}`
+      )
+      .then((response) => setTheme(response.data.result))
+      .catch((error) => console.log(error))
+  }, [])
 
   return (
     <div className="px-32">
-      <Navbar currentPage={props.theme_title} />
+      <Navbar productInfo={product?.product_info} />
       <div className="prod-main flex flex-wrap">
         <div className="prod-img w-8/12 p-4">
           <Carousel
