@@ -72,10 +72,18 @@ export default function Login() {
     })
   }
 
+  const loginGoogle = async (e: any) => {
+    // 원래 실행되는 이벤트 취소
+    e.preventDefault()
+    await signIn('google', {
+      callbackUrl: '/',
+    })
+  }
+
   return (
     <div>
-      <div className="flex justify-center items-center w-full bg-gray-200 h-[38rem]">
-        <div className="h-full relative top-[20%]">
+      <div className="flex justify-center items-center w-full bg-gray-200 h-[44rem]">
+        <div className="h-full relative top-[3%]">
           <form onSubmit={login} className="login-box">
             <Link href="/">
               <a>
@@ -145,14 +153,24 @@ export default function Login() {
           <div className="sns-login-title">
             <span>SNS 계정으로 로그인</span>
           </div>
-          <div className="flex justify-center login-btn-kakao">
+          <div className="flex justify-center login-btn-oauth">
             <Image
               src="/kakao_login_medium_wide.png"
-              width="350px"
+              width="328px"
               height="50px"
-              alt="카카오톡 로그인"
+              alt="카카오계정으로 로그인"
               quality={100}
               onClick={loginKakao}
+            ></Image>
+          </div>
+          <div className="flex justify-center login-btn-oauth">
+            <Image
+              src="/btn_google_signin_light_normal_web.png"
+              width="335px"
+              height="50px"
+              alt="구글계정으로 로그인"
+              quality={100}
+              onClick={loginGoogle}
             ></Image>
           </div>
         </div>
@@ -183,12 +201,22 @@ export default function Login() {
           }
         }
 
-        .login-btn-kakao {
+        .login-btn-oauth {
+          margin-bottom: 20px;
           :hover {
             cursor: pointer;
             position: relative;
             top: 3px;
           }
+        }
+
+        .login-btn-google {
+          width: 328px;
+
+          background-color: #ffffff;
+          position: relative;
+          left: 36px;
+          border-radius: 3px;
         }
 
         .login-box {

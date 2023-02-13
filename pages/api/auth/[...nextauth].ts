@@ -1,7 +1,9 @@
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import axios from 'axios'
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import KakaoProvider from 'next-auth/providers/kakao'
+import GoogleProvider from 'next-auth/providers/google'
 import { redirect } from 'next/dist/server/api-utils'
 
 export default NextAuth({
@@ -57,6 +59,10 @@ export default NextAuth({
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID!,
       clientSecret: process.env.KAKAO_CLIENT_SECRET!,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   session: {
