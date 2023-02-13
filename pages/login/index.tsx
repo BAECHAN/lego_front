@@ -7,6 +7,7 @@ import crypto from 'crypto-js'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
+import { display } from '@mui/system'
 
 export default function Login() {
   const [isShowPw, setIsShowPw] = useState(false)
@@ -63,6 +64,14 @@ export default function Login() {
     }
   }
 
+  const loginKakao = async (e: any) => {
+    // 원래 실행되는 이벤트 취소
+    e.preventDefault()
+    await signIn('kakao', {
+      callbackUrl: '/',
+    })
+  }
+
   return (
     <div>
       <div className="flex justify-center items-center w-full bg-gray-200 h-[38rem]">
@@ -115,7 +124,9 @@ export default function Login() {
               )}
             </label>
 
-            <button type="submit">로그인</button>
+            <button type="submit" className="login-btn-credential">
+              로그인
+            </button>
 
             <div className="flex text-xs w-72 justify-between">
               <Link href="/login/create_account">
@@ -130,9 +141,56 @@ export default function Login() {
               </Link>
             </div>
           </form>
+
+          <div className="sns-login-title">
+            <span>SNS 계정으로 로그인</span>
+          </div>
+          <div className="flex justify-center login-btn-kakao">
+            <Image
+              src="/kakao_login_medium_wide.png"
+              width="350px"
+              height="50px"
+              alt="카카오톡 로그인"
+              quality={100}
+              onClick={loginKakao}
+            ></Image>
+          </div>
         </div>
       </div>
       <style jsx>{`
+        .sns-login-title {
+          text-align: center;
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          border: 0;
+          font: inherit;
+          vertical-align: baseline;
+          margin-bottom: 24px;
+          color: #585252;
+
+          span:after,
+          span:before {
+            content: '';
+            display: inline-block;
+            width: 32px;
+            height: 1px;
+            background-color: #585252;
+            position: relative;
+            top: -4px;
+            margin: 0px 5px;
+            transform: translateY(-50%);
+          }
+        }
+
+        .login-btn-kakao {
+          :hover {
+            cursor: pointer;
+            position: relative;
+            top: 3px;
+          }
+        }
+
         .login-box {
           min-width: 400px;
           vertical-align: middle;
@@ -152,7 +210,7 @@ export default function Login() {
             display: inline-block;
             padding: 5px;
           }
-          button {
+          button.login-btn-credential {
             margin-top: 17px;
             box-sizing: border-box;
             outline: 0;
@@ -176,10 +234,11 @@ export default function Login() {
             color: black;
             text-decoration: none;
             background-color: rgb(255, 207, 0);
-          }
-          button:hover {
-            background-color: black;
-            color: white;
+
+            :hover {
+              background-color: black;
+              color: white;
+            }
           }
         }
       `}</style>

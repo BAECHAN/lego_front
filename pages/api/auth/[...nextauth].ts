@@ -1,6 +1,8 @@
 import axios from 'axios'
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import KakaoProvider from 'next-auth/providers/kakao'
+import { redirect } from 'next/dist/server/api-utils'
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
@@ -52,9 +54,14 @@ export default NextAuth({
         }
       },
     }),
+    KakaoProvider({
+      clientId: process.env.KAKAO_CLIENT_ID!,
+      clientSecret: process.env.KAKAO_CLIENT_SECRET!,
+    }),
   ],
   session: {
-    maxAge: 30 * 60, // 30 min
+    maxAge: 30 * 60, // 30 min,
+    strategy: 'jwt',
   },
   pages: {
     signIn: '/login',

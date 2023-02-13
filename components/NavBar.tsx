@@ -34,7 +34,7 @@ export default function Navbar(prop: Props) {
         </>
       )}
 
-      {router.pathname === '/products' ? (
+      {/* {router.pathname === '/products' ? (
         <>
           <FontAwesomeAngleRight />
           <span>{series}</span>
@@ -46,7 +46,7 @@ export default function Navbar(prop: Props) {
             <a>{series}</a>
           </Link>
         </>
-      )}
+      )} */}
 
       {router.pathname === '/themes/[theme]' ? (
         <>
