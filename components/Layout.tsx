@@ -6,11 +6,15 @@ import Header from './Header'
 import Footer from './Footer'
 import Contents from './Contents'
 import ButtonScrollTop from './ButtonScrollTop'
+import Navbar from './Navbar'
+import SidebarMyPage from './SidebarMyPage'
 
 export default function Layout({
   children,
 }: React.PropsWithChildren): ReactElement {
   const router = useRouter()
+
+  console.log(router.pathname)
 
   return (
     <div className="flex flex-col h-auto relative">
@@ -19,7 +23,17 @@ export default function Layout({
       ></Helmet>
       <Banner />
       <Header />
-      <Contents propChildren={children}></Contents>
+      {router.pathname.indexOf('mypage') > -1 ? (
+        <div className="px-16">
+          <Navbar />
+          <div className="py-4 flex">
+            <SidebarMyPage />
+            <Contents propChildren={children}></Contents>
+          </div>
+        </div>
+      ) : (
+        <Contents propChildren={children}></Contents>
+      )}
       <Footer />
       <ButtonScrollTop />
     </div>
