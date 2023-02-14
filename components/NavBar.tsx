@@ -17,8 +17,12 @@ export default function Navbar(prop: { productInfo?: ProductT }) {
   ]
 
   const mypageObj: ObjT_Str = {
-    viewed_products: '최근 본 상품',
     orders: '주문 내역 조회',
+    cart: '장바구니',
+    user_info: '회원 정보',
+    coupon: '쿠폰 조회',
+    viewed_products: '최근 본 상품',
+    wish_list: '좋아요',
   }
 
   return (

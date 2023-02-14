@@ -11,17 +11,17 @@ export default function SidebarMyPage() {
           </Link>
         </li>
         <li>
-          <Link href="/">
+          <Link href="/mypage/cart">
             <a>장바구니</a>
           </Link>
         </li>
         <li>
-          <Link href="/">
+          <Link href="/mypage/user_info">
             <a>회원 정보</a>
           </Link>
         </li>
         <li>
-          <Link href="/">
+          <Link href="/mypage/coupon">
             <a>쿠폰 조회</a>
           </Link>
         </li>
@@ -31,7 +31,7 @@ export default function SidebarMyPage() {
           </Link>
         </li>
         <li>
-          <Link href="/">
+          <Link href="/mypage/wish_list">
             <a>좋아요</a>
           </Link>
         </li>

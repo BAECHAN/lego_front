@@ -1,10 +1,8 @@
-import { GoogleOAuthProvider } from '@react-oauth/google'
 import axios from 'axios'
 import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import KakaoProvider from 'next-auth/providers/kakao'
 import GoogleProvider from 'next-auth/providers/google'
-import { redirect } from 'next/dist/server/api-utils'
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
@@ -66,11 +64,15 @@ export default NextAuth({
     }),
   ],
   session: {
-    maxAge: 30 * 60, // 30 min,
-    strategy: 'jwt',
+    maxAge: 24 * 60 * 60, // 1 days,
   },
   pages: {
     signIn: '/login',
     error: '/signin',
+  },
+  callbacks: {
+    async jwt({ token }) {
+      return token
+    },
   },
 })
