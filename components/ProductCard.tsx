@@ -2,10 +2,17 @@ import { ProductT } from 'types'
 import Image from 'next/image'
 import Link from 'next/link'
 import ButtonWish from './ButtonWish'
+import { useRouter } from 'next/router'
 
 export default function ProductCard(props: { product: ProductT; key: number }) {
+  const router = useRouter()
+
   return (
-    <li className="item-box">
+    <li
+      className={
+        router.pathname.indexOf('mypage') > -1 ? `item-box-mypage` : `item-box`
+      }
+    >
       <div id={String(props.product.product_id)}>
         <ButtonWish text={true} />
         <div className="item-img mb-12 scale-75 hover:scale-90 transition-all ease-in-out">
@@ -79,6 +86,13 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
           border: 1px solid #ddd;
           padding: 15px;
         }
+
+        .item-box-mypage {
+          width: 20%;
+          border: 1px solid #ddd;
+          padding: 15px;
+        }
+
         .item-content > * {
           margin: 13px 0px;
         }

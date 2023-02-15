@@ -54,6 +54,31 @@ export default function Product(props: any) {
       )
       .then((response) => setTheme(response.data.result))
       .catch((error) => console.log(error))
+
+    /** 최근 본 상품에 추가하기 */
+    const viewedProductsJSON: string | null =
+      localStorage.getItem('viewed_products')
+
+    let viewedProductsArr: string[] = []
+
+    if (viewedProductsJSON) {
+      viewedProductsArr = JSON.parse(viewedProductsJSON)
+
+      viewedProductsArr.unshift(props.product_number)
+
+      const viewedProductsSet = new Set<string>(viewedProductsArr)
+
+      const viewedProductsSetJSON = JSON.stringify(
+        Array.from(viewedProductsSet)
+      )
+
+      localStorage.setItem('viewed_products', viewedProductsSetJSON)
+    } else {
+      localStorage.setItem(
+        'viewed_products',
+        JSON.stringify([props.product_number])
+      )
+    }
   }, [])
 
   return (

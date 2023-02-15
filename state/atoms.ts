@@ -1,5 +1,5 @@
 import { atom, selector } from 'recoil'
-import { ProductFilterCountT, ThemeT } from 'types'
+import { ObjT_Str, ProductFilterCountT, ThemeT } from 'types'
 import { v1 } from 'uuid'
 
 const themeAtom = atom<ThemeT>({
@@ -20,6 +20,25 @@ export const themeSelector = selector<ThemeT>({
   },
   set: ({ set }, newValue) => {
     set(themeAtom, newValue)
+  },
+})
+
+const mypageListAtom = atom<ObjT_Str>({
+  key: `mypageListAtom/${v1()}`,
+  default: {
+    orders: '주문 내역 조회',
+    cart: '장바구니',
+    user_info: '회원 정보',
+    coupon: '쿠폰 조회',
+    viewed_products: '최근 본 상품',
+    wish_list: '좋아요',
+  },
+})
+
+export const mypageListSelector = selector<ObjT_Str>({
+  key: `mypageListSelector/${v1()}`,
+  get: ({ get }) => {
+    return get(mypageListAtom)
   },
 })
 

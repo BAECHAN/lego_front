@@ -39,7 +39,6 @@ export default function Login() {
     const secretKey = process.env.NEXT_PUBLIC_CRYPT_KEY
     if (secretKey !== undefined) {
       password = crypto.HmacSHA512(password, secretKey).toString()
-      console.log(password)
     } else {
       alert('secretKey is undefined')
       return false

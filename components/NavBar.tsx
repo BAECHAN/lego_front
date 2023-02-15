@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import FontAwesomeAngleRight from './FontAwesomeAngleRight'
-import { ObjT_Str, ProductT, ThemeT } from 'types'
+import { ProductT } from 'types'
 import { useRecoilValue } from 'recoil'
-import { themeSelector } from 'state/atoms'
+import { mypageListSelector, themeSelector } from 'state/atoms'
 
 export default function Navbar(prop: { productInfo?: ProductT }) {
   const router = useRouter()
@@ -16,14 +16,7 @@ export default function Navbar(prop: { productInfo?: ProductT }) {
     '마이페이지',
   ]
 
-  const mypageObj: ObjT_Str = {
-    orders: '주문 내역 조회',
-    cart: '장바구니',
-    user_info: '회원 정보',
-    coupon: '쿠폰 조회',
-    viewed_products: '최근 본 상품',
-    wish_list: '좋아요',
-  }
+  const mypageListObj = useRecoilValue(mypageListSelector)
 
   return (
     <div className="p-3">
@@ -42,7 +35,7 @@ export default function Navbar(prop: { productInfo?: ProductT }) {
         </>
       ) : null}
 
-      {Object.keys(mypageObj).map((key) => {
+      {Object.keys(mypageListObj).map((key) => {
         return router.pathname.indexOf(`/mypage/${key}`) > -1 ? (
           <p key={key} className="inline">
             <FontAwesomeAngleRight />
@@ -51,7 +44,7 @@ export default function Navbar(prop: { productInfo?: ProductT }) {
             </Link>
 
             <FontAwesomeAngleRight />
-            <span>{mypageObj[key]}</span>
+            <span>{mypageListObj[key]}</span>
           </p>
         ) : null
       })}

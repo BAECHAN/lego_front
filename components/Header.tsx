@@ -4,7 +4,6 @@ import { useSession, signIn, signOut } from 'next-auth/react'
 
 export default function Header() {
   const { data: session } = useSession()
-  console.log(session)
 
   return (
     <header className="flex items-center p-3 text-xl bg-yellow-400">
