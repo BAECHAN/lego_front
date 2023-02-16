@@ -1,13 +1,22 @@
 import Layout from '@components/Layout'
 import ProductCard from '@components/ProductCard'
 import useProductsViewedList from 'pages/api/query/useProductsViewedList'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { ProductT } from 'types'
 
 export default function ViewedProducts() {
-  const { data: data } = useProductsViewedList()
+  let viewedProductsArr = useRef([])
 
-  console.log(data)
+  if (typeof window !== 'undefined') {
+    const viewedProductsJSON: string | null =
+      localStorage.getItem('viewed_products')
+
+    viewedProductsJSON
+      ? (viewedProductsArr.current = JSON.parse(viewedProductsJSON))
+      : null
+  }
+
+  const { data: data } = useProductsViewedList(viewedProductsArr.current)
 
   return (
     <div>

@@ -59,12 +59,13 @@ export default function Product(props: any) {
     const viewedProductsJSON: string | null =
       localStorage.getItem('viewed_products')
 
-    let viewedProductsArr: string[] = []
+    let viewedProductsArr: string[] = new Array(3)
 
     if (viewedProductsJSON) {
       viewedProductsArr = JSON.parse(viewedProductsJSON)
 
       viewedProductsArr.unshift(props.product_number)
+      viewedProductsArr.length = 10
 
       const viewedProductsSet = new Set<string>(viewedProductsArr)
 
