@@ -88,6 +88,7 @@ export default function Product(props: any) {
   useEffect(() =>
     router.beforePopState((state) => {
       sessionStorage.setItem('isHistoryBack', 'true')
+      //state.options.scroll = true
       return true
     })
   )

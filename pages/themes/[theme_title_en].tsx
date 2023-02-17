@@ -46,7 +46,7 @@ export default function Theme(props: ThemeT) {
       }, 100)
 
       sessionStorage.removeItem('isHistoryBack')
-      console.log(sort)
+
       return () => clearTimeout(scrollRestoration)
     } else {
       recoilReset()
