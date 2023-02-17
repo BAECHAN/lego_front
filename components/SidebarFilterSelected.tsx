@@ -21,7 +21,7 @@ export default function SidebarFilterSelected() {
       })
   }
 
-  const handleClickTag = (filter: string) => {
+  const handleClickDeleteTag = (filter: string) => {
     setSelectedFilter({
       ...selectedFilter,
       [filter]: 0,
@@ -53,7 +53,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_price1')
+              handleClickDeleteTag('filter_price1')
             }}
           >
             0원 - 19,999원
@@ -74,7 +74,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_price2')
+              handleClickDeleteTag('filter_price2')
             }}
           >
             20,000원 - 49,999원
@@ -95,7 +95,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_price3')
+              handleClickDeleteTag('filter_price3')
             }}
           >
             50,000원 - 99,999원
@@ -116,7 +116,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_price4')
+              handleClickDeleteTag('filter_price4')
             }}
           >
             100,000원 - 199,999원
@@ -137,7 +137,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_price5')
+              handleClickDeleteTag('filter_price5')
             }}
           >
             200,000원+
@@ -159,7 +159,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_ages7')
+              handleClickDeleteTag('filter_ages7')
             }}
           >
             연령 2+
@@ -180,7 +180,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_ages6')
+              handleClickDeleteTag('filter_ages6')
             }}
           >
             연령 4+
@@ -201,7 +201,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_ages5')
+              handleClickDeleteTag('filter_ages5')
             }}
           >
             연령 6+
@@ -222,7 +222,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_ages4')
+              handleClickDeleteTag('filter_ages4')
             }}
           >
             연령 9+
@@ -243,7 +243,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_ages3')
+              handleClickDeleteTag('filter_ages3')
             }}
           >
             연령 14+
@@ -264,7 +264,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_ages2')
+              handleClickDeleteTag('filter_ages2')
             }}
           >
             연령 16+
@@ -285,7 +285,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_ages1')
+              handleClickDeleteTag('filter_ages1')
             }}
           >
             연령 18+
@@ -307,7 +307,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_sale_enabled1')
+              handleClickDeleteTag('filter_sale_enabled1')
             }}
           >
             단종
@@ -328,7 +328,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_sale_enabled2')
+              handleClickDeleteTag('filter_sale_enabled2')
             }}
           >
             구매가능
@@ -349,7 +349,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_sale_enabled3')
+              handleClickDeleteTag('filter_sale_enabled3')
             }}
           >
             출시예정
@@ -370,7 +370,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_sale_enabled4')
+              handleClickDeleteTag('filter_sale_enabled4')
             }}
           >
             일시품절
@@ -392,7 +392,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_discounting1')
+              handleClickDeleteTag('filter_discounting1')
             }}
           >
             정가
@@ -413,7 +413,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_discounting2')
+              handleClickDeleteTag('filter_discounting2')
             }}
           >
             할인중
@@ -435,7 +435,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_pieces1')
+              handleClickDeleteTag('filter_pieces1')
             }}
           >
             부품수 1-99
@@ -456,7 +456,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_pieces2')
+              handleClickDeleteTag('filter_pieces2')
             }}
           >
             부품수 100-249
@@ -477,7 +477,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_pieces3')
+              handleClickDeleteTag('filter_pieces3')
             }}
           >
             부품수 250-499
@@ -498,7 +498,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_pieces4')
+              handleClickDeleteTag('filter_pieces4')
             }}
           >
             부품수 500-999
@@ -519,7 +519,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_pieces5')
+              handleClickDeleteTag('filter_pieces5')
             }}
           >
             부품수 1000-1999
@@ -540,7 +540,7 @@ export default function SidebarFilterSelected() {
             type="button"
             className="btn-selected-filter"
             onClick={() => {
-              handleClickTag('filter_pieces6')
+              handleClickDeleteTag('filter_pieces6')
             }}
           >
             부품수 2000+

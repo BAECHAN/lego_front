@@ -10,6 +10,7 @@ import useProducts from 'pages/api/query/useProducts'
 import axios from 'axios'
 import { useRecoilState } from 'recoil'
 import { themeSelector } from 'state/atoms'
+import { useRouter } from 'next/router'
 
 export async function getServerSideProps(context: any) {
   return {
@@ -26,6 +27,8 @@ export default function Product(props: any) {
 
   const { data: product } = useProducts(props)
   const [theme, setTheme] = useRecoilState(themeSelector)
+
+  const router = useRouter()
 
   const handleClickQuantity = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -80,7 +83,14 @@ export default function Product(props: any) {
         JSON.stringify([props.product_number])
       )
     }
-  }, [])
+  }, [props.product_number, setTheme])
+
+  useEffect(() =>
+    router.beforePopState((state) => {
+      sessionStorage.setItem('isHistoryBack', 'true')
+      return true
+    })
+  )
 
   return (
     <div className="px-32">

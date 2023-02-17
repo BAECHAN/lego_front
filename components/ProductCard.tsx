@@ -7,6 +7,11 @@ import { useRouter } from 'next/router'
 export default function ProductCard(props: { product: ProductT; key: number }) {
   const router = useRouter()
 
+  const handleClick = (path: string) => {
+    sessionStorage.setItem('scrollY', `${window.scrollY}`)
+    router.push(path)
+  }
+
   return (
     <li
       className={
@@ -16,22 +21,24 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
       <div id={String(props.product.product_id)}>
         <ButtonWish text={true} />
         <div className="item-img mb-12 scale-75 hover:scale-90 transition-all ease-in-out">
-          <Link href={`/products/${props.product.product_number}`}>
-            <a>
-              <Image
-                src={props.product.image}
-                width="40vw"
-                height="20vw"
-                alt={props.product.title}
-                priority
-                placeholder="blur"
-                blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc
+          <a
+            onClick={() =>
+              handleClick(`/products/${props.product.product_number}`)
+            }
+          >
+            <Image
+              src={props.product.image}
+              width="40vw"
+              height="20vw"
+              alt={props.product.title}
+              priority
+              placeholder="blur"
+              blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc
               SJAAAADUlEQVR42mN8sFeoHgAGZAIwFY0DHwAAAABJRU5ErkJggg==`}
-                quality={100}
-                layout="responsive"
-              />
-            </a>
-          </Link>
+              quality={100}
+              layout="responsive"
+            />
+          </a>
         </div>
         <div className="item-sale mb-3">
           {props.product.discounting == 1 && props.product.rate_discount > 0 ? (

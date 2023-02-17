@@ -39,9 +39,20 @@ export default function Theme(props: ThemeT) {
   const recoilReset = useResetRecoilState(selectedFilterSelector)
 
   useEffect(() => {
-    recoilReset()
-    setTheme(props)
-  }, [])
+    if (sessionStorage.getItem('isHistoryBack') === 'true') {
+      let scrollRestoration = setTimeout(() => {
+        window.scrollTo(0, Number(sessionStorage.getItem('scrollY')))
+        sessionStorage.removeItem('scrollY')
+      }, 100)
+
+      sessionStorage.removeItem('isHistoryBack')
+      console.log(sort)
+      return () => clearTimeout(scrollRestoration)
+    } else {
+      recoilReset()
+      setTheme(props)
+    }
+  }, [props, recoilReset, setTheme])
 
   return (
     <div className="px-32">
@@ -60,6 +71,7 @@ export default function Theme(props: ThemeT) {
                 setSort(event.currentTarget.value)
                 setPage(1)
               }}
+              defaultValue={sort}
             >
               <option value="newItem">신제품 순</option>
               <option value="ascPrice">가격 낮은 순</option>
