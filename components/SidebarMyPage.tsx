@@ -1,40 +1,31 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useRecoilValue } from 'recoil'
+import { mypageListSelector } from 'state/atoms'
 
 export default function SidebarMyPage() {
+  const router = useRouter()
+  const mypageList = useRecoilValue(mypageListSelector)
+
   return (
     <aside className="filter mx-5 h-full w-60">
       <p className="font-semibold text-2xl mt-5">나의 쇼핑 활동</p>
       <ul>
-        <li>
-          <Link href="/mypage/orders">
-            <a>주문 내역 조회</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/mypage/cart">
-            <a>장바구니</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/mypage/user_info">
-            <a>회원 정보</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/mypage/coupon">
-            <a>쿠폰 조회</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/mypage/viewed_products">
-            <a>최근 본 상품</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/mypage/wish_list">
-            <a>좋아요</a>
-          </Link>
-        </li>
+        {Object.keys(mypageList).map((key) => {
+          return (
+            <li key={key}>
+              <Link href={`/mypage/${key}`}>
+                <a
+                  className={`${
+                    router.pathname.substring(8) == key ? 'font-semibold' : ''
+                  }`}
+                >
+                  {mypageList[key]}
+                </a>
+              </Link>
+            </li>
+          )
+        })}
       </ul>
 
       <style jsx>{`

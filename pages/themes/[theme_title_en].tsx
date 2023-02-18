@@ -22,7 +22,6 @@ export async function getServerSideProps(context: any) {
 export default function Theme(props: ThemeT) {
   const [page, setPage] = useState(1)
   const [sort, setSort] = useRecoilState(sortSelector)
-  const [theme, setTheme] = useRecoilState(themeSelector)
 
   const {
     data: productList,
@@ -35,6 +34,8 @@ export default function Theme(props: ThemeT) {
     fetchNextPage({ pageParam: page })
     setPage(page + 1)
   }
+
+  const [theme, setTheme] = useRecoilState(themeSelector)
 
   const recoilReset = useResetRecoilState(selectedFilterSelector)
 

@@ -19,7 +19,7 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
       }
     >
       <div id={String(props.product.product_id)}>
-        <ButtonWish text={true} />
+        <ButtonWish product={props.product} text={true} />
         <div className="item-img mb-12 scale-75 hover:scale-90 transition-all ease-in-out">
           <a
             onClick={() =>
@@ -31,6 +31,7 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
               width="40vw"
               height="20vw"
               alt={props.product.title}
+              style={{ cursor: 'pointer' }}
               priority
               placeholder="blur"
               blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc

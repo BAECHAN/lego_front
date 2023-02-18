@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
-const useProductsList = (props: string[]) => {
+const useProductsViewedList = (props: string[]) => {
   const [page, setPage] = useState(0)
 
   let url = 'http://localhost:5000' + '/api/getProductViewedList?page=' + page
@@ -31,4 +31,4 @@ const useProductsList = (props: string[]) => {
   )
 }
 
-export default useProductsList
+export default useProductsViewedList

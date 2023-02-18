@@ -18,6 +18,13 @@ export default function ViewedProducts() {
 
   const { data: data } = useProductsViewedList(viewedProductsArr.current)
 
+  useEffect(() => {
+    if (sessionStorage.getItem('isHistoryBack') === 'true') {
+      sessionStorage.removeItem('scrollY')
+      sessionStorage.removeItem('isHistoryBack')
+    }
+  }, [])
+
   return (
     <div>
       <ul className="flex flex-wrap">
