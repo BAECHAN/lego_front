@@ -20,9 +20,9 @@ export default function ButtonWish(props: {
       setWish(!wish)
 
       if (wish) {
-        // wish 등록 - 만약 wish 이력 있으면 put 처리 , wish 이력 없으면 post 처리
+        // wish 등록 - 만약 wish 이력 있으면 patch 처리 , wish 이력 없으면 post 처리
       } else {
-        // wish 취소 - wish 이력 있을거니까 put 처리
+        // wish 취소 - wish 이력 있을거니까 patch 처리
       }
       console.log(props.product)
     } else {
