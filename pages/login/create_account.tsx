@@ -51,7 +51,7 @@ export default function CreateAccount() {
 
   const handleBlurEmail = () => {
     axios
-      .get('http://localhost:5000/api/getEmailChk?email=' + email)
+      .get('http://localhost:5000/api/get-email-chk?email=' + email)
       .then((response) => {
         response.data.result == 1
           ? setIsEmailOverlap(true)
@@ -184,7 +184,7 @@ export default function CreateAccount() {
   const createAccountAPI = useMutation(
     (userInfo: UserSubmitT) =>
       axios.post(
-        'http://localhost:5000/api/createAccount',
+        'http://localhost:5000/api/create-account',
         JSON.stringify(userInfo),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },

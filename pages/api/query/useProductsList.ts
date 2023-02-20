@@ -9,7 +9,7 @@ const useProductsList = (props: ThemeT) => {
   const sort = useRecoilValue(sortSelector)
   const filter = useRecoilValue(selectedFilterSelector)
 
-  let url = 'http://localhost:5000' + '/api/getProductList'
+  let url = 'http://localhost:5000' + '/api/get-product-list'
 
   return useInfiniteQuery(
     ['getProductList', filter, sort],

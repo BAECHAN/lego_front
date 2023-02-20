@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import { ProductT } from 'types'
 
 export default function ButtonWish(props: {
-  product: ProductT
+  product?: ProductT
   text: boolean
 }) {
   let [wish, setWish] = useState(false)
@@ -15,7 +15,7 @@ export default function ButtonWish(props: {
 
   const router = useRouter()
 
-  const handleClickLike = () => {
+  const handleClickLike = async () => {
     if (session) {
       setWish(!wish)
 

@@ -51,7 +51,7 @@ export default function Product(props: any) {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:5000/api/getThemeByProduct?product_number=${Number(
+        `http://localhost:5000/api/get-theme-by-product?product_number=${Number(
           props.product_number
         )}`
       )

@@ -19,7 +19,7 @@ export default NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       authorize: async (credentials, req) => {
-        let url = process.env.SERVER_URL + '/api/getLoginChk'
+        let url = process.env.SERVER_URL + '/api/get-login-chk'
 
         console.log(credentials)
 

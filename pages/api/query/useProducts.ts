@@ -5,7 +5,7 @@ import { ProductT } from 'types'
 const useProducts = (props: ProductT) => {
   return useQuery<ProductT>(['getProductInfo'], async () => {
     const res = await axios.get(
-      `http://localhost:5000/api/getProductInfo?product_number=${Number(
+      `http://localhost:5000/api/get-product-info?product_number=${Number(
         props.product_number
       )}`
     )

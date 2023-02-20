@@ -9,7 +9,7 @@ const useProductsWishList = () => {
 
   let url =
     'http://localhost:5000' +
-    '/api/getProductWishList?page=' +
+    '/api/get-product-wish-list?page=' +
     page +
     '&email=' +
     session?.user?.email
