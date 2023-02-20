@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import ButtonWish from '@components/ButtonWish'
-import useProducts from 'pages/api/query/useProducts'
+import useProduct from 'pages/api/query/useProduct'
 import axios from 'axios'
 import { useRecoilState } from 'recoil'
 import { themeSelector } from 'state/atoms'
@@ -25,7 +25,7 @@ export default function Product(props: any) {
   let [plusDisabled, setPlusDisabled] = useState(false)
   let [detailOpen, setDetailOpen] = useState(true)
 
-  const { data: product } = useProducts(props)
+  const { data: product } = useProduct(props)
   const [theme, setTheme] = useRecoilState(themeSelector)
 
   const router = useRouter()
@@ -261,7 +261,7 @@ export default function Product(props: any) {
                 product?.product_info?.sale_enabled === 1 ? 'm-auto' : ''
               }
             >
-              <ButtonWish text={false} />
+              <ButtonWish product={product} text={false} />
             </div>
           </div>
         </div>

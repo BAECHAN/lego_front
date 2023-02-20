@@ -100,3 +100,13 @@ export type UserSubmitT = {
   pwChk: string
   nickname: string
 }
+
+export type ProductByUserT = {
+  product_id: number
+  wish: boolean
+}
+
+export type ProductByUserSubmitT = {
+  email: string | null | undefined
+  product_id: number | undefined
+}

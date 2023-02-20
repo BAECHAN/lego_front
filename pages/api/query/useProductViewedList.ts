@@ -2,13 +2,13 @@ import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
-const useProductsViewedList = (props: string[]) => {
+const useProductViewedList = (props: string[]) => {
   const [page, setPage] = useState(0)
 
   let url = 'http://localhost:5000' + '/api/product-viewed-list?page=' + page
 
   return useQuery(
-    ['getProductViewedList', page],
+    ['product-viewed-list', page],
     async () => {
       const res = await axios.post(
         url,
@@ -31,4 +31,4 @@ const useProductsViewedList = (props: string[]) => {
   )
 }
 
-export default useProductsViewedList
+export default useProductViewedList

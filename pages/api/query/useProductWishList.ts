@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 
-const useProductsWishList = () => {
+const useProductWishList = () => {
   const [page, setPage] = useState(0)
   const { data: session } = useSession()
 
@@ -15,9 +15,11 @@ const useProductsWishList = () => {
     session?.user?.email
 
   return useQuery(
-    ['getProductWishList', page],
+    ['product-wish-list', page],
     async () => {
-      const res = await axios.get(url)
+      const res = await axios.get(url, {
+        headers: { 'Content-Type': `application/json; charset=utf-8` },
+      })
       return res.data
     },
     {
@@ -28,4 +30,4 @@ const useProductsWishList = () => {
   )
 }
 
-export default useProductsWishList
+export default useProductWishList

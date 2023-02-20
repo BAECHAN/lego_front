@@ -4,7 +4,7 @@ import { ThemeT } from 'types'
 
 const useThemes = () => {
   return useQuery<ThemeT[]>(
-    ['getThemeList'],
+    ['theme-list'],
     async () => {
       const res = await axios.get('http://localhost:5000/api/theme-list')
       return res.data

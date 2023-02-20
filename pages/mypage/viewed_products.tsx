@@ -1,6 +1,6 @@
 import Layout from '@components/Layout'
 import ProductCard from '@components/ProductCard'
-import useProductsViewedList from 'pages/api/query/useProductsViewedList'
+import useProductViewedList from 'pages/api/query/useProductViewedList'
 import React, { useEffect, useRef } from 'react'
 import { ProductT } from 'types'
 
@@ -16,7 +16,7 @@ export default function ViewedProducts() {
       : null
   }
 
-  const { data: data } = useProductsViewedList(viewedProductsArr.current)
+  const { data: data } = useProductViewedList(viewedProductsArr.current)
 
   useEffect(() => {
     if (sessionStorage.getItem('isHistoryBack') === 'true') {

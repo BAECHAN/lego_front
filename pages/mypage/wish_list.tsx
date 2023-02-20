@@ -1,11 +1,11 @@
 import Layout from '@components/Layout'
 import ProductCard from '@components/ProductCard'
-import useProductsWishList from 'pages/api/query/useProductsWishList'
+import useProductWishList from 'pages/api/query/useProductWishList'
 import React from 'react'
 import { ProductT } from 'types'
 
 export default function WishList() {
-  const { data: data } = useProductsWishList()
+  const { data: data } = useProductWishList()
 
   return (
     <div>

@@ -11,7 +11,7 @@ import {
   themeSelector,
 } from 'state/atoms'
 import { useRecoilState, useResetRecoilState } from 'recoil'
-import useProductsList from 'pages/api/query/useProductsList'
+import useProductList from 'pages/api/query/useProductList'
 
 export async function getServerSideProps(context: any) {
   return {
@@ -28,7 +28,7 @@ export default function Theme(props: ThemeT) {
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useProductsList(props)
+  } = useProductList(props)
 
   const handleClickMoreProduct = () => {
     fetchNextPage({ pageParam: page })

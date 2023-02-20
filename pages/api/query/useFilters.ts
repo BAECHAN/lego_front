@@ -4,7 +4,7 @@ import { ThemeT } from 'types'
 
 const useFilters = (props: ThemeT) => {
   return useQuery(
-    ['getProductFilter'],
+    ['product-filter'],
     async () => {
       const res = await axios.get(
         `http://localhost:5000/api/product-filter?theme_id=${props.theme_id}`

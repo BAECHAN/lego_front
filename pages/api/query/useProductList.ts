@@ -4,7 +4,7 @@ import { ThemeT } from 'types'
 import { selectedFilterSelector, sortSelector } from 'state/atoms'
 import { useRecoilState, useRecoilValue } from 'recoil'
 
-const useProductsList = (props: ThemeT) => {
+const useProductList = (props: ThemeT) => {
   const take = 15
   const sort = useRecoilValue(sortSelector)
   const filter = useRecoilValue(selectedFilterSelector)
@@ -12,7 +12,7 @@ const useProductsList = (props: ThemeT) => {
   let url = 'http://localhost:5000' + '/api/product-list'
 
   return useInfiniteQuery(
-    ['getProductList', filter, sort],
+    ['product-list', filter, sort],
     async ({ pageParam = 0 }) => {
       const res = await axios.post(
         url,
@@ -38,4 +38,4 @@ const useProductsList = (props: ThemeT) => {
   )
 }
 
-export default useProductsList
+export default useProductList
