@@ -51,7 +51,7 @@ export default function CreateAccount() {
 
   const handleBlurEmail = () => {
     axios
-      .get('http://localhost:5000/api/get-email-chk?email=' + email)
+      .get('http://localhost:5000/api/email-chk?email=' + email)
       .then((response) => {
         response.data.result == 1
           ? setIsEmailOverlap(true)
