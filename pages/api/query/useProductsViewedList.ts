@@ -5,8 +5,7 @@ import { useState } from 'react'
 const useProductsViewedList = (props: string[]) => {
   const [page, setPage] = useState(0)
 
-  let url =
-    'http://localhost:5000' + '/api/get-product-viewed-list?page=' + page
+  let url = 'http://localhost:5000' + '/api/product-viewed-list?page=' + page
 
   return useQuery(
     ['getProductViewedList', page],
