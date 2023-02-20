@@ -33,7 +33,7 @@ const useProductList = (props: ThemeT) => {
       onSuccess: (data) => console.log(data),
       onError: (e) => console.log(e),
       getNextPageParam: (lastPage) => !lastPage.isLast ?? undefined,
-      keepPreviousData: true,
+      //keepPreviousData: true,
     }
   )
 }

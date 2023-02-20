@@ -101,12 +101,7 @@ export type UserSubmitT = {
   nickname: string
 }
 
-export type ProductByUserT = {
-  product_id: number
-  wish: boolean
-}
-
-export type ProductByUserSubmitT = {
+export type ProductWishSubmitT = {
   email: string | null | undefined
   product_id: number | undefined
 }

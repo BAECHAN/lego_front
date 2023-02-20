@@ -4,17 +4,17 @@ import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { ProductByUserSubmitT, ProductByUserT, ProductT } from 'types'
+import { ProductWishSubmitT, ProductT } from 'types'
 import axios from 'axios'
-import useProductByUser from 'pages/api/query/useProductByUser'
 import { useMutation } from '@tanstack/react-query'
+import useProductWishList from 'pages/api/query/useProductWishList'
 
 export default function ButtonWish(props: {
   product?: ProductT
   text: boolean
 }) {
-  const [wishInfo, setWishInfo] = useState<ProductByUserT>({
-    product_id: 0,
+  const [wishInfo, setWishInfo] = useState({
+    product_id: props.product?.product_id,
     wish: false,
   })
 
@@ -22,16 +22,23 @@ export default function ButtonWish(props: {
 
   const router = useRouter()
 
-  const { data: productByUser } = useProductByUser(props.product)
+  const { data } = useProductWishList()
 
   useEffect(() => {
-    if (productByUser != undefined) {
-      setWishInfo(productByUser)
+    if (data?.wishList.length > 0) {
+      for (let wish of data.wishList) {
+        wish.product_id == props.product?.product_id
+          ? setWishInfo({
+              product_id: wish.product_id,
+              wish: true,
+            })
+          : null
+      }
     }
-  }, [productByUser])
+  }, [data?.wishList, props.product?.product_id])
 
-  const updateWishAPI = useMutation(
-    async (param: ProductByUserSubmitT) => {
+  const addWishAPI = useMutation(
+    async (param: ProductWishSubmitT) => {
       const res = await axios.post(
         'http://localhost:5000/api/add-wish',
         JSON.stringify(param),
@@ -43,7 +50,30 @@ export default function ButtonWish(props: {
     },
     {
       onSuccess: (data) => {
-        console.log(data)
+        setWishInfo({
+          product_id: data.product_id,
+          wish: data.wish,
+        })
+      },
+      onError: (error) => {
+        console.log(error)
+      },
+    }
+  )
+
+  const delWishAPI = useMutation(
+    async (param: ProductWishSubmitT) => {
+      const res = await axios.patch(
+        'http://localhost:5000/api/del-wish',
+        JSON.stringify(param),
+        {
+          headers: { 'Content-Type': `application/json; charset=utf-8` },
+        }
+      )
+      return res.data
+    },
+    {
+      onSuccess: (data) => {
         setWishInfo({
           product_id: data.product_id,
           wish: data.wish,
@@ -57,22 +87,17 @@ export default function ButtonWish(props: {
 
   const handleClickLike = () => {
     if (session) {
-      let param: ProductByUserSubmitT = {
+      let param: ProductWishSubmitT = {
         email: session.user?.email,
         product_id: props.product?.product_id,
       }
 
-      if (!productByUser?.wish) {
+      if (!wishInfo.wish) {
         // wish 등록 - 만약 wish 이력 있으면 patch 처리 , wish 이력 없으면 post 처리
-        updateWishAPI.mutate(param)
+        addWishAPI.mutate(param)
       } else {
         // wish 취소 - wish 이력 있을거니까 patch 처리
-        axios
-          .patch('http://localhost:5000/api/del-wish', JSON.stringify(param), {
-            headers: { 'Content-Type': `application/json; charset=utf-8` },
-          })
-          .then((response) => console.log(response))
-          .catch((error) => console.log(error))
+        delWishAPI.mutate(param)
       }
     } else {
       signIn()
@@ -82,6 +107,7 @@ export default function ButtonWish(props: {
   return (
     <button
       type="button"
+      name={String(props.product?.product_id)}
       className="flex justify-start cursor-pointer"
       onClick={handleClickLike}
     >

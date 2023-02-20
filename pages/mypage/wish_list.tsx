@@ -5,13 +5,13 @@ import React from 'react'
 import { ProductT } from 'types'
 
 export default function WishList() {
-  const { data: data } = useProductWishList()
+  const { data } = useProductWishList()
 
   return (
     <div>
       <ul className="flex flex-wrap">
-        {data && data.productList?.length > 0 ? (
-          data.productList?.map((item: ProductT, index: number) => {
+        {data && data.wishList?.length > 0 ? (
+          data.wishList?.map((item: ProductT, index: number) => {
             return <ProductCard product={item} key={index} />
           })
         ) : (
