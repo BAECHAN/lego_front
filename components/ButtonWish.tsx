@@ -49,14 +49,31 @@ export default function ButtonWish(props: {
       return res.data
     },
     {
-      onSuccess: (data) => {
+      onMutate: () => {
         setWishInfo({
-          product_id: data.product_id,
-          wish: data.wish,
+          ...wishInfo,
+          wish: !wishInfo.wish,
         })
+
+        return () => {
+          setWishInfo({
+            ...wishInfo,
+            wish: !wishInfo.wish,
+          })
+        }
       },
-      onError: (error) => {
-        console.log(error)
+      onSuccess: (data) => {
+        // setWishInfo({
+        //   product_id: data.product_id,
+        //   wish: data.wish,
+        // })
+      },
+      onError: (error, values, rollback) => {
+        if (rollback) {
+          rollback()
+        } else {
+          console.log(error)
+        }
       },
     }
   )
