@@ -35,10 +35,6 @@ export default function Header() {
           <Link href="/login/create_account">
             <a>회원가입</a>
           </Link>
-          <div>|</div>
-          <Link href="/mypage/viewed_products">
-            <a>최근 본 상품</a>
-          </Link>
         </>
       )}
 
