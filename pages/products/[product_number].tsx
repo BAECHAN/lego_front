@@ -25,7 +25,7 @@ export default function Product(props: any) {
   let [plusDisabled, setPlusDisabled] = useState(false)
   let [detailOpen, setDetailOpen] = useState(true)
 
-  const { data: product } = useProduct(props)
+  const { data: product, isLoading } = useProduct(props)
   const [theme, setTheme] = useRecoilState(themeSelector)
 
   const router = useRouter()
@@ -49,49 +49,49 @@ export default function Product(props: any) {
   }
 
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:5000/api/theme-by-product?product_number=${Number(
-          props.product_number
-        )}`
-      )
-      .then((response) => setTheme(response.data.result))
-      .catch((error) => console.log(error))
-
-    /** 최근 본 상품에 추가하기 */
-    const viewedProductsJSON: string | null =
-      localStorage.getItem('viewed_products')
-
-    let viewedProductsArr: string[] = new Array(3)
-
-    if (viewedProductsJSON) {
-      viewedProductsArr = JSON.parse(viewedProductsJSON)
-
-      viewedProductsArr.unshift(props.product_number)
-      viewedProductsArr.length = 10
-
-      const viewedProductsSet = new Set<string>(viewedProductsArr)
-
-      const viewedProductsSetJSON = JSON.stringify(
-        Array.from(viewedProductsSet)
-      )
-
-      localStorage.setItem('viewed_products', viewedProductsSetJSON)
-    } else {
-      localStorage.setItem(
-        'viewed_products',
-        JSON.stringify([props.product_number])
-      )
-    }
-  }, [props.product_number, setTheme])
-
-  useEffect(() =>
-    router.beforePopState((state) => {
+    router.beforePopState(() => {
       sessionStorage.setItem('isHistoryBack', 'true')
       //state.options.scroll = true
       return true
     })
-  )
+
+    if (isLoading && router) {
+      axios
+        .get(
+          `http://localhost:5000/api/theme-by-product?product_number=${Number(
+            props.product_number
+          )}`
+        )
+        .then((response) => setTheme(response.data.result))
+        .catch((error) => console.log(error))
+
+      /** 최근 본 상품에 추가하기 */
+      const viewedProductsJSON: string | null =
+        localStorage.getItem('viewed_products')
+
+      let viewedProductsArr: string[] = new Array(3)
+
+      if (viewedProductsJSON) {
+        viewedProductsArr = JSON.parse(viewedProductsJSON)
+
+        viewedProductsArr.unshift(props.product_number)
+        viewedProductsArr.length = 10
+
+        const viewedProductsSet = new Set<string>(viewedProductsArr)
+
+        const viewedProductsSetJSON = JSON.stringify(
+          Array.from(viewedProductsSet)
+        )
+
+        localStorage.setItem('viewed_products', viewedProductsSetJSON)
+      } else {
+        localStorage.setItem(
+          'viewed_products',
+          JSON.stringify([props.product_number])
+        )
+      }
+    }
+  }, [isLoading, props.product_number, router, setTheme])
 
   return (
     <div className="px-32">
@@ -261,7 +261,12 @@ export default function Product(props: any) {
                 product?.product_info?.sale_enabled === 1 ? 'm-auto' : ''
               }
             >
-              <ButtonWish product={product} text={false} />
+              {product ? (
+                <ButtonWish
+                  product_id={product.product_info.product_id}
+                  text={false}
+                />
+              ) : null}
             </div>
           </div>
         </div>

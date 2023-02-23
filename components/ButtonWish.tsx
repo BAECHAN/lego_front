@@ -4,17 +4,17 @@ import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { ProductWishSubmitT, ProductT } from 'types'
+import { ProductWishSubmitT } from 'types'
 import axios from 'axios'
 import { useMutation } from '@tanstack/react-query'
 import useProductWishList from 'pages/api/query/useProductWishList'
 
 export default function ButtonWish(props: {
-  product?: ProductT
+  product_id: number
   text: boolean
 }) {
   const [wishInfo, setWishInfo] = useState({
-    product_id: props.product?.product_id,
+    product_id: props.product_id,
     wish: false,
   })
 
@@ -22,20 +22,24 @@ export default function ButtonWish(props: {
 
   const router = useRouter()
 
-  const { data } = useProductWishList()
+  const { data, isFetched } = useProductWishList()
 
   useEffect(() => {
-    if (data?.wishList.length > 0) {
-      for (let wish of data.wishList) {
-        wish.product_id == props.product?.product_id
-          ? setWishInfo({
-              product_id: wish.product_id,
-              wish: true,
-            })
-          : null
+    if (isFetched) {
+      if (data.wishList.length > 0) {
+        for (let wish of data.wishList) {
+          wish.product_id == wishInfo.product_id
+            ? setWishInfo({
+                ...wishInfo,
+                wish: true,
+              })
+            : null
+        }
       }
     }
-  }, [data?.wishList, props.product?.product_id])
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, isFetched])
 
   const addWishAPI = useMutation(
     async (param: ProductWishSubmitT) => {
@@ -106,9 +110,10 @@ export default function ButtonWish(props: {
     if (session) {
       let param: ProductWishSubmitT = {
         email: session.user?.email,
-        product_id: props.product?.product_id,
+        product_id: wishInfo.product_id,
       }
 
+      console.log(param)
       if (!wishInfo.wish) {
         // wish 등록 - 만약 wish 이력 있으면 patch 처리 , wish 이력 없으면 post 처리
         addWishAPI.mutate(param)
@@ -124,11 +129,10 @@ export default function ButtonWish(props: {
   return (
     <button
       type="button"
-      name={String(props.product?.product_id)}
       className="flex justify-start cursor-pointer"
       onClick={handleClickLike}
     >
-      {wishInfo?.wish == true ? (
+      {wishInfo?.wish ? (
         <FontAwesomeIcon
           icon={faHeartSolid}
           className="ml-5 w-4 text-blue-700"

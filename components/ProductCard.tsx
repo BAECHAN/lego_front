@@ -19,7 +19,7 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
       }
     >
       <div id={String(props.product.product_id)}>
-        <ButtonWish product={props.product} text={true} />
+        <ButtonWish product_id={props.product.product_id} text={true} />
         <div className="item-img mb-12 scale-75 hover:scale-90 transition-all ease-in-out">
           <a
             onClick={() =>
