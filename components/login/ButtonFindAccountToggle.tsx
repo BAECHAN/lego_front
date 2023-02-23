@@ -17,7 +17,7 @@ export default function ButtonFindAccountToggle() {
   }
 
   return (
-    <div className="flex w-full px-4">
+    <div className="flex w-full">
       <button
         type="button"
         id="findIdBtn"

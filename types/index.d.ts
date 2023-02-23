@@ -94,10 +94,16 @@ export type InputRegExpT = {
   [key: string]: RegExp
 }
 
-export type UserSubmitT = {
+export type UserCreateT = {
   email: string
   pw: string
   pwChk: string
+  nickname: string
+}
+
+export type UserSubmitT = {
+  email: string
+  pw: string
   nickname: string
 }
 

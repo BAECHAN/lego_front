@@ -4,14 +4,14 @@ import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 
 import React, { ChangeEvent, useState } from 'react'
-import { InputRegExpT, UserSubmitT } from 'types'
+import { InputRegExpT, UserCreateT, UserSubmitT } from 'types'
 import axios from 'axios'
 import { useMutation } from '@tanstack/react-query'
 import Router from 'next/router'
 import crypto from 'crypto-js'
 
 export default function CreateAccount() {
-  const [inputs, setInputs] = useState<UserSubmitT>({
+  const [inputs, setInputs] = useState<UserCreateT>({
     email: '',
     pw: '',
     pwChk: '',
@@ -45,7 +45,6 @@ export default function CreateAccount() {
   }
 
   const [disabledSubmit, setDisabledSubmit] = useState(false)
-  const [submitResult, setSubmitResult] = useState(0)
 
   const [isEmailOverlap, setIsEmailOverlap] = useState(false)
 
@@ -173,7 +172,6 @@ export default function CreateAccount() {
     const userInfo = {
       email,
       pw,
-      pwChk,
       nickname,
     }
 
@@ -198,7 +196,7 @@ export default function CreateAccount() {
       },
       onError: (error) => {
         console.log(error)
-        alert('회원가입이 실패하였습니다.')
+        alert('회원가입이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.')
         return false
       },
     }

@@ -17,6 +17,15 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     }
   }
 
+  if (request.nextUrl.pathname.startsWith('/login')) {
+    if (session) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/'
+
+      return NextResponse.redirect(url)
+    }
+  }
+
   if (request.nextUrl.pathname.startsWith('/dashboard')) {
     // This logic is only applied to /dashboard
   }

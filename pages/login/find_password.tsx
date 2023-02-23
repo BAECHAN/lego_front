@@ -23,7 +23,6 @@ export default function FindPassword() {
     }
 
     setEmail(email)
-    setIsSubmit(true)
 
     axios
       .get('http://localhost:5000/api/email-chk?email=' + email)
@@ -31,6 +30,19 @@ export default function FindPassword() {
         setIsSubmit(true)
 
         response.data.result == 1 ? setIsFind(true) : setIsFind(false)
+
+        axios
+          .post('/api/nodemailer', {
+            method: 'POST',
+            param: JSON.stringify({ email }),
+            headers: { 'Content-Type': `application/json; charset=utf-8` },
+          })
+          .then((response) => {
+            console.log(response)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       })
       .catch((error) => {
         console.log(error)
