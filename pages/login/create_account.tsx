@@ -9,6 +9,7 @@ import axios from 'axios'
 import { useMutation } from '@tanstack/react-query'
 import Router from 'next/router'
 import crypto from 'crypto-js'
+import axiosRequest from 'pages/api/axios'
 
 export default function CreateAccount() {
   const [inputs, setInputs] = useState<UserCreateT>({
@@ -175,32 +176,20 @@ export default function CreateAccount() {
       nickname,
     }
 
-    createAccountAPI.mutate(userInfo)
-    setDisabledSubmit(false)
-  }
-
-  const createAccountAPI = useMutation(
-    (userInfo: UserSubmitT) =>
-      axios.post(
-        'http://localhost:5000/api/create-account',
-        JSON.stringify(userInfo),
-        {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
+    axiosRequest('post', 'http://localhost:5000/api/create-account', userInfo)
+      .then((response) => {
+        if (response?.status === 200) {
+          alert('회원가입되었습니다.\r로그인 페이지로 이동합니다.')
+          Router.push('/login')
         }
-      ),
-    {
-      onSuccess: () => {
-        alert('회원가입되었습니다.\r로그인 페이지로 이동합니다.')
-        Router.push('/login')
-        //location.href = '/login'
-      },
-      onError: (error) => {
+      })
+      .catch((error) => {
         console.log(error)
         alert('회원가입이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.')
+        setDisabledSubmit(false)
         return false
-      },
-    }
-  )
+      })
+  }
 
   return (
     <div>

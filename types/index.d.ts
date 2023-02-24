@@ -4,6 +4,10 @@ export type ObjT_Str = {
   [key: string]: string
 }
 
+export type ParamT = {
+  [key: string]: Object
+}
+
 export type ProductT = {
   product_id: number
   title: string
@@ -17,9 +21,7 @@ export type ProductT = {
   discounting: number
   rate_discount: number
   ea: number
-
-  product_info: ProductT
-  product_img_list: string[]
+  order_quantity?: number
 }
 
 export type ProductFilterT = {
@@ -108,6 +110,12 @@ export type UserSubmitT = {
 }
 
 export type ProductWishSubmitT = {
-  email: string | null | undefined
-  product_id: number | undefined
+  email: string
+  product_id: number
+}
+
+export type ProductAddCartSubmitT = {
+  email: string
+  product_id: number
+  order_quantity: number
 }

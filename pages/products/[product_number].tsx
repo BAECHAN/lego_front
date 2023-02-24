@@ -11,6 +11,7 @@ import axios from 'axios'
 import { useRecoilState } from 'recoil'
 import { themeSelector } from 'state/atoms'
 import { useRouter } from 'next/router'
+import ButtonAddCart from '@components/ButtonAddCart'
 
 export async function getServerSideProps(context: any) {
   return {
@@ -21,7 +22,7 @@ export async function getServerSideProps(context: any) {
 export default function Product(props: any) {
   const [carouselIdx, setCarouselIdx] = useState(0)
   let [quantity, setQuantity] = useState(1)
-  let [minusDisabled, setMinusDisabled] = useState(false)
+  let [minusDisabled, setMinusDisabled] = useState(true)
   let [plusDisabled, setPlusDisabled] = useState(false)
   let [detailOpen, setDetailOpen] = useState(true)
 
@@ -39,7 +40,7 @@ export default function Product(props: any) {
     if (product) {
       if (quantity >= product?.product_info?.ea) {
         setPlusDisabled(true)
-      } else if (quantity <= 0) {
+      } else if (quantity <= 1) {
         setMinusDisabled(true)
       } else {
         setPlusDisabled(false)
@@ -251,9 +252,10 @@ export default function Product(props: any) {
 
           <div className="flex">
             {product?.product_info?.sale_enabled === 1 ? (
-              <button type="button" className="add-to-cart">
-                장바구니 담기
-              </button>
+              <ButtonAddCart
+                product_info={product.product_info}
+                order_quantity={quantity}
+              />
             ) : null}
 
             <div
@@ -413,24 +415,6 @@ export default function Product(props: any) {
           width: 300px;
           margin: 20px auto;
           text-align: center;
-        }
-
-        .add-to-cart {
-          width: 100%;
-          background-color: rgb(253, 128, 36);
-          border-color: rgb(253, 128, 36);
-          color: rgb(0, 0, 0);
-          border-width: 2px;
-          padding: 0.9375rem;
-          border-style: solid;
-          border-radius: 4px;
-          border-collapse: collapse;
-          text-align: center;
-          font-weight: 700;
-        }
-        .add-to-cart:hover {
-          color: white;
-          opacity: 0.7;
         }
       `}</style>
     </div>

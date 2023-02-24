@@ -9,6 +9,7 @@ import axios from 'axios'
 import { useMutation } from '@tanstack/react-query'
 import Router, { useRouter } from 'next/router'
 import crypto from 'crypto-js'
+import axiosRequest from 'pages/api/axios'
 
 export default function ResetPassword() {
   const router = useRouter()
@@ -156,36 +157,24 @@ export default function ResetPassword() {
         email,
         pw,
       }
-      updatePasswordAPI.mutate(param)
-    }
 
-    setDisabledSubmit(false)
+      axiosRequest('patch', 'http://localhost:5000/api/update-password', param)
+        .then((response) => {
+          if (response?.status === 200) {
+            alert('비밀번호가 변경되었습니다.\r로그인 페이지로 이동합니다.')
+            Router.push('/login')
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          alert(
+            '비밀번호 변경이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
+          )
+          setDisabledSubmit(false)
+          return false
+        })
+    }
   }
-
-  const updatePasswordAPI = useMutation(
-    (param: { email: string; pw: string }) =>
-      axios.post(
-        'http://localhost:5000/api/update-password',
-        JSON.stringify(param),
-        {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
-        }
-      ),
-    {
-      onSuccess: () => {
-        alert('비밀번호가 변경되었습니다.\r로그인 페이지로 이동합니다.')
-        Router.push('/login')
-        //location.href = '/login'
-      },
-      onError: (error) => {
-        console.log(error)
-        alert(
-          '비밀번호 변경이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-        )
-        return false
-      },
-    }
-  )
 
   return (
     <div>

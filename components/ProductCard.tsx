@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import ButtonWish from './ButtonWish'
 import { useRouter } from 'next/router'
+import ButtonAddCart from './ButtonAddCart'
 
 export default function ProductCard(props: { product: ProductT; key: number }) {
   const router = useRouter()
@@ -74,9 +75,7 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
           </div>
 
           {props.product.sale_enabled == 1 ? (
-            <button type="button" className="add-to-cart">
-              장바구니 담기
-            </button>
+            <ButtonAddCart product_info={props.product} order_quantity={1} />
           ) : props.product.sale_enabled == 9 ? (
             <div className="text-red-600 text-lg text-center pt-7 font-bold">
               일시품절
@@ -106,24 +105,6 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
         }
         li {
           width: 300px;
-        }
-
-        .add-to-cart {
-          width: 100%;
-          background-color: rgb(253, 128, 36);
-          border-color: rgb(253, 128, 36);
-          color: rgb(0, 0, 0);
-          border-width: 2px;
-          padding: 0.9375rem;
-          border-style: solid;
-          border-radius: 4px;
-          border-collapse: collapse;
-          text-align: center;
-          font-weight: 700;
-        }
-        .add-to-cart:hover {
-          color: white;
-          opacity: 0.7;
         }
 
         a.prod-title {

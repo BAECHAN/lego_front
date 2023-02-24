@@ -9,8 +9,6 @@ export default function SidebarFilterSelected() {
     selectedFilterSelector
   )
 
-  console.log(selectedFilter)
-
   const handleClickRecoilReset = useResetRecoilState(selectedFilterSelector)
 
   const handleClickBtnReset = () => {

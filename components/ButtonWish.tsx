@@ -107,9 +107,9 @@ export default function ButtonWish(props: {
   )
 
   const handleClickLike = () => {
-    if (session) {
+    if (session?.user?.email) {
       let param: ProductWishSubmitT = {
-        email: session.user?.email,
+        email: session.user.email,
         product_id: wishInfo.product_id,
       }
 

@@ -103,3 +103,41 @@ export const selectedFilterSelector = selector<ProductFilterCountT>({
     set(selectedFilterAtom, newValue)
   },
 })
+
+const orderCountAtom = atom({
+  key: `orderCountAtom/${v1()}`,
+  default: 0,
+})
+
+/**
+ * const orderProductAtom = atom<ProductT>({
+  key: `orderProductAtom/${v1()}`,
+  default: {
+    product_id: 0,
+    title: '',
+    image: '',
+    price: 0,
+    pieces: 0,
+    ages: 0,
+    product_number: 0,
+    date_released: new Date,
+    sale_enabled: 0,
+    discounting: 0,
+    rate_discount: 0,
+    ea: 0,
+    
+    order_quantity: 0
+  },
+})
+ * 
+ */
+
+export const orderCountSelector = selector({
+  key: `orderCountSelector/${v1()}`,
+  get: ({ get }) => {
+    return get(orderCountAtom)
+  },
+  set: ({ set }, newValue) => {
+    set(orderCountAtom, newValue)
+  },
+})
