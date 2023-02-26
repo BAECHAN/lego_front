@@ -26,7 +26,7 @@ export const themeSelector = selector<ThemeT>({
 const mypageListAtom = atom<ObjT_Str>({
   key: `mypageListAtom/${v1()}`,
   default: {
-    orders: '주문 내역 조회',
+    order_history: '주문 내역 조회',
     cart: '장바구니',
     user_info: '회원 정보',
     coupon: '쿠폰 조회',
@@ -104,40 +104,32 @@ export const selectedFilterSelector = selector<ProductFilterCountT>({
   },
 })
 
-const orderCountAtom = atom({
-  key: `orderCountAtom/${v1()}`,
+const selectedOrderAtom = atom<number[]>({
+  key: `selectedOrderAtom/${v1()}`,
+  default: [],
+})
+
+export const selectedOrderSelector = selector({
+  key: `selectedOrderSelector/${v1()}`,
+  get: ({ get }) => {
+    return get(selectedOrderAtom)
+  },
+  set: ({ set }, newValue) => {
+    set(selectedOrderAtom, newValue)
+  },
+})
+
+const orderPriceAtom = atom<number>({
+  key: `orderPriceAtom/${v1()}`,
   default: 0,
 })
 
-/**
- * const orderProductAtom = atom<ProductT>({
-  key: `orderProductAtom/${v1()}`,
-  default: {
-    product_id: 0,
-    title: '',
-    image: '',
-    price: 0,
-    pieces: 0,
-    ages: 0,
-    product_number: 0,
-    date_released: new Date,
-    sale_enabled: 0,
-    discounting: 0,
-    rate_discount: 0,
-    ea: 0,
-    
-    order_quantity: 0
-  },
-})
- * 
- */
-
-export const orderCountSelector = selector({
-  key: `orderCountSelector/${v1()}`,
+export const orderPriceSelector = selector({
+  key: `orderPriceSelector/${v1()}`,
   get: ({ get }) => {
-    return get(orderCountAtom)
+    return get(orderPriceAtom)
   },
   set: ({ set }, newValue) => {
-    set(orderCountAtom, newValue)
+    set(orderPriceAtom, newValue)
   },
 })

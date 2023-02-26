@@ -21,7 +21,11 @@ export type ProductT = {
   discounting: number
   rate_discount: number
   ea: number
-  order_quantity?: number
+}
+
+export type ProductCartT = ProductT & {
+  cart_id: number
+  order_quantity: number
 }
 
 export type ProductFilterT = {
@@ -112,6 +116,11 @@ export type UserSubmitT = {
 export type ProductWishSubmitT = {
   email: string
   product_id: number
+}
+
+export type ProductUpdateCartSubmitT = {
+  email: string
+  cart_id: number
 }
 
 export type ProductAddCartSubmitT = {

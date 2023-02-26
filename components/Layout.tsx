@@ -26,18 +26,19 @@ export default function Layout({
       ></Helmet>
       <Banner />
       <Header />
-      {router.pathname.indexOf('mypage') > -1 ? (
+      {router.pathname.indexOf('mypage') > -1 ||
+      router.pathname.indexOf('order') > -1 ? (
         <div className="px-16">
           <Navbar />
           <div className="py-4 flex">
             <SidebarMyPage />
             <div className="w-screen">
               <h1 className="text-2xl font-bold mb-3">
-                {
-                  mypageListObj[
-                    router.pathname.slice(8, router.pathname.length)
-                  ]
-                }
+                {router.pathname.indexOf('mypage') > -1
+                  ? mypageListObj[
+                      router.pathname.slice(8, router.pathname.length)
+                    ]
+                  : '주문 & 배송'}
               </h1>
               <hr className="border-black border-2" />
               <Contents propChildren={children}></Contents>

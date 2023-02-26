@@ -1,32 +1,49 @@
 import Layout from '@components/Layout'
 import ProductInCart from '@components/ProductInCart'
+import { useRouter } from 'next/router'
 import useProductCartList from 'pages/api/query/useProductCartList'
 import React, { useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil'
-import { orderCountSelector } from 'state/atoms'
-import { ProductT } from 'types'
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
+import { orderPriceSelector, selectedOrderSelector } from 'state/atoms'
+import { ProductCartT } from 'types'
 
 export default function Cart() {
+  const router = useRouter()
   const { data, isFetched } = useProductCartList()
+  const [selectedOrder, setSelectedOrder] = useRecoilState(
+    selectedOrderSelector
+  )
 
-  const [orderCount, setOrderCount] = useRecoilState(orderCountSelector)
+  const totalPrice = useRecoilValue(orderPriceSelector)
+  const resetTotalPrice = useResetRecoilState(orderPriceSelector)
+
+  const handleClickRecoilReset = useResetRecoilState(selectedOrderSelector)
 
   useEffect(() => {
-    isFetched ? setOrderCount(data.cartList.length) : null
+    if (isFetched) {
+      handleClickRecoilReset()
 
+      data.cartList.map((item: ProductCartT, index: number) => {
+        setSelectedOrder((selectedOrder) => [...selectedOrder, item.cart_id])
+      })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFetched])
+
+  const handleClickOrder = () => {
+    router.push('/order')
+  }
 
   return (
     <div>
       <ul className="flex flex-col">
         {data && data.cartList?.length > 0 ? (
-          data.cartList?.map((item: ProductT, index: number) => {
+          data.cartList?.map((item: ProductCartT, index: number) => {
             return (
-              <>
-                <ProductInCart product={item} key={index} />
+              <li key={index}>
+                <ProductInCart product={item} />
                 {index < data.cartList.length - 1 ? <hr /> : null}
-              </>
+              </li>
             )
           })
         ) : (
@@ -34,10 +51,13 @@ export default function Cart() {
         )}
       </ul>
       <div className="flex justify-center">
-        <p>주문할 상품 : {orderCount}개</p>
+        <p>주문할 상품 : {selectedOrder.length}개</p>
       </div>
       <div className="flex justify-center">
-        <button type="button" className="btn-order">
+        {totalPrice.toLocaleString('ko-KR')} 원
+      </div>
+      <div className="flex justify-center">
+        <button type="button" className="btn-order" onClick={handleClickOrder}>
           주문하기
         </button>
       </div>

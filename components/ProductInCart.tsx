@@ -1,34 +1,96 @@
-import React, { useEffect, useState } from 'react'
-import { ProductT } from 'types'
+import React, { useEffect, useMemo, useState } from 'react'
+import { ProductCartT, ProductUpdateCartSubmitT } from 'types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus, faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import { useRecoilState } from 'recoil'
-import { orderCountSelector } from 'state/atoms'
-export default function ProductInCart(props: {
-  product: ProductT
-  key: number
-}) {
+import { useRecoilState, useResetRecoilState } from 'recoil'
+import { orderPriceSelector, selectedOrderSelector } from 'state/atoms'
+import { QueryClient, useMutation } from '@tanstack/react-query'
+import axios from 'axios'
+import { useSession } from 'next-auth/react'
+import useProductCartList from 'pages/api/query/useProductCartList'
+
+export default function ProductInCart(props: { product: ProductCartT }) {
   const [quantity, setQuantity] = useState(props.product.order_quantity)
-  const [minusDisabled, setMinusDisabled] = useState(true)
+  const [minusDisabled, setMinusDisabled] = useState(
+    props.product.order_quantity > 1 ? false : true
+  )
   const [plusDisabled, setPlusDisabled] = useState(false)
 
-  let [orderCount, setOrderCount] = useRecoilState(orderCountSelector)
+  let [selectedOrder, setSelectedOrder] = useRecoilState(selectedOrderSelector)
+  const { data, refetch } = useProductCartList()
+
+  let [totalPrice, setTotalPrice] = useRecoilState(orderPriceSelector)
+
+  const { data: session } = useSession()
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: Infinity,
+      },
+    },
+  })
+
+  useEffect(() => {
+    let price = 0
+
+    if (props.product.discounting == 1 && props.product.rate_discount > 0) {
+      price =
+        props.product.price *
+        (1 - Number(props.product.rate_discount) / 100) *
+        props.product.order_quantity
+    } else {
+      price = props.product.price * props.product.order_quantity
+    }
+    setTotalPrice((totalPrice) => totalPrice + price)
+  }, [
+    props.product.discounting,
+    props.product.order_quantity,
+    props.product.price,
+    props.product.rate_discount,
+    setTotalPrice,
+  ])
 
   const handleClickQuantity = (
     event: React.MouseEvent<HTMLButtonElement>,
     plusOrMinus: string
   ) => {
     if (quantity) {
-      plusOrMinus === 'plus'
-        ? setQuantity(quantity + 1)
-        : setQuantity(quantity + 1)
+      let price = 0
 
-      if (props.product) {
+      if (plusOrMinus === 'plus') {
+        setQuantity(quantity + 1)
+
+        if (props.product.discounting == 1 && props.product.rate_discount > 0) {
+          price =
+            props.product.price *
+            (1 - Number(props.product.rate_discount) / 100)
+        } else {
+          price = props.product.price
+        }
+        setTotalPrice((totalPrice) => totalPrice + price)
+
         if (quantity >= props.product.ea) {
           setPlusDisabled(true)
-        } else if (quantity <= 1) {
+        } else {
+          setPlusDisabled(false)
+          setMinusDisabled(false)
+        }
+      } else {
+        setQuantity(quantity - 1)
+
+        if (props.product.discounting == 1 && props.product.rate_discount > 0) {
+          price =
+            props.product.price *
+            (1 - Number(props.product.rate_discount) / 100)
+        } else {
+          price = props.product.price
+        }
+        setTotalPrice((totalPrice) => totalPrice - price)
+
+        if (quantity <= 2) {
           setMinusDisabled(true)
         } else {
           setPlusDisabled(false)
@@ -39,15 +101,89 @@ export default function ProductInCart(props: {
   }
 
   const handleChangeCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setOrderCount(e.currentTarget.checked ? orderCount + 1 : orderCount - 1)
+    let price = 0
+    console.log(quantity)
+
+    if (e.currentTarget.checked) {
+      setSelectedOrder((selectedOrder) => [
+        ...selectedOrder,
+        Number(e.currentTarget.name.substring(17)),
+      ])
+
+      if (props.product.discounting == 1 && props.product.rate_discount > 0) {
+        price =
+          props.product.price *
+          (1 - Number(props.product.rate_discount) / 100) *
+          quantity
+      } else {
+        price = props.product.price * quantity
+      }
+      setTotalPrice((totalPrice) => totalPrice + price)
+    } else {
+      setSelectedOrder(
+        selectedOrder.filter(
+          (item) => item !== Number(e.currentTarget.name.substring(17))
+        )
+      )
+
+      if (props.product.discounting == 1 && props.product.rate_discount > 0) {
+        price =
+          props.product.price *
+          (1 - Number(props.product.rate_discount) / 100) *
+          quantity
+      } else {
+        price = props.product.price * quantity
+      }
+      setTotalPrice((totalPrice) => totalPrice - price)
+    }
+
+    console.log(price)
   }
 
+  const handleClickDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (session?.user?.email) {
+      let param: ProductUpdateCartSubmitT = {
+        email: session.user.email,
+        cart_id: Number(e.currentTarget.name.substring(15)),
+      }
+      delCartAPI.mutate(param)
+    }
+  }
+
+  const delCartAPI = useMutation(
+    async (param: ProductUpdateCartSubmitT) => {
+      const res = await axios.patch(
+        'http://localhost:5000/api/del-cart',
+        JSON.stringify(param),
+        {
+          headers: { 'Content-Type': `application/json; charset=utf-8` },
+        }
+      )
+      return res.data
+    },
+    {
+      onSuccess: (data) => {
+        if (data.result == 1) {
+          setSelectedOrder(selectedOrder.filter((item) => item !== data.cartId))
+          refetch()
+        } else {
+          alert(
+            '장바구니에서 삭제하는데 문제가 발생하였습니다.\r관리자에게 문의해주시기 바랍니다.'
+          )
+          return false
+        }
+      },
+      onError: (error) => console.log(error),
+    }
+  )
+
   return (
-    <li className="product-in-cart w-full flex justify-start items-center">
+    <div className="product-in-cart w-full flex justify-start items-center">
       <div>
         <input
           type="checkbox"
           className="product-checkbox mx-7"
+          name={`product_checkbox_${props.product.cart_id}`}
           onInput={handleChangeCheck}
           defaultChecked
         />
@@ -93,7 +229,6 @@ export default function ProductInCart(props: {
           )}
         </div>
       </div>
-      <div></div>
       <div className="product-in-cart-quantity">
         <button
           onClick={(event) => handleClickQuantity(event, 'minus')}
@@ -115,12 +250,40 @@ export default function ProductInCart(props: {
           />
         </button>
       </div>
-      <div>
+      <div className="w-1/12 text-right">
+        {props.product.discounting == 1 && props.product.rate_discount > 0 ? (
+          <>
+            <b className="product-price">{`${(
+              props.product.price *
+              quantity *
+              (1 - Number(props.product.rate_discount) / 100)
+            ).toLocaleString('ko-KR')}`}</b>
+            <b> 원</b>
+          </>
+        ) : (
+          <>
+            <b className="product-price">{`${(
+              props.product.price * quantity
+            ).toLocaleString('ko-KR')}`}</b>
+            <b>원</b>
+          </>
+        )}
+      </div>
+      <button
+        type="button"
+        name={`product_delete_${props.product.cart_id}`}
+        className="w-32 ml-28"
+        onClick={(event) => handleClickDelete(event)}
+      >
         <FontAwesomeIcon
           icon={faTrashCan}
           width="15px"
           className="text-gray-500 hover:cursor-pointer hover:text-black"
         />
+      </button>
+      <div className="text-center">
+        <p>택배배송</p>
+        <p className="font-semibold">배송비 무료</p>
       </div>
 
       <style jsx>{`
@@ -147,7 +310,7 @@ export default function ProductInCart(props: {
         .product-in-cart-quantity {
           display: flex;
           margin: 5px 0px;
-          width: 33%;
+          width: 20%;
         }
         .product-in-cart-quantity > * {
           border: 1px solid #ddd;
@@ -165,7 +328,31 @@ export default function ProductInCart(props: {
           text-align: center;
           user-select: none;
         }
+
+        .product-in-cart-quantity > div:nth-child(even) {
+          width: 52px;
+          text-align: center;
+          user-select: none;
+        }
+
+        .product-in-cart-quantity > div:nth-child(even) {
+          width: 52px;
+          text-align: center;
+          user-select: none;
+        }
+
+        .product-in-cart-quantity > div:nth-child(even) {
+          width: 52px;
+          text-align: center;
+          user-select: none;
+        }
+
+        .prolict-in-cart-quantity > div:nth-child(even) {
+          width: 52px;
+          text-align: center;
+          user-select: none;
+        }
       `}</style>
-    </li>
+    </div>
   )
 }

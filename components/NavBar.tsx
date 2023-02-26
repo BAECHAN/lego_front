@@ -8,12 +8,13 @@ import { mypageListSelector, themeSelector } from 'state/atoms'
 export default function Navbar(prop: { productInfo?: ProductT }) {
   const router = useRouter()
 
-  const [home, series, theme, productInfo, mypage] = [
+  const [home, series, theme, productInfo, mypage, order] = [
     '홈',
     '시리즈별',
     useRecoilValue(themeSelector),
     prop?.productInfo,
     '마이페이지',
+    '주문하기',
   ]
 
   const mypageListObj = useRecoilValue(mypageListSelector)
@@ -48,6 +49,13 @@ export default function Navbar(prop: { productInfo?: ProductT }) {
           </p>
         ) : null
       })}
+
+      {router.pathname === '/order' ? (
+        <>
+          <FontAwesomeAngleRight />
+          <span>{order}</span>
+        </>
+      ) : null}
 
       {router.pathname === '/themes' ? (
         <>
