@@ -103,6 +103,7 @@ export default function Login() {
                 id="email"
                 placeholder="예) lego@lego.co.kr"
                 autoComplete="off"
+                value="asdfjklddd@gmail.com"
               />
             </label>
             <label>
@@ -113,6 +114,7 @@ export default function Login() {
                 name="password"
                 id="password"
                 autoComplete="off"
+                value="test1234!"
               />
               {isShowPw ? (
                 <FontAwesomeIcon
