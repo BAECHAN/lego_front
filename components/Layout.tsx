@@ -32,7 +32,7 @@ export default function Layout({
           <Navbar />
           <div className="py-4 flex">
             <SidebarMyPage />
-            <div className="w-screen">
+            <div className="w-screen min-h-[76vh]">
               <h1 className="text-2xl font-bold mb-3">
                 {router.pathname.indexOf('mypage') > -1
                   ? mypageListObj[

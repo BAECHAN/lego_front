@@ -121,6 +121,7 @@ export type ProductWishSubmitT = {
 export type ProductUpdateCartSubmitT = {
   email: string
   cart_id: number
+  order_quantity?: number
 }
 
 export type ProductAddCartSubmitT = {

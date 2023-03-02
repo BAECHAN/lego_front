@@ -5,6 +5,7 @@ import { selectedOrderSelector } from 'state/atoms'
 
 export default function Order() {
   let selectedOrder = useRecoilValue(selectedOrderSelector)
+  console.log(selectedOrder)
 
   return (
     <div className="min-h-[602px]">

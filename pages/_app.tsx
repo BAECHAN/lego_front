@@ -5,6 +5,7 @@ import type { AppProps } from 'next/app'
 import { SessionProvider } from 'next-auth/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RecoilRoot } from 'recoil'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactElement
@@ -29,6 +30,7 @@ export default function MyApp({
   return (
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
         <RecoilRoot>{getLayout(<Component {...pageProps} />)}</RecoilRoot>
       </QueryClientProvider>
     </SessionProvider>
