@@ -190,7 +190,6 @@ export default function ProductInCart(props: { product: ProductCartT }) {
           return false
         }
       },
-      onError: (error) => console.log(error),
     }
   )
 

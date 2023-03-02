@@ -1,10 +1,15 @@
 import Layout from '@components/Layout'
+import useProductCartList from 'pages/api/query/useProductCartList'
 import React from 'react'
 import { useRecoilValue } from 'recoil'
 import { selectedOrderSelector } from 'state/atoms'
 
 export default function Order() {
   let selectedOrder = useRecoilValue(selectedOrderSelector)
+
+  const { data, isFetched, isFetching } = useProductCartList()
+  console.log(data)
+
   console.log(selectedOrder)
 
   return (
