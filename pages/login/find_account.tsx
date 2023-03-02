@@ -27,7 +27,7 @@ export default function FindAccount() {
       .then((response) => {
         setIsSubmit(true)
 
-        response.data.result == 1 ? setIsFind(true) : setIsFind(false)
+        response.data.result > 0 ? setIsFind(true) : setIsFind(false)
       })
       .catch((error) => {
         console.log(error)

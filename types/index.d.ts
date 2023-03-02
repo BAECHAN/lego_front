@@ -85,9 +85,7 @@ export type UserT = {
   name: string
   image: string
   date_created: Date
-  account_expired: number
-  account_locked: number
-  account_withdraw: number
+  account_state: number
   date_withdraw: Date
   grade: number
 }

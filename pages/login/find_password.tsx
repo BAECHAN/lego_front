@@ -29,7 +29,7 @@ export default function FindPassword() {
       .then((response) => {
         setIsSubmit(true)
 
-        response.data.result == 1 ? setIsFind(true) : setIsFind(false)
+        response.data.result > 0 ? setIsFind(true) : setIsFind(false)
 
         axios
           .post('/api/nodemailer', {

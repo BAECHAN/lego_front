@@ -53,7 +53,7 @@ export default function CreateAccount() {
     axios
       .get('http://localhost:5000/api/email-chk?email=' + email)
       .then((response) => {
-        response.data.result == 1
+        response.data.result > 0
           ? setIsEmailOverlap(true)
           : setIsEmailOverlap(false)
       })

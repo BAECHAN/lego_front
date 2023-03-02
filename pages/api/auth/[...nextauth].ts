@@ -33,8 +33,14 @@ export default NextAuth({
           .then((response) => {
             const user = response.data.result
 
+            user['state'] = '꺼져'
+            console.log(user)
+
+            const account = user
+
             if (user) {
-              return user
+              console.log('ddd')
+              return account
             } else {
               return null
             }
@@ -70,8 +76,17 @@ export default NextAuth({
     signIn: '/login',
     error: '/signin',
   },
+
   callbacks: {
-    async jwt({ token }) {
+    async session({ session, token, user }) {
+      return session
+    },
+    async jwt({ token, profile, account, user }) {
+      console.log(user)
+
+      if (user) {
+        token.sub = '제로'
+      }
       return token
     },
   },
