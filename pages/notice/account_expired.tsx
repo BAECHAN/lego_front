@@ -3,7 +3,7 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import axiosRequest from 'pages/api/axios'
 
-export default function LoginNotice() {
+export default function AccountExpiredNotice() {
   const router = useRouter()
   const session = useSession()
 
@@ -110,6 +110,6 @@ export default function LoginNotice() {
   )
 }
 
-LoginNotice.getLayout = function getLayout(page: React.ReactElement) {
+AccountExpiredNotice.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>
 }

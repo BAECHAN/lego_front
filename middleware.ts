@@ -9,23 +9,20 @@ export async function middleware(request: NextRequest, response: NextResponse) {
   })
 
   if (!request.nextUrl.pathname.startsWith('/notice')) {
-    console.log(request.nextUrl.pathname, '노티스 아님')
-
     if (session?.state) {
-      if (session.state != 1) {
+      if (session.state == 7) {
         const url = request.nextUrl.clone()
-        url.pathname = '/notice/login_notice'
+        url.pathname = '/notice/account_expired'
         url.searchParams.set('state', String(session.state))
 
         return NextResponse.redirect(url)
       }
     }
   } else {
-    console.log(request.nextUrl.pathname, '노티스임')
-
     if (!session) {
       const url = request.nextUrl.clone()
       url.pathname = '/login'
+      url.search = ''
 
       return NextResponse.redirect(url)
     }
