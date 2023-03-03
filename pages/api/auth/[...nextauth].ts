@@ -3,6 +3,7 @@ import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import KakaoProvider from 'next-auth/providers/kakao'
 import GoogleProvider from 'next-auth/providers/google'
+import { Server } from 'https'
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
@@ -21,8 +22,6 @@ export default NextAuth({
       authorize: async (credentials, req) => {
         let url = process.env.SERVER_URL + '/api/login-chk'
 
-        console.log(credentials)
-
         let res: any = await axios
           .get(url, {
             params: {
@@ -33,14 +32,14 @@ export default NextAuth({
           .then((response) => {
             const user = response.data.result
 
-            user['state'] = '꺼져'
-            console.log(user)
-
-            const account = user
-
             if (user) {
-              console.log('ddd')
-              return account
+              return {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                image: user.image,
+                state: user.account_state,
+              }
             } else {
               return null
             }
@@ -71,6 +70,7 @@ export default NextAuth({
   ],
   session: {
     maxAge: 24 * 60 * 60, // 1 days,
+    strategy: 'jwt',
   },
   pages: {
     signIn: '/login',
@@ -81,13 +81,11 @@ export default NextAuth({
     async session({ session, token, user }) {
       return session
     },
-    async jwt({ token, profile, account, user }) {
-      console.log(user)
-
-      if (user) {
-        token.sub = '제로'
+    async jwt(params) {
+      if (params.user?.state) {
+        params.token.state = params.user.state
       }
-      return token
+      return params.token
     },
   },
 })
