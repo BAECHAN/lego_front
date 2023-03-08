@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react'
 
 export default function Header() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
 
   return (
     <header className="flex items-center p-3 text-xl bg-yellow-400">
@@ -16,7 +16,8 @@ export default function Header() {
         <a>시리즈</a>
       </Link>
       <div className="flex-grow" />
-      {session ? (
+
+      {session && status == 'authenticated' ? (
         <div className="flex space-x-4">
           <span className="relative top-[-1px]">{session.user?.name}님</span>
           <Link href="/mypage">

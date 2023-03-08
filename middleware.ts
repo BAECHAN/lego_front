@@ -1,5 +1,6 @@
 // <root>/middleware.ts
 import { getToken } from 'next-auth/jwt'
+import { signOut } from 'next-auth/react'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(request: NextRequest, response: NextResponse) {
@@ -14,7 +15,17 @@ export async function middleware(request: NextRequest, response: NextResponse) {
         const url = request.nextUrl.clone()
         url.pathname = '/notice/account_expired'
         url.searchParams.set('state', String(session.state))
+        return NextResponse.redirect(url)
+      } else if (session.state == 8) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/notice/account_locked'
+        url.searchParams.set('state', String(session.state))
 
+        return NextResponse.redirect(url)
+      } else if (session.state == 9) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/notice/account_withdraw'
+        url.searchParams.set('state', String(session.state))
         return NextResponse.redirect(url)
       }
     }

@@ -2,7 +2,7 @@ import Layout from '@components/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,6 +11,9 @@ import { display } from '@mui/system'
 
 export default function Login() {
   const [isShowPw, setIsShowPw] = useState(false)
+
+  const router = useRouter()
+
   const handleClickEye = () => {
     setIsShowPw(!isShowPw)
 
@@ -52,9 +55,11 @@ export default function Login() {
 
     if (response !== undefined) {
       if (response.ok) {
-        console.log(response)
-
-        Router.push('/')
+        if (router.query.callbackUrl != undefined) {
+          router.back()
+        } else {
+          router.push('/')
+        }
       } else {
         if (response.status === 401) {
           alert('아이디 혹은 패스워드를 확인하세요.')
