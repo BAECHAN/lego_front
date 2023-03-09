@@ -22,7 +22,7 @@ export default function ButtonAddCart(props: {
         order_quantity: props.order_quantity,
       }
 
-      axiosRequest('post', 'http://localhost:5000/api/add-cart', param)
+      axiosRequest('post', `http://localhost:5000/api/add-cart`, param)
         .then((response) => {
           if (response?.status === 200 && response.data.result == 1) {
             if (

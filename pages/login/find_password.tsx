@@ -25,7 +25,7 @@ export default function FindPassword() {
     setEmail(email)
 
     axios
-      .get('http://localhost:5000/api/email-chk?email=' + email)
+      .get(`http://localhost:5000/api/email-chk?email=${email}`)
       .then((response) => {
         setIsSubmit(true)
 

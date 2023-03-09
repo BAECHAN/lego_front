@@ -97,7 +97,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
   const delCartAPI = useMutation(
     async (param: ProductUpdateCartSubmitT) => {
       const res = await axios.patch(
-        'http://localhost:5000/api/del-cart',
+        `http://localhost:5000/api/del-cart`,
 
         JSON.stringify(param),
         {
@@ -125,7 +125,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
   const updateQuantityAPI = useMutation(
     async (param: ProductUpdateCartSubmitT) => {
       const res = await axios.patch(
-        'http://localhost:5000/api/upd-cart',
+        `http://localhost:5000/api/upd-cart`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },

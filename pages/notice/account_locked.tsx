@@ -1,10 +1,7 @@
 import Layout from '@components/Layout'
-import { signIn, signOut, useSession } from 'next-auth/react'
-import { redirect } from 'next/dist/server/api-utils'
+import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import axiosRequest from 'pages/api/axios'
 import { useEffect } from 'react'
-
 import { faPhone } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 

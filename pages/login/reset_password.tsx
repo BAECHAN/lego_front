@@ -22,7 +22,7 @@ export default function ResetPassword() {
 
   useEffect(() => {
     if (router.isReady) {
-      let url =
+      const url =
         'http://localhost:5000' +
         '/api/token-chk?email=' +
         email +
@@ -158,7 +158,7 @@ export default function ResetPassword() {
         pw,
       }
 
-      axiosRequest('patch', 'http://localhost:5000/api/update-password', param)
+      axiosRequest('patch', `http://localhost:5000/api/update-password`, param)
         .then((response) => {
           if (response?.status === 200) {
             alert('비밀번호가 변경되었습니다.\r로그인 페이지로 이동합니다.')

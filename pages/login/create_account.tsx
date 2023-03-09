@@ -3,10 +3,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useState, FocusEvent } from 'react'
 import { InputRegExpT, UserCreateT, UserSubmitT } from 'types'
 import axios from 'axios'
-import { useMutation } from '@tanstack/react-query'
 import Router from 'next/router'
 import crypto from 'crypto-js'
 import axiosRequest from 'pages/api/axios'
@@ -49,18 +48,42 @@ export default function CreateAccount() {
 
   const [isEmailOverlap, setIsEmailOverlap] = useState(false)
 
-  const handleBlurEmail = () => {
-    axios
-      .get('http://localhost:5000/api/email-chk?email=' + email)
-      .then((response) => {
-        response.data.result > 0
-          ? setIsEmailOverlap(true)
-          : setIsEmailOverlap(false)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+  const handleBlurEmail = (e: FocusEvent<HTMLInputElement>) => {
+    if (inputsPass.emailPass && email.length > 0) {
+      axios
+        .get(`http://localhost:5000/api/email-chk?email=${email}`)
+        .then((response) => {
+          response.data.result > 0
+            ? setIsEmailOverlap(true)
+            : setIsEmailOverlap(false)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    } else {
+      setIsEmailOverlap(false)
+    }
   }
+
+  const [isNicknameOverlap, setIsNicknameOverlap] = useState(false)
+
+  const handleBlurNickname = (e: FocusEvent<HTMLInputElement>) => {
+    if (inputsPass.nicknamePass && nickname.length > 0) {
+      axios
+        .get(`http://localhost:5000/api/nickname-chk?nickname=${nickname}`)
+        .then((response) => {
+          response.data.result > 0
+            ? setIsNicknameOverlap(true)
+            : setIsNicknameOverlap(false)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    } else {
+      setIsNicknameOverlap(false)
+    }
+  }
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target
 
@@ -160,6 +183,13 @@ export default function CreateAccount() {
         setDisabledSubmit(false)
         return false
       }
+
+      if (isNicknameOverlap) {
+        alert('사용중인 닉네임입니다.\r다른 닉네임으로 변경해주시기 바랍니다.')
+        document.getElementById('nickname')?.focus()
+        setDisabledSubmit(false)
+        return false
+      }
     }
 
     const secretKey = process.env.NEXT_PUBLIC_CRYPT_KEY
@@ -176,7 +206,7 @@ export default function CreateAccount() {
       nickname,
     }
 
-    axiosRequest('post', 'http://localhost:5000/api/create-account', userInfo)
+    axiosRequest('post', `http://localhost:5000/api/create-account`, userInfo)
       .then((response) => {
         if (response?.status === 200) {
           alert('회원가입되었습니다.\r로그인 페이지로 이동합니다.')
@@ -330,19 +360,26 @@ export default function CreateAccount() {
                 className={
                   nickname.length == 0
                     ? 'border-gray-500 border-2 border-solid'
-                    : inputsPass.nicknamePass
+                    : inputsPass.nicknamePass && !isNicknameOverlap
                     ? 'border-green-500 border-2 border-solid'
                     : 'border-red-500 border-2 border-solid'
                 }
                 title="닉네임"
                 value={nickname}
                 onChange={handleChange}
-                placeholder="2글자 이상 한글 또는 영문"
+                onBlur={handleBlurNickname}
+                placeholder="2글자 이상 16글자 이하의 한글 또는 영문"
                 autoComplete="off"
               />
             </label>
             {inputsPass.nicknamePass || nickname.length == 0 ? (
-              ''
+              isNicknameOverlap ? (
+                <span className="text-red-500 self-start ml-4">
+                  사용중인 닉네임입니다.
+                </span>
+              ) : (
+                ''
+              )
             ) : (
               <span className="text-red-500 self-start ml-4">
                 닉네임 양식이 맞지 않습니다.

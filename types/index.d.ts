@@ -87,7 +87,7 @@ export type UserT = {
   date_created: Date
   account_state: number
   date_withdraw: Date
-  grade: number
+  grade: string
 }
 
 export type ChildrenT = {

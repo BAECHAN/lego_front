@@ -20,7 +20,7 @@ export default NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       authorize: async (credentials, req) => {
-        let url = process.env.SERVER_URL + '/api/login-chk'
+        const url = 'http://localhost:5000' + '/api/login-chk'
 
         let res: any = await axios
           .get(url, {

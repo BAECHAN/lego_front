@@ -15,7 +15,7 @@ export default function AccountExpiredNotice() {
 
       axiosRequest(
         'patch',
-        'http://localhost:5000/api/upd-account-state',
+        `http://localhost:5000/api/upd-account-state`,
         param
       )
         .then(async (response) => {

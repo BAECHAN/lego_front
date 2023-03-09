@@ -44,7 +44,7 @@ export default function ButtonWish(props: {
   const addWishAPI = useMutation(
     async (param: ProductWishSubmitT) => {
       const res = await axios.post(
-        'http://localhost:5000/api/add-wish',
+        `http://localhost:5000/api/add-wish`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
@@ -85,7 +85,7 @@ export default function ButtonWish(props: {
   const delWishAPI = useMutation(
     async (param: ProductWishSubmitT) => {
       const res = await axios.patch(
-        'http://localhost:5000/api/del-wish',
+        `http://localhost:5000/api/del-wish`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
