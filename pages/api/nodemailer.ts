@@ -58,7 +58,7 @@ const handler: NextApiHandler<any> = async (req, res) => {
             비밀번호를 재설정 하시려면 아래의 링크를 클릭해주세요.<br />
             <span style="color:blue;">해당 링크는 발송 후 1시간 동안만 유효합니다.</span>
           </p>
-          <a href="${process.env.CLIENT_URL}/login/reset_password?email=${recipient}&token=${token}">비밀번호 재설정하기</a>
+          <a href="${process.env.CLIENT_URL}/account/reset_password?email=${recipient}&token=${token}">비밀번호 재설정하기</a>
         </div>`,
     })
 

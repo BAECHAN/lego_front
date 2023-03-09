@@ -43,7 +43,7 @@ export default function UserInfoContentsLine(props: {
           <div className="w-1/6" />
 
           <div className="info-value">
-            {props.infoKey == 'image' ? (
+            {props.infoKey == 'image' && props.infoValue ? (
               <Image
                 src={props.infoValue}
                 width="200px"
@@ -83,25 +83,17 @@ export default function UserInfoContentsLine(props: {
                     />
                   </>
                 ) : props.infoKey == 'password' ? (
-                  <>
-                    <ul className="text-xs">
-                      <li>
-                        ※ 8~16자 영문 대 소문자,
-                        <br /> 숫자, 특수문자로 작성해주세요.
-                      </li>
-                    </ul>
-                    <div className="flex flex-col info-update-password">
-                      <input
-                        type="text"
-                        placeholder={`현재 ${props.infoName} 입력`}
-                        style={{
-                          backgroundColor: 'white',
-                          border: '1px solid black',
-                        }}
-                        ref={infoInputRef}
-                      />
-                    </div>
-                  </>
+                  <div className="flex flex-col info-update-password">
+                    <input
+                      type="text"
+                      placeholder={`현재 ${props.infoName} 입력`}
+                      style={{
+                        backgroundColor: 'white',
+                        border: '1px solid black',
+                      }}
+                      ref={infoInputRef}
+                    />
+                  </div>
                 ) : (
                   <p>이 구간부터는 배송지일듯? 수정 필요</p>
                 )}
@@ -117,7 +109,8 @@ export default function UserInfoContentsLine(props: {
             {props.infoUpdate ? (
               isChange ? null : (
                 <ButtonChange
-                  infoKey={props.infoName}
+                  infoKey={props.infoKey}
+                  infoName={props.infoName}
                   isChange={isChange}
                   setIsChange={setIsChange}
                 />

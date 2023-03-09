@@ -161,8 +161,15 @@ export default function ResetPassword() {
       axiosRequest('patch', `http://localhost:5000/api/update-password`, param)
         .then((response) => {
           if (response?.status === 200) {
-            alert('비밀번호가 변경되었습니다.\r로그인 페이지로 이동합니다.')
-            Router.push('/login')
+            if (router.query.callbackPage == 'user_info') {
+              alert(
+                '비밀번호가 변경되었습니다.\r회원 정보 페이지로 이동합니다.'
+              )
+              router.push('/mypage/user_info')
+            } else {
+              alert('비밀번호가 변경되었습니다.\r로그인 페이지로 이동합니다.')
+              Router.push('/login')
+            }
           }
         })
         .catch((error) => {

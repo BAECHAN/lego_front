@@ -1,14 +1,22 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenSquare } from '@fortawesome/free-solid-svg-icons'
+import { useRouter } from 'next/router'
 
 export default function ButtonChange(props: {
   infoKey: string
+  infoName: string
   isChange: boolean
   setIsChange: React.Dispatch<React.SetStateAction<boolean>>
 }) {
+  const router = useRouter()
+
   const handleClickButton = () => {
-    props.setIsChange(!props.isChange)
+    if (props.infoKey == 'password') {
+      router.push('/account/check_password')
+    } else {
+      props.setIsChange(!props.isChange)
+    }
   }
 
   return (
@@ -17,7 +25,7 @@ export default function ButtonChange(props: {
       className="flex h-8 leading-5"
       onClick={handleClickButton}
     >
-      {props.infoKey}&nbsp;변경하기
+      {props.infoName}&nbsp;변경하기
       <FontAwesomeIcon
         icon={faPenSquare}
         width="23px"

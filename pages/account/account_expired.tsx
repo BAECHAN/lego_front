@@ -1,42 +1,60 @@
 import Layout from '@components/Layout'
-import { signOut } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import { faPhone } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import axiosRequest from 'pages/api/axios'
 
-export default function AccountExpiredNotice() {
+export default function AccountExpiredAccount() {
   const router = useRouter()
-
-  useEffect(() => {
-    signOut({ redirect: false })
-  }, [])
+  const session = useSession()
 
   const handleClickButton = () => {
-    router.push('/')
+    if (session.data?.user?.email) {
+      let param = {
+        email: session.data?.user?.email,
+      }
+
+      axiosRequest(
+        'patch',
+        `http://localhost:5000/api/upd-account-state`,
+        param
+      )
+        .then(async (response) => {
+          if (response?.status === 200 && response.data.result == 1) {
+            console.log(session)
+            //session?.data?.user?.state = 1;
+            alert('휴면을 해제하였습니다.\r다시 로그인 해주시기 바랍니다.')
+            await signOut()
+          } else {
+            new Error()
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          alert(
+            '휴면을 해제하는데 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
+          )
+          return false
+        })
+    } else {
+      signIn()
+    }
   }
 
   return (
     <div className="min-h-[80vh] bg-gray-200">
-      <div className="flex justify-center items-center notice-contents">
-        <h2 className="text-3xl ">잠금 계정 안내</h2>
+      <div className="flex justify-center items-center account-contents">
+        <h2 className="text-3xl ">휴면 계정 안내</h2>
         <p className="text-center">
-          해당 계정은 이용약관에 위배되는 활동이 의심되어 잠긴 계정으로
-          전환되었습니다. <br />
-          잠김을 해제하려면 관리자에게 문의해주시기 바랍니다.
-          <br />
+          해당 계정은 개인정보 보호를 위하여 마지막 로그인 기준 1년 미접속하여
+          휴면 계정으로 전환되었습니다. <br />
+          휴면을 해제하려면 아래 버튼을 클릭해주시기 바랍니다.
         </p>
-        <p>
-          ( <FontAwesomeIcon icon={faPhone} width={'10px'} className="inline" />
-          &nbsp;1234-5678 )
-        </p>
-
         <button type="button" onClick={handleClickButton}>
-          홈페이지로 이동
+          휴면 해제
         </button>
       </div>
       <style jsx>{`
-        .notice-contents {
+        .account-contents {
           min-width: 800px;
           vertical-align: middle;
           display: flex;
@@ -92,6 +110,6 @@ export default function AccountExpiredNotice() {
   )
 }
 
-AccountExpiredNotice.getLayout = function getLayout(page: React.ReactElement) {
+AccountExpiredAccount.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>
 }

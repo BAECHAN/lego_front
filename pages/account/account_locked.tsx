@@ -1,36 +1,44 @@
 import Layout from '@components/Layout'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { faPhone } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export default function AccountExpiredNotice() {
+export default function AccountExpiredAccount() {
   const router = useRouter()
+
+  const session = useSession()
 
   useEffect(() => {
     signOut({ redirect: false })
-  }, [])
+  }, [session])
 
   const handleClickButton = () => {
-    router.push('/login/create_account')
+    router.push('/')
   }
 
   return (
     <div className="min-h-[80vh] bg-gray-200">
-      <div className="flex justify-center items-center notice-contents">
-        <h2 className="text-3xl ">탈퇴 계정 안내</h2>
+      <div className="flex justify-center items-center account-contents">
+        <h2 className="text-3xl ">잠금 계정 안내</h2>
         <p className="text-center">
-          해당 계정은 탈퇴처리된 계정입니다.
-          <br />
-          서비스를 다시 이용하시고 싶으신 경우, 회원가입을 진행하시어 새로운
-          계정을 생성해주시기 바랍니다.
+          해당 계정은 이용약관에 위배되는 활동이 의심되어 잠긴 계정으로
+          전환되었습니다. <br />
+          잠김을 해제하려면 관리자에게 문의해주시기 바랍니다.
           <br />
         </p>
+        <p>
+          ( <FontAwesomeIcon icon={faPhone} width={'10px'} className="inline" />
+          &nbsp;1234-5678 )
+        </p>
+
         <button type="button" onClick={handleClickButton}>
-          회원가입 하러가기
+          홈페이지로 이동
         </button>
       </div>
       <style jsx>{`
-        .notice-contents {
+        .account-contents {
           min-width: 800px;
           vertical-align: middle;
           display: flex;
@@ -86,6 +94,6 @@ export default function AccountExpiredNotice() {
   )
 }
 
-AccountExpiredNotice.getLayout = function getLayout(page: React.ReactElement) {
+AccountExpiredAccount.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>
 }

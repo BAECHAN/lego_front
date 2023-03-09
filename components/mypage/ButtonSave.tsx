@@ -36,8 +36,6 @@ export default function ButtonSave(props: {
       props.setIsChange(!props.isChange)
       props.setNewValue('')
     } else {
-      console.log(props.email, props.newValue)
-
       if (inputRegExp.nickname.test(props.newValue)) {
         axiosRequest('post', `http://localhost:5000/api/upd-nickname`, {
           email: props.email,

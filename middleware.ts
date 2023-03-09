@@ -9,33 +9,39 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     secret: process.env.NEXTAUTH_SECRET,
   })
 
-  if (!request.nextUrl.pathname.startsWith('/notice')) {
+  if (!request.nextUrl.pathname.startsWith('/account')) {
     if (session?.state) {
       if (session.state == 7) {
         const url = request.nextUrl.clone()
-        url.pathname = '/notice/account_expired'
+        url.pathname = '/account/account_expired'
         url.searchParams.set('state', String(session.state))
         return NextResponse.redirect(url)
       } else if (session.state == 8) {
         const url = request.nextUrl.clone()
-        url.pathname = '/notice/account_locked'
+        url.pathname = '/account/account_locked'
         url.searchParams.set('state', String(session.state))
-
         return NextResponse.redirect(url)
       } else if (session.state == 9) {
         const url = request.nextUrl.clone()
-        url.pathname = '/notice/account_withdraw'
+        url.pathname = '/account/account_withdraw'
         url.searchParams.set('state', String(session.state))
         return NextResponse.redirect(url)
       }
+    } else {
     }
   } else {
     if (!session) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/login'
-      url.search = ''
+      if (
+        request.nextUrl.pathname.indexOf('reset_password') > -1 &&
+        request.nextUrl.search.indexOf('callbackPage') < 0
+      ) {
+      } else {
+        const url = request.nextUrl.clone()
+        url.pathname = '/login'
+        url.search = ''
 
-      return NextResponse.redirect(url)
+        return NextResponse.redirect(url)
+      }
     }
   }
 

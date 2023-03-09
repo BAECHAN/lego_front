@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { FormEventHandler, useState } from 'react'
 import { display } from '@mui/system'
 
 export default function Login() {
@@ -110,7 +110,7 @@ export default function Login() {
                 id="email"
                 placeholder="예) lego@lego.co.kr"
                 autoComplete="off"
-                value="asdfjklddd@gmail.com"
+                value="asdfjklddd@naver.com"
               />
             </label>
             <label>
