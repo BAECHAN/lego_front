@@ -55,7 +55,10 @@ export default function Login() {
 
     if (response !== undefined) {
       if (response.ok) {
-        if (router.query.callbackUrl != undefined) {
+        if (
+          router.query.callbackUrl != undefined &&
+          router.query.callbackUrl.indexOf('account') < 0
+        ) {
           router.back()
         } else {
           router.push('/')

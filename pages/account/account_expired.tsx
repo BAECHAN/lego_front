@@ -13,11 +13,7 @@ export default function AccountExpiredAccount() {
         email: session.data?.user?.email,
       }
 
-      axiosRequest(
-        'patch',
-        `http://localhost:5000/api/upd-account-state`,
-        param
-      )
+      axiosRequest('patch', `http://localhost:5000/api/wakeup-account`, param)
         .then(async (response) => {
           if (response?.status === 200 && response.data.result == 1) {
             console.log(session)
