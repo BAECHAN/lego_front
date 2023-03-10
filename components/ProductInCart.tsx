@@ -15,7 +15,9 @@ export default function ProductInCart(props: { product: ProductCartT }) {
   const [minusDisabled, setMinusDisabled] = useState(
     props.product.order_quantity > 1 ? false : true
   )
-  const [plusDisabled, setPlusDisabled] = useState(false)
+  const [plusDisabled, setPlusDisabled] = useState(
+    props.product.order_quantity < props.product.ea ? false : true
+  )
 
   let [selectedOrder, setSelectedOrder] = useRecoilState(selectedOrderSelector)
 
@@ -149,9 +151,10 @@ export default function ProductInCart(props: { product: ProductCartT }) {
           } else {
             price = props.product.price
           }
+
           setTotalPrice((totalPrice) => totalPrice + price)
 
-          if (quantity >= props.product.ea) {
+          if (quantity + 1 >= props.product.ea) {
             setPlusDisabled(true)
           } else {
             setPlusDisabled(false)

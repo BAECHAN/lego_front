@@ -29,6 +29,7 @@ const mypageListAtom = atom<ObjT_Str>({
     order_history: '주문 내역 조회',
     cart: '장바구니',
     user_info: '회원 정보',
+    delivery: '배송지 관리',
     coupon: '쿠폰 조회',
     viewed_products: '최근 본 상품',
     wish_list: '좋아요',

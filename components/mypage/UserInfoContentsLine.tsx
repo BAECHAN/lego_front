@@ -24,6 +24,7 @@ export default function UserInfoContentsLine(props: {
   }, [isChange])
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    console.log(event.key)
     if (event.key === 'Enter') {
       setIsEnter(true)
     }
@@ -65,6 +66,7 @@ export default function UserInfoContentsLine(props: {
                       style={{
                         backgroundColor: 'white',
                         border: '1px solid black',
+                        paddingLeft: '5px',
                       }}
                       onChange={(e) => setNewValue(e.target.value)}
                       ref={infoInputRef}
@@ -82,21 +84,7 @@ export default function UserInfoContentsLine(props: {
                       setIsEnter={setIsEnter}
                     />
                   </>
-                ) : props.infoKey == 'password' ? (
-                  <div className="flex flex-col info-update-password">
-                    <input
-                      type="text"
-                      placeholder={`현재 ${props.infoName} 입력`}
-                      style={{
-                        backgroundColor: 'white',
-                        border: '1px solid black',
-                      }}
-                      ref={infoInputRef}
-                    />
-                  </div>
-                ) : (
-                  <p>이 구간부터는 배송지일듯? 수정 필요</p>
-                )}
+                ) : null}
               </div>
             ) : (
               <p>{value}</p>

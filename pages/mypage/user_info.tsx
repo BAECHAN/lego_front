@@ -95,6 +95,38 @@ export default function UserInfo(req: NextApiRequest) {
               email={userInfo.email}
             />
 
+            <div className="my-20 order-info">
+              <h1 className="text-2xl font-bold mb-3">배송 정보</h1>
+              <hr className="border-black border-2" />
+
+              <UserInfoContentsLine
+                infoKey={'address'}
+                infoName={'배송지'}
+                infoUpdate={true}
+                email={userInfo.email}
+              />
+            </div>
+
+            <div className="my-20 order-info">
+              <h1 className="text-2xl font-bold mb-3">로그인 연동 정보</h1>
+              <hr className="border-black border-2" />
+
+              <UserInfoContentsLine
+                infoKey={'onKakao'}
+                infoName={'카카오 로그인 연동 상태'}
+                infoUpdate={false}
+                email={userInfo.email}
+              />
+              <UserInfoContentsLine
+                infoKey={'onGoogle'}
+                infoName={'구글 로그인 연동 상태'}
+                infoUpdate={false}
+                email={userInfo.email}
+              />
+
+              <div></div>
+            </div>
+
             <div className="flex justify-center">
               <div className="flex-grow w-1/4" />
               <button
