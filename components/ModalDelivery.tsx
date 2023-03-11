@@ -1,30 +1,39 @@
 import { faSquareXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, {
-  KeyboardEvent,
-  ChangeEvent,
-  useRef,
-  useState,
-  useEffect,
-} from 'react'
+import React, { ChangeEvent, useRef, useState, useEffect } from 'react'
 
 export default function ModalDelivery({ onClose }: any) {
+  const [inputs, setInputs] = useState({
+    recipient: '',
+    shippingName: '',
+    telNumberFront: '',
+    telNumberMiddle: '',
+    telNumberBack: '',
+    shippingZipCode: '',
+    shippingAddress1: '',
+    shippingAddress2: '',
+    shippingDefault: false,
+    deliveryRequest: '',
+    deliveryRequestDirect: '',
+  })
+
+  let {
+    recipient,
+    shippingName,
+    telNumberFront,
+    telNumberMiddle,
+    telNumberBack,
+    shippingZipCode,
+    shippingAddress1,
+    shippingAddress2,
+    shippingDefault,
+    deliveryRequest,
+    deliveryRequestDirect,
+  } = inputs
+
   const [directOpen, setDirectOpen] = useState(false)
-  const [directInputValue, setDirectInputValue] = useState('')
 
   const directInputRef = useRef<HTMLInputElement>(null)
-
-  const handleChangeDirectInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setDirectInputValue(e.currentTarget.value)
-  }
-
-  const handleChangeRequest = (e: ChangeEvent<HTMLSelectElement>) => {
-    if (e.currentTarget.value == '직접 입력') {
-      setDirectOpen(true)
-    } else {
-      setDirectOpen(false)
-    }
-  }
 
   useEffect(() => {
     if (directInputRef && directInputRef.current) {
@@ -32,8 +41,41 @@ export default function ModalDelivery({ onClose }: any) {
     }
   }, [directOpen])
 
-  const handleKeyDownOnlyNum = (event: KeyboardEvent<HTMLInputElement>) => {
-    console.log(event.key)
+  const handleChangeValue = (
+    option: string,
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value, checked } = e.currentTarget
+
+    console.log(value)
+
+    if (option == 'maxLength20') {
+      value.length < 21 ? setInputs({ ...inputs, [name]: value }) : null
+    } else if (option == 'maxLength30') {
+      value.length < 31 ? setInputs({ ...inputs, [name]: value }) : null
+    } else if (option == 'number3') {
+      value.length < 4
+        ? setInputs({ ...inputs, [name]: value.replace(/[^0-9]/g, '') })
+        : null
+    } else if (option == 'number4') {
+      value.length < 5
+        ? setInputs({ ...inputs, [name]: value.replace(/[^0-9]/g, '') })
+        : null
+    } else if (option == 'check') {
+      setInputs({ ...inputs, [name]: checked ? true : false })
+    }
+  }
+
+  const handleChangeSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.currentTarget
+
+    setInputs({ ...inputs, [name]: value })
+    if (value == '7') {
+      setDirectOpen(true)
+    } else {
+      setDirectOpen(false)
+      setInputs({ ...inputs, deliveryRequestDirect: '' })
+    }
   }
 
   const handleClickSubmit = () => {}
@@ -62,39 +104,50 @@ export default function ModalDelivery({ onClose }: any) {
                   type="text"
                   name="recipient"
                   className="modal-input medium"
+                  onChange={(e) => handleChangeValue('maxLength20', e)}
+                  value={inputs.recipient}
                 ></input>
+                <i className="leading-7 ml-2">({inputs.recipient.length}/20)</i>
               </div>
 
               <div className="flex my-5">
                 <div className="title">배송지명(선택)</div>
                 <input
                   type="text"
-                  name="shipping-name"
+                  name="shippingName"
                   className="modal-input medium"
+                  onChange={(e) => handleChangeValue('maxLength20', e)}
+                  value={inputs.shippingName}
                 ></input>
+                <i className="leading-7 ml-2">
+                  ({inputs.shippingName.length}/20)
+                </i>
               </div>
 
               <div className="flex my-5">
                 <div className="title">휴대전화</div>
                 <input
                   type="text"
-                  name="tel-number-front"
+                  name="telNumberFront"
                   className="modal-input x-small mr-2"
-                  onKeyDown={handleKeyDownOnlyNum}
+                  onChange={(e) => handleChangeValue('number3', e)}
+                  value={inputs.telNumberFront}
                 ></input>
                 -
                 <input
                   type="text"
-                  name="tel-number-middle"
+                  name="telNumberMiddle"
                   className="modal-input x-small mx-2"
-                  onKeyDown={handleKeyDownOnlyNum}
+                  onChange={(e) => handleChangeValue('number4', e)}
+                  value={inputs.telNumberMiddle}
                 ></input>
                 -
                 <input
                   type="text"
-                  name="tel-number-back"
+                  name="telNumberBack"
                   className="modal-input x-small ml-2"
-                  onKeyDown={handleKeyDownOnlyNum}
+                  onChange={(e) => handleChangeValue('number4', e)}
+                  value={inputs.telNumberBack}
                 ></input>
               </div>
 
@@ -102,9 +155,10 @@ export default function ModalDelivery({ onClose }: any) {
                 <div className="title">배송지 주소</div>
                 <input
                   type="text"
-                  name="shipping-zipcode"
+                  name="shippingZipCode"
                   className="modal-input small bg-gray-200"
                   readOnly={true}
+                  value={inputs.shippingZipCode}
                 ></input>
                 <button type="button" className="btn-search ml-2">
                   검색
@@ -115,9 +169,10 @@ export default function ModalDelivery({ onClose }: any) {
                 <div className="title"></div>
                 <input
                   type="text"
-                  name="shipping-address1"
+                  name="shippingAddress1"
                   className="modal-input large bg-gray-200"
                   readOnly={true}
+                  value={inputs.shippingAddress1}
                 ></input>
               </div>
 
@@ -125,9 +180,14 @@ export default function ModalDelivery({ onClose }: any) {
                 <div className="title"></div>
                 <input
                   type="text"
-                  name="shipping-address2"
+                  name="shippingAddress2"
                   className="modal-input large"
+                  value={inputs.shippingAddress2}
+                  onChange={(e) => handleChangeValue('maxLength30', e)}
                 ></input>
+                <i className="leading-7 ml-2">
+                  ({inputs.shippingAddress2.length}/30)
+                </i>
               </div>
 
               <div className="flex my-5">
@@ -135,8 +195,10 @@ export default function ModalDelivery({ onClose }: any) {
                 <label className="text-sm font-medium select-none flex items-center">
                   <input
                     type="checkbox"
-                    name="shipping-default"
+                    name="shippingDefault"
                     className="modal-input w-4 mr-2"
+                    onChange={(e) => handleChangeValue('check', e)}
+                    defaultChecked={inputs.shippingDefault ? true : false}
                   ></input>{' '}
                   기본 배송지 설정
                 </label>
@@ -146,18 +208,18 @@ export default function ModalDelivery({ onClose }: any) {
                 <div className="title">배송 요청사항(선택)</div>
                 <select
                   className="modal-input large"
-                  name="delivery-request"
-                  onChange={handleChangeRequest}
+                  name="deliveryRequest"
+                  onChange={handleChangeSelect}
                 >
-                  <option>배송 시 요청사항을 선택해주세요</option>
-                  <option>부재 시 경비실에 맡겨주세요</option>
-                  <option>부재 시 택배함에 넣어주세요</option>
-                  <option>부재 시 집 앞에 놔주세요</option>
-                  <option>배송 전 연락 바랍니다</option>
-                  <option>
+                  <option value="1">배송 시 요청사항을 선택해주세요</option>
+                  <option value="2">부재 시 경비실에 맡겨주세요</option>
+                  <option value="3">부재 시 택배함에 넣어주세요</option>
+                  <option value="4">부재 시 집 앞에 놔주세요</option>
+                  <option value="5">배송 전 연락 바랍니다</option>
+                  <option value="6">
                     파손의 위험이 있는 상품입니다. 배송 시 주의해 주세요
                   </option>
-                  <option>직접 입력</option>
+                  <option value="7">직접 입력</option>
                 </select>
               </div>
 
@@ -166,12 +228,15 @@ export default function ModalDelivery({ onClose }: any) {
                   <div className="title"></div>
                   <input
                     type="text"
-                    name="delivery-request-direct"
+                    name="deliveryRequestDirect"
                     className="modal-input large"
-                    value={directInputValue}
-                    onChange={handleChangeDirectInput}
+                    value={inputs.deliveryRequestDirect}
+                    onChange={(e) => handleChangeValue('maxLength30', e)}
                     ref={directInputRef}
                   ></input>
+                  <i className="leading-7 ml-2">
+                    ({inputs.deliveryRequestDirect.length}/30)
+                  </i>
                 </div>
               ) : null}
             </div>
@@ -210,7 +275,7 @@ export default function ModalDelivery({ onClose }: any) {
           }
 
           &.large {
-            width: 65%;
+            width: 63%;
           }
         }
 
@@ -271,7 +336,7 @@ export default function ModalDelivery({ onClose }: any) {
         }
 
         .modal {
-          width: 557px;
+          width: 675px;
           height: 640px;
           position: relative;
           top: 50%;
