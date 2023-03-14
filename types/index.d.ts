@@ -127,3 +127,17 @@ export type ProductAddCartSubmitT = {
   product_id: number
   order_quantity: number
 }
+
+export type DeliverySubmitT = {
+  recipient: string
+  shippingName: string
+  telNumberFront: string
+  telNumberMiddle: string
+  telNumberBack: string
+  shippingZipCode: string
+  shippingAddress1: string
+  shippingAddress2: string
+  shippingDefault: boolean
+  deliveryRequest: string
+  deliveryRequestDirect: string
+}

@@ -1,9 +1,15 @@
 import { faSquareXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { ChangeEvent, useRef, useState, useEffect } from 'react'
+import Postcode from './Postcode'
+import { DeliverySubmitT } from 'types'
+import axiosRequest from 'pages/api/axios'
+import { useSession } from 'next-auth/react'
 
 export default function ModalDelivery({ onClose }: any) {
-  const [inputs, setInputs] = useState({
+  const { data: session, status } = useSession()
+
+  const [inputs, setInputs] = useState<DeliverySubmitT>({
     recipient: '',
     shippingName: '',
     telNumberFront: '',
@@ -31,13 +37,18 @@ export default function ModalDelivery({ onClose }: any) {
     deliveryRequestDirect,
   } = inputs
 
+  const inputsRef = useRef<HTMLInputElement[]>([])
+  const selectsRef = useRef<HTMLSelectElement[]>([])
+
+  const [disabledSubmit, setDisabledSubmit] = useState(false)
+
   const [directOpen, setDirectOpen] = useState(false)
 
-  const directInputRef = useRef<HTMLInputElement>(null)
+  const postButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    if (directInputRef && directInputRef.current) {
-      directInputRef.current.focus()
+    if (inputsRef.current[9]) {
+      inputsRef.current[9].focus()
     }
   }, [directOpen])
 
@@ -46,8 +57,6 @@ export default function ModalDelivery({ onClose }: any) {
     e: ChangeEvent<HTMLInputElement>
   ) => {
     const { name, value, checked } = e.currentTarget
-
-    console.log(value)
 
     if (option == 'maxLength20') {
       value.length < 21 ? setInputs({ ...inputs, [name]: value }) : null
@@ -69,16 +78,104 @@ export default function ModalDelivery({ onClose }: any) {
   const handleChangeSelect = (e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.currentTarget
 
-    setInputs({ ...inputs, [name]: value })
     if (value == '7') {
       setDirectOpen(true)
+      setInputs({ ...inputs, [name]: value })
     } else {
       setDirectOpen(false)
-      setInputs({ ...inputs, deliveryRequestDirect: '' })
+      setInputs({ ...inputs, [name]: value, deliveryRequestDirect: '' })
     }
   }
 
-  const handleClickSubmit = () => {}
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setDisabledSubmit(true)
+    event.preventDefault()
+
+    if (
+      inputsRef &&
+      inputsRef.current &&
+      status == 'authenticated' &&
+      session.user &&
+      session.user.email
+    ) {
+      let param = {
+        email: session.user.email,
+        recipient,
+        shippingName,
+        telNumberFront,
+        telNumberMiddle,
+        telNumberBack,
+        shippingZipCode,
+        shippingAddress1,
+        shippingAddress2,
+        shippingDefault,
+        deliveryRequest,
+        deliveryRequestDirect,
+      }
+
+      for (let i = 0; i < inputsRef.current.length; i++) {
+        if (!(i == 1 || i == 5 || i == 6 || i == 9)) {
+          if (inputsRef.current[i].value.trim().length == 0) {
+            alert(`${inputsRef.current[i].title}을(를) 입력해주시기 바랍니다.`)
+            inputsRef.current[i].focus()
+            setDisabledSubmit(false)
+            return false
+          }
+        } else {
+          if (i == 1) {
+            if (inputsRef.current[i].value.trim().length == 0) {
+              param.shippingName = recipient
+            }
+          } else if (i == 5) {
+            if (
+              shippingZipCode.trim().length == 0 ||
+              shippingAddress1.trim().length == 0
+            ) {
+              alert('검색 버튼을 클릭하여 주소를 선택해주시기 바랍니다.')
+              postButtonRef.current?.click()
+              setDisabledSubmit(false)
+              return false
+            }
+          } else if (i == 9) {
+            if (
+              deliveryRequest == '7' &&
+              deliveryRequestDirect.trim().length == 0
+            ) {
+              alert(`${inputsRef.current[i].title}을 입력해주시기 바랍니다.`)
+              inputsRef.current[i].focus()
+              setDisabledSubmit(false)
+              return false
+            }
+          }
+        }
+      }
+
+      if (deliveryRequest == '1' || deliveryRequest.trim().length == 0) {
+        alert('배송 요청사항을 선택해주시기 바랍니다.')
+        selectsRef.current[0].focus()
+        setDisabledSubmit(false)
+        return false
+      }
+
+      axiosRequest('post', `http://localhost:5000/api/add-shipping`, param)
+        .then((response) => {
+          if (response?.status === 200) {
+            alert('배송지를 등록하였습니다.')
+            setDisabledSubmit(false)
+            onClose()
+            return true
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          alert(
+            '배송지 등록이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
+          )
+          setDisabledSubmit(false)
+          return false
+        })
+    }
+  }
 
   return (
     <div className="modal-wrap">
@@ -96,7 +193,7 @@ export default function ModalDelivery({ onClose }: any) {
         <div className="modal-body">
           <h2 className="text-xl font-bold">신규 배송지</h2>
 
-          <form name="delivery-form">
+          <form name="delivery-form" onSubmit={handleSubmit}>
             <div className="text-sm">
               <div className="flex my-5">
                 <div className="title">수령인</div>
@@ -106,6 +203,10 @@ export default function ModalDelivery({ onClose }: any) {
                   className="modal-input medium"
                   onChange={(e) => handleChangeValue('maxLength20', e)}
                   value={inputs.recipient}
+                  title="수령인"
+                  ref={(el) => {
+                    el && inputsRef.current ? (inputsRef.current[0] = el) : null
+                  }}
                 ></input>
                 <i className="leading-7 ml-2">({inputs.recipient.length}/20)</i>
               </div>
@@ -118,6 +219,10 @@ export default function ModalDelivery({ onClose }: any) {
                   className="modal-input medium"
                   onChange={(e) => handleChangeValue('maxLength20', e)}
                   value={inputs.shippingName}
+                  title="배송지명(선택)"
+                  ref={(el) => {
+                    el && inputsRef.current ? (inputsRef.current[1] = el) : null
+                  }}
                 ></input>
                 <i className="leading-7 ml-2">
                   ({inputs.shippingName.length}/20)
@@ -132,6 +237,10 @@ export default function ModalDelivery({ onClose }: any) {
                   className="modal-input x-small mr-2"
                   onChange={(e) => handleChangeValue('number3', e)}
                   value={inputs.telNumberFront}
+                  title="휴대폰 번호 앞자리"
+                  ref={(el) => {
+                    el && inputsRef.current ? (inputsRef.current[2] = el) : null
+                  }}
                 ></input>
                 -
                 <input
@@ -140,6 +249,10 @@ export default function ModalDelivery({ onClose }: any) {
                   className="modal-input x-small mx-2"
                   onChange={(e) => handleChangeValue('number4', e)}
                   value={inputs.telNumberMiddle}
+                  title="휴대폰 번호 가운데자리"
+                  ref={(el) => {
+                    el && inputsRef.current ? (inputsRef.current[3] = el) : null
+                  }}
                 ></input>
                 -
                 <input
@@ -148,6 +261,10 @@ export default function ModalDelivery({ onClose }: any) {
                   className="modal-input x-small ml-2"
                   onChange={(e) => handleChangeValue('number4', e)}
                   value={inputs.telNumberBack}
+                  title="휴대폰 번호 뒷자리"
+                  ref={(el) => {
+                    el && inputsRef.current ? (inputsRef.current[4] = el) : null
+                  }}
                 ></input>
               </div>
 
@@ -159,10 +276,16 @@ export default function ModalDelivery({ onClose }: any) {
                   className="modal-input small bg-gray-200"
                   readOnly={true}
                   value={inputs.shippingZipCode}
+                  title="배송지 우편번호"
+                  ref={(el) => {
+                    el && inputsRef.current ? (inputsRef.current[5] = el) : null
+                  }}
                 ></input>
-                <button type="button" className="btn-search ml-2">
-                  검색
-                </button>
+                <Postcode
+                  inputs={inputs}
+                  setInputs={setInputs}
+                  postButtonRef={postButtonRef}
+                />
               </div>
 
               <div className="flex my-5">
@@ -172,7 +295,11 @@ export default function ModalDelivery({ onClose }: any) {
                   name="shippingAddress1"
                   className="modal-input large bg-gray-200"
                   readOnly={true}
+                  title="배송지 주소"
                   value={inputs.shippingAddress1}
+                  ref={(el) => {
+                    el && inputsRef.current ? (inputsRef.current[6] = el) : null
+                  }}
                 ></input>
               </div>
 
@@ -183,7 +310,11 @@ export default function ModalDelivery({ onClose }: any) {
                   name="shippingAddress2"
                   className="modal-input large"
                   value={inputs.shippingAddress2}
+                  title="배송지 상세주소"
                   onChange={(e) => handleChangeValue('maxLength30', e)}
+                  ref={(el) => {
+                    el && inputsRef.current ? (inputsRef.current[7] = el) : null
+                  }}
                 ></input>
                 <i className="leading-7 ml-2">
                   ({inputs.shippingAddress2.length}/30)
@@ -197,8 +328,14 @@ export default function ModalDelivery({ onClose }: any) {
                     type="checkbox"
                     name="shippingDefault"
                     className="modal-input w-4 mr-2"
+                    title="기본 배송지 설정 유무"
                     onChange={(e) => handleChangeValue('check', e)}
                     defaultChecked={inputs.shippingDefault ? true : false}
+                    ref={(el) => {
+                      el && inputsRef.current
+                        ? (inputsRef.current[8] = el)
+                        : null
+                    }}
                   ></input>{' '}
                   기본 배송지 설정
                 </label>
@@ -210,6 +347,12 @@ export default function ModalDelivery({ onClose }: any) {
                   className="modal-input large"
                   name="deliveryRequest"
                   onChange={handleChangeSelect}
+                  title="배송 요청사항"
+                  ref={(el) => {
+                    el && selectsRef.current
+                      ? (selectsRef.current[0] = el)
+                      : null
+                  }}
                 >
                   <option value="1">배송 시 요청사항을 선택해주세요</option>
                   <option value="2">부재 시 경비실에 맡겨주세요</option>
@@ -231,8 +374,13 @@ export default function ModalDelivery({ onClose }: any) {
                     name="deliveryRequestDirect"
                     className="modal-input large"
                     value={inputs.deliveryRequestDirect}
+                    title="배송 요청사항 세부내용"
                     onChange={(e) => handleChangeValue('maxLength30', e)}
-                    ref={directInputRef}
+                    ref={(el) => {
+                      el && inputsRef.current
+                        ? (inputsRef.current[9] = el)
+                        : null
+                    }}
                   ></input>
                   <i className="leading-7 ml-2">
                     ({inputs.deliveryRequestDirect.length}/30)
@@ -240,20 +388,24 @@ export default function ModalDelivery({ onClose }: any) {
                 </div>
               ) : null}
             </div>
-          </form>
 
-          <div className="flex justify-center">
-            <button type="button" className="btn-cancle mx-1" onClick={onClose}>
-              취소
-            </button>
-            <button
-              type="button"
-              className="btn-submit mx-1"
-              onClick={handleClickSubmit}
-            >
-              등록
-            </button>
-          </div>
+            <div className="flex justify-center">
+              <button
+                type="button"
+                className="btn-cancle mx-1"
+                onClick={onClose}
+              >
+                취소
+              </button>
+              <button
+                type="submit"
+                className="btn-submit mx-1"
+                disabled={disabledSubmit}
+              >
+                등록
+              </button>
+            </div>
+          </form>
         </div>
       </div>
 
