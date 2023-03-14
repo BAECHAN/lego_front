@@ -82,8 +82,6 @@ export default function ProductInCart(props: { product: ProductCartT }) {
       }
       setTotalPrice((totalPrice) => totalPrice - price)
     }
-
-    console.log(price)
   }
 
   const handleClickDelete = (e: React.MouseEvent<HTMLButtonElement>) => {

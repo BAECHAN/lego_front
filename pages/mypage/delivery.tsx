@@ -1,7 +1,10 @@
 import Layout from '@components/Layout'
 import ModalDelivery from '@components/ModalDelivery'
-import Portal from '@components/portal'
+import Portal from '@components/Portal'
+import ShippingItem from '@components/ShippingItem'
+import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 import React, { useEffect, useState } from 'react'
+import { ShippingT } from 'types'
 
 export default function Delivery() {
   const [modalOpen, setModalOpen] = useState(false)
@@ -10,23 +13,28 @@ export default function Delivery() {
     !modalOpen ? setModalOpen(true) : setModalOpen(false)
   }
 
+  const { data, isFetched, isFetching } = useDeliveryShippingList()
+
   return (
     <div>
-      {true
-        ? // <div className="min-h-[600px]">
-          //   <ul className="flex flex-col">
-          //     {data.cartList?.map((item: ProductCartT, index: number) => {
-          //       return (
-          //         <li key={item.cart_id}>
-          //           <ProductInCart product={item} />
-          //           {index < data.cartList.length - 1 ? <hr /> : null}
-          //         </li>
-          //       )
-          //     })}
-          //   </ul>
-          // </div>
-          null
-        : null}
+      {data && data.shippingList?.length > 0 ? (
+        <div className="min-h-[300px]">
+          <ul className="flex flex-col">
+            {data.shippingList.map((item: ShippingT, index: number) => {
+              return (
+                <li key={item.shipping_id}>
+                  <ShippingItem shipping={item}></ShippingItem>
+                  {index < data.shippingList.length - 1 ? <hr /> : null}
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      ) : (
+        <div className="text-xl">
+          <div>배송지가 없습니다.</div>
+        </div>
+      )}
 
       <div className="text-xl">
         <div className="flex justify-center mt-10">

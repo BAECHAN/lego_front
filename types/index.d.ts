@@ -141,3 +141,18 @@ export type DeliverySubmitT = {
   deliveryRequest: string
   deliveryRequestDirect: string
 }
+
+export type ShippingT = {
+  shipping_id: number
+  email: string
+  recipient: string
+  shipping_name: string
+  tel_number: string
+  shipping_zipcode: string
+  shipping_address1: string
+  shipping_address2: string
+  shipping_default: int
+  delivery_request: string
+  delivery_request_direct: string
+  state: number
+}

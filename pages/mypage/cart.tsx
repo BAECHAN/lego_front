@@ -58,7 +58,7 @@ export default function Cart() {
       {data && data.cartList?.length > 0 ? (
         <div className="min-h-[600px]">
           <ul className="flex flex-col">
-            {data.cartList?.map((item: ProductCartT, index: number) => {
+            {data.cartList.map((item: ProductCartT, index: number) => {
               return (
                 <li key={item.cart_id}>
                   <ProductInCart product={item} />

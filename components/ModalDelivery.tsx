@@ -5,9 +5,11 @@ import Postcode from './Postcode'
 import { DeliverySubmitT } from 'types'
 import axiosRequest from 'pages/api/axios'
 import { useSession } from 'next-auth/react'
+import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 
 export default function ModalDelivery({ onClose }: any) {
   const { data: session, status } = useSession()
+  const { data, isFetched, isFetching, refetch } = useDeliveryShippingList()
 
   const [inputs, setInputs] = useState<DeliverySubmitT>({
     recipient: '',
@@ -162,6 +164,7 @@ export default function ModalDelivery({ onClose }: any) {
           if (response?.status === 200) {
             alert('배송지를 등록하였습니다.')
             setDisabledSubmit(false)
+            refetch()
             onClose()
             return true
           }
