@@ -2,11 +2,58 @@ import React from 'react'
 import { ShippingT } from 'types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import axiosRequest from 'pages/api/axios'
+import { useSession } from 'next-auth/react'
+import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 
-export default function ShippingItem(props: { shipping: ShippingT }) {
-  console.log(props.shipping)
+export default function ShippingItem(props: {
+  shipping: ShippingT
+  onOpen: any
+}) {
+  const session = useSession()
+  const { data, isFetched, isFetching, refetch } = useDeliveryShippingList()
 
-  const handleClickButton = (type: string) => {}
+  const handleClickButton = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    type: string
+  ) => {
+    if (type == 'update') {
+      props.onOpen(event, props.shipping.shipping_id)
+    } else if (type == 'delete') {
+      if (props.shipping.shipping_default == 1) {
+        alert(
+          '기본 배송지는 삭제할 수 없습니다.\r기본 배송지를 변경 후 삭제해주시기 바랍니다.'
+        )
+        return false
+      }
+
+      if (confirm('배송지를 삭제하시겠습니까?') && session.data?.user?.email) {
+        let param = {
+          email: session.data?.user?.email,
+          shippingId: props.shipping.shipping_id,
+        }
+
+        axiosRequest('patch', `http://localhost:5000/api/del-shipping`, param)
+          .then((response) => {
+            if (response?.status === 200) {
+              alert('배송지를 삭제하였습니다.')
+              refetch()
+              return true
+            }
+          })
+          .catch((error) => {
+            console.log(error)
+            alert(
+              '배송지 삭제가 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
+            )
+            return false
+          })
+      } else {
+        return false
+      }
+    } else {
+    }
+  }
 
   return (
     <div className="flex items-center text-center h-20">
@@ -44,7 +91,7 @@ export default function ShippingItem(props: { shipping: ShippingT }) {
         <button
           type="button"
           className="flex h-8 leading-5 m-2 items-center"
-          onClick={() => handleClickButton('update')}
+          onClick={(event) => handleClickButton(event, 'update')}
         >
           수정
           <FontAwesomeIcon
@@ -57,7 +104,7 @@ export default function ShippingItem(props: { shipping: ShippingT }) {
         <button
           type="button"
           className="flex h-8 leading-5 m-2 items-center"
-          onClick={() => handleClickButton('delete')}
+          onClick={(event) => handleClickButton(event, 'delete')}
         >
           삭제
           <FontAwesomeIcon

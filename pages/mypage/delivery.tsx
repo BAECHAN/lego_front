@@ -8,8 +8,18 @@ import { ShippingT } from 'types'
 
 export default function Delivery() {
   const [modalOpen, setModalOpen] = useState(false)
+  const [modalShipping, setModalShipping] = useState(0)
 
-  const handleClickModalOpen = () => {
+  const handleClickModalOpen = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    shipping_id?: number
+  ) => {
+    if (shipping_id) {
+      setModalShipping(shipping_id)
+    } else {
+      setModalShipping(0)
+    }
+
     !modalOpen ? setModalOpen(true) : setModalOpen(false)
   }
 
@@ -23,7 +33,10 @@ export default function Delivery() {
             {data.shippingList.map((item: ShippingT, index: number) => {
               return (
                 <li key={item.shipping_id}>
-                  <ShippingItem shipping={item}></ShippingItem>
+                  <ShippingItem
+                    shipping={item}
+                    onOpen={handleClickModalOpen}
+                  ></ShippingItem>
                   {index < data.shippingList.length - 1 ? <hr /> : null}
                 </li>
               )
@@ -41,13 +54,16 @@ export default function Delivery() {
           <button
             type="button"
             className="btn-add-address"
-            onClick={handleClickModalOpen}
+            onClick={(event) => handleClickModalOpen(event)}
           >
             배송지 등록
           </button>
           {modalOpen && (
             <Portal selector="#portal">
-              <ModalDelivery onClose={handleClickModalOpen} />
+              <ModalDelivery
+                onClose={handleClickModalOpen}
+                shippingId={modalShipping}
+              />
             </Portal>
           )}
         </div>

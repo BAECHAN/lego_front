@@ -2,14 +2,20 @@ import { faSquareXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { ChangeEvent, useRef, useState, useEffect } from 'react'
 import Postcode from './Postcode'
-import { DeliverySubmitT } from 'types'
+import { DeliverySubmitT, ShippingT } from 'types'
 import axiosRequest from 'pages/api/axios'
 import { useSession } from 'next-auth/react'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 
-export default function ModalDelivery({ onClose }: any) {
+export default function ModalDelivery(props: {
+  onClose: any
+  shippingId: number
+}) {
   const { data: session, status } = useSession()
   const { data, isFetched, isFetching, refetch } = useDeliveryShippingList()
+
+  const [isUpdate, setIsUpdate] = useState(props.shippingId != 0 ? true : false)
+  const [initShippingDefault, setInitShippingDefault] = useState(0)
 
   const [inputs, setInputs] = useState<DeliverySubmitT>({
     recipient: '',
@@ -49,10 +55,43 @@ export default function ModalDelivery({ onClose }: any) {
   const postButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    if (inputsRef.current[9]) {
+    if (inputsRef.current[9] && !deliveryRequestDirect) {
       inputsRef.current[9].focus()
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [directOpen])
+
+  useEffect(() => {
+    data.shippingList.map(async (item: ShippingT) => {
+      if (item.shipping_id == props.shippingId) {
+        setInputs({
+          ...inputs,
+          recipient: item.recipient,
+          shippingName: item.shipping_name,
+          telNumberFront: item.tel_number.substring(0, 3),
+          telNumberMiddle: item.tel_number.substring(3, 7),
+          telNumberBack: item.tel_number.substring(7, 11),
+          shippingZipCode: item.shipping_zipcode,
+          shippingAddress1: item.shipping_address1,
+          shippingAddress2: item.shipping_address2,
+          shippingDefault: item.shipping_default,
+          deliveryRequest: item.delivery_request,
+          deliveryRequestDirect: item.delivery_request_direct,
+        })
+
+        setInitShippingDefault(item.shipping_default)
+
+        if (item.delivery_request == '7') {
+          setDirectOpen(true)
+        } else {
+          setDirectOpen(false)
+        }
+        console.log(item)
+      }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.shippingId])
 
   const handleChangeValue = (
     option: string,
@@ -101,6 +140,7 @@ export default function ModalDelivery({ onClose }: any) {
       session.user.email
     ) {
       let param = {
+        shippingId: props.shippingId,
         email: session.user.email,
         recipient,
         shippingName,
@@ -152,27 +192,24 @@ export default function ModalDelivery({ onClose }: any) {
         }
       }
 
-      if (deliveryRequest == '1' || deliveryRequest.trim().length == 0) {
-        alert('배송 요청사항을 선택해주시기 바랍니다.')
-        selectsRef.current[0].focus()
-        setDisabledSubmit(false)
-        return false
-      }
-
-      axiosRequest('post', `http://localhost:5000/api/add-shipping`, param)
+      axiosRequest('post', `http://localhost:5000/api/manage-shipping`, param)
         .then((response) => {
           if (response?.status === 200) {
-            alert('배송지를 등록하였습니다.')
+            isUpdate
+              ? alert('배송지를 수정하였습니다.')
+              : alert('배송지를 등록하였습니다.')
             setDisabledSubmit(false)
             refetch()
-            onClose()
+            props.onClose()
             return true
           }
         })
         .catch((error) => {
           console.log(error)
           alert(
-            '배송지 등록이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
+            `${
+              isUpdate ? '배송지 수정' : '배송지 등록'
+            } 이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.`
           )
           setDisabledSubmit(false)
           return false
@@ -187,14 +224,16 @@ export default function ModalDelivery({ onClose }: any) {
           <button
             id="bannerClose"
             className="btn-modal-close"
-            onClick={onClose}
+            onClick={props.onClose}
             title="창 닫기"
           >
             <FontAwesomeIcon icon={faSquareXmark} width="27px" height="27px" />
           </button>
         </div>
         <div className="modal-body">
-          <h2 className="text-xl font-bold">신규 배송지</h2>
+          <h2 className="text-xl font-bold">
+            {isUpdate ? '배송지 수정' : '신규 배송지'}
+          </h2>
 
           <form name="delivery-form" onSubmit={handleSubmit}>
             <div className="text-sm">
@@ -333,7 +372,10 @@ export default function ModalDelivery({ onClose }: any) {
                     className="modal-input w-4 mr-2"
                     title="기본 배송지 설정 유무"
                     onChange={(e) => handleChangeValue('check', e)}
-                    defaultChecked={inputs.shippingDefault ? true : false}
+                    checked={inputs.shippingDefault ? true : false}
+                    disabled={
+                      isUpdate && initShippingDefault != 0 ? true : false
+                    }
                     ref={(el) => {
                       el && inputsRef.current
                         ? (inputsRef.current[8] = el)
@@ -350,6 +392,7 @@ export default function ModalDelivery({ onClose }: any) {
                   className="modal-input large"
                   name="deliveryRequest"
                   onChange={handleChangeSelect}
+                  value={inputs.deliveryRequest}
                   title="배송 요청사항"
                   ref={(el) => {
                     el && selectsRef.current
@@ -396,7 +439,7 @@ export default function ModalDelivery({ onClose }: any) {
               <button
                 type="button"
                 className="btn-cancle mx-1"
-                onClick={onClose}
+                onClick={props.onClose}
               >
                 취소
               </button>
@@ -405,7 +448,7 @@ export default function ModalDelivery({ onClose }: any) {
                 className="btn-submit mx-1"
                 disabled={disabledSubmit}
               >
-                등록
+                {isUpdate ? '저장' : '등록'}
               </button>
             </div>
           </form>

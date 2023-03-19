@@ -15,7 +15,7 @@ export default function ButtonChange(props: {
     if (props.infoKey == 'password') {
       router.push('/account/check_password')
     } else if (props.infoKey == 'address') {
-      router.push('/mypage/address')
+      router.push('/mypage/delivery')
     } else {
       props.setIsChange(!props.isChange)
     }

@@ -7,7 +7,7 @@ export default function ButtonFindAccountToggle() {
     router.pathname.substring(7) == 'find_account' ? true : false
   )
 
-  const handleClickToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClickToggle = (event: React<HTMLButtonElement>) => {
     if (event.currentTarget.className.indexOf('active') > -1) {
       return false
     }
