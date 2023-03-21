@@ -2,46 +2,66 @@ import Layout from '@components/Layout'
 import ModalDelivery from '@components/ModalDelivery'
 import Portal from '@components/Portal'
 import ShippingItem from '@components/ShippingItem'
+import { useQueryClient } from '@tanstack/react-query'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 import React, { useEffect, useState } from 'react'
 import { ShippingT } from 'types'
+import Paging from '@components/common/pagination/index'
 
 export default function Delivery() {
   const [modalOpen, setModalOpen] = useState(false)
-  const [modalShipping, setModalShipping] = useState(0)
+  const [modalShippingData, setModalShippingData] = useState<ShippingT>()
+
+  const [page, setPage] = useState(1)
+  const [totalPage, setTotalPage] = useState(0)
 
   const handleClickModalOpen = (
     event: React.MouseEvent<HTMLButtonElement>,
-    shipping_id?: number
+    shipping?: ShippingT
   ) => {
-    if (shipping_id) {
-      setModalShipping(shipping_id)
+    if (shipping) {
+      setModalShippingData(shipping)
     } else {
-      setModalShipping(0)
+      setModalShippingData(undefined)
     }
 
     !modalOpen ? setModalOpen(true) : setModalOpen(false)
   }
 
-  const { data, isFetched, isFetching } = useDeliveryShippingList()
+  const { data } = useDeliveryShippingList(page)
+
+  console.log(data)
 
   return (
     <div>
       {data && data.shippingList?.length > 0 ? (
         <div className="min-h-[300px]">
-          <ul className="flex flex-col">
+          <ul className="flex flex-col min-h-[403.2px]">
             {data.shippingList.map((item: ShippingT, index: number) => {
               return (
                 <li key={item.shipping_id}>
                   <ShippingItem
                     shipping={item}
                     onOpen={handleClickModalOpen}
+                    page={page}
+                    setPage={setPage}
+                    setTotalPage={setTotalPage}
+                    isLastPage={data.isLastPage}
+                    listLength={data.shippingList.length}
                   ></ShippingItem>
                   {index < data.shippingList.length - 1 ? <hr /> : null}
                 </li>
               )
             })}
           </ul>
+          <div>
+            <Paging
+              page={page}
+              setPage={setPage}
+              totalPage={totalPage}
+              setTotalPage={setTotalPage}
+            />
+          </div>
         </div>
       ) : (
         <div className="text-xl">
@@ -50,7 +70,7 @@ export default function Delivery() {
       )}
 
       <div className="text-xl">
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center my-10">
           <button
             type="button"
             className="btn-add-address"
@@ -60,10 +80,28 @@ export default function Delivery() {
           </button>
           {modalOpen && (
             <Portal selector="#portal">
-              <ModalDelivery
-                onClose={handleClickModalOpen}
-                shippingId={modalShipping}
-              />
+              {modalShippingData ? (
+                <ModalDelivery
+                  onClose={handleClickModalOpen}
+                  page={page}
+                  setPage={setPage}
+                  totalPage={totalPage}
+                  listLength={
+                    data && data.shippingList ? data.shippingList.length : 0
+                  }
+                  shipping={modalShippingData}
+                />
+              ) : (
+                <ModalDelivery
+                  onClose={handleClickModalOpen}
+                  page={page}
+                  setPage={setPage}
+                  totalPage={totalPage}
+                  listLength={
+                    data && data.shippingList ? data.shippingList.length : 0
+                  }
+                />
+              )}
             </Portal>
           )}
         </div>

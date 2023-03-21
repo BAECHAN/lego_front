@@ -5,20 +5,28 @@ import { faPenSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import axiosRequest from 'pages/api/axios'
 import { useSession } from 'next-auth/react'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
 
 export default function ShippingItem(props: {
   shipping: ShippingT
   onOpen: any
+  page: number
+  setPage: React.Dispatch<React.SetStateAction<number>>
+  setTotalPage: React.Dispatch<React.SetStateAction<number>>
+  isLastPage: boolean
+  listLength: number
 }) {
   const session = useSession()
-  const { data, isFetched, isFetching, refetch } = useDeliveryShippingList()
+
+  const queryClient = useQueryClient()
 
   const handleClickButton = (
     event: React.MouseEvent<HTMLButtonElement>,
     type: string
   ) => {
     if (type == 'update') {
-      props.onOpen(event, props.shipping.shipping_id)
+      props.onOpen(event, props.shipping)
     } else if (type == 'delete') {
       if (props.shipping.shipping_default == 1) {
         alert(
@@ -33,21 +41,7 @@ export default function ShippingItem(props: {
           shippingId: props.shipping.shipping_id,
         }
 
-        axiosRequest('patch', `http://localhost:5000/api/del-shipping`, param)
-          .then((response) => {
-            if (response?.status === 200) {
-              alert('배송지를 삭제하였습니다.')
-              refetch()
-              return true
-            }
-          })
-          .catch((error) => {
-            console.log(error)
-            alert(
-              '배송지 삭제가 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-            )
-            return false
-          })
+        deleteShippingAPI.mutate(param)
       } else {
         return false
       }
@@ -55,12 +49,46 @@ export default function ShippingItem(props: {
     }
   }
 
+  const deleteShippingAPI = useMutation(
+    async (param: any) => {
+      const res = await axios.patch(
+        `http://localhost:5000/api/del-shipping`,
+        JSON.stringify(param),
+        {
+          headers: { 'Content-Type': `application/json; charset=utf-8` },
+        }
+      )
+      return res
+    },
+    {
+      onSuccess: (response) => {
+        if (response?.status === 200) {
+          alert('배송지를 삭제하였습니다.')
+
+          if (props.isLastPage && props.listLength == 1) {
+            props.setPage(props.page - 1)
+            props.setTotalPage(props.page - 1)
+          }
+          queryClient.invalidateQueries(['shipping-list'])
+          return true
+        }
+      },
+      onError: (error) => {
+        console.log(error)
+        alert(
+          '배송지 삭제가 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
+        )
+        return false
+      },
+    }
+  )
+
   return (
     <div className="flex items-center text-center h-20">
       {/** 배송지 */}
       <div className="flex flex-col w-[15%]">
-        <div>{props.shipping.recipient}</div>
-        <div className="text-sm opacity-75">
+        <div className="truncate">{props.shipping.recipient}</div>
+        <div className="text-sm opacity-75 truncate">
           {props.shipping.shipping_name}님의 배송지
         </div>
       </div>

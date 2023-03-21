@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 
-const useDeliveryShippingList = () => {
+const useDeliveryShippingList = (page?: number) => {
   const { data: session } = useSession()
 
   const queryKey = 'shipping-list'
@@ -10,10 +10,10 @@ const useDeliveryShippingList = () => {
   const url = 'http://localhost:5000' + '/api/' + queryKey
 
   return useQuery(
-    [queryKey],
+    [queryKey, page],
     async () => {
       const res = await axios.get(url, {
-        params: { email: session?.user?.email },
+        params: { email: session?.user?.email, page: page ? page : 1 },
         headers: { 'Content-Type': `application/json; charset=utf-8` },
       })
       return res.data
@@ -24,6 +24,7 @@ const useDeliveryShippingList = () => {
       },
       onError: (e) => console.log(e),
       enabled: !!session?.user?.email,
+      keepPreviousData: true,
     }
   )
 }

@@ -6,15 +6,22 @@ import { DeliverySubmitT, ShippingT } from 'types'
 import axiosRequest from 'pages/api/axios'
 import { useSession } from 'next-auth/react'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
 
 export default function ModalDelivery(props: {
   onClose: any
-  shippingId: number
+  page: number
+  setPage: React.Dispatch<React.SetStateAction<number>>
+  totalPage: number
+  listLength: number
+  shipping?: ShippingT
 }) {
   const { data: session, status } = useSession()
-  const { data, isFetched, isFetching, refetch } = useDeliveryShippingList()
 
-  const [isUpdate, setIsUpdate] = useState(props.shippingId != 0 ? true : false)
+  const queryClient = useQueryClient()
+
+  const [isUpdate, setIsUpdate] = useState(props.shipping ? true : false)
   const [initShippingDefault, setInitShippingDefault] = useState(0)
 
   const [inputs, setInputs] = useState<DeliverySubmitT>({
@@ -63,35 +70,33 @@ export default function ModalDelivery(props: {
   }, [directOpen])
 
   useEffect(() => {
-    data.shippingList.map(async (item: ShippingT) => {
-      if (item.shipping_id == props.shippingId) {
-        setInputs({
-          ...inputs,
-          recipient: item.recipient,
-          shippingName: item.shipping_name,
-          telNumberFront: item.tel_number.substring(0, 3),
-          telNumberMiddle: item.tel_number.substring(3, 7),
-          telNumberBack: item.tel_number.substring(7, 11),
-          shippingZipCode: item.shipping_zipcode,
-          shippingAddress1: item.shipping_address1,
-          shippingAddress2: item.shipping_address2,
-          shippingDefault: item.shipping_default,
-          deliveryRequest: item.delivery_request,
-          deliveryRequestDirect: item.delivery_request_direct,
-        })
+    if (isUpdate && props.shipping) {
+      setInputs({
+        ...inputs,
+        recipient: props.shipping.recipient,
+        shippingName: props.shipping.shipping_name,
+        telNumberFront: props.shipping.tel_number.substring(0, 3),
+        telNumberMiddle: props.shipping.tel_number.substring(3, 7),
+        telNumberBack: props.shipping.tel_number.substring(7, 11),
+        shippingZipCode: props.shipping.shipping_zipcode,
+        shippingAddress1: props.shipping.shipping_address1,
+        shippingAddress2: props.shipping.shipping_address2,
+        shippingDefault: props.shipping.shipping_default,
+        deliveryRequest: props.shipping.delivery_request,
+        deliveryRequestDirect: props.shipping.delivery_request_direct,
+      })
 
-        setInitShippingDefault(item.shipping_default)
+      setInitShippingDefault(props.shipping.shipping_default)
 
-        if (item.delivery_request == '7') {
-          setDirectOpen(true)
-        } else {
-          setDirectOpen(false)
-        }
-        console.log(item)
+      if (props.shipping.delivery_request == '7') {
+        setDirectOpen(true)
+      } else {
+        setDirectOpen(false)
       }
-    })
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.shippingId])
+  }, [])
 
   const handleChangeValue = (
     option: string,
@@ -140,7 +145,10 @@ export default function ModalDelivery(props: {
       session.user.email
     ) {
       let param = {
-        shippingId: props.shippingId,
+        shippingId:
+          props.shipping && props.shipping.shipping_id
+            ? props.shipping.shipping_id
+            : 0,
         email: session.user.email,
         recipient,
         shippingName,
@@ -156,7 +164,18 @@ export default function ModalDelivery(props: {
       }
 
       for (let i = 0; i < inputsRef.current.length; i++) {
-        if (!(i == 1 || i == 5 || i == 6 || i == 9)) {
+        if (
+          !(
+            i == 1 ||
+            i == 2 ||
+            i == 3 ||
+            i == 4 ||
+            i == 5 ||
+            i == 6 ||
+            i == 8 ||
+            i == 9
+          )
+        ) {
           if (inputsRef.current[i].value.trim().length == 0) {
             alert(`${inputsRef.current[i].title}을(를) 입력해주시기 바랍니다.`)
             inputsRef.current[i].focus()
@@ -168,6 +187,24 @@ export default function ModalDelivery(props: {
             if (inputsRef.current[i].value.trim().length == 0) {
               param.shippingName = recipient
             }
+          } else if (i == 2) {
+            if (inputsRef.current[i].value.trimEnd().length != 3) {
+              alert(
+                `${inputsRef.current[i].title}을(를) 정확히 입력해주시기 바랍니다.`
+              )
+              inputsRef.current[i].focus()
+              setDisabledSubmit(false)
+              return false
+            }
+          } else if (i == 3 || i == 4) {
+            if (inputsRef.current[i].value.trimEnd().length != 4) {
+              alert(
+                `${inputsRef.current[i].title}을(를) 정확히 입력해주시기 바랍니다.`
+              )
+              inputsRef.current[i].focus()
+              setDisabledSubmit(false)
+              return false
+            }
           } else if (i == 5) {
             if (
               shippingZipCode.trim().length == 0 ||
@@ -177,6 +214,10 @@ export default function ModalDelivery(props: {
               postButtonRef.current?.click()
               setDisabledSubmit(false)
               return false
+            }
+          } else if (i == 8) {
+            if (props.listLength == 0 && !isUpdate) {
+              param.shippingDefault = true
             }
           } else if (i == 9) {
             if (
@@ -192,30 +233,57 @@ export default function ModalDelivery(props: {
         }
       }
 
-      axiosRequest('post', `http://localhost:5000/api/manage-shipping`, param)
-        .then((response) => {
-          if (response?.status === 200) {
-            isUpdate
-              ? alert('배송지를 수정하였습니다.')
-              : alert('배송지를 등록하였습니다.')
-            setDisabledSubmit(false)
-            refetch()
-            props.onClose()
-            return true
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-          alert(
-            `${
-              isUpdate ? '배송지 수정' : '배송지 등록'
-            } 이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.`
-          )
-          setDisabledSubmit(false)
-          return false
-        })
+      console.log(props.listLength)
+      console.log(props.totalPage)
+
+      updateShippingAPI.mutate(param)
     }
   }
+
+  const updateShippingAPI = useMutation(
+    async (param: any) => {
+      const res = await axios.post(
+        `http://localhost:5000/api/manage-shipping`,
+        JSON.stringify(param),
+        {
+          headers: { 'Content-Type': `application/json; charset=utf-8` },
+        }
+      )
+      return res
+    },
+    {
+      onSuccess: (response) => {
+        if (response?.status === 200) {
+          if (isUpdate) {
+            alert('배송지를 수정하였습니다.')
+          } else {
+            alert('배송지를 등록하였습니다.')
+            if (props.listLength == 5) {
+              if (props.totalPage == props.page) {
+                props.setPage(props.totalPage + 1)
+              } else {
+                props.setPage(props.totalPage)
+              }
+            }
+          }
+          setDisabledSubmit(false)
+          props.onClose()
+          queryClient.invalidateQueries(['shipping-list'])
+          return true
+        }
+      },
+      onError: (error) => {
+        console.log(error)
+        alert(
+          `${
+            isUpdate ? '배송지 수정' : '배송지 등록'
+          } 이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.`
+        )
+        setDisabledSubmit(false)
+        return false
+      },
+    }
+  )
 
   return (
     <div className="modal-wrap">
