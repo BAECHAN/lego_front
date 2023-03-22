@@ -13,9 +13,13 @@ export default function ShippingItem(props: {
   onOpen: any
   page: number
   setPage: React.Dispatch<React.SetStateAction<number>>
+  startPage: number
+  setStartPage: React.Dispatch<React.SetStateAction<number>>
+  totalPage: number
   setTotalPage: React.Dispatch<React.SetStateAction<number>>
   isLastPage: boolean
   listLength: number
+  shippingListCount: number
 }) {
   const session = useSession()
 
@@ -65,10 +69,29 @@ export default function ShippingItem(props: {
         if (response?.status === 200) {
           alert('배송지를 삭제하였습니다.')
 
-          if (props.isLastPage && props.listLength == 1) {
-            props.setPage(props.page - 1)
-            props.setTotalPage(props.page - 1)
+          if (props.isLastPage) {
+            // 마지막 페이지에서 삭제하였는 가
+
+            if (props.listLength == 1) {
+              // 아이템이 하나라서 삭제하면 페이지가 삭제되어 이전페이지로 이동하는가?
+
+              if (props.page % 10 == 1) {
+                // 만약 startPage도 바뀌는 경우면 바꿔줘야함
+                props.setStartPage(props.page - 10)
+              }
+
+              props.setPage(props.page - 1)
+              props.setTotalPage(props.page - 1)
+            }
+          } else {
+            // 마지막 페이지에서 삭제하지 않았는가
+
+            if (props.shippingListCount % 5 == 1) {
+              // 마지막 페이지에 아이템이 하나라서 삭제하면 페이지가 삭제되어 totalPage를 수정
+              props.setTotalPage(props.totalPage - 1)
+            }
           }
+
           queryClient.invalidateQueries(['shipping-list'])
           return true
         }

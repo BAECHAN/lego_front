@@ -9,8 +9,6 @@ import { useQueryClient } from '@tanstack/react-query'
 export default function Pagination(props: {
   page: number
   setPage: React.Dispatch<React.SetStateAction<number>>
-  startPage: number
-  setStartPage: React.Dispatch<React.SetStateAction<number>>
   totalPage: number
   setTotalPage: React.Dispatch<React.SetStateAction<number>>
 }) {
@@ -28,8 +26,10 @@ export default function Pagination(props: {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFetched])
 
-  let arr = []
+  const [arr, setArr] = useState<any>([])
+
   let pageCount = 10
+  let startPage = 1
 
   const handleClickPageButton = (event: MouseEvent<HTMLButtonElement>) => {
     const { name, innerText } = event.currentTarget
@@ -45,38 +45,50 @@ export default function Pagination(props: {
     }
 
     if (name == 'prevPage') {
-      if (props.page == props.startPage) {
-        props.setStartPage(props.startPage - pageCount)
+      if (props.page == startPage) {
+        startPage = startPage - pageCount
       }
     } else if (name == 'nextPage') {
-      if (props.page == props.startPage + pageCount - 1) {
-        props.setStartPage(props.startPage + pageCount)
-        console.log(props.startPage)
+      if (props.page == startPage + pageCount - 1) {
+        startPage = startPage + pageCount
       }
     }
   }
 
-  for (let i = 1; i <= props.totalPage; i++) {
-    if (props.page == i) {
-      arr.push(
-        <PageNumber
-          key={i}
-          page={i}
-          handleClickPageButton={handleClickPageButton}
-          isActive={true}
-        />
-      )
-    } else {
-      arr.push(
-        <PageNumber
-          key={i}
-          page={i}
-          handleClickPageButton={handleClickPageButton}
-          isActive={false}
-        />
-      )
+  useEffect(() => {
+    let arrTemp = []
+
+    console.log(startPage)
+    console.log(pageCount + startPage - 1)
+    console.log(props.totalPage)
+
+    for (let i = 1; i <= props.totalPage; i++) {
+      if (i >= startPage && i <= pageCount + startPage - 1) {
+        if (props.page == i) {
+          arrTemp.push(
+            <PageNumber
+              key={i}
+              page={i}
+              handleClickPageButton={handleClickPageButton}
+              isActive={true}
+            />
+          )
+        } else {
+          arrTemp.push(
+            <PageNumber
+              key={i}
+              page={i}
+              handleClickPageButton={handleClickPageButton}
+              isActive={false}
+            />
+          )
+        }
+      }
     }
-  }
+    setArr([...arr, arrTemp])
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.totalPage])
 
   return (
     <div className="flex justify-center flex-row items-center">
@@ -98,14 +110,7 @@ export default function Pagination(props: {
           }}
         />
       </button>
-      {arr.map((item, index) => {
-        if (
-          index >= props.startPage - 1 &&
-          index <= pageCount + props.startPage - 2
-        ) {
-          return item
-        }
-      })}
+      {arr}
       <button
         type="button"
         name="nextPage"

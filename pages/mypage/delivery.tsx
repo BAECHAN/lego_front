@@ -6,13 +6,14 @@ import { useQueryClient } from '@tanstack/react-query'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 import React, { useEffect, useState } from 'react'
 import { ShippingT } from 'types'
-import Paging from '@components/common/pagination/index'
+import Pagination from '@components/common/pagination/index'
 
 export default function Delivery() {
   const [modalOpen, setModalOpen] = useState(false)
   const [modalShippingData, setModalShippingData] = useState<ShippingT>()
 
   const [page, setPage] = useState(1)
+  const [startPage, setStartPage] = useState(1)
   const [totalPage, setTotalPage] = useState(0)
 
   const handleClickModalOpen = (
@@ -45,9 +46,13 @@ export default function Delivery() {
                     onOpen={handleClickModalOpen}
                     page={page}
                     setPage={setPage}
+                    startPage={startPage}
+                    setStartPage={setStartPage}
+                    totalPage={totalPage}
                     setTotalPage={setTotalPage}
                     isLastPage={data.isLastPage}
                     listLength={data.shippingList.length}
+                    shippingListCount={data.shippingListCount}
                   ></ShippingItem>
                   {index < data.shippingList.length - 1 ? <hr /> : null}
                 </li>
@@ -55,9 +60,11 @@ export default function Delivery() {
             })}
           </ul>
           <div>
-            <Paging
+            <Pagination
               page={page}
               setPage={setPage}
+              startPage={startPage}
+              setStartPage={setStartPage}
               totalPage={totalPage}
               setTotalPage={setTotalPage}
             />
@@ -78,17 +85,21 @@ export default function Delivery() {
           >
             배송지 등록
           </button>
-          {modalOpen && (
+          {modalOpen && data && (
             <Portal selector="#portal">
               {modalShippingData ? (
                 <ModalDelivery
                   onClose={handleClickModalOpen}
                   page={page}
                   setPage={setPage}
+                  startPage={startPage}
+                  setStartPage={setStartPage}
                   totalPage={totalPage}
+                  setTotalPage={setTotalPage}
                   listLength={
                     data && data.shippingList ? data.shippingList.length : 0
                   }
+                  shippingListCount={data.shippingListCount}
                   shipping={modalShippingData}
                 />
               ) : (
@@ -96,10 +107,14 @@ export default function Delivery() {
                   onClose={handleClickModalOpen}
                   page={page}
                   setPage={setPage}
+                  startPage={startPage}
+                  setStartPage={setStartPage}
                   totalPage={totalPage}
+                  setTotalPage={setTotalPage}
                   listLength={
                     data && data.shippingList ? data.shippingList.length : 0
                   }
+                  shippingListCount={data.shippingListCount}
                 />
               )}
             </Portal>

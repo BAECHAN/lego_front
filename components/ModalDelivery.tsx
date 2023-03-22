@@ -13,8 +13,12 @@ export default function ModalDelivery(props: {
   onClose: any
   page: number
   setPage: React.Dispatch<React.SetStateAction<number>>
+  startPage: number
+  setStartPage: React.Dispatch<React.SetStateAction<number>>
   totalPage: number
+  setTotalPage: React.Dispatch<React.SetStateAction<number>>
   listLength: number
+  shippingListCount: number
   shipping?: ShippingT
 }) {
   const { data: session, status } = useSession()
@@ -70,6 +74,8 @@ export default function ModalDelivery(props: {
   }, [directOpen])
 
   useEffect(() => {
+    inputsRef.current[0].focus()
+
     if (isUpdate && props.shipping) {
       setInputs({
         ...inputs,
@@ -235,7 +241,6 @@ export default function ModalDelivery(props: {
 
       console.log(props.listLength)
       console.log(props.totalPage)
-
       updateShippingAPI.mutate(param)
     }
   }
@@ -259,11 +264,53 @@ export default function ModalDelivery(props: {
           } else {
             alert('배송지를 등록하였습니다.')
             if (props.listLength == 5) {
-              if (props.totalPage == props.page) {
-                props.setPage(props.totalPage + 1)
+              // 페이지 내 게시물 개수 가 5인 경우
+
+              if (props.totalPage - props.startPage > 9) {
+                // 만약 현재 페이지와 마지막 페이지의 startPage가 다르면
+
+                if (props.shippingListCount % 5 == 0) {
+                  // 만약 마지막 페이지의 게시물 개수가 5이면 setTotalPage필요
+
+                  if (props.totalPage % 10 == 0) {
+                    props.setTotalPage(props.totalPage + 1)
+                    props.setStartPage(props.totalPage + 1)
+                    props.setPage(props.totalPage + 1)
+                  } else {
+                    props.setTotalPage(props.totalPage + 1)
+                    props.setStartPage(
+                      props.totalPage - ((props.totalPage - 1) % 10)
+                    )
+                    props.setPage(props.totalPage + 1)
+                  }
+                } else {
+                  // 만약 마지막 페이지의 게시물 개수가 5가 아니면 setTotalPage 필요 없음
+                  props.setStartPage(
+                    props.totalPage - ((props.totalPage - 1) % 10)
+                  )
+                  props.setPage(props.totalPage)
+                }
               } else {
-                props.setPage(props.totalPage)
+                // 만약 현재 페이지와 마지막 페이지의 startPage가 같다면
+
+                if (props.shippingListCount % 5 == 0) {
+                  // 만약 마지막 페이지의 게시물 개수가 5이면 setTotalPage필요
+
+                  if (props.totalPage % 10 == 0) {
+                    props.setTotalPage(props.totalPage + 1)
+                    props.setStartPage(props.totalPage + 1)
+                    props.setPage(props.totalPage + 1)
+                  } else {
+                    props.setTotalPage(props.totalPage + 1)
+                    props.setPage(props.totalPage + 1)
+                  }
+                } else {
+                  // 만약 마지막 페이지의 게시물 개수가 5가 아니면 setTotalPage 필요 없음
+                  props.setPage(props.totalPage)
+                }
               }
+            } else {
+              // 페이지 내 게시물 개수가 5가 아닌 경우
             }
           }
           setDisabledSubmit(false)
