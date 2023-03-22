@@ -1,6 +1,11 @@
 import React, { useEffect, useState, MouseEvent } from 'react'
 
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
+import {
+  faAngleLeft,
+  faAngleRight,
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PageNumber from './PageNumber'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
@@ -35,24 +40,19 @@ export default function Pagination(props: {
     const { name, innerText } = event.currentTarget
 
     if (name == 'prevPage') {
-      props.setPage((old) => Math.max(old - 1, 0))
+      props.setPage(props.page - 1 - ((props.page - 1) % 10))
+      props.setStartPage(props.page - 10 - ((props.page - 1) % 10))
     } else if (name == 'nextPage') {
-      if (!data.isLastPage) {
-        props.setPage((old) => old + 1)
-      }
+      props.setStartPage(props.page + 10 - ((props.page - 1) % 10))
+      props.setPage(props.page + 10 - ((props.page - 1) % 10))
+    } else if (name == 'firstPage') {
+      props.setStartPage(1)
+      props.setPage(1)
+    } else if (name == 'lastPage') {
+      props.setStartPage(props.totalPage - (props.totalPage % 10) + 1)
+      props.setPage(props.totalPage)
     } else {
       props.setPage(Number(innerText.toString()))
-    }
-
-    if (name == 'prevPage') {
-      if (props.page == props.startPage) {
-        props.setStartPage(props.startPage - pageCount)
-      }
-    } else if (name == 'nextPage') {
-      if (props.page == props.startPage + pageCount - 1) {
-        props.setStartPage(props.startPage + pageCount)
-        console.log(props.startPage)
-      }
     }
   }
 
@@ -82,10 +82,30 @@ export default function Pagination(props: {
     <div className="flex justify-center flex-row items-center">
       <button
         type="button"
-        name="prevPage"
+        name="firstPage"
         onClick={(event) => handleClickPageButton(event)}
         disabled={props.page == 1}
         className={`${props.page == 1 ? 'fa-disabled' : ''}`}
+      >
+        <FontAwesomeIcon
+          icon={faAngleDoubleLeft}
+          width="15px"
+          height="15px"
+          style={{
+            position: 'relative',
+            margin: '0px 10px',
+            cursor: 'pointer',
+          }}
+        />
+      </button>
+      <button
+        type="button"
+        name="prevPage"
+        onClick={(event) => handleClickPageButton(event)}
+        disabled={Math.floor((props.page - 1) / 10) == 0}
+        className={`${
+          Math.floor((props.page - 1) / 10) == 0 ? 'fa-disabled' : ''
+        }`}
       >
         <FontAwesomeIcon
           icon={faAngleLeft}
@@ -110,11 +130,31 @@ export default function Pagination(props: {
         type="button"
         name="nextPage"
         onClick={(event) => handleClickPageButton(event)}
-        disabled={isPreviousData || data.isLastPage}
-        className={`${isPreviousData || data.isLastPage ? 'fa-disabled' : ''}`}
+        disabled={props.totalPage - props.startPage <= 9 ? true : false}
+        className={`${
+          props.totalPage - props.startPage <= 9 ? 'fa-disabled' : ''
+        }`}
       >
         <FontAwesomeIcon
           icon={faAngleRight}
+          width="15px"
+          height="15px"
+          style={{
+            position: 'relative',
+            margin: '0px 10px',
+            cursor: 'pointer',
+          }}
+        />
+      </button>
+      <button
+        type="button"
+        name="lastPage"
+        onClick={(event) => handleClickPageButton(event)}
+        disabled={props.page == props.totalPage}
+        className={`${props.page == props.totalPage ? 'fa-disabled' : ''}`}
+      >
+        <FontAwesomeIcon
+          icon={faAngleDoubleRight}
           width="15px"
           height="15px"
           style={{
