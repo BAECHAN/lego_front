@@ -2,6 +2,7 @@ import React, { KeyboardEvent, useEffect, useRef, useState } from 'react'
 import ButtonChange from './ButtonChange'
 import Image from 'next/image'
 import ButtonSave from './ButtonSave'
+import ButtonUploadFile from './ButtonUploadFile'
 
 export default function UserInfoContentsLine(props: {
   infoKey: string
@@ -17,6 +18,10 @@ export default function UserInfoContentsLine(props: {
 
   const infoInputRef = useRef<HTMLInputElement>(null)
 
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const [uploadFile, setUploadFile] = useState<File>()
+
   useEffect(() => {
     if (infoInputRef && infoInputRef.current) {
       infoInputRef.current.focus()
@@ -29,6 +34,11 @@ export default function UserInfoContentsLine(props: {
       setIsEnter(true)
     }
   }
+
+  if (props.infoKey == 'image') {
+    console.log(props.infoValue)
+  }
+
   return (
     <>
       <div
@@ -44,13 +54,51 @@ export default function UserInfoContentsLine(props: {
           <div className="w-1/6" />
 
           <div className="info-value">
-            {props.infoKey == 'image' && props.infoValue ? (
-              <Image
-                src={props.infoValue}
-                width="200px"
-                height="200px"
-                alt="프로필 사진"
-              ></Image>
+            {props.infoKey == 'image' ? (
+              isChange ? (
+                <>
+                  <Image
+                    src={
+                      newValue != '' && newValue.length > 0
+                        ? newValue
+                        : props.infoValue
+                        ? props.infoValue
+                        : '/default_profile.png'
+                    }
+                    width="200px"
+                    height="200px"
+                    alt="프로필 사진"
+                    style={{
+                      borderRadius: '100%',
+                    }}
+                  ></Image>
+                  <ButtonSave
+                    infoKey={props.infoKey}
+                    email={props.email}
+                    isChange={isChange}
+                    setIsChange={setIsChange}
+                    setValue={setValue}
+                    setNewValue={setNewValue}
+                    newValue={newValue}
+                    isEnter={isEnter}
+                    setIsEnter={setIsEnter}
+                    uploadFile={uploadFile}
+                    setUploadFile={setUploadFile}
+                  />
+                </>
+              ) : (
+                <Image
+                  src={
+                    props.infoValue ? props.infoValue : '/default_profile.png'
+                  }
+                  width="200px"
+                  height="200px"
+                  alt="프로필 사진"
+                  style={{
+                    borderRadius: '100%',
+                  }}
+                ></Image>
+              )
             ) : isChange ? (
               <div className="info-update-contents">
                 {props.infoKey == 'name' ? (
@@ -73,7 +121,7 @@ export default function UserInfoContentsLine(props: {
                       onKeyDown={handleKeyDown}
                     />
                     <ButtonSave
-                      infoKey={props.infoName}
+                      infoKey={props.infoKey}
                       email={props.email}
                       isChange={isChange}
                       setIsChange={setIsChange}
@@ -82,6 +130,8 @@ export default function UserInfoContentsLine(props: {
                       newValue={newValue}
                       isEnter={isEnter}
                       setIsEnter={setIsEnter}
+                      uploadFile={uploadFile}
+                      setUploadFile={setUploadFile}
                     />
                   </>
                 ) : null}
@@ -95,7 +145,23 @@ export default function UserInfoContentsLine(props: {
 
           <div className="info-update-button flex w-2/6 flex-row-reverse">
             {props.infoUpdate ? (
-              isChange ? null : (
+              props.infoKey == 'image' ? (
+                isChange ? (
+                  <ButtonUploadFile
+                    newValue={newValue}
+                    setNewValue={setNewValue}
+                    fileInputRef={fileInputRef}
+                    setUploadFile={setUploadFile}
+                  />
+                ) : (
+                  <ButtonChange
+                    infoKey={props.infoKey}
+                    infoName={props.infoName}
+                    isChange={isChange}
+                    setIsChange={setIsChange}
+                  />
+                )
+              ) : isChange ? null : (
                 <ButtonChange
                   infoKey={props.infoKey}
                   infoName={props.infoName}

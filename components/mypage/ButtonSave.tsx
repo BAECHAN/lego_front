@@ -3,18 +3,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCancel, faSave } from '@fortawesome/free-solid-svg-icons'
 import axiosRequest from 'pages/api/axios'
 import { InputRegExpT } from 'types'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
 
 export default function ButtonSave(props: {
   infoKey: string
   email: string
   isChange: boolean
   setIsChange: React.Dispatch<React.SetStateAction<boolean>>
-  setValue: React.Dispatch<any>
+  setValue: React.Dispatch<React.SetStateAction<string>>
   newValue: string
-  setNewValue: React.Dispatch<any>
+  setNewValue: React.Dispatch<React.SetStateAction<string>>
   isEnter: boolean
   setIsEnter: React.Dispatch<React.SetStateAction<boolean>>
+  uploadFile: File | undefined
+  setUploadFile: React.Dispatch<React.SetStateAction<File | undefined>>
 }) {
+  const queryClient = useQueryClient()
+
   useEffect(() => {
     if (props.isEnter) {
       handleClickButton('save')
@@ -35,46 +41,92 @@ export default function ButtonSave(props: {
     if (type == 'cancle') {
       props.setIsChange(!props.isChange)
       props.setNewValue('')
+      props.setUploadFile(undefined)
     } else {
-      if (inputRegExp.nickname.test(props.newValue)) {
-        axiosRequest('post', `http://localhost:5000/api/upd-nickname`, {
-          email: props.email,
-          nickname: props.newValue,
-        })
-          .then((response) => {
-            console.log(response?.data)
+      if (props.infoKey == 'name') {
+        if (inputRegExp.nickname.test(props.newValue)) {
+          axiosRequest('post', `http://localhost:5000/api/upd-nickname`, {
+            email: props.email,
+            nickname: props.newValue,
+          })
+            .then((response) => {
+              console.log(response?.data)
 
-            if (response?.data.result > 0) {
-              alert(
-                '사용중인 닉네임입니다.\r다른 닉네임을 이용해주시기 바랍니다.'
-              )
-              return false
-            } else {
-              if (response?.data.result == -1) {
+              if (response?.data.result > 0) {
                 alert(
-                  '닉네임 변경이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
+                  '사용중인 닉네임입니다.\r다른 닉네임을 이용해주시기 바랍니다.'
                 )
                 return false
               } else {
-                alert('변경되었습니다.')
-                props.setIsChange(!props.isChange)
-                props.setValue(props.newValue)
+                if (response?.data.result == -1) {
+                  alert(
+                    '닉네임 변경이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
+                  )
+                  return false
+                } else {
+                  alert('변경되었습니다.')
+                  props.setIsChange(!props.isChange)
+                  props.setValue(props.newValue)
+                }
               }
-            }
-          })
-          .catch((error) => {
-            console.log(error)
-            alert(
-              '닉네임 변경이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-            )
-            return false
-          })
-      } else {
-        alert('닉네임 양식이 맞지 않습니다.')
-        return false
+            })
+            .catch((error) => {
+              console.log(error)
+              alert(
+                '닉네임 변경이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
+              )
+              return false
+            })
+        } else {
+          alert('닉네임 양식이 맞지 않습니다.')
+          return false
+        }
+      } else if (props.infoKey == 'image') {
+        console.log(props.newValue)
+        console.log(props.uploadFile)
+
+        const formData = new FormData()
+
+        if (props.uploadFile && props.newValue != '/default_profile.png') {
+          formData.append('image', props.uploadFile)
+          formData.append('isDefault', '0')
+        } else {
+          formData.append('isDefault', '1')
+        }
+
+        formData.append('email', props.email)
+        updUserImageAPI.mutate(formData)
       }
     }
   }
+
+  const updUserImageAPI = useMutation(
+    async (formData: FormData) => {
+      const res = await axios.post(
+        `http://localhost:5000/api/upd-user-image`,
+        formData,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }
+      )
+      return res.data
+    },
+    {
+      onSuccess: async (data) => {
+        if (data.result == 1) {
+          alert('변경되었습니다.')
+          queryClient.invalidateQueries(['user-info'])
+          props.setIsChange(!props.isChange)
+        } else {
+          alert(
+            '프로필 사진을 변경하는데 문제가 발생하였습니다.\r관리자에게 문의해주시기 바랍니다.'
+          )
+          return false
+        }
+      },
+      onError: (error) => console.log(error),
+    }
+  )
 
   return (
     <div className="flex justify-around relative -left-2">
