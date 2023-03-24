@@ -18,8 +18,6 @@ const useProductCartList = () => {
     '&email=' +
     session?.user?.email
 
-  console.log(url)
-
   return useQuery(
     [queryKey, page],
     async () => {

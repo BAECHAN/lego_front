@@ -1,9 +1,12 @@
 import { atom, selector } from 'recoil'
+import { recoilPersist } from 'recoil-persist'
 import { ObjT_Str, ProductFilterCountT, ThemeT } from 'types'
 import { v1 } from 'uuid'
 
+const { persistAtom } = recoilPersist()
+
 const themeAtom = atom<ThemeT>({
-  key: `themeAtom/${v1()}`,
+  key: `themeAtom`,
   default: {
     theme_id: 0,
     theme_title: '',
@@ -14,7 +17,7 @@ const themeAtom = atom<ThemeT>({
 })
 
 export const themeSelector = selector<ThemeT>({
-  key: `themeSelector/${v1()}`,
+  key: `themeSelector`,
   get: ({ get }) => {
     return get(themeAtom)
   },
@@ -24,7 +27,7 @@ export const themeSelector = selector<ThemeT>({
 })
 
 const mypageListAtom = atom<ObjT_Str>({
-  key: `mypageListAtom/${v1()}`,
+  key: `mypageListAtom`,
   default: {
     order_history: '주문 내역 조회',
     cart: '장바구니',
@@ -37,19 +40,19 @@ const mypageListAtom = atom<ObjT_Str>({
 })
 
 export const mypageListSelector = selector<ObjT_Str>({
-  key: `mypageListSelector/${v1()}`,
+  key: `mypageListSelector`,
   get: ({ get }) => {
     return get(mypageListAtom)
   },
 })
 
 const sortAtom = atom<string>({
-  key: `sortAtom/${v1()}`,
+  key: `sortAtom`,
   default: '',
 })
 
 export const sortSelector = selector<string>({
-  key: `sortSelector/${v1()}`,
+  key: `sortSelector`,
   get: ({ get }) => {
     return get(sortAtom)
   },
@@ -59,7 +62,7 @@ export const sortSelector = selector<string>({
 })
 
 const selectedFilterAtom = atom<ProductFilterCountT>({
-  key: `selectedFilterAtom/${v1()}`,
+  key: `selectedFilterAtom`,
   default: {
     filter_price1: 0,
     filter_price2: 0,
@@ -96,7 +99,7 @@ const selectedFilterAtom = atom<ProductFilterCountT>({
 })
 
 export const selectedFilterSelector = selector<ProductFilterCountT>({
-  key: `selectedFilterSelector/${v1()}`,
+  key: `selectedFilterSelector`,
   get: ({ get }) => {
     return get(selectedFilterAtom)
   },
@@ -106,12 +109,12 @@ export const selectedFilterSelector = selector<ProductFilterCountT>({
 })
 
 const orderAtom = atom<number[]>({
-  key: `orderAtom/${v1()}`,
+  key: `orderAtom`,
   default: [],
 })
 
 export const orderSelector = selector({
-  key: `orderSelector/${v1()}`,
+  key: `orderSelector`,
   get: ({ get }) => {
     return get(orderAtom)
   },
@@ -121,12 +124,13 @@ export const orderSelector = selector({
 })
 
 const selectedOrderAtom = atom<number[]>({
-  key: `selectedOrderAtom/${v1()}`,
+  key: `selectedOrderAtom`,
   default: [],
+  effects_UNSTABLE: [persistAtom],
 })
 
 export const selectedOrderSelector = selector({
-  key: `selectedOrderSelector/${v1()}`,
+  key: `selectedOrderSelector`,
   get: ({ get }) => {
     return get(selectedOrderAtom)
   },
@@ -136,12 +140,13 @@ export const selectedOrderSelector = selector({
 })
 
 const orderPriceAtom = atom<number>({
-  key: `orderPriceAtom/${v1()}`,
+  key: `orderPriceAtom`,
   default: 0,
+  effects_UNSTABLE: [persistAtom],
 })
 
 export const orderPriceSelector = selector({
-  key: `orderPriceSelector/${v1()}`,
+  key: `orderPriceSelector`,
   get: ({ get }) => {
     return get(orderPriceAtom)
   },

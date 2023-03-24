@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 type Portal = {
   children: ReactNode
@@ -7,8 +7,12 @@ type Portal = {
 }
 
 export default function Portal({ children, selector }: Portal) {
-  const element =
-    typeof window !== 'undefined' && document.querySelector(selector)
+  const [element, setElement] = useState<HTMLElement | null>(null)
+
+  useEffect(() => {
+    setElement(document.querySelector(selector) as HTMLElement)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return element && children ? ReactDOM.createPortal(children, element) : null
 }

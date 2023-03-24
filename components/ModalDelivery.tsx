@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { ChangeEvent, useRef, useState, useEffect } from 'react'
 import Postcode from './Postcode'
 import { DeliverySubmitT, ShippingT } from 'types'
-import axiosRequest from 'pages/api/axios'
+import * as common from '@components/common/event/CommonFunction'
 import { useSession } from 'next-auth/react'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -103,29 +103,6 @@ export default function ModalDelivery(props: {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const handleChangeValue = (
-    option: string,
-    e: ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, value, checked } = e.currentTarget
-
-    if (option == 'maxLength20') {
-      value.length < 21 ? setInputs({ ...inputs, [name]: value }) : null
-    } else if (option == 'maxLength30') {
-      value.length < 31 ? setInputs({ ...inputs, [name]: value }) : null
-    } else if (option == 'number3') {
-      value.length < 4
-        ? setInputs({ ...inputs, [name]: value.replace(/[^0-9]/g, '') })
-        : null
-    } else if (option == 'number4') {
-      value.length < 5
-        ? setInputs({ ...inputs, [name]: value.replace(/[^0-9]/g, '') })
-        : null
-    } else if (option == 'check') {
-      setInputs({ ...inputs, [name]: checked ? true : false })
-    }
-  }
 
   const handleChangeSelect = (e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.currentTarget
@@ -358,7 +335,14 @@ export default function ModalDelivery(props: {
                   type="text"
                   name="recipient"
                   className="modal-input medium"
-                  onChange={(e) => handleChangeValue('maxLength20', e)}
+                  onChange={(e) =>
+                    common.CommonHandleChangeValue(
+                      'maxLength20',
+                      e,
+                      inputs,
+                      setInputs
+                    )
+                  }
                   value={inputs.recipient}
                   title="수령인"
                   ref={(el) => {
@@ -374,7 +358,14 @@ export default function ModalDelivery(props: {
                   type="text"
                   name="shippingName"
                   className="modal-input medium"
-                  onChange={(e) => handleChangeValue('maxLength20', e)}
+                  onChange={(e) =>
+                    common.CommonHandleChangeValue(
+                      'maxLength20',
+                      e,
+                      inputs,
+                      setInputs
+                    )
+                  }
                   value={inputs.shippingName}
                   title="배송지명(선택)"
                   ref={(el) => {
@@ -392,7 +383,14 @@ export default function ModalDelivery(props: {
                   type="text"
                   name="telNumberFront"
                   className="modal-input x-small mr-2"
-                  onChange={(e) => handleChangeValue('number3', e)}
+                  onChange={(e) =>
+                    common.CommonHandleChangeValue(
+                      'number3',
+                      e,
+                      inputs,
+                      setInputs
+                    )
+                  }
                   value={inputs.telNumberFront}
                   title="휴대폰 번호 앞자리"
                   ref={(el) => {
@@ -404,7 +402,14 @@ export default function ModalDelivery(props: {
                   type="text"
                   name="telNumberMiddle"
                   className="modal-input x-small mx-2"
-                  onChange={(e) => handleChangeValue('number4', e)}
+                  onChange={(e) =>
+                    common.CommonHandleChangeValue(
+                      'number4',
+                      e,
+                      inputs,
+                      setInputs
+                    )
+                  }
                   value={inputs.telNumberMiddle}
                   title="휴대폰 번호 가운데자리"
                   ref={(el) => {
@@ -416,7 +421,14 @@ export default function ModalDelivery(props: {
                   type="text"
                   name="telNumberBack"
                   className="modal-input x-small ml-2"
-                  onChange={(e) => handleChangeValue('number4', e)}
+                  onChange={(e) =>
+                    common.CommonHandleChangeValue(
+                      'number4',
+                      e,
+                      inputs,
+                      setInputs
+                    )
+                  }
                   value={inputs.telNumberBack}
                   title="휴대폰 번호 뒷자리"
                   ref={(el) => {
@@ -468,7 +480,14 @@ export default function ModalDelivery(props: {
                   className="modal-input large"
                   value={inputs.shippingAddress2}
                   title="배송지 상세주소"
-                  onChange={(e) => handleChangeValue('maxLength30', e)}
+                  onChange={(e) =>
+                    common.CommonHandleChangeValue(
+                      'maxLength30',
+                      e,
+                      inputs,
+                      setInputs
+                    )
+                  }
                   ref={(el) => {
                     el && inputsRef.current ? (inputsRef.current[7] = el) : null
                   }}
@@ -486,7 +505,14 @@ export default function ModalDelivery(props: {
                     name="shippingDefault"
                     className="modal-input w-4 mr-2"
                     title="기본 배송지 설정 유무"
-                    onChange={(e) => handleChangeValue('check', e)}
+                    onChange={(e) =>
+                      common.CommonHandleChangeValue(
+                        'check',
+                        e,
+                        inputs,
+                        setInputs
+                      )
+                    }
                     checked={inputs.shippingDefault ? true : false}
                     disabled={
                       isUpdate && initShippingDefault != 0 ? true : false
@@ -515,13 +541,13 @@ export default function ModalDelivery(props: {
                       : null
                   }}
                 >
-                  <option value="1">배송 시 요청사항을 선택해주세요</option>
-                  <option value="2">부재 시 경비실에 맡겨주세요</option>
-                  <option value="3">부재 시 택배함에 넣어주세요</option>
-                  <option value="4">부재 시 집 앞에 놔주세요</option>
-                  <option value="5">배송 전 연락 바랍니다</option>
+                  <option value="1">배송 시 요청사항을 선택해주세요.</option>
+                  <option value="2">부재 시 경비실에 맡겨주세요.</option>
+                  <option value="3">부재 시 택배함에 넣어주세요.</option>
+                  <option value="4">부재 시 집 앞에 놔주세요.</option>
+                  <option value="5">배송 전 연락 바랍니다.</option>
                   <option value="6">
-                    파손의 위험이 있는 상품입니다. 배송 시 주의해 주세요
+                    파손의 위험이 있는 상품입니다. 배송 시 주의해 주세요.
                   </option>
                   <option value="7">직접 입력</option>
                 </select>
@@ -536,7 +562,14 @@ export default function ModalDelivery(props: {
                     className="modal-input large"
                     value={inputs.deliveryRequestDirect}
                     title="배송 요청사항 세부내용"
-                    onChange={(e) => handleChangeValue('maxLength30', e)}
+                    onChange={(e) =>
+                      common.CommonHandleChangeValue(
+                        'maxLength30',
+                        e,
+                        inputs,
+                        setInputs
+                      )
+                    }
                     ref={(el) => {
                       el && inputsRef.current
                         ? (inputsRef.current[9] = el)

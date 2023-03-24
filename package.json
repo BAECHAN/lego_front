@@ -36,6 +36,7 @@
     "react-intersection-observer": "^9.4.0",
     "react-portal": "^4.2.2",
     "recoil": "^0.7.6",
+    "recoil-persist": "^4.2.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

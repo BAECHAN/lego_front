@@ -7,15 +7,6 @@ import { ProductT } from 'types'
 export default function ViewedProducts() {
   let viewedProductsArr = useRef([])
 
-  if (typeof window !== 'undefined') {
-    const viewedProductsJSON: string | null =
-      localStorage.getItem('viewed_products')
-
-    viewedProductsJSON
-      ? (viewedProductsArr.current = JSON.parse(viewedProductsJSON))
-      : null
-  }
-
   const { data: data } = useProductViewedList(viewedProductsArr.current)
 
   useEffect(() => {
@@ -23,6 +14,13 @@ export default function ViewedProducts() {
       sessionStorage.removeItem('scrollY')
       sessionStorage.removeItem('isHistoryBack')
     }
+
+    const viewedProductsJSON: string | null =
+      localStorage.getItem('viewed_products')
+
+    viewedProductsJSON
+      ? (viewedProductsArr.current = JSON.parse(viewedProductsJSON))
+      : null
   }, [])
 
   return (
