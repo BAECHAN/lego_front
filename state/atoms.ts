@@ -154,3 +154,18 @@ export const orderPriceSelector = selector({
     set(orderPriceAtom, newValue)
   },
 })
+
+const selectedShippingAtom = atom<number>({
+  key: `selectedShippingAtom`,
+  default: 0,
+})
+
+export const selectedShippingSelector = selector({
+  key: `selectedShippingSelector`,
+  get: ({ get }) => {
+    return get(selectedShippingAtom)
+  },
+  set: ({ set }, newValue) => {
+    set(selectedShippingAtom, newValue)
+  },
+})

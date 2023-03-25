@@ -53,6 +53,11 @@ export default function Navbar(prop: { productInfo?: ProductT }) {
       {router.pathname === '/order' ? (
         <>
           <FontAwesomeAngleRight />
+          <Link href={`/mypage/cart`}>
+            <a>장바구니</a>
+          </Link>
+
+          <FontAwesomeAngleRight />
           <span>{order}</span>
         </>
       ) : null}

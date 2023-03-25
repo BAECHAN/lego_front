@@ -1,20 +1,21 @@
 import Layout from '@components/Layout'
 import ModalDelivery from '@components/ModalDelivery'
 import Portal from '@components/Portal'
-import ShippingItem from '@components/ShippingItem'
-import { useQueryClient } from '@tanstack/react-query'
+import ShippingItemByOrder from '@components/ShippingItemByOrder'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { ShippingT } from 'types'
 import Pagination from '@components/common/pagination/index'
 import { useRouter } from 'next/router'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 
 export async function getServerSideProps(context: any) {
   return {
     props: context.query,
   }
 }
-export default function Delivery(props: { from: string }) {
+export default function DeliveryByOrder(props: { from: string }) {
   const router = useRouter()
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -43,11 +44,19 @@ export default function Delivery(props: { from: string }) {
     <div>
       {data && data.shippingList?.length > 0 ? (
         <div className="min-h-[300px]">
+          <button type="button" className="m-3" onClick={() => router.back()}>
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              width="18px"
+              height="18px"
+              style={{ marginLeft: '3px' }}
+            />
+          </button>
           <ul className="flex flex-col min-h-[403.2px]">
             {data.shippingList.map((item: ShippingT, index: number) => {
               return (
                 <li key={item.shipping_id}>
-                  <ShippingItem
+                  <ShippingItemByOrder
                     shipping={item}
                     onOpen={handleClickModalOpen}
                     page={page}
@@ -59,8 +68,7 @@ export default function Delivery(props: { from: string }) {
                     isLastPage={data.isLastPage}
                     listLength={data.shippingList.length}
                     shippingListCount={data.shippingListCount}
-                  ></ShippingItem>
-                  {index < data.shippingList.length - 1 ? <hr /> : null}
+                  ></ShippingItemByOrder>
                 </li>
               )
             })}
@@ -143,6 +151,6 @@ export default function Delivery(props: { from: string }) {
     </div>
   )
 }
-Delivery.getLayout = function getLayout(page: React.ReactElement) {
+DeliveryByOrder.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>
 }

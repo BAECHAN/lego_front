@@ -1,12 +1,18 @@
 import React from 'react'
 import { ShippingT } from 'types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPenSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import {
+  faPenSquare,
+  faTrashCan,
+  faCircleCheck,
+} from '@fortawesome/free-solid-svg-icons'
 import axiosRequest from 'pages/api/axios'
 import { useSession } from 'next-auth/react'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
+import { useRecoilState } from 'recoil'
+import { useRouter } from 'next/router'
 
 export default function ShippingItem(props: {
   shipping: ShippingT
@@ -21,6 +27,7 @@ export default function ShippingItem(props: {
   listLength: number
   shippingListCount: number
 }) {
+  const router = useRouter()
   const session = useSession()
 
   const queryClient = useQueryClient()
@@ -49,7 +56,9 @@ export default function ShippingItem(props: {
       } else {
         return false
       }
-    } else {
+    } else if (type == 'choice') {
+      alert('간택당함')
+      router.push('/order')
     }
   }
 
@@ -112,7 +121,9 @@ export default function ShippingItem(props: {
       <div className="flex flex-col w-[15%]">
         <div className="truncate">{props.shipping.recipient}</div>
         <div className="text-sm opacity-75 truncate">
-          {props.shipping.shipping_name}님의 배송지
+          {props.shipping.shipping_name == props.shipping.recipient
+            ? `${props.shipping.recipient}님의 배송지`
+            : props.shipping.shipping_name}
         </div>
       </div>
 
@@ -141,7 +152,7 @@ export default function ShippingItem(props: {
       <div className="w-1/6 flex items-center text-sm">
         <button
           type="button"
-          className="flex h-8 leading-5 m-2 items-center"
+          className="btn-update-shipping flex h-8 leading-5 m-2 items-center"
           onClick={(event) => handleClickButton(event, 'update')}
         >
           수정
@@ -154,7 +165,7 @@ export default function ShippingItem(props: {
         </button>
         <button
           type="button"
-          className="flex h-8 leading-5 m-2 items-center"
+          className="btn-delete-shipping flex h-8 leading-5 m-2 items-center"
           onClick={(event) => handleClickButton(event, 'delete')}
         >
           삭제
@@ -168,7 +179,8 @@ export default function ShippingItem(props: {
       </div>
 
       <style jsx>{`
-        button {
+        button.btn-update-shipping,
+        button.btn-delete-shipping {
           background-color: gray;
           color: #fff;
           padding: 5px 10px;
@@ -176,6 +188,18 @@ export default function ShippingItem(props: {
 
           :hover {
             background-color: #000;
+          }
+        }
+
+        button.btn-choice-shipping {
+          background-color: black;
+          color: #fff;
+          padding: 5px 10px;
+          border-radius: 4px;
+
+          :hover {
+            background-color: #98dfd6;
+            color: black;
           }
         }
       `}</style>

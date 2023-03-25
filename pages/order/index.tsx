@@ -1,23 +1,35 @@
 import Layout from '@components/Layout'
 import ProductInOrder from '@components/ProductInOrder'
 import * as common from '@components/common/event/CommonFunction'
+import { useRouter } from 'next/router'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 import useProductCartList from 'pages/api/query/useProductCartList'
 import React, { useEffect, useState, ChangeEvent, useRef } from 'react'
-import { useRecoilValue } from 'recoil'
-import { orderPriceSelector, selectedOrderSelector } from 'state/atoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import {
+  orderPriceSelector,
+  selectedOrderSelector,
+  selectedShippingSelector,
+} from 'state/atoms'
 import { ProductCartT, ProductT, ShippingT } from 'types'
 
 export default function Order() {
+  const router = useRouter()
+
   const { data: cartData } = useProductCartList()
-  let selectedOrder = useRecoilValue(selectedOrderSelector)
-  let orderPrice = useRecoilValue(orderPriceSelector)
+  const selectedOrder = useRecoilValue(selectedOrderSelector)
+  const orderPrice = useRecoilValue(orderPriceSelector)
+
+  const selectedShippingFromDelivery = useRecoilValue(selectedShippingSelector)
 
   let [totalPrice, setTotalPrice] = useState(0)
   let [deliveryPrice, setDeliveryPrice] = useState(0)
 
-  const { data: shippingData, status: shippingStatus } =
-    useDeliveryShippingList()
+  const {
+    data: shippingData,
+    isFetched,
+    status: shippingStatus,
+  } = useDeliveryShippingList()
 
   const [selectedShipping, setSelectedShipping] = useState<ShippingT>()
   const [directOpen, setDirectOpen] = useState(false)
@@ -38,13 +50,29 @@ export default function Order() {
   useEffect(() => {
     if (shippingStatus == 'success') {
       shippingData.shippingList.map((item: ShippingT, index: number) => {
-        if (item.shipping_default == 1) {
+        if (item.shipping_id == selectedShippingFromDelivery) {
           setSelectedShipping(item)
+
+          if (item.delivery_request == '7') {
+            setDirectOpen(true)
+          } else {
+            setDirectOpen(false)
+          }
+        } else {
+          if (item.shipping_default == 1 && selectedShippingFromDelivery == 0) {
+            setSelectedShipping(item)
+
+            if (item.delivery_request == '7') {
+              setDirectOpen(true)
+            } else {
+              setDirectOpen(false)
+            }
+          }
         }
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shippingData])
+  }, [isFetched])
 
   useEffect(() => {
     if (selectedShipping) {
@@ -93,6 +121,10 @@ export default function Order() {
     }
   }
 
+  const handleClickChangeShipping = () => {
+    router.push(`/mypage/delivery_by_order`)
+  }
+
   return (
     <div className="min-h-[602px]">
       <div className="p-3">
@@ -102,31 +134,39 @@ export default function Order() {
             <div>배송지</div>
             {shippingData && shippingData.shippingList ? (
               <div>
-                {shippingData.shippingList &&
-                  shippingData.shippingList.map(
-                    (item: ShippingT, index: number) => {
-                      return (
-                        <label key={item.shipping_id}>
-                          <input
-                            type="radio"
-                            name="ShippingName"
-                            className={item.shipping_default == 1 ? '' : 'ml-5'}
-                            value={item.shipping_name}
-                            defaultChecked={
-                              item.shipping_default == 1 ? true : false
-                            }
-                            onChange={(event) =>
-                              handleChangeShipping(event, item)
-                            }
-                          />
-                          {item.shipping_name}
-                        </label>
-                      )
-                    }
-                  )}
+                {shippingData.shippingList.map(
+                  (item: ShippingT, index: number) => {
+                    return (
+                      <label key={item.shipping_id} className="cursor-pointer">
+                        <input
+                          type="radio"
+                          name="ShippingName"
+                          className={item.shipping_default == 1 ? '' : 'ml-5'}
+                          value={item.shipping_name}
+                          defaultChecked={
+                            selectedShippingFromDelivery == item.shipping_id
+                              ? true
+                              : item.shipping_default == 1 &&
+                                selectedShippingFromDelivery == 0
+                              ? true
+                              : false
+                          }
+                          onChange={(event) =>
+                            handleChangeShipping(event, item)
+                          }
+                        />
+                        {item.shipping_name}
+                      </label>
+                    )
+                  }
+                )}
               </div>
             ) : null}
-            <button type="button" className="btn-delivery-change ml-3">
+            <button
+              type="button"
+              className="btn-delivery-change ml-3"
+              onClick={handleClickChangeShipping}
+            >
               배송지 변경
             </button>
           </div>
@@ -161,13 +201,13 @@ export default function Order() {
                   el && selectsRef.current ? (selectsRef.current[0] = el) : null
                 }}
               >
-                <option value="1">배송 시 요청사항을 선택해주세요.</option>
-                <option value="2">부재 시 경비실에 맡겨주세요.</option>
-                <option value="3">부재 시 택배함에 넣어주세요.</option>
-                <option value="4">부재 시 집 앞에 놔주세요.</option>
-                <option value="5">배송 전 연락 바랍니다.</option>
+                <option value="1">배송 시 요청사항을 선택해주세요</option>
+                <option value="2">부재 시 경비실에 맡겨주세요</option>
+                <option value="3">부재 시 택배함에 넣어주세요</option>
+                <option value="4">부재 시 집 앞에 놔주세요</option>
+                <option value="5">배송 전 연락 바랍니다</option>
                 <option value="6">
-                  파손의 위험이 있는 상품입니다. 배송 시 주의해 주세요.
+                  파손의 위험이 있는 상품이니 배송 시 주의해 주세요
                 </option>
                 <option value="7">직접 입력</option>
               </select>
@@ -220,6 +260,7 @@ export default function Order() {
             </ul>
           ) : null}
         </div>
+        <h2 className="flex justify-end">총 {selectedOrder.length} 건</h2>
       </div>
       <div className="p-3 mt-3">
         <h2 className="text-xl mb-3">결제 금액</h2>
