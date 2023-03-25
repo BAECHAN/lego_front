@@ -1,0 +1,84 @@
+import React from 'react'
+
+declare const window: typeof globalThis & {
+  IMP: any
+}
+export default function Payment(props: { price: number }) {
+  const onClickPayment = () => {
+    alert(
+      '결제 테스트 모달화면이 보여지게 됩니다.\r실제로 결제처리가 된 후에 24시간 이내에 자동환불됩니다.'
+    )
+
+    /* 1. 가맹점 식별하기 */
+    const { IMP } = window
+    IMP.init(process.env.NEXT_PUBLIC_IMP_CODE) // 'imp00000000' 대신 발급받은 가맹점 식별코드를 사용합니다.
+    // 가맹점 식별코드는 아임포트 관리자 페이지 로그인 후, 시스템 설정 > 내정보에서 확인하실 수 있습니다.
+
+    /* 2. 결제 데이터 정의하기 */
+    const data = {
+      pg: 'html5_inicis', // PG사
+      pay_method: 'card', // 결제수단
+      merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
+      amount: 100, // 결제금액
+      name: '아임포트 결제 데이터 분석', // 주문명
+      buyer_name: '홍길동', // 구매자 이름
+      buyer_tel: '01012341234', // 구매자 전화번호
+      buyer_email: 'example@example', // 구매자 이메일
+      buyer_addr: '신사동 661-16', // 구매자 주소
+      buyer_postcode: '06018', // 구매자 우편번호
+    }
+
+    /* 4. 결제 창 호출하기 */
+    IMP.request_pay(data, callback)
+  }
+
+  /* 3. 콜백 함수 정의하기 */
+  function callback(response: any) {
+    const { success, merchant_uid, error_msg } = response
+
+    if (success) {
+      alert('결제 성공')
+    } else {
+      alert(`결제 실패: ${error_msg}`)
+    }
+  }
+
+  return (
+    <button onClick={onClickPayment}>
+      {props.price.toLocaleString('ko-kr')} 원 결제하기
+      <style jsx>{`
+        button {
+          height: 50px;
+          margin-top: 17px;
+          box-sizing: border-box;
+          outline: 0;
+          border: 0;
+          cursor: pointer;
+          user-select: none;
+          vertical-align: middle;
+          -webkit-appearance: none;
+          font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+          font-weight: 500;
+          font-size: 20px;
+          letter-spacing: 0.02857em;
+          text-transform: uppercase;
+          min-width: 500px;
+          padding: 6px 16px;
+          border-radius: 4px;
+          transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+            box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+            border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+            color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+          color: black;
+          text-decoration: none;
+          background-color: rgb(255, 207, 0);
+
+          :hover {
+            background-color: black;
+            color: white;
+          }
+        }
+      `}</style>
+    </button>
+  )
+}

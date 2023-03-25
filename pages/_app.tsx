@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RecoilRoot } from 'recoil'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { CookiesProvider } from 'react-cookie'
+import Scripts from '@components/script'
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactElement
@@ -33,7 +34,14 @@ export default function MyApp({
       <CookiesProvider>
         <QueryClientProvider client={queryClient}>
           <ReactQueryDevtools initialIsOpen={false} />
-          <RecoilRoot>{getLayout(<Component {...pageProps} />)}</RecoilRoot>
+          <RecoilRoot>
+            {getLayout(
+              <>
+                <Scripts />
+                <Component {...pageProps} />
+              </>
+            )}
+          </RecoilRoot>
         </QueryClientProvider>
       </CookiesProvider>
     </SessionProvider>

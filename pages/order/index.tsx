@@ -12,6 +12,8 @@ import {
   selectedShippingSelector,
 } from 'state/atoms'
 import { ProductCartT, ProductT, ShippingT } from 'types'
+import RadioButton from '@components/common/custom/RadioButton'
+import Payment from '@components/common/pay/Payment'
 
 export default function Order() {
   const router = useRouter()
@@ -19,11 +21,11 @@ export default function Order() {
   const { data: cartData } = useProductCartList()
   const selectedOrder = useRecoilValue(selectedOrderSelector)
   const orderPrice = useRecoilValue(orderPriceSelector)
-
   const selectedShippingFromDelivery = useRecoilValue(selectedShippingSelector)
 
-  let [totalPrice, setTotalPrice] = useState(0)
-  let [deliveryPrice, setDeliveryPrice] = useState(0)
+  const [totalPrice, setTotalPrice] = useState(0)
+  const [deliveryPrice, setDeliveryPrice] = useState(0)
+  const [productToPayCount, setProductToPayCount] = useState(0)
 
   const {
     data: shippingData,
@@ -44,6 +46,7 @@ export default function Order() {
 
   useEffect(() => {
     setTotalPrice(orderPrice)
+    setProductToPayCount(selectedOrder.length)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -260,7 +263,7 @@ export default function Order() {
             </ul>
           ) : null}
         </div>
-        <h2 className="flex justify-end">총 {selectedOrder.length} 건</h2>
+        <h2 className="flex justify-end">총 {productToPayCount} 건</h2>
       </div>
       <div className="p-3 mt-3">
         <h2 className="text-xl mb-3">결제 금액</h2>
@@ -288,16 +291,7 @@ export default function Order() {
           </div>
 
           <div className="flex justify-center">
-            <button
-              type="button"
-              id="btnOrderRouter"
-              className="btn-pay flex justify-center items-center"
-            >
-              {totalPrice > 0
-                ? (totalPrice + deliveryPrice).toLocaleString('ko-kr')
-                : 0}{' '}
-              원 결제하기
-            </button>
+            <Payment price={totalPrice > 0 ? totalPrice + deliveryPrice : 0} />
           </div>
         </div>
       </div>
@@ -330,38 +324,6 @@ export default function Order() {
         .delivery-request-input {
           border: 1px solid #e5e5e5;
           height: 30px;
-        }
-
-        button.btn-pay {
-          height: 50px;
-          margin-top: 17px;
-          box-sizing: border-box;
-          outline: 0;
-          border: 0;
-          cursor: pointer;
-          user-select: none;
-          vertical-align: middle;
-          -webkit-appearance: none;
-          font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-          font-weight: 500;
-          font-size: 20px;
-          letter-spacing: 0.02857em;
-          text-transform: uppercase;
-          min-width: 500px;
-          padding: 6px 16px;
-          border-radius: 4px;
-          transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-            box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-            border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-            color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-          color: black;
-          text-decoration: none;
-          background-color: rgb(255, 207, 0);
-
-          :hover {
-            background-color: black;
-            color: white;
-          }
         }
       `}</style>
     </div>
