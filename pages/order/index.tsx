@@ -14,9 +14,12 @@ import {
 import { ProductCartT, ProductT, ShippingT } from 'types'
 import RadioButton from '@components/common/custom/RadioButton'
 import Payment from '@components/common/pay/Payment'
+import { useSession } from 'next-auth/react'
 
 export default function Order() {
   const router = useRouter()
+
+  const { data: session, status } = useSession()
 
   const { data: cartData } = useProductCartList()
   const selectedOrder = useRecoilValue(selectedOrderSelector)
@@ -43,6 +46,31 @@ export default function Order() {
   })
   const inputsRef = useRef<HTMLInputElement[]>([])
   const selectsRef = useRef<HTMLSelectElement[]>([])
+
+  const [submits, setSubmits] = useState({
+    email: '',
+    shipping_id: 0,
+    delivery_request: '',
+    delivery_request_direct: '',
+    cart_info: {},
+  })
+
+  useEffect(() => {
+    if (status == 'authenticated' && cartData && selectedShipping) {
+      setSubmits({
+        ...submits,
+        email: session.user?.email ? session.user.email : '',
+        shipping_id: selectedShipping.shipping_id,
+        delivery_request: selectsRef.current[0].value,
+        delivery_request_direct:
+          selectsRef.current[0].value == '7' ? inputsRef.current[0].value : '',
+        cart_info: cartData.cartList.filter((cartItem: ProductCartT) =>
+          selectedOrder.includes(cartItem.cart_id)
+        ),
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedShipping, cartData, status, inputs])
 
   useEffect(() => {
     setTotalPrice(orderPrice)
@@ -291,7 +319,10 @@ export default function Order() {
           </div>
 
           <div className="flex justify-center">
-            <Payment price={totalPrice > 0 ? totalPrice + deliveryPrice : 0} />
+            <Payment
+              price={totalPrice > 0 ? totalPrice + deliveryPrice : 0}
+              submits={submits}
+            />
           </div>
         </div>
       </div>

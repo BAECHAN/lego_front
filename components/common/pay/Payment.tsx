@@ -1,9 +1,13 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
 import React from 'react'
 
 declare const window: typeof globalThis & {
   IMP: any
 }
-export default function Payment(props: { price: number }) {
+export default function Payment(props: { price: number; submits: {} }) {
+  const queryClient = useQueryClient()
+
   const onClickPayment = () => {
     alert(
       '결제 테스트 모달화면이 보여지게 됩니다.\r실제로 결제처리가 된 후에 24시간 이내에 자동환불됩니다.'
@@ -40,8 +44,37 @@ export default function Payment(props: { price: number }) {
       alert('결제 성공')
     } else {
       alert(`결제 실패: ${error_msg}`)
+      console.log(props.submits)
+      insertOrderAPI.mutate(props.submits)
     }
   }
+
+  const insertOrderAPI = useMutation(
+    async (param: any) => {
+      const res = await axios.post(
+        `http://localhost:5000/api/add-order`,
+        JSON.stringify(param),
+        {
+          headers: { 'Content-Type': `application/json; charset=utf-8` },
+        }
+      )
+      return res.data
+    },
+    {
+      onSuccess: async (response) => {
+        if (response?.status === 200 && response.data.result == 1) {
+          alert('결제 테스트 성공')
+          //queryClient.invalidateQueries(['user-order'])
+        } else {
+          alert(
+            '결제정보를 저장하는데 문제가 발생하였습니다.\r관리자에게 문의해주시기 바랍니다.'
+          )
+          return false
+        }
+      },
+      onError: (error) => console.log(error),
+    }
+  )
 
   return (
     <button onClick={onClickPayment}>

@@ -1,4 +1,3 @@
-// 경로 : './components/Scripts/GoogleAnalytics.tsx'
 import Script from 'next/script'
 
 export default function Iamport() {
