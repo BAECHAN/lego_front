@@ -156,3 +156,21 @@ export type ShippingT = {
   delivery_request_direct: string
   state: number
 }
+
+export type OrderT = {
+  order_group_id: number
+  state: number
+  date_registed: Date
+  pay_price: number
+  order_quantity: number
+  product_id: number
+  product_number: number
+  title: string
+  image: string
+  recipient: string
+  tel_number: string
+  shipping_address1: string
+  shipping_address2: string
+  delivery_request: string
+  delivery_request_direct: string
+}

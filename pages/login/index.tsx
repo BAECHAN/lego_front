@@ -1,7 +1,7 @@
 import Layout from '@components/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
@@ -113,7 +113,6 @@ export default function Login() {
                 id="email"
                 placeholder="예) lego@lego.co.kr"
                 autoComplete="off"
-                value="asdfjklddd@naver.com"
               />
             </label>
             <label>
@@ -124,7 +123,6 @@ export default function Login() {
                 name="password"
                 id="password"
                 autoComplete="off"
-                value="test1234!"
               />
               {isShowPw ? (
                 <FontAwesomeIcon

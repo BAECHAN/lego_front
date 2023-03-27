@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
+import { useRouter } from 'next/router'
 import React from 'react'
 
 declare const window: typeof globalThis & {
@@ -7,6 +8,7 @@ declare const window: typeof globalThis & {
 }
 export default function Payment(props: { price: number; submits: {} }) {
   const queryClient = useQueryClient()
+  const router = useRouter()
 
   const onClickPayment = () => {
     alert(
@@ -42,10 +44,9 @@ export default function Payment(props: { price: number; submits: {} }) {
 
     if (success) {
       alert('결제 성공')
+      insertOrderAPI.mutate(props.submits)
     } else {
       alert(`결제 실패: ${error_msg}`)
-      console.log(props.submits)
-      insertOrderAPI.mutate(props.submits)
     }
   }
 
@@ -63,12 +64,14 @@ export default function Payment(props: { price: number; submits: {} }) {
     {
       onSuccess: async (response) => {
         if (response?.status === 200 && response.data.result == 1) {
-          alert('결제 테스트 성공')
-          //queryClient.invalidateQueries(['user-order'])
+          alert('주문이 완료되었습니다.\r주문 내역 페이지로 이동합니다.')
+          queryClient.invalidateQueries(['user-order'])
+          router.push('/mypage/order_history')
         } else {
           alert(
             '결제정보를 저장하는데 문제가 발생하였습니다.\r관리자에게 문의해주시기 바랍니다.'
           )
+
           return false
         }
       },
