@@ -21,10 +21,7 @@ export default function Home() {
         </div>
       </div>
       <div className="flex justify-center text-2xl mt-3">
-        <h2>
-          * 주의! 해당 사이트는 레고 사이트를 벤치마킹하여 만든 포트폴리오
-          사이트입니다. *
-        </h2>
+        <h2>* 주의! 해당 사이트는 레고 공식 사이트가 아닙니다.</h2>
       </div>
       <style jsx>{`
         .home-image {

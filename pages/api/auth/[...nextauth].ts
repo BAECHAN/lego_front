@@ -5,7 +5,7 @@ import KakaoProvider from 'next-auth/providers/kakao'
 import GoogleProvider from 'next-auth/providers/google'
 
 declare module 'next-auth' {
-  interface Session {
+  interface JWT {
     user: {
       state: number | undefined | null
     } & DefaultSession['user']
