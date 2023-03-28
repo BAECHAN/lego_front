@@ -2,7 +2,6 @@ import { useRecoilState, useResetRecoilState } from 'recoil'
 import { selectedFilterSelector } from 'state/atoms'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect } from 'react'
 
 export default function SidebarFilterSelected() {
   const [selectedFilter, setSelectedFilter] = useRecoilState(

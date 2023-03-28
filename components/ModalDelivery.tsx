@@ -5,7 +5,6 @@ import Postcode from './Postcode'
 import { DeliverySubmitT, ShippingT } from 'types'
 import * as common from '@components/common/event/CommonFunction'
 import { useSession } from 'next-auth/react'
-import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 

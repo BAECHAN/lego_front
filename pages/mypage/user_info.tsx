@@ -4,7 +4,7 @@ import { NextApiRequest } from 'next'
 import { signOut } from 'next-auth/react'
 import axiosRequest from 'pages/api/axios'
 import useUser from 'pages/api/query/useUser'
-import React, { useEffect } from 'react'
+import React from 'react'
 
 export default function UserInfo(req: NextApiRequest) {
   // 회원정보 가져와서 화면에 보여주기

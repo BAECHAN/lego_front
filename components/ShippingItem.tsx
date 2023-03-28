@@ -1,17 +1,10 @@
 import React from 'react'
 import { ShippingT } from 'types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faPenSquare,
-  faTrashCan,
-  faCircleCheck,
-} from '@fortawesome/free-solid-svg-icons'
-import axiosRequest from 'pages/api/axios'
+import { faPenSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { useSession } from 'next-auth/react'
-import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { useRecoilState } from 'recoil'
 import { useRouter } from 'next/router'
 
 export default function ShippingItem(props: {

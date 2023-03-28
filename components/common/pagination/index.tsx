@@ -1,4 +1,4 @@
-import React, { useEffect, useState, MouseEvent } from 'react'
+import React, { useEffect, MouseEvent } from 'react'
 
 import {
   faAngleLeft,

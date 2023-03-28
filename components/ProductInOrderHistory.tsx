@@ -1,12 +1,11 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { OrderT, ProductCartT, ProductUpdateCartSubmitT } from 'types'
+import React, { useEffect, useState } from 'react'
+import { OrderT } from 'types'
 import Image from 'next/image'
 import Link from 'next/link'
 import * as common from '@components/common/event/CommonFunction'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
-import useOrderList from 'pages/api/query/useOrderList'
 
 export default function ProductInOrderHistory(props: { order: OrderT }) {
   const { data: session, status } = useSession()

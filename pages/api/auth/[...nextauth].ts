@@ -3,7 +3,6 @@ import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import KakaoProvider from 'next-auth/providers/kakao'
 import GoogleProvider from 'next-auth/providers/google'
-import { Server } from 'https'
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
