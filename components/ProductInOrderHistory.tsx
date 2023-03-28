@@ -6,6 +6,7 @@ import * as common from '@components/common/event/CommonFunction'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
+import useOrderList from 'pages/api/query/useOrderList'
 
 export default function ProductInOrderHistory(props: { order: OrderT }) {
   const { data: session, status } = useSession()
@@ -15,6 +16,15 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
   const date = new Date(props.order.date_registed)
 
   const orderTime = common.timeFormat(date)
+
+  const [isRefund, setIsRefund] = useState(false)
+
+  useEffect(() => {
+    if (props.order.state == 7) {
+      setIsRefund(true)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleClickRefund = () => {
     if (
@@ -50,9 +60,11 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
     },
     {
       onSuccess: async (response) => {
-        if (response?.status === 200) {
+        console.log(response)
+        if (response.result == 1) {
           alert('환불처리 되었습니다.')
           queryClient.invalidateQueries(['order-list'])
+          setIsRefund(true)
         } else {
           alert(
             '환불처리 하는데 문제가 발생하였습니다.\r관리자에게 문의해주시기 바랍니다.'
@@ -107,17 +119,19 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
         <b className="mr-2">
           {props.order.state == 2
             ? '결제완료'
-            : props.order.state == 7
+            : props.order.state == 7 || isRefund
             ? '환불완료'
             : '환불대기'}
         </b>
-        <button
-          type="button"
-          className="btn-refund flex h-8 leading-5"
-          onClick={handleClickRefund}
-        >
-          환불요청
-        </button>
+        {!isRefund ? (
+          <button
+            type="button"
+            className="btn-refund flex h-8 leading-5"
+            onClick={handleClickRefund}
+          >
+            환불요청
+          </button>
+        ) : null}
       </div>
 
       <style jsx>{`

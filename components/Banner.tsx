@@ -31,7 +31,7 @@ export default function Banner() {
       {!isClose ? (
         <div className="banner">
           <span style={{ flexGrow: 1 }}></span>
-          <p className="mx-2 my-3">11월 신제품 출시!</p>
+          <p className="mx-2 my-3">4월 신제품 출시!</p>
           <Link href="/themes">
             <a className="hover:text-blue-600">
               보러가기

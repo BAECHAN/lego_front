@@ -74,7 +74,6 @@ export default function Login() {
   }
 
   const loginKakao = async (e: any) => {
-    // 원래 실행되는 이벤트 취소
     e.preventDefault()
     await signIn('kakao', {
       callbackUrl: '/',
@@ -82,7 +81,6 @@ export default function Login() {
   }
 
   const loginGoogle = async (e: any) => {
-    // 원래 실행되는 이벤트 취소
     e.preventDefault()
     await signIn('google', {
       callbackUrl: '/',

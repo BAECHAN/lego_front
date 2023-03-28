@@ -3,7 +3,7 @@ import ModalDelivery from '@components/ModalDelivery'
 import Portal from '@components/Portal'
 import ShippingItemByOrder from '@components/ShippingItemByOrder'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ShippingT } from 'types'
 import Pagination from '@components/common/pagination/index'
 import { useRouter } from 'next/router'
@@ -25,6 +25,15 @@ export default function DeliveryByOrder(props: { from: string }) {
   const [startPage, setStartPage] = useState(1)
   const [totalPage, setTotalPage] = useState(0)
 
+  const { data, isFetched, status } = useDeliveryShippingList(page)
+
+  useEffect(() => {
+    if (status == 'success') {
+      data.shippingList.length == 0 ? setModalOpen(true) : null
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFetched])
+
   const handleClickModalOpen = (
     event: React.MouseEvent<HTMLButtonElement>,
     shipping?: ShippingT
@@ -37,8 +46,6 @@ export default function DeliveryByOrder(props: { from: string }) {
 
     !modalOpen ? setModalOpen(true) : setModalOpen(false)
   }
-
-  const { data } = useDeliveryShippingList(page)
 
   return (
     <div>

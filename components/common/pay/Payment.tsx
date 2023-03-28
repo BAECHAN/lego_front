@@ -46,7 +46,10 @@ export default function Payment(props: { price: number; submits: {} }) {
       alert('결제 성공')
       insertOrderAPI.mutate(props.submits)
     } else {
-      alert(`결제 실패: ${error_msg}`)
+      alert(
+        `결제 실패: ${error_msg}\r테스트 사이트이기 때문에 결제취소하여도 주문되도록 처리하였습니다.`
+      )
+      insertOrderAPI.mutate(props.submits)
     }
   }
 
@@ -63,7 +66,7 @@ export default function Payment(props: { price: number; submits: {} }) {
     },
     {
       onSuccess: async (response) => {
-        if (response?.status === 200 && response.data.result == 1) {
+        if (response.result == 1) {
           alert('주문이 완료되었습니다.\r주문 내역 페이지로 이동합니다.')
           queryClient.invalidateQueries(['user-order'])
           router.push('/mypage/order_history')
@@ -71,7 +74,6 @@ export default function Payment(props: { price: number; submits: {} }) {
           alert(
             '결제정보를 저장하는데 문제가 발생하였습니다.\r관리자에게 문의해주시기 바랍니다.'
           )
-
           return false
         }
       },

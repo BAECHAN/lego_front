@@ -13,7 +13,7 @@ export default function Header() {
         </a>
       </Link>
       <Link href="/themes">
-        <a>시리즈</a>
+        <a>레고 제품 쇼핑</a>
       </Link>
       <div className="flex-grow" />
 
