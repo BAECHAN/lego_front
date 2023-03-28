@@ -5,6 +5,7 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
+  basePath: '/lego-front',
 }
 
 module.exports = {

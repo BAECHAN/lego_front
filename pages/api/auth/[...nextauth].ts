@@ -4,14 +4,6 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import KakaoProvider from 'next-auth/providers/kakao'
 import GoogleProvider from 'next-auth/providers/google'
 
-declare module 'next-auth' {
-  interface JWT {
-    user: {
-      state: number | undefined | null
-    } & DefaultSession['user']
-  }
-}
-
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
@@ -89,7 +81,7 @@ export default NextAuth({
       return session
     },
     async jwt(params) {
-      if (params.user && params.user.state) {
+      if (params.user && (params.user.state as number)) {
         params.token.state = params.user.state
       }
       return params.token
