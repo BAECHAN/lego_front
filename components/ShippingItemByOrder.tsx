@@ -6,9 +6,7 @@ import {
   faTrashCan,
   faCircleCheck,
 } from '@fortawesome/free-solid-svg-icons'
-import axiosRequest from 'pages/api/axios'
 import { useSession } from 'next-auth/react'
-import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { useRecoilState } from 'recoil'

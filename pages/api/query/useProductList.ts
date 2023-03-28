@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { ThemeT } from 'types'
 import { selectedFilterSelector, sortSelector } from 'state/atoms'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { useRecoilValue } from 'recoil'
 
 const useProductList = (props: ThemeT) => {
   const take = 15

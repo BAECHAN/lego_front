@@ -6,8 +6,7 @@ import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { FormEventHandler, useState } from 'react'
-import { display } from '@mui/system'
+import { useState } from 'react'
 
 export default function Login() {
   const [isShowPw, setIsShowPw] = useState(false)

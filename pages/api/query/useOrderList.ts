@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { OrderT } from 'types'
 import { useSession } from 'next-auth/react'
 
 const useOrderList = () => {

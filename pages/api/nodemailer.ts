@@ -1,6 +1,5 @@
 import { NextApiHandler } from 'next'
 import nodemailer from 'nodemailer'
-import crypto from 'crypto-js'
 import axios from 'axios'
 
 const sender = process.env.GMAIL_CLIENT_ID

@@ -1,14 +1,7 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { ProductCartT, ProductUpdateCartSubmitT } from 'types'
+import React from 'react'
+import { ProductCartT } from 'types'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus, faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import { useRecoilState, useResetRecoilState } from 'recoil'
-import { orderPriceSelector, selectedOrderSelector } from 'state/atoms'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import axios from 'axios'
-import { useSession } from 'next-auth/react'
 
 export default function ProductInOrder(props: { product: ProductCartT }) {
   return (

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import axiosRequest from 'pages/api/axios'

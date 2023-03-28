@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import React, { FormEvent, useEffect, useRef, useState } from 'react'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import axiosRequest from 'pages/api/axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
