@@ -1,7 +1,7 @@
 import Layout from '../../components/Layout'
 import Image from 'next/image'
 import Carousel from 'nuka-carousel'
-import Navbar from '@components/Navbar'
+import Navbar from '@components/NavigationBar'
 import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'

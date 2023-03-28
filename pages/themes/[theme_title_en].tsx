@@ -1,6 +1,6 @@
 import Layout from '../../components/Layout'
 import SidebarFilter from '../../components/SidebarFilter'
-import Navbar from '../../components/Navbar'
+import Navbar from '../../components/NavigationBar'
 
 import { ThemeT, ProductT } from 'types'
 import ProductCard from '@components/ProductCard'

@@ -5,7 +5,7 @@ import { ProductT } from 'types'
 import { useRecoilValue } from 'recoil'
 import { mypageListSelector, themeSelector } from 'state/atoms'
 
-export default function Navbar(prop: { productInfo?: ProductT }) {
+export default function NavigationBar(prop: { productInfo?: ProductT }) {
   const router = useRouter()
 
   const [home, series, theme, productInfo, mypage, order] = [
