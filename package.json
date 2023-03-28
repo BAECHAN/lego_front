@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prettier-fix": "prettier --write ."
+    "prettier-fix": "prettier --write .",
+    "predeploy": "npm run build",
+    "deploy": "touch out/.nojekyll && gh-pages -d out --dotfiles"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -52,6 +54,7 @@
     "autoprefixer": "^10.4.12",
     "eslint": "8.22.0",
     "eslint-config-next": "12.2.5",
+    "gh-pages": "^5.0.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "next-sitemap": "^3.1.24",
