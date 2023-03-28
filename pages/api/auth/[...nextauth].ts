@@ -1,8 +1,16 @@
 import axios from 'axios'
-import NextAuth from 'next-auth'
+import NextAuth, { DefaultSession } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import KakaoProvider from 'next-auth/providers/kakao'
 import GoogleProvider from 'next-auth/providers/google'
+
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      state: number | undefined | null
+    } & DefaultSession['user']
+  }
+}
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
@@ -81,7 +89,7 @@ export default NextAuth({
       return session
     },
     async jwt(params) {
-      if (params.user?.state) {
+      if (params.user && params.user.state) {
         params.token.state = params.user.state
       }
       return params.token
