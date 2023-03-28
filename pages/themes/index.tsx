@@ -1,5 +1,5 @@
 import Layout from '../../components/Layout'
-import Navbar from '../../components/Navbar'
+import Navbar from '../../components/NavigationBar'
 import Link from 'next/link'
 import Image from 'next/image'
 import useThemes from 'pages/api/query/useThemes'
