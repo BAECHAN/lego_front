@@ -20,7 +20,6 @@ export default function AccountExpiredAccount() {
       )
         .then(async (response) => {
           if (response?.status === 200 && response.data.result == 1) {
-            //session?.data?.user?.state = 1;
             alert('휴면을 해제하였습니다.\r다시 로그인 해주시기 바랍니다.')
             await signOut()
           } else {
