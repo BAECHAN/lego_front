@@ -7,7 +7,7 @@ const useFilters = (props: ThemeT) => {
     ['product-filter'],
     async () => {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product-filter?theme_id=${props.theme_id}`
+        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/product-filter?theme_id=${props.theme_id}`
       )
       return res.data
     },

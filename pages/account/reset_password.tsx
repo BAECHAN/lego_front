@@ -21,7 +21,7 @@ export default function ResetPassword() {
 
   useEffect(() => {
     if (router.isReady) {
-      const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/token-chk?email=${email}&token=${token}`
+      const url = `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/token-chk?email=${email}&token=${token}`
       axios
         .get(url, {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
@@ -154,7 +154,7 @@ export default function ResetPassword() {
 
       axiosRequest(
         'patch',
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/update-password`,
+        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/update-password`,
         param
       )
         .then((response) => {

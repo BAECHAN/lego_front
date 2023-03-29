@@ -23,7 +23,9 @@ export default function FindAccount() {
 
     /** DB에 아이디 있는지 확인 후 return하는 api */
     axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/email-chk?email=${email}`)
+      .get(
+        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/email-chk?email=${email}`
+      )
       .then((response) => {
         setIsSubmit(true)
 

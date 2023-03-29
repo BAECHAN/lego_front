@@ -19,7 +19,7 @@ export default NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       authorize: async (credentials, req) => {
-        const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/login-chk`
+        const url = `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/login-chk`
 
         let res: any = await axios
           .get(url, {

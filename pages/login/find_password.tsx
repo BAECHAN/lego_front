@@ -25,7 +25,9 @@ export default function FindPassword() {
     setEmail(email)
 
     axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/email-chk?email=${email}`)
+      .get(
+        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/email-chk?email=${email}`
+      )
       .then((response) => {
         setIsSubmit(true)
 
