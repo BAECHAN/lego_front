@@ -7,7 +7,7 @@ const useThemes = () => {
     ['theme-list'],
     async () => {
       const res = await axios.get(
-        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/theme-list`
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/theme-list`
       )
       return res.data
     },

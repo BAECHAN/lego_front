@@ -23,7 +23,7 @@ export default function UserInfo(req: NextApiRequest) {
 
       axiosRequest(
         'patch',
-        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/withdraw-account`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/withdraw-account`,
         param
       )
         .then((response) => {

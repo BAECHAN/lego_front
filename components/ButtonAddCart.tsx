@@ -21,7 +21,7 @@ export default function ButtonAddCart(props: {
 
       axiosRequest(
         'post',
-        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/add-cart`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/add-cart`,
         param
       )
         .then((response) => {

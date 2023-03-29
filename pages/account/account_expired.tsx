@@ -15,7 +15,7 @@ export default function AccountExpiredAccount() {
 
       axiosRequest(
         'patch',
-        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/wakeup-account`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/wakeup-account`,
         param
       )
         .then(async (response) => {
