@@ -77,10 +77,10 @@ export default NextAuth({
   },
 
   callbacks: {
-    async session({ session, token, user }) {
+    async session({ session }) {
       return session
     },
-    async jwt(params) {
+    async jwt(params: { user: { state: number }; token: { state: any } }) {
       if (params.user && (params.user.state as number)) {
         params.token.state = params.user.state
       }

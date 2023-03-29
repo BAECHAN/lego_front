@@ -1,6 +1,5 @@
 // <root>/middleware.ts
 import { getToken } from 'next-auth/jwt'
-import { signOut } from 'next-auth/react'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function middleware(request: NextRequest, response: NextResponse) {
