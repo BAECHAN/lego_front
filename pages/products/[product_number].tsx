@@ -31,10 +31,7 @@ export default function Product(props: any) {
 
   const router = useRouter()
 
-  const handleClickQuantity = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    plusOrMinus: string
-  ) => {
+  const handleClickQuantity = (plusOrMinus: string) => {
     plusOrMinus === 'plus' ? setQuantity(++quantity) : setQuantity(--quantity)
 
     if (product) {
