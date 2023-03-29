@@ -7,7 +7,7 @@ const useUser = () => {
   const { data: session } = useSession()
 
   const queryKey = 'user-info'
-  const url = `http://localhost:5000/api/get-user-info?email=${session?.user?.email}`
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-user-info?email=${session?.user?.email}`
 
   return useQuery<UserT>(
     [queryKey],

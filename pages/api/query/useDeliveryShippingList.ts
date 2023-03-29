@@ -7,7 +7,7 @@ const useDeliveryShippingList = (page?: number) => {
 
   const queryKey = 'shipping-list'
 
-  const url = 'http://localhost:5000' + '/api/' + queryKey
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}`
 
   return useQuery(
     [queryKey, page],

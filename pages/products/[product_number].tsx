@@ -59,9 +59,9 @@ export default function Product(props: any) {
     if (isLoading && router) {
       axios
         .get(
-          `http://localhost:5000/api/theme-by-product?product_number=${Number(
-            props.product_number
-          )}`
+          `${
+            process.env.NEXT_PUBLIC_SERVER_URL
+          }/api/theme-by-product?product_number=${Number(props.product_number)}`
         )
         .then((response) => setTheme(response.data.result))
         .catch((error) => console.log(error))

@@ -10,7 +10,7 @@ const useProductCartList = () => {
   const queryKey = 'product-cart-list'
 
   const url =
-    'http://localhost:5000' +
+    `${process.env.NEXT_PUBLIC_SERVER_URL}` +
     '/api/' +
     queryKey +
     '?page=' +
