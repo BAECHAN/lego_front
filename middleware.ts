@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function middleware(request: NextRequest, response: NextResponse) {
   const session = await getToken({
     req: request,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
   })
 
   if (!request.nextUrl.pathname.startsWith('/account')) {
