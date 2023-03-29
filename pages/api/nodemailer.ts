@@ -21,8 +21,6 @@ const handler: NextApiHandler<any> = async (req, res) => {
     return res.status(404).send({ error: 'Begone.' })
   }
 
-  console.log(recipient)
-
   const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-token`
 
   const token = await axios

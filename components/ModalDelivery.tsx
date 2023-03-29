@@ -214,9 +214,6 @@ export default function ModalDelivery(props: {
           }
         }
       }
-
-      console.log(props.listLength)
-      console.log(props.totalPage)
       updateShippingAPI.mutate(param)
     }
   }

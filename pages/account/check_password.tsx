@@ -75,7 +75,6 @@ export default function CheckPassword() {
             )
             return false
           } else {
-            console.log(response?.status)
             alert(
               '비밀번호 확인을 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
             )

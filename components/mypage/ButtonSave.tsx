@@ -57,8 +57,6 @@ export default function ButtonSave(props: {
             }
           )
             .then(async (response) => {
-              console.log(response?.data)
-
               if (response?.data.result > 0) {
                 alert(
                   '사용중인 닉네임입니다.\r다른 닉네임을 이용해주시기 바랍니다.'
