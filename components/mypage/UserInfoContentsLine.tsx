@@ -29,14 +29,9 @@ export default function UserInfoContentsLine(props: {
   }, [isChange])
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    console.log(event.key)
     if (event.key === 'Enter') {
       setIsEnter(true)
     }
-  }
-
-  if (props.infoKey == 'image') {
-    console.log(props.infoValue)
   }
 
   return (

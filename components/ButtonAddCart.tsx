@@ -11,8 +11,6 @@ export default function ButtonAddCart(props: {
   const router = useRouter()
   const { data: session } = useSession()
 
-  console.log(props)
-
   const handleClickAddCart = () => {
     if (session?.user?.email) {
       let param: ProductAddCartSubmitT = {

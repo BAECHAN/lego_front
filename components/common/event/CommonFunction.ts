@@ -8,7 +8,6 @@ export function CommonHandleChangeValue(
 ) {
   const { name, value, checked } = e.currentTarget
 
-  console.log('흠')
   if (option == 'maxLength20') {
     value.length < 21 ? setInputs({ ...inputs, [name]: value }) : null
   } else if (option == 'maxLength30') {

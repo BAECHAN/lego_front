@@ -15,7 +15,6 @@ export default function UserInfo(req: NextApiRequest) {
 
   const { data: userInfo, isFetched, isFetching, status } = useUser()
 
-  console.log(userInfo)
   const handleClickWithdraw = () => {
     if (isFetched && status == 'success') {
       const param = {
@@ -41,7 +40,6 @@ export default function UserInfo(req: NextApiRequest) {
               return false
             }
           } else {
-            console.log(response)
             alert(
               '회원탈퇴 신청이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
             )

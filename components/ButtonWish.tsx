@@ -112,8 +112,6 @@ export default function ButtonWish(props: {
         email: session.user.email,
         product_id: wishInfo.product_id,
       }
-
-      console.log(param)
       if (!wishInfo.wish) {
         // wish 등록 - 만약 wish 이력 있으면 patch 처리 , wish 이력 없으면 post 처리
         addWishAPI.mutate(param)
