@@ -52,7 +52,7 @@ export default function CreateAccount() {
     if (inputsPass.emailPass && email.length > 0) {
       axios
         .get(
-          `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/email-chk?email=${email}`
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/email-chk?email=${email}`
         )
         .then((response) => {
           response.data.result > 0
@@ -73,7 +73,7 @@ export default function CreateAccount() {
     if (inputsPass.nicknamePass && nickname.length > 0) {
       axios
         .get(
-          `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/nickname-chk?nickname=${nickname}`
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/nickname-chk?nickname=${nickname}`
         )
         .then((response) => {
           response.data.result > 0
@@ -212,7 +212,7 @@ export default function CreateAccount() {
 
     axiosRequest(
       'post',
-      `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/create-account`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/create-account`,
       userInfo
     )
       .then((response) => {

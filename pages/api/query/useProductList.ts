@@ -9,7 +9,7 @@ const useProductList = (props: ThemeT) => {
   const sort = useRecoilValue(sortSelector)
   const filter = useRecoilValue(selectedFilterSelector)
 
-  let url = `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/product-list`
+  let url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product-list`
 
   return useInfiniteQuery(
     ['product-list', filter, sort],

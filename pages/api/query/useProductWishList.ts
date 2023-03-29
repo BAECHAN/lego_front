@@ -7,7 +7,7 @@ const useProductWishList = () => {
   const [page, setPage] = useState(0)
   const { data: session } = useSession()
 
-  const url = `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/product-wish-list?page=${page}&email=${session?.user?.email}`
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product-wish-list?page=${page}&email=${session?.user?.email}`
 
   return useQuery(
     ['product-wish-list', page],

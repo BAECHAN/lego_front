@@ -58,7 +58,7 @@ export default function ShippingItem(props: {
   const deleteShippingAPI = useMutation(
     async (param: any) => {
       const res = await axios.patch(
-        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/del-shipping`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-shipping`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },

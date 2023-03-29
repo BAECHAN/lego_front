@@ -55,7 +55,7 @@ export default function CheckPassword() {
 
       axiosRequest(
         'post',
-        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/password-chk`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/password-chk`,
         param
       )
         .then((response) => {

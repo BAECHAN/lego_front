@@ -50,7 +50,7 @@ export default function ButtonSave(props: {
         if (inputRegExp.nickname.test(props.newValue)) {
           axiosRequest(
             'post',
-            `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/upd-nickname`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-nickname`,
             {
               email: props.email,
               nickname: props.newValue,
@@ -105,7 +105,7 @@ export default function ButtonSave(props: {
   const updUserImageAPI = useMutation(
     async (formData: FormData) => {
       const res = await axios.post(
-        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/upd-user-image`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-user-image`,
         formData,
         {
           headers: { 'Content-Type': 'multipart/form-data' },

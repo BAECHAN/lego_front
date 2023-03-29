@@ -21,7 +21,7 @@ const handler: NextApiHandler<any> = async (req, res) => {
     return res.status(404).send({ error: 'Begone.' })
   }
 
-  const url = `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/get-token`
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-token`
 
   const token = await axios
     .post(
