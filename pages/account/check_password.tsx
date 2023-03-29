@@ -53,7 +53,11 @@ export default function CheckPassword() {
         password,
       }
 
-      axiosRequest('post', `http://localhost:5000/api/password-chk`, param)
+      axiosRequest(
+        'post',
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/password-chk`,
+        param
+      )
         .then((response) => {
           const data = response?.data
 

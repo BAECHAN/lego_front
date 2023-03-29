@@ -21,12 +21,7 @@ export default function ResetPassword() {
 
   useEffect(() => {
     if (router.isReady) {
-      const url =
-        'http://localhost:5000' +
-        '/api/token-chk?email=' +
-        email +
-        '&token=' +
-        token
+      const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/token-chk?email=${email}&token=${token}`
       axios
         .get(url, {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
@@ -157,7 +152,11 @@ export default function ResetPassword() {
         pw,
       }
 
-      axiosRequest('patch', `http://localhost:5000/api/update-password`, param)
+      axiosRequest(
+        'patch',
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/update-password`,
+        param
+      )
         .then((response) => {
           if (response?.status === 200) {
             if (router.query.callbackPage == 'user_info') {

@@ -56,7 +56,7 @@ export default function Payment(props: { price: number; submits: {} }) {
   const insertOrderAPI = useMutation(
     async (param: any) => {
       const res = await axios.post(
-        `http://localhost:5000/api/add-order`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/add-order`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
@@ -74,6 +74,8 @@ export default function Payment(props: { price: number; submits: {} }) {
           alert(
             '결제정보를 저장하는데 문제가 발생하였습니다.\r관리자에게 문의해주시기 바랍니다.'
           )
+          queryClient.invalidateQueries(['user-order'])
+          router.push('/mypage/order_history')
           return false
         }
       },

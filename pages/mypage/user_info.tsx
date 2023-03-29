@@ -22,7 +22,11 @@ export default function UserInfo(req: NextApiRequest) {
         email: userInfo.email,
       }
 
-      axiosRequest('patch', `http://localhost:5000/api/withdraw-account`, param)
+      axiosRequest(
+        'patch',
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/withdraw-account`,
+        param
+      )
         .then((response) => {
           if (response?.status === 200) {
             if (response.data.result > 0) {
@@ -59,13 +63,6 @@ export default function UserInfo(req: NextApiRequest) {
       <div className="user-info-contents w-full my-8">
         {isFetched && userInfo ? (
           <>
-            <UserInfoContentsLine
-              infoKey={'image'}
-              infoName={'프로필 사진'}
-              infoValue={userInfo.image}
-              infoUpdate={true}
-              email={userInfo.email}
-            />
             <UserInfoContentsLine
               infoKey={'email'}
               infoName={'이메일(아이디)'}

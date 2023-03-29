@@ -6,7 +6,9 @@ const useThemes = () => {
   return useQuery<ThemeT[]>(
     ['theme-list'],
     async () => {
-      const res = await axios.get(`http://localhost:5000/api/theme-list`)
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/theme-list`
+      )
       return res.data
     },
     {

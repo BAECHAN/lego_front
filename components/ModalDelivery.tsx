@@ -224,7 +224,7 @@ export default function ModalDelivery(props: {
   const updateShippingAPI = useMutation(
     async (param: any) => {
       const res = await axios.post(
-        `http://localhost:5000/api/manage-shipping`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/manage-shipping`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },

@@ -23,7 +23,7 @@ const handler: NextApiHandler<any> = async (req, res) => {
 
   console.log(recipient)
 
-  const url = 'http://localhost:5000' + '/api/get-token'
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-token`
 
   const token = await axios
     .post(

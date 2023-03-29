@@ -7,12 +7,7 @@ const useProductWishList = () => {
   const [page, setPage] = useState(0)
   const { data: session } = useSession()
 
-  const url =
-    'http://localhost:5000' +
-    '/api/product-wish-list?page=' +
-    page +
-    '&email=' +
-    session?.user?.email
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product-wish-list?page=${page}&email=${session?.user?.email}`
 
   return useQuery(
     ['product-wish-list', page],

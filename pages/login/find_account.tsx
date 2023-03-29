@@ -23,7 +23,7 @@ export default function FindAccount() {
 
     /** DB에 아이디 있는지 확인 후 return하는 api */
     axios
-      .get(`http://localhost:5000/api/email-chk?email=${email}`)
+      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/email-chk?email=${email}`)
       .then((response) => {
         setIsSubmit(true)
 

@@ -51,7 +51,9 @@ export default function CreateAccount() {
   const handleBlurEmail = (e: FocusEvent<HTMLInputElement>) => {
     if (inputsPass.emailPass && email.length > 0) {
       axios
-        .get(`http://localhost:5000/api/email-chk?email=${email}`)
+        .get(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/email-chk?email=${email}`
+        )
         .then((response) => {
           response.data.result > 0
             ? setIsEmailOverlap(true)
@@ -70,7 +72,9 @@ export default function CreateAccount() {
   const handleBlurNickname = (e: FocusEvent<HTMLInputElement>) => {
     if (inputsPass.nicknamePass && nickname.length > 0) {
       axios
-        .get(`http://localhost:5000/api/nickname-chk?nickname=${nickname}`)
+        .get(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/nickname-chk?nickname=${nickname}`
+        )
         .then((response) => {
           response.data.result > 0
             ? setIsNicknameOverlap(true)
@@ -206,7 +210,11 @@ export default function CreateAccount() {
       nickname,
     }
 
-    axiosRequest('post', `http://localhost:5000/api/create-account`, userInfo)
+    axiosRequest(
+      'post',
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/create-account`,
+      userInfo
+    )
       .then((response) => {
         if (response?.status === 200) {
           alert('회원가입되었습니다.\r로그인 페이지로 이동합니다.')

@@ -7,7 +7,7 @@ const useFilters = (props: ThemeT) => {
     ['product-filter'],
     async () => {
       const res = await axios.get(
-        `http://localhost:5000/api/product-filter?theme_id=${props.theme_id}`
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product-filter?theme_id=${props.theme_id}`
       )
       return res.data
     },

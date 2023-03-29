@@ -7,7 +7,7 @@ const useOrderList = () => {
 
   const queryKey = 'order-list'
 
-  const url = 'http://localhost:5000' + '/api/' + queryKey
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}`
 
   const take = 10
 

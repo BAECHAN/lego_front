@@ -58,7 +58,7 @@ export default function ShippingItem(props: {
   const deleteShippingAPI = useMutation(
     async (param: any) => {
       const res = await axios.patch(
-        `http://localhost:5000/api/del-shipping`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-shipping`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },

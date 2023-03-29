@@ -49,7 +49,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
   const updOrderRefundAPI = useMutation(
     async (param: { email: string; order_group_id: number }) => {
       const res = await axios.patch(
-        `http://localhost:5000/api/upd-order-refund`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-order-refund`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
