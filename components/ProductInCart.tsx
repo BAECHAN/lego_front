@@ -97,7 +97,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
   const delCartAPI = useMutation(
     async (param: ProductUpdateCartSubmitT) => {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-cart`,
+        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/del-cart`,
 
         JSON.stringify(param),
         {
@@ -125,7 +125,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
   const updateQuantityAPI = useMutation(
     async (param: ProductUpdateCartSubmitT) => {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-cart`,
+        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/upd-cart`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },

@@ -77,7 +77,7 @@ export default function ShippingItemByOrder(props: {
   const choiceShippingAPI = useMutation(
     async (param: any) => {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-shipping-priority`,
+        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/upd-shipping-priority`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
@@ -107,7 +107,7 @@ export default function ShippingItemByOrder(props: {
   const deleteShippingAPI = useMutation(
     async (param: any) => {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-shipping`,
+        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/del-shipping`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },

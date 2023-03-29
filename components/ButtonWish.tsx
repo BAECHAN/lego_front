@@ -44,7 +44,7 @@ export default function ButtonWish(props: {
   const addWishAPI = useMutation(
     async (param: ProductWishSubmitT) => {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/add-wish`,
+        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/add-wish`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
@@ -85,7 +85,7 @@ export default function ButtonWish(props: {
   const delWishAPI = useMutation(
     async (param: ProductWishSubmitT) => {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-wish`,
+        `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/del-wish`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },

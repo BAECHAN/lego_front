@@ -7,7 +7,7 @@ const useUser = () => {
   const { data: session } = useSession()
 
   const queryKey = 'user-info'
-  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-user-info?email=${session?.user?.email}`
+  const url = `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app/api/get-user-info?email=${session?.user?.email}`
 
   return useQuery<UserT>(
     [queryKey],

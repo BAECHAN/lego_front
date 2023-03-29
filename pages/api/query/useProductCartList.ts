@@ -10,7 +10,7 @@ const useProductCartList = () => {
   const queryKey = 'product-cart-list'
 
   const url =
-    `${process.env.NEXT_PUBLIC_SERVER_URL}` +
+    `https://port-0-lego-back-nx562olfs8ljco.sel3.cloudtype.app` +
     '/api/' +
     queryKey +
     '?page=' +
