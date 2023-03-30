@@ -88,6 +88,7 @@ export type UserT = {
   account_state: number
   date_withdraw: Date
   grade: string
+  oauth_connect: number
 }
 
 export type ChildrenT = {

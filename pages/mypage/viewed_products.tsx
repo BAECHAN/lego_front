@@ -1,26 +1,17 @@
 import Layout from '@components/Layout'
 import ProductCard from '@components/ProductCard'
 import useProductViewedList from 'pages/api/query/useProductViewedList'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { ProductT } from 'types'
 
 export default function ViewedProducts() {
-  let viewedProductsArr = useRef([])
-
-  const { data: data } = useProductViewedList(viewedProductsArr.current)
+  const { data: data } = useProductViewedList()
 
   useEffect(() => {
     if (sessionStorage.getItem('isHistoryBack') === 'true') {
       sessionStorage.removeItem('scrollY')
       sessionStorage.removeItem('isHistoryBack')
     }
-
-    const viewedProductsJSON: string | null =
-      localStorage.getItem('viewed_products')
-
-    viewedProductsJSON
-      ? (viewedProductsArr.current = JSON.parse(viewedProductsJSON))
-      : null
   }, [])
 
   return (
