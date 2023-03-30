@@ -1,4 +1,5 @@
 // <root>/middleware.ts
+import axios from 'axios'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -7,6 +8,22 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
   })
+
+  // if(session && session.email){
+
+  //   const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-user-info`
+
+  //   axios.get(url,{
+  //     params: {
+  //       email: session.email
+  //     },
+  //     headers: { 'Content-Type': `application/json; charset=utf-8` }
+  //   }).then((response)=>{
+  //     console.log(response)
+  //   }).catch((error)=>{
+  //     console.log(error)
+  //   })
+  // }
 
   if (!request.nextUrl.pathname.startsWith('/account')) {
     if (session?.state) {
@@ -26,7 +43,6 @@ export async function middleware(request: NextRequest, response: NextResponse) {
         url.searchParams.set('state', String(session.state))
         return NextResponse.redirect(url)
       }
-    } else {
     }
   } else {
     if (!session) {
@@ -41,6 +57,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
 
         return NextResponse.redirect(url)
       }
+    } else {
     }
   }
 

@@ -2,10 +2,19 @@ import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
-const useProductViewedList = (props: string[]) => {
+const useProductViewedList = () => {
   const [page, setPage] = useState(0)
 
   const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product-viewed-list?page=${page}`
+
+  let viewedProductsJSON: string[] = []
+
+  if (typeof window !== 'undefined') {
+    const viewedProducts = localStorage.getItem('viewed_products')
+    if (viewedProducts) {
+      viewedProductsJSON = JSON.parse(viewedProducts)
+    }
+  }
 
   return useQuery(
     ['product-viewed-list', page],
@@ -13,7 +22,7 @@ const useProductViewedList = (props: string[]) => {
       const res = await axios.post(
         url,
         {
-          product_number_arr: props,
+          product_number_arr: viewedProductsJSON,
         },
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
@@ -26,7 +35,7 @@ const useProductViewedList = (props: string[]) => {
       onError: (e) => console.log(e),
       //getNextPageParam: (lastPage) => !lastPage.isLast ?? undefined,
       keepPreviousData: true,
-      enabled: props.length > 0,
+      enabled: viewedProductsJSON.length > 0,
     }
   )
 }
