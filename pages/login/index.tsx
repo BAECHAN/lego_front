@@ -75,14 +75,14 @@ export default function Login() {
   const loginKakao = async (e: any) => {
     e.preventDefault()
     await signIn('kakao', {
-      callbackUrl: process.env.NEXT_PUBLIC_CLIENT_URL,
+      callbackUrl: '/',
     })
   }
 
   const loginGoogle = async (e: any) => {
     e.preventDefault()
     await signIn('google', {
-      callbackUrl: process.env.NEXT_PUBLIC_CLIENT_URL,
+      callbackUrl: '/',
     })
   }
 
