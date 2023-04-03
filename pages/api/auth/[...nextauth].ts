@@ -68,7 +68,8 @@ export default NextAuth({
     }),
   ],
   session: {
-    maxAge: 24 * 60 * 60, // 1 days,
+    //maxAge: 24 * 60 * 60, // 1 days,
+    maxAge: 15,
     strategy: 'jwt',
   },
   pages: {
