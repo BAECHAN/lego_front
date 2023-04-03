@@ -18,3 +18,11 @@ div#__next {
   height: 100%;
 }
 
+.blinking{
+  animation: blink 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes blink{
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+}
