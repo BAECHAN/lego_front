@@ -68,8 +68,7 @@ export default NextAuth({
     }),
   ],
   session: {
-    //maxAge: 24 * 60 * 60, // 1 days,
-    maxAge: 15,
+    maxAge: 24 * 60 * 60, // 1 days,
     strategy: 'jwt',
   },
   pages: {
@@ -86,6 +85,9 @@ export default NextAuth({
         params.token.state = params.user.state
       }
       return params.token
+    },
+    async redirect({ url, baseUrl }) {
+      return url
     },
   },
 })
