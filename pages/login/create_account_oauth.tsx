@@ -235,7 +235,7 @@ export default function CreateAccountOAuth() {
         <div className="h-full relative top-[10%]">
           <form name="loginForm" className="login-box" onSubmit={handleSubmit}>
             <Link href="/">
-              <a>
+              <a title="홈페이지로 이동 링크">
                 <Image
                   src="/main.svg"
                   width="50px"
@@ -259,7 +259,7 @@ export default function CreateAccountOAuth() {
                     ? 'border-green-500 border-2 border-solid'
                     : 'border-red-500 border-2 border-solid'
                 }
-                title="이메일"
+                title="이메일 입력란"
                 value={email}
                 onChange={handleChange}
                 onBlur={handleBlurEmail}
@@ -310,7 +310,7 @@ export default function CreateAccountOAuth() {
                     ? 'border-green-500 border-2 border-solid'
                     : 'border-red-500 border-2 border-solid'
                 }
-                title="비밀번호"
+                title="비밀번호 입력란"
                 value={pw}
                 onChange={handleChange}
                 onBlur={handleChange}
@@ -340,7 +340,7 @@ export default function CreateAccountOAuth() {
                     ? 'border-green-500 border-2 border-solid'
                     : 'border-red-500 border-2 border-solid'
                 }
-                title="비밀번호확인"
+                title="비밀번호 확인 입력란"
                 value={pwChk}
                 onChange={handleChange}
                 onBlur={handleChange}
@@ -372,7 +372,7 @@ export default function CreateAccountOAuth() {
                     ? 'border-green-500 border-2 border-solid'
                     : 'border-red-500 border-2 border-solid'
                 }
-                title="닉네임"
+                title="닉네임 입력란"
                 value={nickname}
                 onChange={handleChange}
                 onBlur={handleBlurNickname}
@@ -395,6 +395,7 @@ export default function CreateAccountOAuth() {
             )}
             <button
               type="submit"
+              title="회원가입 신청 버튼"
               className="btnCreateAccount"
               disabled={disabledSubmit}
             >

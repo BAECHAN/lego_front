@@ -135,6 +135,7 @@ export default function ButtonSave(props: {
       <button
         type="button"
         className="flex h-8 leading-5"
+        title="정보 수정 취소 버튼"
         onClick={() => handleClickButton('cancle')}
       >
         취소
@@ -148,6 +149,7 @@ export default function ButtonSave(props: {
       <button
         type="button"
         className="flex h-8 leading-5"
+        title="정보 수정 저장 버튼"
         onClick={() => handleClickButton('save')}
       >
         저장

@@ -21,9 +21,7 @@ export default function Pagination(props: {
 }) {
   const queryClient = useQueryClient()
 
-  const { data, isFetched, isPreviousData, status } = useDeliveryShippingList(
-    props.page
-  )
+  const { data, isFetched, status } = useDeliveryShippingList(props.page)
 
   useEffect(() => {
     if (status == 'success' && props.setTotalPage) {
@@ -83,6 +81,7 @@ export default function Pagination(props: {
       <button
         type="button"
         name="firstPage"
+        title="첫 페이지로 이동"
         onClick={(event) => handleClickPageButton(event)}
         disabled={props.page == 1}
         className={`${props.page == 1 ? 'fa-disabled' : ''}`}
@@ -101,6 +100,7 @@ export default function Pagination(props: {
       <button
         type="button"
         name="prevPage"
+        title="이전 페이지 그룹으로 이동"
         onClick={(event) => handleClickPageButton(event)}
         disabled={Math.floor((props.page - 1) / 10) == 0}
         className={`${
@@ -129,6 +129,7 @@ export default function Pagination(props: {
       <button
         type="button"
         name="nextPage"
+        title="다음 페이지 그룹으로 이동"
         onClick={(event) => handleClickPageButton(event)}
         disabled={props.totalPage - props.startPage <= 9 ? true : false}
         className={`${
@@ -149,6 +150,7 @@ export default function Pagination(props: {
       <button
         type="button"
         name="lastPage"
+        title="마지막 페이지로 이동"
         onClick={(event) => handleClickPageButton(event)}
         disabled={props.page == props.totalPage}
         className={`${props.page == props.totalPage ? 'fa-disabled' : ''}`}

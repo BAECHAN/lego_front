@@ -211,6 +211,7 @@ export default function Order() {
                   </div>
                   <button
                     type="button"
+                    title="배송지 변경 버튼"
                     className="btn-delivery-change ml-3"
                     onClick={handleClickChangeShipping}
                   >
@@ -243,7 +244,7 @@ export default function Order() {
                       name="deliveryRequest"
                       onChange={handleChangeSelect}
                       value={inputs?.deliveryRequest}
-                      title="배송 요청사항"
+                      title="배송 요청사항 선택"
                       ref={(el) => {
                         el && selectsRef.current
                           ? (selectsRef.current[0] = el)
@@ -269,7 +270,7 @@ export default function Order() {
                         name="deliveryRequestDirect"
                         className="delivery-request-input w-[500px] ml-2 p-1"
                         value={inputs.deliveryRequestDirect}
-                        title="배송 요청사항 세부내용"
+                        title="배송 요청사항 세부내용 입력란"
                         onChange={(e) =>
                           common.CommonHandleChangeValue(
                             'maxLength30',
@@ -294,6 +295,7 @@ export default function Order() {
             ) : (
               <button
                 type="button"
+                title="배송지 등록 버튼"
                 className={`btn-delivery-change ${
                   isShippingButtonBlinking ? 'blinking' : ''
                 }`}

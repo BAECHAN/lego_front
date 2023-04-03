@@ -6,14 +6,18 @@ export default function Component() {
     return (
       <>
         Signed in as {session.user?.email} <br />
-        <button onClick={() => signOut()}>Sign out</button>
+        <button title="로그아웃 버튼" onClick={() => signOut()}>
+          Sign out
+        </button>
       </>
     )
   } else {
     return (
       <>
         Not signed in <br />
-        <button onClick={() => signIn()}>Sign in</button>
+        <button title="로그인 버튼" onClick={() => signIn()}>
+          Sign in
+        </button>
       </>
     )
   }

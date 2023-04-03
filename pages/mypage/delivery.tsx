@@ -90,6 +90,7 @@ export default function Delivery(props: { from: string }) {
             <div className="flex justify-center my-10">
               <button
                 type="button"
+                title="배송지 등록 버튼"
                 className="btn-add-address"
                 onClick={(event) => handleClickModalOpen(event)}
               >

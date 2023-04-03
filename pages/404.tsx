@@ -14,7 +14,7 @@ export default function NotFound() {
       <div className="guide">
         <strong>404 Not Found</strong>
         <p>Sorry, that page can`t be found</p>
-        <button onClick={() => router.push(`/`)}>
+        <button title="홈페이지로 이동 버튼" onClick={() => router.push(`/`)}>
           <span>
             Go to Homepage
             <FontAwesomeIcon

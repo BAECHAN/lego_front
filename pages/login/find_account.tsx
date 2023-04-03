@@ -39,7 +39,7 @@ export default function FindAccount() {
       <div className="flex justify-center items-center">
         <form onSubmit={findId} className="login-box">
           <Link href="/">
-            <a>
+            <a title="홈페이지로 이동 링크">
               <Image
                 src="/main.svg"
                 width="50px"
@@ -66,6 +66,7 @@ export default function FindAccount() {
             <br />
             <input
               type="email"
+              title="이메일 확인 입력란"
               name="email"
               id="email"
               placeholder="예) lego@lego.co.kr"
@@ -81,7 +82,10 @@ export default function FindAccount() {
                   해당 계정으로 로그인해주시기 바랍니다.
                 </div>
                 <Link href="/login">
-                  <a className="hover:underline hover:text-blue-600">
+                  <a
+                    title="로그인 페이지로 이동"
+                    className="hover:underline hover:text-blue-600"
+                  >
                     로그인 하러가기
                     <FontAwesomeAngleRight />
                   </a>
@@ -95,7 +99,10 @@ export default function FindAccount() {
                   계정이 없으시다면 해당 아이디로 회원가입 해주시기 바랍니다.
                 </div>
                 <Link href="/login/create_account">
-                  <a className="hover:underline hover:text-blue-600">
+                  <a
+                    title="회원가입 페이지로 이동"
+                    className="hover:underline hover:text-blue-600"
+                  >
                     회원가입 하러가기
                     <FontAwesomeAngleRight />
                   </a>
@@ -104,7 +111,11 @@ export default function FindAccount() {
             )
           ) : null}
 
-          <button type="submit" className="login-btn-credential">
+          <button
+            type="submit"
+            title="아이디 존재 유무 확인 버튼"
+            className="login-btn-credential"
+          >
             검색
           </button>
         </form>

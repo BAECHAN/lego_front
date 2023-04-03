@@ -41,6 +41,7 @@ export default function Postcode(props: {
     <button
       type="button"
       onClick={handleClick}
+      title="주소 찾기 버튼"
       className="btn-search ml-2"
       ref={props.postButtonRef}
     >

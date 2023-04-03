@@ -118,6 +118,7 @@ export default function CheckPassword() {
               <br />
               <input
                 type="password"
+                title="기존 비밀번호 입력란"
                 name="password"
                 id="password"
                 autoComplete="off"
@@ -145,7 +146,7 @@ export default function CheckPassword() {
             <button
               type="submit"
               className="btnResetPassword"
-              title="기존 비밀번호 체크"
+              title="기존 비밀번호 검사 버튼"
             >
               비밀번호 확인
             </button>

@@ -33,7 +33,11 @@ export default function AccountExpiredAccount() {
           &nbsp;1234-5678 )
         </p>
 
-        <button type="button" onClick={handleClickButton}>
+        <button
+          type="button"
+          title="홈페이지로 이동"
+          onClick={handleClickButton}
+        >
           홈페이지로 이동
         </button>
       </div>

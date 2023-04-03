@@ -217,7 +217,7 @@ export default function ResetPassword() {
                         ? 'border-green-500 border-2 border-solid'
                         : 'border-red-500 border-2 border-solid'
                     }
-                    title="새 비밀번호 입력"
+                    title="새 비밀번호 입력란"
                     value={pw}
                     onChange={handleChange}
                     onBlur={handleChange}
@@ -247,7 +247,7 @@ export default function ResetPassword() {
                         ? 'border-green-500 border-2 border-solid'
                         : 'border-red-500 border-2 border-solid'
                     }
-                    title="새 비밀번호 확인"
+                    title="새 비밀번호 확인 입력란"
                     value={pwChk}
                     onChange={handleChange}
                     onBlur={handleChange}
@@ -268,7 +268,7 @@ export default function ResetPassword() {
                   type="submit"
                   className="btnResetPassword"
                   disabled={disabledSubmit}
-                  title="비밀번호 변경하기"
+                  title="비밀번호 변경하기 버튼"
                 >
                   비밀번호 변경하기
                 </button>
@@ -280,7 +280,12 @@ export default function ResetPassword() {
                   <br /> 처음부터 다시 진행해주시기 바랍니다.
                 </p>
                 <Link href="/login/find_password">
-                  <a className="go-find-password ">비밀번호 찾기</a>
+                  <a
+                    title="비밀번호 찾기 페이지로 이동"
+                    className="go-find-password "
+                  >
+                    비밀번호 찾기
+                  </a>
                 </Link>
               </div>
             )

@@ -92,7 +92,7 @@ export default function Login() {
         <div className="h-full relative top-[3%]">
           <form onSubmit={login} className="login-box">
             <Link href="/">
-              <a>
+              <a title="홈페이지로 이동 링크">
                 <Image
                   src="/main.svg"
                   width="50px"
@@ -106,6 +106,7 @@ export default function Login() {
               <br />
               <input
                 type="email"
+                title="이메일 입력란"
                 name="email"
                 id="email"
                 placeholder="예) lego@lego.co.kr"
@@ -117,6 +118,7 @@ export default function Login() {
               <br />
               <input
                 type="password"
+                title="비밀번호 입력란"
                 name="password"
                 id="password"
                 autoComplete="off"
@@ -138,20 +140,36 @@ export default function Login() {
               )}
             </label>
 
-            <button type="submit" className="login-btn-credential">
+            <button
+              type="submit"
+              title="로그인 버튼"
+              className="login-btn-credential"
+            >
               로그인
             </button>
 
             <div className="flex text-xs w-72 justify-between">
               <Link href="/login/create_account">
-                <a className="hover:underline">회원가입</a>
+                <a title="회원가입 페이지로 이동" className="hover:underline">
+                  회원가입
+                </a>
               </Link>
               <div className="flex-grow" />
               <Link href="/login/find_account">
-                <a className="hover:underline mr-3">계정 찾기</a>
+                <a
+                  title="이메일 찾기 페이지로 이동"
+                  className="hover:underline mr-3"
+                >
+                  계정 찾기
+                </a>
               </Link>
               <Link href="/login/find_password">
-                <a className="hover:underline">비밀번호 찾기</a>
+                <a
+                  title="비밀번호 찾기 페이지로 이동"
+                  className="hover:underline"
+                >
+                  비밀번호 찾기
+                </a>
               </Link>
             </div>
           </form>

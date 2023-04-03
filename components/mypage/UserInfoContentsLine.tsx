@@ -43,7 +43,7 @@ export default function UserInfoContentsLine(props: {
       >
         <div className="user-info-cell flex w-full items-center">
           <div className="info-name w-1/6">
-            <span>{props.infoName}</span>
+            <span title="회원정보 항목명">{props.infoName}</span>
           </div>
 
           <div className="w-1/6" />
@@ -105,6 +105,7 @@ export default function UserInfoContentsLine(props: {
                     </ul>
                     <input
                       type="text"
+                      title={`새로운 ${props.infoName} 입력란`}
                       placeholder={`새로운 ${props.infoName} 등록`}
                       style={{
                         backgroundColor: 'white',

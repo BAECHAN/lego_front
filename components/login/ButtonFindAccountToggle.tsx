@@ -21,6 +21,7 @@ export default function ButtonFindAccountToggle() {
       <button
         type="button"
         id="findIdBtn"
+        title="아이디 찾기 페이지로 전환"
         onClick={(event) => handleClickToggle(event)}
         className={`btn-find-toggle ${isActiveId ? 'active' : ''}`}
       >
@@ -29,6 +30,7 @@ export default function ButtonFindAccountToggle() {
       <button
         type="button"
         id="findPwBtn"
+        title="비밀번호 찾기 페이지로 전환"
         onClick={(event) => handleClickToggle(event)}
         className={`btn-find-toggle ${!isActiveId ? 'active' : ''}`}
       >

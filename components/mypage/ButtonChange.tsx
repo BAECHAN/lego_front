@@ -26,6 +26,7 @@ export default function ButtonChange(props: {
   return (
     <button
       type="button"
+      title="정보 수정 버튼"
       className="flex h-8 leading-5"
       onClick={handleClickButton}
     >

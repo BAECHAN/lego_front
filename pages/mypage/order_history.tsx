@@ -58,6 +58,7 @@ export default function OrderHistory() {
             {hasNextPage ? (
               <button
                 type="button"
+                title="주문내역 더보기 버튼"
                 className="w-full bg-gray-300 h-10 rounded my-7 hover:bg-gray-400"
                 onClick={() => handleClickMoreProduct()}
                 disabled={!hasNextPage || isFetchingNextPage}

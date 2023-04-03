@@ -32,13 +32,13 @@ export default function ProductInOrder(props: { product: ProductCartT }) {
       </div>
       <div className="flex-grow"></div>
       <div className="w-1/12">
-        <div>{props.product.order_quantity} 개</div>
+        <div title="주문할 상품 수량">{props.product.order_quantity} 개</div>
       </div>
       <div className="text-center w-2/12">
         <p>택배배송</p>
         <p className="font-semibold">배송비 무료</p>
       </div>
-      <div className="w-1/12 text-right">
+      <div title="상품에 대한 주문할 금액" className="w-1/12 text-right">
         {props.product.discounting == 1 && props.product.rate_discount > 0 ? (
           <>
             <b className="product-price">{`${(

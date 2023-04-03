@@ -26,7 +26,11 @@ export default function AccountExpiredAccount() {
           계정을 생성해주시기 바랍니다.
           <br />
         </p>
-        <button type="button" onClick={handleClickButton}>
+        <button
+          type="button"
+          title="회원가입 하러가기"
+          onClick={handleClickButton}
+        >
           회원가입 하러가기
         </button>
       </div>

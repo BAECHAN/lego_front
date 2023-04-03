@@ -163,6 +163,7 @@ export default function SidebarFilterAccordian(prop: {
   return (
     <button
       onClick={() => setIsOpen(!isOpen)}
+      title="필터 항목 열기"
       className="btn-accordion w-full my-3"
     >
       <span className="btn-label float-left">{prop.label}</span>
@@ -186,6 +187,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="가격이 0원 이상 2만원 미만 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_price1"
                   defaultChecked={selectedFilter.filter_price1 ? true : false}
@@ -199,6 +201,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="가격이 2만원 이상 5만원 미만 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_price2"
                   defaultChecked={selectedFilter.filter_price2 ? true : false}
@@ -212,6 +215,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="가격이 5만원 이상 10만원 미만 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_price3"
                   defaultChecked={selectedFilter.filter_price3 ? true : false}
@@ -225,6 +229,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="가격이 10만원 이상 20만원 미만 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_price4"
                   defaultChecked={selectedFilter.filter_price4 ? true : false}
@@ -239,6 +244,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="가격이 20만원 이상 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_price5"
                   defaultChecked={selectedFilter.filter_price5 ? true : false}
@@ -259,6 +265,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="2세 이상 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_ages7"
                   defaultChecked={selectedFilter.filter_ages7 ? true : false}
@@ -272,6 +279,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="4세 이상 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_ages6"
                   defaultChecked={selectedFilter.filter_ages6 ? true : false}
@@ -285,6 +293,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="6세 이상 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_ages5"
                   defaultChecked={selectedFilter.filter_ages5 ? true : false}
@@ -298,6 +307,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="9세 이상 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_ages4"
                   defaultChecked={selectedFilter.filter_ages4 ? true : false}
@@ -311,6 +321,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="14세 이상 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_ages3"
                   defaultChecked={selectedFilter.filter_ages3 ? true : false}
@@ -324,6 +335,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="16세 이상 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_ages2"
                   defaultChecked={selectedFilter.filter_ages2 ? true : false}
@@ -337,6 +349,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="18세 이상 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_ages1"
                   defaultChecked={selectedFilter.filter_ages1 ? true : false}
@@ -365,6 +378,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="구매가능 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_sale_enabled2"
                   defaultChecked={
@@ -380,6 +394,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="출시예정 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_sale_enabled3"
                   defaultChecked={
@@ -395,6 +410,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="일시품절 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_sale_enabled4"
                   defaultChecked={
@@ -417,6 +433,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="정가 판매 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_discounting1"
                   defaultChecked={
@@ -432,6 +449,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="할인 판매 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_discounting2"
                   defaultChecked={
@@ -454,6 +472,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="부품수 1개 이상 100개 미만 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_pieces1"
                   defaultChecked={selectedFilter.filter_pieces1 ? true : false}
@@ -467,6 +486,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="부품수 100개 이상 250개 미만 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_pieces2"
                   defaultChecked={selectedFilter.filter_pieces2 ? true : false}
@@ -480,6 +500,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="부품수 250개 이상 500개 미만 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_pieces3"
                   defaultChecked={selectedFilter.filter_pieces3 ? true : false}
@@ -493,6 +514,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="부품수 500개 이상 1000개 미만 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_pieces4"
                   defaultChecked={selectedFilter.filter_pieces4 ? true : false}
@@ -506,6 +528,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="부품수 1000개 이상 2000개 미만 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_pieces5"
                   defaultChecked={selectedFilter.filter_pieces5 ? true : false}
@@ -519,6 +542,7 @@ export default function SidebarFilterAccordian(prop: {
               <li>
                 <input
                   type="checkbox"
+                  title="부품수 2000개 이상 상품 보기"
                   onInput={handleChangeCheck}
                   id="filter_pieces6"
                   defaultChecked={selectedFilter.filter_pieces6 ? true : false}
