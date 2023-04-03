@@ -38,101 +38,100 @@ export default function Delivery(props: { from: string }) {
 
   const { data, isFetched } = useDeliveryShippingList(page)
 
+  console.log(data)
+  console.log(data && data.shippingList.length > 0)
+  console.log(isFetched)
+
   return (
     <div>
       {isFetched ? (
-        data && data.shippingList?.length > 0 ? (
-          <div className="min-h-[300px]">
-            <ul className="flex flex-col min-h-[403.2px]">
-              {data.shippingList.map((item: ShippingT, index: number) => {
-                return (
-                  <li key={item.shipping_id}>
-                    <ShippingItem
-                      shipping={item}
-                      onOpen={handleClickModalOpen}
+        <>
+          {data && data.shippingList.length > 0 ? (
+            <div className="min-h-[300px]">
+              <ul className="flex flex-col min-h-[403.2px]">
+                {data.shippingList.map((item: ShippingT, index: number) => {
+                  return (
+                    <li key={item.shipping_id}>
+                      <ShippingItem
+                        shipping={item}
+                        onOpen={handleClickModalOpen}
+                        page={page}
+                        setPage={setPage}
+                        startPage={startPage}
+                        setStartPage={setStartPage}
+                        totalPage={totalPage}
+                        setTotalPage={setTotalPage}
+                        isLastPage={data.isLastPage}
+                        listLength={data.shippingList.length}
+                        shippingListCount={data.shippingListCount}
+                      ></ShippingItem>
+                      {index < data.shippingList.length - 1 ? <hr /> : null}
+                    </li>
+                  )
+                })}
+              </ul>
+              <div>
+                <Pagination
+                  page={page}
+                  setPage={setPage}
+                  startPage={startPage}
+                  setStartPage={setStartPage}
+                  totalPage={totalPage}
+                  setTotalPage={setTotalPage}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="text-xl">
+              <div>배송지가 없습니다.</div>
+            </div>
+          )}
+          <div className="text-xl">
+            <div className="flex justify-center my-10">
+              <button
+                type="button"
+                className="btn-add-address"
+                onClick={(event) => handleClickModalOpen(event)}
+              >
+                배송지 등록
+              </button>
+              {modalOpen && data && (
+                <Portal selector="#portal">
+                  {modalShippingData ? (
+                    <ModalDelivery
+                      onClose={handleClickModalOpen}
                       page={page}
                       setPage={setPage}
                       startPage={startPage}
                       setStartPage={setStartPage}
                       totalPage={totalPage}
                       setTotalPage={setTotalPage}
-                      isLastPage={data.isLastPage}
-                      listLength={data.shippingList.length}
+                      listLength={
+                        data && data.shippingList ? data.shippingList.length : 0
+                      }
                       shippingListCount={data.shippingListCount}
-                    ></ShippingItem>
-                    {index < data.shippingList.length - 1 ? <hr /> : null}
-                  </li>
-                )
-              })}
-            </ul>
-            <div>
-              <Pagination
-                page={page}
-                setPage={setPage}
-                startPage={startPage}
-                setStartPage={setStartPage}
-                totalPage={totalPage}
-                setTotalPage={setTotalPage}
-              />
+                      shipping={modalShippingData}
+                    />
+                  ) : (
+                    <ModalDelivery
+                      onClose={handleClickModalOpen}
+                      page={page}
+                      setPage={setPage}
+                      startPage={startPage}
+                      setStartPage={setStartPage}
+                      totalPage={totalPage}
+                      setTotalPage={setTotalPage}
+                      listLength={
+                        data && data.shippingList ? data.shippingList.length : 0
+                      }
+                      shippingListCount={data.shippingListCount}
+                    />
+                  )}
+                </Portal>
+              )}
             </div>
           </div>
-        ) : (
-          (
-            <div className="text-xl">
-              <div>배송지가 없습니다.</div>
-            </div>
-          ) && (
-            <div className="text-xl">
-              <div className="flex justify-center my-10">
-                <button
-                  type="button"
-                  className="btn-add-address"
-                  onClick={(event) => handleClickModalOpen(event)}
-                >
-                  배송지 등록
-                </button>
-                {modalOpen && data && (
-                  <Portal selector="#portal">
-                    {modalShippingData ? (
-                      <ModalDelivery
-                        onClose={handleClickModalOpen}
-                        page={page}
-                        setPage={setPage}
-                        startPage={startPage}
-                        setStartPage={setStartPage}
-                        totalPage={totalPage}
-                        setTotalPage={setTotalPage}
-                        listLength={
-                          data && data.shippingList
-                            ? data.shippingList.length
-                            : 0
-                        }
-                        shippingListCount={data.shippingListCount}
-                        shipping={modalShippingData}
-                      />
-                    ) : (
-                      <ModalDelivery
-                        onClose={handleClickModalOpen}
-                        page={page}
-                        setPage={setPage}
-                        startPage={startPage}
-                        setStartPage={setStartPage}
-                        totalPage={totalPage}
-                        setTotalPage={setTotalPage}
-                        listLength={
-                          data && data.shippingList
-                            ? data.shippingList.length
-                            : 0
-                        }
-                        shippingListCount={data.shippingListCount}
-                      />
-                    )}
-                  </Portal>
-                )}
-              </div>
-            </div>
-          )
-        )
+        </>
       ) : null}
 
       <style jsx>{`
