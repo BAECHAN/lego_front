@@ -32,6 +32,8 @@ export default function Themes() {
                       blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc
                     SJAAAADUlEQVR42mN8sFeoHgAGZAIwFY0DHwAAAABJRU5ErkJggg==`}
                       layout="responsive"
+                      priority
+                      quality={75}
                     />
                   </a>
                 </Link>
