@@ -6,11 +6,25 @@ import React from 'react'
 declare const window: typeof globalThis & {
   IMP: any
 }
-export default function Payment(props: { price: number; submits: {} }) {
+export default function Payment(props: {
+  price: number
+  submits: {}
+  enabled: boolean
+  setIsShippingBlinking: React.Dispatch<React.SetStateAction<boolean>>
+}) {
   const queryClient = useQueryClient()
   const router = useRouter()
 
   const onClickPayment = () => {
+    if (!props.enabled) {
+      alert(
+        '배송지를 선택해주시기 바랍니다.\r만약 배송지가 없을 경우 배송지등록을 먼저 진행해주시기 바랍니다.'
+      )
+      window.scrollTo(0, 0)
+      props.setIsShippingBlinking(true)
+      return false
+    }
+
     alert(
       '결제 테스트 모달화면이 보여지게 됩니다.\r실제로 결제처리가 된 후에 24시간 이내에 자동환불됩니다.'
     )

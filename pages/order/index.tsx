@@ -37,6 +37,7 @@ export default function Order() {
 
   const [selectedShipping, setSelectedShipping] = useState<ShippingT>()
   const [directOpen, setDirectOpen] = useState(false)
+  const [isShippingButtonBlinking, setIsShippingBlinking] = useState(false)
 
   const [inputs, setInputs] = useState({
     deliveryRequest: '',
@@ -44,6 +45,7 @@ export default function Order() {
   })
   const inputsRef = useRef<HTMLInputElement[]>([])
   const selectsRef = useRef<HTMLSelectElement[]>([])
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   const [submits, setSubmits] = useState({
     email: '',
@@ -75,6 +77,8 @@ export default function Order() {
     setProductToPayCount(selectedOrder.length)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  console.log(selectedShipping)
 
   useEffect(() => {
     if (shippingStatus == 'success') {
@@ -119,6 +123,16 @@ export default function Order() {
       inputsRef.current[0].focus()
     }
   }, [directOpen])
+
+  useEffect(() => {
+    if (isShippingButtonBlinking) {
+      buttonRef.current?.focus()
+
+      setTimeout(() => {
+        setIsShippingBlinking(false)
+      }, 1500)
+    }
+  }, [isShippingButtonBlinking])
 
   const handleChangeShipping = (
     e: ChangeEvent<HTMLInputElement>,
@@ -275,7 +289,10 @@ export default function Order() {
         ) : (
           <button
             type="button"
-            className="btn-delivery-change"
+            className={`btn-delivery-change ${
+              isShippingButtonBlinking ? 'blinking' : ''
+            }`}
+            ref={buttonRef}
             onClick={handleClickChangeShipping}
           >
             배송지 등록
@@ -332,6 +349,14 @@ export default function Order() {
             <Payment
               price={totalPrice > 0 ? totalPrice + deliveryPrice : 0}
               submits={submits}
+              enabled={
+                selectedShipping &&
+                shippingData &&
+                shippingData.shippingList.length > 0
+                  ? true
+                  : false
+              }
+              setIsShippingBlinking={setIsShippingBlinking}
             />
           </div>
         </div>
