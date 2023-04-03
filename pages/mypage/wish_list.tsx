@@ -11,7 +11,7 @@ export default function WishList() {
     <div>
       {isFetched ? (
         <ul className="flex flex-wrap">
-          {data && data.wishList?.length > 0 ? (
+          {data && data.wishList.length > 0 ? (
             data.wishList?.map((item: ProductT, index: number) => {
               return <ProductCard product={item} key={index} />
             })
