@@ -165,7 +165,8 @@ export default function FindAccount() {
             text-decoration: none;
             background-color: rgb(255, 207, 0);
 
-            :hover {
+            :hover,
+            :focus {
               background-color: black;
               color: white;
             }

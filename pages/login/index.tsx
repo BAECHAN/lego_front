@@ -126,6 +126,7 @@ export default function Login() {
               {isShowPw ? (
                 <FontAwesomeIcon
                   icon={faEyeSlash}
+                  title="비밀번호 숨김"
                   onClick={handleClickEye}
                   cursor="pointer"
                   className="w-5 relative ml-[304px] -mt-[26px]"
@@ -133,6 +134,7 @@ export default function Login() {
               ) : (
                 <FontAwesomeIcon
                   icon={faEye}
+                  title="비밀번호 표시"
                   onClick={handleClickEye}
                   cursor="pointer"
                   className="w-5 relative ml-[304px] -mt-[26px]"
@@ -177,26 +179,30 @@ export default function Login() {
           <div className="sns-login-title">
             <span>SNS 계정으로 로그인</span>
           </div>
-          <div className="flex justify-center login-btn-oauth">
+          <button
+            onClick={loginKakao}
+            className="flex justify-center login-btn-oauth relative left-9"
+          >
             <Image
               src="/kakao_login_medium_wide.png"
               width="328px"
               height="50px"
               alt="카카오계정으로 로그인"
               quality={100}
-              onClick={loginKakao}
             ></Image>
-          </div>
-          <div className="flex justify-center login-btn-oauth">
+          </button>
+          <button
+            onClick={loginGoogle}
+            className="flex justify-center login-btn-oauth relative left-8"
+          >
             <Image
               src="/btn_google_signin_light_normal_web.png"
               width="335px"
               height="50px"
               alt="구글계정으로 로그인"
               quality={100}
-              onClick={loginGoogle}
             ></Image>
-          </div>
+          </button>
         </div>
       </div>
       <style jsx>{`
@@ -236,11 +242,14 @@ export default function Login() {
 
         .login-btn-google {
           width: 328px;
-
           background-color: #ffffff;
           position: relative;
           left: 36px;
           border-radius: 3px;
+
+          :focus {
+            border: 3px solid black;
+          }
         }
 
         .login-box {
@@ -287,7 +296,8 @@ export default function Login() {
             text-decoration: none;
             background-color: rgb(255, 207, 0);
 
-            :hover {
+            :hover,
+            :focus {
               background-color: black;
               color: white;
             }

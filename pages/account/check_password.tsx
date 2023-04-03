@@ -129,6 +129,7 @@ export default function CheckPassword() {
               {isShowPw ? (
                 <FontAwesomeIcon
                   icon={faEyeSlash}
+                  title="비밀번호 숨김"
                   onClick={handleClickEye}
                   cursor="pointer"
                   className="w-5 relative ml-[304px] -mt-[26px]"
@@ -136,6 +137,7 @@ export default function CheckPassword() {
               ) : (
                 <FontAwesomeIcon
                   icon={faEye}
+                  title="비밀번호 표시"
                   onClick={handleClickEye}
                   cursor="pointer"
                   className="w-5 relative ml-[304px] -mt-[26px]"

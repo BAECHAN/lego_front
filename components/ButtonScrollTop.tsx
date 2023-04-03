@@ -14,7 +14,7 @@ export default function ButtonScrollTop() {
   }, [])
 
   return (
-    <>
+    <div>
       {display ? (
         <FontAwesomeIcon
           icon={faChevronCircleUp}
@@ -29,6 +29,6 @@ export default function ButtonScrollTop() {
       <style jsx>{`
         // TODO: scroll animation 추가
       `}</style>
-    </>
+    </div>
   )
 }
