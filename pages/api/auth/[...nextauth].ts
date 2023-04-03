@@ -86,7 +86,7 @@ export default NextAuth({
       }
       return params.token
     },
-    async redirect({ url, baseUrl }) {
+    async redirect({ url }) {
       return url
     },
   },
