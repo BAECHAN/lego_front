@@ -20,7 +20,7 @@ export default function Order() {
 
   const { data: session, status } = useSession()
 
-  const { data: cartData } = useProductCartList()
+  const { data: cartData, isFetched: cartFetched } = useProductCartList()
   const selectedOrder = useRecoilValue(selectedOrderSelector)
   const orderPrice = useRecoilValue(orderPriceSelector)
   const selectedShippingFromDelivery = useRecoilValue(selectedShippingSelector)
@@ -31,7 +31,7 @@ export default function Order() {
 
   const {
     data: shippingData,
-    isFetched,
+    isFetched: shippingFetched,
     status: shippingStatus,
   } = useDeliveryShippingList()
 
@@ -78,8 +78,6 @@ export default function Order() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  console.log(selectedShipping)
-
   useEffect(() => {
     if (shippingStatus == 'success') {
       shippingData.shippingList.map((item: ShippingT, index: number) => {
@@ -105,7 +103,7 @@ export default function Order() {
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetched])
+  }, [shippingFetched])
 
   useEffect(() => {
     if (selectedShipping) {
@@ -170,197 +168,213 @@ export default function Order() {
 
   return (
     <div className="min-h-[602px]">
-      <div className="p-3">
-        <h2 className="text-xl mb-3">배송 정보</h2>
-        {shippingData && shippingData.shippingList.length > 0 ? (
-          <div className="contents-box">
-            <div className="delivery-info">
-              <div>배송지</div>
-              <div>
-                {shippingData.shippingList.map(
-                  (item: ShippingT, index: number) => {
-                    return (
-                      <label key={item.shipping_id} className="cursor-pointer">
-                        <input
-                          type="radio"
-                          name="ShippingName"
-                          className={item.shipping_default == 1 ? '' : 'ml-5'}
-                          value={item.shipping_name}
-                          defaultChecked={
-                            selectedShippingFromDelivery == item.shipping_id
-                              ? true
-                              : item.shipping_default == 1 &&
-                                selectedShippingFromDelivery == 0
-                              ? true
-                              : false
-                          }
-                          onChange={(event) =>
-                            handleChangeShipping(event, item)
-                          }
-                        />
-                        {item.shipping_name}
-                      </label>
-                    )
-                  }
-                )}
+      {cartFetched && shippingFetched ? (
+        <div>
+          <div className="p-3">
+            <h2 className="text-xl mb-3">배송 정보</h2>
+            {shippingData && shippingData.shippingList.length > 0 ? (
+              <div className="contents-box">
+                <div className="delivery-info">
+                  <div>배송지</div>
+                  <div>
+                    {shippingData.shippingList.map(
+                      (item: ShippingT, index: number) => {
+                        return (
+                          <label
+                            key={item.shipping_id}
+                            className="cursor-pointer"
+                          >
+                            <input
+                              type="radio"
+                              name="ShippingName"
+                              className={
+                                item.shipping_default == 1 ? '' : 'ml-5'
+                              }
+                              value={item.shipping_name}
+                              defaultChecked={
+                                selectedShippingFromDelivery == item.shipping_id
+                                  ? true
+                                  : item.shipping_default == 1 &&
+                                    selectedShippingFromDelivery == 0
+                                  ? true
+                                  : false
+                              }
+                              onChange={(event) =>
+                                handleChangeShipping(event, item)
+                              }
+                            />
+                            {item.shipping_name}
+                          </label>
+                        )
+                      }
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-delivery-change ml-3"
+                    onClick={handleClickChangeShipping}
+                  >
+                    배송지 변경
+                  </button>
+                </div>
+                <div className="delivery-info">
+                  <div>이름 / 연락처</div>
+                  <div>
+                    {selectedShipping?.recipient}
+                    &nbsp;/&nbsp;
+                    {selectedShipping?.tel_number.substring(0, 3)}-
+                    {selectedShipping?.tel_number.substring(3, 7)}-
+                    {selectedShipping?.tel_number.substring(7, 11)}
+                  </div>
+                </div>
+                <div className="delivery-info">
+                  <div>주소</div>
+                  <div>
+                    ({selectedShipping?.shipping_zipcode})&nbsp;
+                    {selectedShipping?.shipping_address1}&nbsp;
+                    {selectedShipping?.shipping_address2}
+                  </div>
+                </div>
+                <div className="delivery-info">
+                  <div>배송 요청사항</div>
+                  <div>
+                    <select
+                      className="delivery-request-input large"
+                      name="deliveryRequest"
+                      onChange={handleChangeSelect}
+                      value={inputs?.deliveryRequest}
+                      title="배송 요청사항"
+                      ref={(el) => {
+                        el && selectsRef.current
+                          ? (selectsRef.current[0] = el)
+                          : null
+                      }}
+                    >
+                      <option value="1">배송 시 요청사항을 선택해주세요</option>
+                      <option value="2">부재 시 경비실에 맡겨주세요</option>
+                      <option value="3">부재 시 택배함에 넣어주세요</option>
+                      <option value="4">부재 시 집 앞에 놔주세요</option>
+                      <option value="5">배송 전 연락 바랍니다</option>
+                      <option value="6">
+                        파손의 위험이 있는 상품이니 배송 시 주의해 주세요
+                      </option>
+                      <option value="7">직접 입력</option>
+                    </select>
+                  </div>
+                  {directOpen ? (
+                    <div className="flex my-5">
+                      <div className="title"></div>
+                      <input
+                        type="text"
+                        name="deliveryRequestDirect"
+                        className="delivery-request-input w-[500px] ml-2 p-1"
+                        value={inputs.deliveryRequestDirect}
+                        title="배송 요청사항 세부내용"
+                        onChange={(e) =>
+                          common.CommonHandleChangeValue(
+                            'maxLength30',
+                            e,
+                            inputs,
+                            setInputs
+                          )
+                        }
+                        ref={(el) => {
+                          el && inputsRef.current
+                            ? (inputsRef.current[0] = el)
+                            : null
+                        }}
+                      ></input>
+                      <i className="leading-7 ml-1">
+                        ({inputs.deliveryRequestDirect.length}/30)
+                      </i>
+                    </div>
+                  ) : null}
+                </div>
               </div>
+            ) : (
               <button
                 type="button"
-                className="btn-delivery-change ml-3"
+                className={`btn-delivery-change ${
+                  isShippingButtonBlinking ? 'blinking' : ''
+                }`}
+                ref={buttonRef}
                 onClick={handleClickChangeShipping}
               >
-                배송지 변경
+                배송지 등록
               </button>
-            </div>
-            <div className="delivery-info">
-              <div>이름 / 연락처</div>
-              <div>
-                {selectedShipping?.recipient}
-                &nbsp;/&nbsp;
-                {selectedShipping?.tel_number.substring(0, 3)}-
-                {selectedShipping?.tel_number.substring(3, 7)}-
-                {selectedShipping?.tel_number.substring(7, 11)}
-              </div>
-            </div>
-            <div className="delivery-info">
-              <div>주소</div>
-              <div>
-                ({selectedShipping?.shipping_zipcode})&nbsp;
-                {selectedShipping?.shipping_address1}&nbsp;
-                {selectedShipping?.shipping_address2}
-              </div>
-            </div>
-            <div className="delivery-info">
-              <div>배송 요청사항</div>
-              <div>
-                <select
-                  className="delivery-request-input large"
-                  name="deliveryRequest"
-                  onChange={handleChangeSelect}
-                  value={inputs?.deliveryRequest}
-                  title="배송 요청사항"
-                  ref={(el) => {
-                    el && selectsRef.current
-                      ? (selectsRef.current[0] = el)
-                      : null
-                  }}
-                >
-                  <option value="1">배송 시 요청사항을 선택해주세요</option>
-                  <option value="2">부재 시 경비실에 맡겨주세요</option>
-                  <option value="3">부재 시 택배함에 넣어주세요</option>
-                  <option value="4">부재 시 집 앞에 놔주세요</option>
-                  <option value="5">배송 전 연락 바랍니다</option>
-                  <option value="6">
-                    파손의 위험이 있는 상품이니 배송 시 주의해 주세요
-                  </option>
-                  <option value="7">직접 입력</option>
-                </select>
-              </div>
-              {directOpen ? (
-                <div className="flex my-5">
-                  <div className="title"></div>
-                  <input
-                    type="text"
-                    name="deliveryRequestDirect"
-                    className="delivery-request-input w-[500px] ml-2 p-1"
-                    value={inputs.deliveryRequestDirect}
-                    title="배송 요청사항 세부내용"
-                    onChange={(e) =>
-                      common.CommonHandleChangeValue(
-                        'maxLength30',
-                        e,
-                        inputs,
-                        setInputs
-                      )
-                    }
-                    ref={(el) => {
-                      el && inputsRef.current
-                        ? (inputsRef.current[0] = el)
-                        : null
-                    }}
-                  ></input>
-                  <i className="leading-7 ml-1">
-                    ({inputs.deliveryRequestDirect.length}/30)
-                  </i>
-                </div>
+            )}
+          </div>
+          <div className="p-3 mt-3">
+            <h2 className="text-xl mb-3">상품 정보</h2>
+            <div className="contents-box">
+              {cartData && cartData.cartList ? (
+                <ul>
+                  {cartData.cartList &&
+                    cartData.cartList.map(
+                      (item: ProductCartT, index: number) => {
+                        return selectedOrder.some(
+                          (select) => select == item.cart_id
+                        ) ? (
+                          <li key={item.cart_id}>
+                            <ProductInOrder product={item} />
+                            {index < cartData.cartList.length - 1 ? (
+                              <hr />
+                            ) : null}
+                          </li>
+                        ) : null
+                      }
+                    )}
+                </ul>
               ) : null}
             </div>
+            <h2 className="flex justify-end">총 {productToPayCount} 건</h2>
           </div>
-        ) : (
-          <button
-            type="button"
-            className={`btn-delivery-change ${
-              isShippingButtonBlinking ? 'blinking' : ''
-            }`}
-            ref={buttonRef}
-            onClick={handleClickChangeShipping}
-          >
-            배송지 등록
-          </button>
-        )}
-      </div>
-      <div className="p-3 mt-3">
-        <h2 className="text-xl mb-3">상품 정보</h2>
-        <div className="contents-box">
-          {cartData && cartData.cartList ? (
-            <ul>
-              {cartData.cartList &&
-                cartData.cartList.map((item: ProductCartT, index: number) => {
-                  return selectedOrder.some(
-                    (select) => select == item.cart_id
-                  ) ? (
-                    <li key={item.cart_id}>
-                      <ProductInOrder product={item} />
-                      {index < cartData.cartList.length - 1 ? <hr /> : null}
-                    </li>
-                  ) : null
-                })}
-            </ul>
-          ) : null}
-        </div>
-        <h2 className="flex justify-end">총 {productToPayCount} 건</h2>
-      </div>
-      <div className="p-3 mt-3">
-        <h2 className="text-xl mb-3">결제 금액</h2>
-        <div className="contents-box">
-          <div className="flex my-1">
-            <div>총 상품금액</div>
-            <div className="flex-grow"></div>
-            <b>{totalPrice > 0 ? totalPrice.toLocaleString('ko-kr') : 0} 원</b>
-          </div>
-          <div className="flex my-1">
-            <div>총 배송비</div>
-            <div className="flex-grow"></div>
-            <b>{deliveryPrice} 원</b>
-          </div>
-          <hr className="my-3" />
-          <div className="flex text-lg">
-            <div>최종 결제금액</div>
-            <div className="flex-grow"></div>
-            <b className="text-red-600">
-              {totalPrice > 0
-                ? (totalPrice + deliveryPrice).toLocaleString('ko-kr')
-                : 0}{' '}
-              원
-            </b>
-          </div>
+          <div className="p-3 mt-3">
+            <h2 className="text-xl mb-3">결제 금액</h2>
+            <div className="contents-box">
+              <div className="flex my-1">
+                <div>총 상품금액</div>
+                <div className="flex-grow"></div>
+                <b>
+                  {totalPrice > 0 ? totalPrice.toLocaleString('ko-kr') : 0} 원
+                </b>
+              </div>
+              <div className="flex my-1">
+                <div>총 배송비</div>
+                <div className="flex-grow"></div>
+                <b>{deliveryPrice} 원</b>
+              </div>
+              <hr className="my-3" />
+              <div className="flex text-lg">
+                <div>최종 결제금액</div>
+                <div className="flex-grow"></div>
+                <b className="text-red-600">
+                  {totalPrice > 0
+                    ? (totalPrice + deliveryPrice).toLocaleString('ko-kr')
+                    : 0}{' '}
+                  원
+                </b>
+              </div>
 
-          <div className="flex justify-center">
-            <Payment
-              price={totalPrice > 0 ? totalPrice + deliveryPrice : 0}
-              submits={submits}
-              enabled={
-                selectedShipping &&
-                shippingData &&
-                shippingData.shippingList.length > 0
-                  ? true
-                  : false
-              }
-              setIsShippingBlinking={setIsShippingBlinking}
-            />
+              <div className="flex justify-center">
+                <Payment
+                  price={totalPrice > 0 ? totalPrice + deliveryPrice : 0}
+                  submits={submits}
+                  enabled={
+                    selectedShipping &&
+                    shippingData &&
+                    shippingData.shippingList.length > 0
+                      ? true
+                      : false
+                  }
+                  setIsShippingBlinking={setIsShippingBlinking}
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
+
       <style jsx>{`
         div.contents-box {
           padding-left: 10px;
