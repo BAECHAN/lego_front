@@ -228,6 +228,7 @@ export default function ShippingItemByOrder(props: {
         <div className="flex text-sm self-end">
           <button
             type="button"
+            title="배송지 수정"
             className="btn-update-shipping flex h-8 leading-5 m-2 items-center"
             onClick={(event) => handleClickButton(event, 'update')}
           >
@@ -241,6 +242,7 @@ export default function ShippingItemByOrder(props: {
           </button>
           <button
             type="button"
+            title="배송지 삭제"
             className="btn-delete-shipping flex h-8 leading-5 m-2 items-center"
             onClick={(event) => handleClickButton(event, 'delete')}
           >

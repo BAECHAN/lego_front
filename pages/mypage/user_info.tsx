@@ -126,6 +126,7 @@ export default function UserInfo(req: NextApiRequest) {
               <div className="flex-grow w-1/4" />
               <button
                 type="button"
+                title="회원탈퇴 신청 버튼"
                 className="btn-withdraw flex flex-col justify-center items-center"
                 onClick={handleClickWithdraw}
               >
@@ -163,7 +164,8 @@ export default function UserInfo(req: NextApiRequest) {
           text-decoration: none;
           background-color: rgb(255, 207, 0);
 
-          :hover {
+          :hover,
+          :focus {
             background-color: black;
             color: white;
           }

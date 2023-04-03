@@ -220,6 +220,7 @@ export default function Product(props: any) {
             <div className="flex mb-5">
               <div className="prod-buy-quantity">
                 <button
+                  title="장바구니에 담을 상품 수량 빼기"
                   onClick={(event) => handleClickQuantity(event, 'minus')}
                   disabled={minusDisabled}
                 >
@@ -230,8 +231,9 @@ export default function Product(props: any) {
                     }`}
                   />
                 </button>
-                <div>{quantity}</div>
+                <div title="장바구니에 담을 상품 수량">{quantity}</div>
                 <button
+                  title="장바구니에 담을 상품 수량 더하기"
                   onClick={(event) => handleClickQuantity(event, 'plus')}
                   disabled={plusDisabled}
                 >
@@ -274,6 +276,7 @@ export default function Product(props: any) {
         </div>
         <div className="prod-detail w-full">
           <button
+            title="제품상세정보 보기 버튼"
             className="prod-accordion flex items-center text-xl bg-gray-100 w-full h-24"
             onClick={() => setDetailOpen(!detailOpen)}
           >

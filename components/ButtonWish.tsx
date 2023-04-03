@@ -127,6 +127,7 @@ export default function ButtonWish(props: {
   return (
     <button
       type="button"
+      title="좋아요 버튼"
       className="flex justify-start cursor-pointer"
       onClick={handleClickLike}
     >

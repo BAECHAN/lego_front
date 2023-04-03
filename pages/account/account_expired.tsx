@@ -41,13 +41,17 @@ export default function AccountExpiredAccount() {
   return (
     <div className="min-h-[80vh] bg-gray-200">
       <div className="flex justify-center items-center account-contents">
-        <h2 className="text-3xl ">휴면 계정 안내</h2>
+        <h2 className="text-3xl">휴면 계정 안내</h2>
         <p className="text-center">
           해당 계정은 개인정보 보호를 위하여 마지막 로그인 기준 1년 미접속하여
           휴면 계정으로 전환되었습니다. <br />
           휴면을 해제하려면 아래 버튼을 클릭해주시기 바랍니다.
         </p>
-        <button type="button" onClick={handleClickButton}>
+        <button
+          type="button"
+          title="휴면 계정 해제 신청 버튼"
+          onClick={handleClickButton}
+        >
           휴면 해제
         </button>
       </div>

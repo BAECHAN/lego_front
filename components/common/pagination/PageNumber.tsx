@@ -8,6 +8,7 @@ export default function PageNumber(props: {
   return (
     <button
       type="button"
+      title={`${props.page} 페이지로 이동`}
       className={`${props.isActive ? 'active' : ''}`}
       onClick={props.handleClickPageButton}
     >

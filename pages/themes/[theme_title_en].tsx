@@ -67,6 +67,7 @@ export default function Theme(props: ThemeT) {
           <div className="list-sort">
             <select
               id="listSort"
+              title="정렬 선택"
               className="border rounded"
               onChange={(event) => {
                 setSort(event.currentTarget.value)
@@ -104,6 +105,7 @@ export default function Theme(props: ThemeT) {
             {hasNextPage ? (
               <button
                 type="button"
+                title="상품 더보기 버튼"
                 className="w-full bg-gray-300 h-10 rounded my-7 hover:bg-gray-400"
                 onClick={() => handleClickMoreProduct()}
                 disabled={!hasNextPage || isFetchingNextPage}

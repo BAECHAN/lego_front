@@ -14,7 +14,7 @@ export default function ButtonScrollTop() {
   }, [])
 
   return (
-    <>
+    <div>
       {display ? (
         <FontAwesomeIcon
           icon={faChevronCircleUp}
@@ -23,11 +23,12 @@ export default function ButtonScrollTop() {
             document.documentElement.scrollTop = 0
           }}
           className="fixed bottom-5 right-5 h-8 cursor-pointer"
+          title="스크롤 최상단으로 이동"
         />
       ) : null}
       <style jsx>{`
         // TODO: scroll animation 추가
       `}</style>
-    </>
+    </div>
   )
 }

@@ -38,16 +38,18 @@ export default function SidebarFilterSelected() {
         <div>선택한 필터</div>
         <button
           type="button"
+          title="선택한 필터 모두 삭제"
           onClick={() => {
             handleClickRecoilReset(), handleClickBtnReset()
           }}
           className="btn-selected-filter reset"
         >
-          모든 필터 지우기
+          모든 필터 삭제
         </button>
         {selectedFilter.filter_price1 == 1 ? (
           <button
             type="button"
+            title="가격이 0원 이상 2만원 미만 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_price1')
@@ -69,6 +71,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_price2 == 1 ? (
           <button
             type="button"
+            title="가격이 2만원 이상 5만원 미만 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_price2')
@@ -90,6 +93,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_price3 == 1 ? (
           <button
             type="button"
+            title="가격이 5만원 이상 10만원 미만 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_price3')
@@ -111,6 +115,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_price4 == 1 ? (
           <button
             type="button"
+            title="가격이 10만원 이상 20만원 미만 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_price4')
@@ -132,6 +137,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_price5 == 1 ? (
           <button
             type="button"
+            title="가격이 20만원 이상 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_price5')
@@ -154,6 +160,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_ages7 == 1 ? (
           <button
             type="button"
+            title="2세 이상 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_ages7')
@@ -175,6 +182,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_ages6 == 1 ? (
           <button
             type="button"
+            title="4세 이상 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_ages6')
@@ -196,6 +204,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_ages5 == 1 ? (
           <button
             type="button"
+            title="6세 이상 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_ages5')
@@ -217,6 +226,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_ages4 == 1 ? (
           <button
             type="button"
+            title="9세 이상 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_ages4')
@@ -238,6 +248,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_ages3 == 1 ? (
           <button
             type="button"
+            title="14세 이상 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_ages3')
@@ -259,6 +270,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_ages2 == 1 ? (
           <button
             type="button"
+            title="16세 이상 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_ages2')
@@ -280,6 +292,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_ages1 == 1 ? (
           <button
             type="button"
+            title="18세 이상 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_ages1')
@@ -302,6 +315,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_sale_enabled1 == 1 ? (
           <button
             type="button"
+            title="단종 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_sale_enabled1')
@@ -323,6 +337,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_sale_enabled2 == 1 ? (
           <button
             type="button"
+            title="구매가능 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_sale_enabled2')
@@ -344,6 +359,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_sale_enabled3 == 1 ? (
           <button
             type="button"
+            title="출시예정 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_sale_enabled3')
@@ -365,6 +381,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_sale_enabled4 == 1 ? (
           <button
             type="button"
+            title="일시품절 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_sale_enabled4')
@@ -387,6 +404,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_discounting1 == 1 ? (
           <button
             type="button"
+            title="정가 판매 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_discounting1')
@@ -408,6 +426,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_discounting2 == 1 ? (
           <button
             type="button"
+            title="할인 판매 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_discounting2')
@@ -430,6 +449,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_pieces1 == 1 ? (
           <button
             type="button"
+            title="부품수 1개 이상 100개 미만 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_pieces1')
@@ -451,6 +471,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_pieces2 == 1 ? (
           <button
             type="button"
+            title="부품수 100개 이상 250개 미만 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_pieces2')
@@ -472,6 +493,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_pieces3 == 1 ? (
           <button
             type="button"
+            title="부품수 250개 이상 500개 미만 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_pieces3')
@@ -493,6 +515,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_pieces4 == 1 ? (
           <button
             type="button"
+            title="부품수 500개 이상 1000개 미만 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_pieces4')
@@ -514,6 +537,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_pieces5 == 1 ? (
           <button
             type="button"
+            title="부품수 1000개 이상 2000개 미만 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_pieces5')
@@ -535,6 +559,7 @@ export default function SidebarFilterSelected() {
         {selectedFilter.filter_pieces6 == 1 ? (
           <button
             type="button"
+            title="부품수 2000개 이상 상품 보기 필터 삭제 버튼"
             className="btn-selected-filter"
             onClick={() => {
               handleClickDeleteTag('filter_pieces6')

@@ -313,7 +313,7 @@ export default function ModalDelivery(props: {
             id="bannerClose"
             className="btn-modal-close"
             onClick={props.onClose}
-            title="창 닫기"
+            title={`배송지 ${isUpdate ? '수정' : '등록'} 창 닫기`}
           >
             <FontAwesomeIcon icon={faSquareXmark} width="27px" height="27px" />
           </button>
@@ -340,7 +340,7 @@ export default function ModalDelivery(props: {
                     )
                   }
                   value={inputs.recipient}
-                  title="수령인"
+                  title="수령인 입력란"
                   ref={(el) => {
                     el && inputsRef.current ? (inputsRef.current[0] = el) : null
                   }}
@@ -583,6 +583,7 @@ export default function ModalDelivery(props: {
               <button
                 type="button"
                 className="btn-cancle mx-1"
+                title={`배송지 ${isUpdate ? '수정' : '등록'} 창 닫기 버튼`}
                 onClick={props.onClose}
               >
                 취소
@@ -590,6 +591,7 @@ export default function ModalDelivery(props: {
               <button
                 type="submit"
                 className="btn-submit mx-1"
+                title={`배송지 ${isUpdate ? '저장' : '등록'} 버튼`}
                 disabled={disabledSubmit}
               >
                 {isUpdate ? '저장' : '등록'}

@@ -98,7 +98,7 @@ export default function Payment(props: {
   )
 
   return (
-    <button onClick={onClickPayment}>
+    <button onClick={onClickPayment} title="결제창 열기 버튼">
       {props.price.toLocaleString('ko-kr')} 원 결제하기
       <style jsx>{`
         button {

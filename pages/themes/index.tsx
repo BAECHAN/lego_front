@@ -24,7 +24,7 @@ export default function Themes() {
                       <Link
                         href={`/themes/${theme.theme_title_en}?theme_title=${theme.theme_title}&theme_id=${theme.theme_id}`}
                       >
-                        <a>
+                        <a title="상품 상세보기 링크(이미지 클릭)">
                           <Image
                             src={theme.thumbnail_link}
                             width="300px"
@@ -43,7 +43,10 @@ export default function Themes() {
                       <Link
                         href={`/themes/${theme.theme_title_en}?theme_title=${theme.theme_title}&theme_id=${theme.theme_id}`}
                       >
-                        <a className="block text-center my-2 font-bold hover:text-blue-600">
+                        <a
+                          title="상품 상세보기 링크(제목 클릭)"
+                          className="block text-center my-2 font-bold hover:text-blue-600"
+                        >
                           {theme.theme_title}
                         </a>
                       </Link>

@@ -20,7 +20,7 @@ export default function NavigationBar(prop: { productInfo?: ProductT }) {
   const mypageListObj = useRecoilValue(mypageListSelector)
 
   return (
-    <div className="p-3">
+    <div title="네비게이션 바" className="p-3">
       {router.pathname === '/' ? (
         <span>{home}</span>
       ) : (

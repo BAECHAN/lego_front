@@ -77,6 +77,7 @@ export default function Cart() {
             <div className="flex justify-center">
               <button
                 type="button"
+                title="선택한 상품들에 한하여 주문하기"
                 id="btnOrderRouter"
                 className="btn-router"
                 onClick={handleClickOrder}
@@ -91,6 +92,7 @@ export default function Cart() {
             <div className="flex justify-center mt-52">
               <button
                 type="button"
+                title="쇼핑하러 가기 버튼"
                 id="btnShopRouter"
                 className="btn-router"
                 onClick={handleClickShopping}
@@ -129,7 +131,8 @@ export default function Cart() {
           text-decoration: none;
           background-color: rgb(255, 207, 0);
 
-          :hover {
+          :hover,
+          :focus {
             background-color: black;
             color: white;
           }

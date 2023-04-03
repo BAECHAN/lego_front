@@ -43,6 +43,7 @@ export default function ButtonUploadFile(props: {
       <button
         type="button"
         className="flex h-8 leading-5 mr-3"
+        title="사진 파일 찾기 버튼"
         onClick={() => handleClickButton('searchImage')}
       >
         사진 선택
@@ -57,6 +58,7 @@ export default function ButtonUploadFile(props: {
       <button
         type="button"
         className="flex h-8 leading-5"
+        title="기본 사진으로 변경 버튼"
         onClick={() => handleClickButton('defaultImage')}
       >
         기본이미지로 변경
@@ -73,6 +75,7 @@ export default function ButtonUploadFile(props: {
         name="image_URL"
         accept="image/*"
         className="hidden"
+        title="input image hidden"
         ref={props.fileInputRef}
         onChange={handleChangeImage}
       />

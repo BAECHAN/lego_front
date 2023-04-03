@@ -27,6 +27,9 @@ export default function ViewedProducts() {
           )}
         </ul>
       ) : null}
+      <p className="text-gray-600 mt-1 text-right">
+        ※ 최근 본 상품은 10개 까지만 보여집니다.
+      </p>
     </div>
   )
 }

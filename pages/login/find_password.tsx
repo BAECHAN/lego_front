@@ -54,7 +54,7 @@ export default function FindPassword() {
       <div className="flex justify-center items-center">
         <form onSubmit={findId} className="login-box">
           <Link href="/">
-            <a>
+            <a title="홈페이지로 이동 링크">
               <Image
                 src="/main.svg"
                 width="50px"
@@ -83,6 +83,7 @@ export default function FindPassword() {
             <br />
             <input
               type="email"
+              title="이메일 확인 입력란"
               name="email"
               id="email"
               placeholder="예) lego@lego.co.kr"
@@ -119,13 +120,19 @@ export default function FindPassword() {
                 <div className="flex justify-around">
                   <div />
                   <Link href="/login/create_account">
-                    <a className="hover:underline hover:text-blue-600">
+                    <a
+                      title="회원가입 페이지로 이동"
+                      className="hover:underline hover:text-blue-600"
+                    >
                       회원가입 하러가기
                       <FontAwesomeAngleRight />
                     </a>
                   </Link>
                   <Link href="/login/find_account">
-                    <a className="hover:underline hover:text-blue-600">
+                    <a
+                      title="이메일 찾기 페이지로 이동"
+                      className="hover:underline hover:text-blue-600"
+                    >
                       아이디(이메일)찾기
                       <FontAwesomeAngleRight />
                     </a>
@@ -136,7 +143,11 @@ export default function FindPassword() {
             )
           ) : null}
 
-          <button type="submit" className="login-btn-credential">
+          <button
+            type="submit"
+            title="새 비밀번호를 발급받기 위한 인증번호를 이메일로 전송하기"
+            className="login-btn-credential"
+          >
             비밀번호 찾기
           </button>
         </form>
@@ -186,7 +197,8 @@ export default function FindPassword() {
             text-decoration: none;
             background-color: rgb(255, 207, 0);
 
-            :hover {
+            :hover,
+            :focus {
               background-color: black;
               color: white;
             }

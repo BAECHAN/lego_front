@@ -200,6 +200,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
         <input
           type="checkbox"
           className="product-checkbox mx-7"
+          title="주문할 상품 선택"
           name={`product_checkbox_${props.product.cart_id}`}
           onInput={handleChangeCheck}
           defaultChecked
@@ -249,6 +250,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
       <div className="product-in-cart-quantity">
         <button
           name={`product_sub_${props.product.cart_id}`}
+          title="주문할 상품 수량 1개 빼기"
           onClick={(event) => {
             handleClickQuantity(event, 'minus')
           }}
@@ -259,9 +261,10 @@ export default function ProductInCart(props: { product: ProductCartT }) {
             className={`w-5 ${minusDisabled ? 'opacity-20' : 'opacity-100'}`}
           />
         </button>
-        <div>{quantity}</div>
+        <div title="주문할 상품 수량">{quantity}</div>
         <button
           name={`product_add_${props.product.cart_id}`}
+          title="주문할 상품 수량 1개 더하기"
           onClick={(event) => {
             handleClickQuantity(event, 'plus')
           }}
@@ -294,6 +297,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
       </div>
       <button
         type="button"
+        title="상품을 장바구니에서 빼기"
         name={`product_delete_${props.product.cart_id}`}
         className="w-32 ml-28"
         onClick={(event) => handleClickDelete(event)}

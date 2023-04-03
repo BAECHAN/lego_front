@@ -50,7 +50,12 @@ export default function ButtonAddCart(props: {
   }
 
   return (
-    <button type="button" className="add-to-cart" onClick={handleClickAddCart}>
+    <button
+      type="button"
+      title="장바구니에 담기"
+      className="add-to-cart"
+      onClick={handleClickAddCart}
+    >
       장바구니 담기
       <style jsx>{`
         .add-to-cart {

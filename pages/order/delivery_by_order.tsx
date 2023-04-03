@@ -55,6 +55,7 @@ export default function DeliveryByOrder(props: { from: string }) {
             <div className="min-h-[300px]">
               <button
                 type="button"
+                title="주문페이지로 돌아가기 버튼"
                 className="m-3"
                 onClick={() => router.back()}
               >

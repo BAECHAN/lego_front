@@ -118,6 +118,7 @@ export default function CheckPassword() {
               <br />
               <input
                 type="password"
+                title="기존 비밀번호 입력란"
                 name="password"
                 id="password"
                 autoComplete="off"
@@ -128,6 +129,7 @@ export default function CheckPassword() {
               {isShowPw ? (
                 <FontAwesomeIcon
                   icon={faEyeSlash}
+                  title="비밀번호 숨김"
                   onClick={handleClickEye}
                   cursor="pointer"
                   className="w-5 relative ml-[304px] -mt-[26px]"
@@ -135,6 +137,7 @@ export default function CheckPassword() {
               ) : (
                 <FontAwesomeIcon
                   icon={faEye}
+                  title="비밀번호 표시"
                   onClick={handleClickEye}
                   cursor="pointer"
                   className="w-5 relative ml-[304px] -mt-[26px]"
@@ -145,7 +148,7 @@ export default function CheckPassword() {
             <button
               type="submit"
               className="btnResetPassword"
-              title="기존 비밀번호 체크"
+              title="기존 비밀번호 검사 버튼"
             >
               비밀번호 확인
             </button>

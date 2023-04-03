@@ -103,19 +103,23 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
           </Link>
         </div>
       </div>
-      <div className="w-2/12 flex items-center">{orderTime}</div>
+      <div title="주문한 시간" className="w-2/12 flex items-center">
+        {orderTime}
+      </div>
       <div className="flex-grow" />
       <div className="w-1/12 text-center">{props.order.order_group_id}</div>
 
       <div className="flex-col flex items-center w-2/12">
-        <div>{props.order.pay_price.toLocaleString('ko-kr')} 원</div>
+        <div title="상품별 주문한 금액">
+          {props.order.pay_price.toLocaleString('ko-kr')} 원
+        </div>
         <div className="text-gray-500">
-          <div>{props.order.order_quantity} 개</div>
+          <div title="주문한 상품 수량">{props.order.order_quantity} 개</div>
         </div>
       </div>
 
       <div className="flex text-center w-2/12 items-center justify-center">
-        <b className="mr-2">
+        <b className="mr-2" title="주문 상태">
           {props.order.state == 2
             ? '결제완료'
             : props.order.state == 7 || isRefund
@@ -125,6 +129,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
         {!isRefund ? (
           <button
             type="button"
+            title="환불 요청 버튼"
             className="btn-refund flex h-8 leading-5"
             onClick={handleClickRefund}
           >
