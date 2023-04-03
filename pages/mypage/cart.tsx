@@ -55,50 +55,52 @@ export default function Cart() {
 
   return (
     <div>
-      {data && data.cartList?.length > 0 ? (
-        <div className="min-h-[600px]">
-          <ul className="flex flex-col">
-            {data.cartList.map((item: ProductCartT, index: number) => {
-              return (
-                <li key={item.cart_id}>
-                  <ProductInCart product={item} />
-                  {index < data.cartList.length - 1 ? <hr /> : null}
-                </li>
-              )
-            })}
-          </ul>
-          <div className="flex justify-center">
-            <p>주문할 상품 : {selectedOrder.length}개</p>
+      {isFetched ? (
+        data && data.cartList?.length > 0 ? (
+          <div className="min-h-[600px]">
+            <ul className="flex flex-col">
+              {data.cartList.map((item: ProductCartT, index: number) => {
+                return (
+                  <li key={item.cart_id}>
+                    <ProductInCart product={item} />
+                    {index < data.cartList.length - 1 ? <hr /> : null}
+                  </li>
+                )
+              })}
+            </ul>
+            <div className="flex justify-center">
+              <p>주문할 상품 : {selectedOrder.length}개</p>
+            </div>
+            <div className="flex justify-center">
+              {totalPrice.toLocaleString('ko-KR')} 원
+            </div>
+            <div className="flex justify-center">
+              <button
+                type="button"
+                id="btnOrderRouter"
+                className="btn-router"
+                onClick={handleClickOrder}
+              >
+                주문하기
+              </button>
+            </div>
           </div>
-          <div className="flex justify-center">
-            {totalPrice.toLocaleString('ko-KR')} 원
+        ) : (
+          <div className="text-xl">
+            <div>해당하는 상품이 없습니다.</div>
+            <div className="flex justify-center mt-52">
+              <button
+                type="button"
+                id="btnShopRouter"
+                className="btn-router"
+                onClick={handleClickShopping}
+              >
+                쇼핑하러 가기
+              </button>
+            </div>
           </div>
-          <div className="flex justify-center">
-            <button
-              type="button"
-              id="btnOrderRouter"
-              className="btn-router"
-              onClick={handleClickOrder}
-            >
-              주문하기
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="text-xl">
-          <div>해당하는 상품이 없습니다.</div>
-          <div className="flex justify-center mt-52">
-            <button
-              type="button"
-              id="btnShopRouter"
-              className="btn-router"
-              onClick={handleClickShopping}
-            >
-              쇼핑하러 가기
-            </button>
-          </div>
-        </div>
-      )}
+        )
+      ) : null}
 
       <style jsx>{`
         button.btn-router {
