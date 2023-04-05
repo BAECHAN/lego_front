@@ -99,17 +99,14 @@ export type InputRegExpT = {
   [key: string]: RegExp
 }
 
-export type UserCreateT = {
-  email: string
-  pw: string
-  pwChk: string
-  nickname: string
-}
-
 export type UserSubmitT = {
   email: string
   pw: string
   nickname: string
+}
+
+export type UserCreateT = UserSubmitT & {
+  pwChk: string
 }
 
 export type ProductWishSubmitT = {
@@ -117,16 +114,17 @@ export type ProductWishSubmitT = {
   product_id: number
 }
 
-export type ProductUpdateCartSubmitT = {
-  email: string
+export type ProductUpdateCartSubmitT = ProductWishSubmitT & {
   cart_id: number
-  order_quantity?: number
+  state: string
 }
 
-export type ProductAddCartSubmitT = {
-  email: string
-  product_id: number
+export type ProductAddCartSubmitT = ProductWishSubmitT & {
   order_quantity: number
+}
+
+export type ProductDeleteCartSubmitT = ProductAddCartSubmitT & {
+  cart_id: nubmer
 }
 
 export type DeliverySubmitT = {

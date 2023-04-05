@@ -1,5 +1,9 @@
 import React, { useRef, useState } from 'react'
-import { ProductCartT, ProductUpdateCartSubmitT } from 'types'
+import {
+  ProductCartT,
+  ProductDeleteCartSubmitT,
+  ProductUpdateCartSubmitT,
+} from 'types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,7 +20,10 @@ export default function ProductInCart(props: { product: ProductCartT }) {
     props.product.order_quantity > 1 ? false : true
   )
   const [plusDisabled, setPlusDisabled] = useState(
-    props.product.order_quantity < props.product.ea ? false : true
+    props.product.order_quantity + props.product.ea >
+      props.product.order_quantity
+      ? false
+      : true
   )
 
   let [selectedOrder, setSelectedOrder] = useRecoilState(selectedOrderSelector)
@@ -38,8 +45,8 @@ export default function ProductInCart(props: { product: ProductCartT }) {
       let reqParam: ProductUpdateCartSubmitT = {
         email: session.user.email,
         cart_id: Number(e.currentTarget.name.substring(12)),
-        order_quantity:
-          plusOrMinus.current == 'plus' ? quantity + 1 : quantity - 1,
+        product_id: props.product.product_id,
+        state: plusOrMinus.current == 'plus' ? 'updateAdd' : 'updateSub',
       }
 
       updateQuantityAPI.mutate(reqParam)
@@ -48,7 +55,6 @@ export default function ProductInCart(props: { product: ProductCartT }) {
 
   const handleChangeCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     let price = 0
-    console.log(quantity)
 
     if (e.currentTarget.checked) {
       setSelectedOrder((selectedOrder) => [
@@ -86,16 +92,18 @@ export default function ProductInCart(props: { product: ProductCartT }) {
 
   const handleClickDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (session?.user?.email) {
-      let param: ProductUpdateCartSubmitT = {
+      let param: ProductDeleteCartSubmitT = {
         email: session.user.email,
         cart_id: Number(e.currentTarget.name.substring(15)),
+        product_id: props.product.product_id,
+        order_quantity: props.product.order_quantity,
       }
       delCartAPI.mutate(param)
     }
   }
 
   const delCartAPI = useMutation(
-    async (param: ProductUpdateCartSubmitT) => {
+    async (param: ProductDeleteCartSubmitT) => {
       const res = await axios.patch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-cart`,
 
@@ -113,7 +121,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
           queryClient.invalidateQueries(['product-cart-list'])
         } else {
           alert(
-            '장바구니에서 삭제하는데 문제가 발생하였습니다.\r관리자에게 문의해주시기 바랍니다.'
+            '장바구니에서 삭제하는데 문제가 발생하였습니다.\r고객센터에 문의해주시기 바랍니다.'
           )
           return false
         }
@@ -136,6 +144,14 @@ export default function ProductInCart(props: { product: ProductCartT }) {
     {
       onMutate: () => {
         let price = 0
+
+        let prevInfo = {
+          quantity: quantity,
+          totalPrice: totalPrice,
+          plusDisabled: plusDisabled,
+          minusDisabled: minusDisabled,
+        }
+
         if (plusOrMinus.current == 'plus') {
           setQuantity(quantity + 1)
 
@@ -152,7 +168,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
 
           setTotalPrice((totalPrice) => totalPrice + price)
 
-          if (quantity + 1 >= props.product.ea) {
+          if (quantity + 1 >= props.product.ea + props.product.order_quantity) {
             setPlusDisabled(true)
           } else {
             setPlusDisabled(false)
@@ -180,15 +196,35 @@ export default function ProductInCart(props: { product: ProductCartT }) {
             setMinusDisabled(false)
           }
         }
+
+        return prevInfo
       },
-      onSuccess: (data) => {
+      onSuccess: (data, values, rollback) => {
         if (data.result == 1) {
           console.log(data)
         } else {
           alert(
-            '수량을 변경하는데 문제가 발생하였습니다.\r관리자에게 문의해주시기 바랍니다.'
+            '수량을 변경하는데 문제가 발생하였습니다.\r고객센터에 문의해주시기 바랍니다.'
           )
+          if (rollback) {
+            setQuantity(rollback.quantity)
+            setTotalPrice(rollback.totalPrice)
+            setPlusDisabled(rollback.plusDisabled)
+            setMinusDisabled(rollback.minusDisabled)
+          }
           return false
+        }
+      },
+      onError: (error, values, rollback) => {
+        alert(
+          '수량을 변경하는데 문제가 발생하였습니다.\r고객센터에 문의해주시기 바랍니다.'
+        )
+        console.log(error)
+        if (rollback) {
+          setQuantity(rollback.quantity)
+          setTotalPrice(rollback.totalPrice)
+          setPlusDisabled(rollback.plusDisabled)
+          setMinusDisabled(rollback.minusDisabled)
         }
       },
     }

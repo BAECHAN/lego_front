@@ -66,7 +66,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
           setIsRefund(true)
         } else {
           alert(
-            '환불처리 하는데 문제가 발생하였습니다.\r관리자에게 문의해주시기 바랍니다.'
+            '환불처리 하는데 문제가 발생하였습니다.\r고객센터에 문의해주시기 바랍니다.'
           )
           return false
         }
@@ -126,7 +126,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
             ? '환불완료'
             : '환불대기'}
         </b>
-        {!isRefund ? (
+        {props.order.state == 2 && !isRefund ? (
           <button
             type="button"
             title="환불 요청 버튼"

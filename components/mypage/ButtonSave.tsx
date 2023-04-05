@@ -121,7 +121,7 @@ export default function ButtonSave(props: {
           props.setIsChange(!props.isChange)
         } else {
           alert(
-            '프로필 사진을 변경하는데 문제가 발생하였습니다.\r관리자에게 문의해주시기 바랍니다.'
+            '프로필 사진을 변경하는데 문제가 발생하였습니다.\r고객센터에 문의해주시기 바랍니다.'
           )
           return false
         }

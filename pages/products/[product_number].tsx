@@ -26,7 +26,7 @@ export default function Product(props: any) {
   let [plusDisabled, setPlusDisabled] = useState(false)
   let [detailOpen, setDetailOpen] = useState(true)
 
-  const { data: product, isLoading } = useProduct(props)
+  const { data: product, isLoading, isFetching, status } = useProduct(props)
   const [theme, setTheme] = useRecoilState(themeSelector)
 
   const router = useRouter()
@@ -36,18 +36,27 @@ export default function Product(props: any) {
     plusOrMinus: string
   ) => {
     plusOrMinus === 'plus' ? setQuantity(++quantity) : setQuantity(--quantity)
+  }
 
-    if (product) {
-      if (quantity >= product?.product_info?.ea) {
-        setPlusDisabled(true)
-      } else if (quantity <= 1) {
+  useEffect(() => {
+    if (product && product.product_info && product.product_info.ea) {
+      if (quantity == 1) {
         setMinusDisabled(true)
       } else {
-        setPlusDisabled(false)
         setMinusDisabled(false)
       }
+
+      if (quantity < product.product_info.ea) {
+        setPlusDisabled(false)
+      } else if (quantity == product.product_info.ea) {
+        setPlusDisabled(true)
+      } else {
+        setPlusDisabled(true)
+        setQuantity(product.product_info.ea)
+      }
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product, quantity])
 
   useEffect(() => {
     router.beforePopState(() => {
