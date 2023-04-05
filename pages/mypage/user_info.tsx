@@ -7,12 +7,6 @@ import useUser from 'pages/api/query/useUser'
 import React from 'react'
 
 export default function UserInfo(req: NextApiRequest) {
-  // 회원정보 가져와서 화면에 보여주기
-  // 수정할 수 있도록 하는 버튼 추가
-  // 로그인 연동 ()
-  //  배송정보 등록 필요
-  // 배송정보 관련 화면에 보여주기
-
   const { data: userInfo, isFetched, isFetching, status } = useUser()
 
   const handleClickWithdraw = () => {

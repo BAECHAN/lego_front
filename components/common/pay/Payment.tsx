@@ -86,7 +86,7 @@ export default function Payment(props: {
           router.push('/mypage/order_history')
         } else {
           alert(
-            '결제정보를 저장하는데 문제가 발생하였습니다.\r관리자에게 문의해주시기 바랍니다.'
+            '결제정보를 저장하는데 문제가 발생하였습니다.\r고객센터에 문의해주시기 바랍니다.'
           )
           queryClient.invalidateQueries(['user-order'])
           router.push('/mypage/order_history')

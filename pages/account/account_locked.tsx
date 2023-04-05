@@ -25,7 +25,7 @@ export default function AccountExpiredAccount() {
         <p className="text-center">
           해당 계정은 이용약관에 위배되는 활동이 의심되어 잠긴 계정으로
           전환되었습니다. <br />
-          잠김을 해제하려면 관리자에게 문의해주시기 바랍니다.
+          잠김을 해제하려면 고객센터에 문의해주시기 바랍니다.
           <br />
         </p>
         <p>

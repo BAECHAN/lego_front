@@ -63,7 +63,7 @@ export default function Cart() {
                 return (
                   <li key={item.cart_id}>
                     <ProductInCart product={item} />
-                    {index < data.cartList.length - 1 ? <hr /> : null}
+                    {index < data.cartList.length - 1 && <hr />}
                   </li>
                 )
               })}

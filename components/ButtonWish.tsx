@@ -6,7 +6,7 @@ import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { ProductWishSubmitT } from 'types'
 import axios from 'axios'
-import { useMutation } from '@tanstack/react-query'
+import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query'
 import useProductWishList from 'pages/api/query/useProductWishList'
 
 export default function ButtonWish(props: {
@@ -23,6 +23,10 @@ export default function ButtonWish(props: {
   const router = useRouter()
 
   const { data, isFetched } = useProductWishList()
+
+  const queryClient = useQueryClient()
+
+  const key = 'product-wish-list'
 
   useEffect(() => {
     if (isFetched) {
@@ -53,30 +57,22 @@ export default function ButtonWish(props: {
       return res.data
     },
     {
-      onMutate: () => {
+      onMutate: async () => {
         setWishInfo({
           ...wishInfo,
-          wish: !wishInfo.wish,
+          wish: true,
         })
-
-        return () => {
-          setWishInfo({
-            ...wishInfo,
-            wish: !wishInfo.wish,
-          })
-        }
-      },
-      onSuccess: (data) => {
-        // setWishInfo({
-        //   product_id: data.product_id,
-        //   wish: data.wish,
-        // })
       },
       onError: (error, values, rollback) => {
+        alert(
+          '좋아요 버튼을 반영하는데 문제가 발생하였습니다.\r같은 상황이 지속 된다면 고객센터에 문의해주시기 바랍니다.'
+        )
+        console.log(error)
         if (rollback) {
-          rollback()
-        } else {
-          console.log(error)
+          setWishInfo({
+            ...wishInfo,
+            wish: false,
+          })
         }
       },
     }
@@ -94,14 +90,23 @@ export default function ButtonWish(props: {
       return res.data
     },
     {
-      onSuccess: (data) => {
+      onMutate: async () => {
         setWishInfo({
-          product_id: data.product_id,
-          wish: data.wish,
+          ...wishInfo,
+          wish: false,
         })
       },
-      onError: (error) => {
+      onError: (error, values, rollback) => {
+        alert(
+          '좋아요 버튼을 반영하는데 문제가 발생하였습니다.\r같은 상황이 지속 된다면 고객센터에 문의해주시기 바랍니다.'
+        )
         console.log(error)
+        if (rollback) {
+          setWishInfo({
+            ...wishInfo,
+            wish: true,
+          })
+        }
       },
     }
   )

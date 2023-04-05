@@ -71,7 +71,7 @@ export default function CheckPassword() {
             return false
           } else if (data.result == -1) {
             alert(
-              '토큰 생성에 실패하였습니다.\r관리자에게 문의하시기 바랍니다.'
+              '토큰 생성에 실패하였습니다.\r고객센터에 문의하시기 바랍니다.'
             )
             return false
           } else {
