@@ -12,7 +12,7 @@ const useFilters = (props: ThemeT) => {
       return res.data
     },
     {
-      onSuccess: (data) => console.log(data),
+      onSuccess: (data) => {},
       onError: (e) => console.log(e),
     }
   )

@@ -37,9 +37,7 @@ export default function FindPassword() {
             param: JSON.stringify({ email }),
             headers: { 'Content-Type': `application/json; charset=utf-8` },
           })
-          .then((response) => {
-            console.log(response)
-          })
+          .then((response) => {})
           .catch((error) => {
             console.log(error)
           })

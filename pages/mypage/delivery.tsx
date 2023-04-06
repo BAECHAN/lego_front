@@ -38,10 +38,6 @@ export default function Delivery(props: { from: string }) {
 
   const { data, isFetched } = useDeliveryShippingList(page)
 
-  console.log(data)
-  console.log(data && data.shippingList.length > 0)
-  console.log(isFetched)
-
   return (
     <div>
       {isFetched ? (
