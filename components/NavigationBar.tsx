@@ -77,7 +77,7 @@ export default function NavigationBar(prop: { productInfo?: ProductT }) {
           </Link>
 
           <FontAwesomeAngleRight />
-          <span>{theme?.theme_title}</span>
+          <span>{theme.theme_title}</span>
         </>
       ) : null}
 

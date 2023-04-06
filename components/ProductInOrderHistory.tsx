@@ -61,7 +61,6 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
     },
     {
       onSuccess: async (response) => {
-        console.log(response)
         if (response.result == 1) {
           alert('환불처리 되었습니다.')
           queryClient.invalidateQueries(['order-list'])
