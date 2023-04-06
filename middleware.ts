@@ -44,8 +44,6 @@ export async function middleware(request: NextRequest, response: NextResponse) {
           })
           .catch((error) => console.log(error))
 
-        console.log(response?.status)
-
         if (response) {
           if (response.status == 204) {
             const url = request.nextUrl.clone()
