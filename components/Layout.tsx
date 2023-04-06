@@ -34,9 +34,11 @@ export default function Layout({
             <div className="w-screen min-h-[76vh]">
               <h1 className="text-2xl font-bold mb-3">
                 {router.pathname.indexOf('mypage') > -1
-                  ? mypageListObj[
-                      router.pathname.slice(8, router.pathname.length)
-                    ]
+                  ? router.pathname == '/mypage'
+                    ? '마이페이지'
+                    : mypageListObj[
+                        router.pathname.slice(8, router.pathname.length)
+                      ]
                   : '주문 & 배송'}
               </h1>
               <hr className="border-black border-2" />

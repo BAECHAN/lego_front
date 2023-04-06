@@ -10,6 +10,7 @@ export default function UserInfoContentsLine(props: {
   infoValue?: any
   infoUpdate: boolean
   email: string
+  onConnect?: boolean
 }) {
   const [isChange, setIsChange] = useState(false)
   const [value, setValue] = useState(props.infoValue)
@@ -165,6 +166,8 @@ export default function UserInfoContentsLine(props: {
                   setIsChange={setIsChange}
                 />
               )
+            ) : props.onConnect ? (
+              <p className="text-blue-600 font-bold">ON</p>
             ) : null}
           </div>
           <div className="w-1/6" />

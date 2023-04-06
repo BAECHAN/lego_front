@@ -6,11 +6,13 @@ import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 import React, { ChangeEvent, useState, FocusEvent } from 'react'
 import { InputRegExpT, UserCreateT, UserSubmitT } from 'types'
 import axios from 'axios'
-import Router from 'next/router'
 import crypto from 'crypto-js'
 import axiosRequest from 'pages/api/axios'
+import { useRouter } from 'next/router'
 
 export default function CreateAccount() {
+  const router = useRouter()
+
   const [inputs, setInputs] = useState<UserCreateT>({
     email: '',
     pw: '',
@@ -218,7 +220,7 @@ export default function CreateAccount() {
       .then((response) => {
         if (response?.status === 200) {
           alert('회원가입되었습니다.\r로그인 페이지로 이동합니다.')
-          Router.push('/login')
+          router.push('/login')
         }
       })
       .catch((error) => {

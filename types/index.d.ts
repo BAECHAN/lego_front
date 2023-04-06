@@ -88,7 +88,7 @@ export type UserT = {
   account_state: number
   date_withdraw: Date
   grade: string
-  oauth_connect: number
+  oauth_connect: string
 }
 
 export type ChildrenT = {
@@ -172,4 +172,8 @@ export type OrderT = {
   shipping_address2: string
   delivery_request: string
   delivery_request_direct: string
+}
+
+export type UserOAuthSubmitT = UserSubmitT & {
+  provider: string
 }

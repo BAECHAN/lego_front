@@ -103,12 +103,14 @@ export default function UserInfo(req: NextApiRequest) {
               <UserInfoContentsLine
                 infoKey={'onKakao'}
                 infoName={'카카오 로그인 연동 상태'}
+                onConnect={userInfo.oauth_connect == 'kakao'}
                 infoUpdate={false}
                 email={userInfo.email}
               />
               <UserInfoContentsLine
                 infoKey={'onGoogle'}
                 infoName={'구글 로그인 연동 상태'}
+                onConnect={userInfo.oauth_connect == 'google'}
                 infoUpdate={false}
                 email={userInfo.email}
               />

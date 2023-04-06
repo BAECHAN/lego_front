@@ -6,10 +6,10 @@ import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Login() {
-  const [isShowPw, setIsShowPw] = useState(false)
+  const [isShowPw, setIsShowPw] = useState<boolean>(false)
 
   const router = useRouter()
 
@@ -74,16 +74,12 @@ export default function Login() {
 
   const loginKakao = async (e: any) => {
     e.preventDefault()
-    await signIn('kakao', {
-      callbackUrl: '/',
-    })
+    await signIn('kakao')
   }
 
   const loginGoogle = async (e: any) => {
     e.preventDefault()
-    await signIn('google', {
-      callbackUrl: '/',
-    })
+    await signIn('google')
   }
 
   return (
@@ -126,7 +122,6 @@ export default function Login() {
               {isShowPw ? (
                 <FontAwesomeIcon
                   icon={faEyeSlash}
-                  title="비밀번호 숨김"
                   onClick={handleClickEye}
                   cursor="pointer"
                   className="w-5 relative ml-[304px] -mt-[26px]"
@@ -134,7 +129,6 @@ export default function Login() {
               ) : (
                 <FontAwesomeIcon
                   icon={faEye}
-                  title="비밀번호 표시"
                   onClick={handleClickEye}
                   cursor="pointer"
                   className="w-5 relative ml-[304px] -mt-[26px]"
