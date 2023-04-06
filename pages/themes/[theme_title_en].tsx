@@ -56,7 +56,7 @@ export default function Theme(props: ThemeT) {
   }, [props, recoilReset, setTheme])
 
   return (
-    <div className="px-32">
+    <div className="px-16">
       <Navbar />
       <div>
         <div className="list-summary flex mx-7 my-3">

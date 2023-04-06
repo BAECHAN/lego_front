@@ -18,9 +18,7 @@ const useUser = () => {
       return res.data.result
     },
     {
-      onSuccess: (data) => {
-        console.log(data)
-      },
+      onSuccess: (data) => {},
       onError: (error) => {
         console.log(error)
       },

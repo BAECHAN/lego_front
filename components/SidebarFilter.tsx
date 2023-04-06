@@ -11,8 +11,8 @@ export default function SidebarFilter(props: { themes: ThemeT }) {
   const selectedFilter = useRecoilValue(selectedFilterSelector)
 
   return (
-    <aside className="filter mx-5 h-full">
-      <div className="w-60">
+    <aside className="filter mx-5 h-full sticky top-0 overflow-y-scroll overflow-x-hidden w-96">
+      <div className="h-[700px]">
         <div className="filter-option mb-3">
           {Object.values(selectedFilter).indexOf(1) > -1 ? (
             <SidebarFilterSelected />
