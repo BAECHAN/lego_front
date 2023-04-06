@@ -21,7 +21,9 @@ const useUser = () => {
       onSuccess: (data) => {
         console.log(data)
       },
-      onError: (e) => console.log(e),
+      onError: (error) => {
+        console.log(error)
+      },
       enabled: !!session?.user?.email,
     }
   )

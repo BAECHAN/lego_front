@@ -1,5 +1,4 @@
 // <root>/middleware.ts
-import axios from 'axios'
 import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -8,22 +7,6 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
   })
-
-  // if(session && session.email){
-
-  //   const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-user-info`
-
-  //   axios.get(url,{
-  //     params: {
-  //       email: session.email
-  //     },
-  //     headers: { 'Content-Type': `application/json; charset=utf-8` }
-  //   }).then((response)=>{
-  //     console.log(response)
-  //   }).catch((error)=>{
-  //     console.log(error)
-  //   })
-  // }
 
   if (!request.nextUrl.pathname.startsWith('/account')) {
     if (session?.state) {
@@ -42,6 +25,39 @@ export async function middleware(request: NextRequest, response: NextResponse) {
         url.pathname = '/account/account_withdraw'
         url.searchParams.set('state', String(session.state))
         return NextResponse.redirect(url)
+      }
+    } else {
+      const url = request.nextUrl.clone()
+
+      if (
+        session &&
+        session.email &&
+        (session.provider == 'kakao' || session.provider == 'google') &&
+        url.pathname == '/' &&
+        !url.search.includes('onConnect')
+      ) {
+        const requestURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-user-info-oauth?email=${session.email}&provider=${session.provider}`
+
+        const response = await fetch(requestURL)
+          .then((response) => {
+            return response
+          })
+          .catch((error) => console.log(error))
+
+        console.log(response?.status)
+
+        if (response) {
+          if (response.status == 204) {
+            const url = request.nextUrl.clone()
+            url.pathname = '/account/oauth_check'
+            url.searchParams.set('provider', String(session.provider))
+            return NextResponse.redirect(url)
+          } else if (response.status == 200) {
+          } else if (response.status == 201) {
+          } else {
+          }
+        } else {
+        }
       }
     }
   } else {
@@ -70,11 +86,16 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     }
   }
 
+  if (request.nextUrl.pathname == '/mypage') {
+    const url = request.nextUrl.clone()
+    url.pathname = '/mypage/order_history'
+    return NextResponse.redirect(url)
+  }
+
   if (request.nextUrl.pathname.startsWith('/login')) {
     if (session) {
       const url = request.nextUrl.clone()
       url.pathname = '/'
-
       return NextResponse.redirect(url)
     }
   }

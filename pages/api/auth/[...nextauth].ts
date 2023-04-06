@@ -3,6 +3,7 @@ import NextAuth, { DefaultSession } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import KakaoProvider from 'next-auth/providers/kakao'
 import GoogleProvider from 'next-auth/providers/google'
+import { Router } from 'next/router'
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
@@ -84,10 +85,12 @@ export default NextAuth({
       if (params.user && (params.user.state as number)) {
         params.token.state = params.user.state
       }
+
+      if (params.account && (params.account.provider as string)) {
+        params.token.provider = params.account.provider
+      }
+
       return params.token
-    },
-    async redirect({ url }) {
-      return url
     },
   },
 })

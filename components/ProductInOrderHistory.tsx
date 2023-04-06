@@ -14,9 +14,11 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
 
   const date = new Date(props.order.date_registed)
 
-  const orderTime = common.timeFormat(date)
+  const orderTime = common.TimeFormat(date)
 
   const [isRefund, setIsRefund] = useState(false)
+
+  const [isOpenDelivery, setIsOpenDelivery] = useState(false)
 
   useEffect(() => {
     if (props.order.state == 7) {
@@ -76,70 +78,112 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
   )
 
   return (
-    <div className="product-in-order w-full flex justify-start items-center">
-      <div className="w-4/12 flex-col flex justify-center m-3">
-        <div className="product-in-order-image w-32 scale-75 hover:scale-90 transition-all ease-in-out mb-1">
-          <Link href={`/products/${props.order.product_number}`}>
-            <a>
-              <Image
-                src={props.order.image}
-                width="40vw"
-                height="20vw"
-                alt={props.order.title}
-                style={{ cursor: 'pointer' }}
-                priority
-                placeholder="blur"
-                blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc
-                SJAAAADUlEQVR42mN8sFeoHgAGZAIwFY0DHwAAAABJRU5ErkJggg==`}
-                quality={100}
-                layout="responsive"
-              />
-            </a>
-          </Link>
+    <div className="w-full">
+      <div className="product-in-order w-full flex justify-start items-center">
+        <div className="w-3/12 flex-col flex justify-center m-3">
+          <div className="product-in-order-image w-32 scale-75 hover:scale-90 transition-all ease-in-out mb-1">
+            <Link href={`/products/${props.order.product_number}`}>
+              <a>
+                <Image
+                  src={props.order.image}
+                  width="40vw"
+                  height="20vw"
+                  alt={props.order.title}
+                  style={{ cursor: 'pointer' }}
+                  priority
+                  placeholder="blur"
+                  blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc
+                  SJAAAADUlEQVR42mN8sFeoHgAGZAIwFY0DHwAAAABJRU5ErkJggg==`}
+                  quality={100}
+                  layout="responsive"
+                />
+              </a>
+            </Link>
+          </div>
+          <div className="product-in-order-content">
+            <Link href={`/products/${props.order.product_number}`}>
+              <a className="prod-title">{props.order.title}</a>
+            </Link>
+          </div>
         </div>
-        <div className="product-in-order-content">
-          <Link href={`/products/${props.order.product_number}`}>
-            <a className="prod-title">{props.order.title}</a>
-          </Link>
+        <div title="주문한 시간" className="w-2/12 flex items-center">
+          {orderTime}
         </div>
-      </div>
-      <div title="주문한 시간" className="w-2/12 flex items-center">
-        {orderTime}
-      </div>
-      <div className="flex-grow" />
-      <div className="w-1/12 text-center">{props.order.order_group_id}</div>
+        <div className="w-1/12 text-center">{props.order.order_group_id}</div>
 
-      <div className="flex-col flex items-center w-2/12">
-        <div title="상품별 주문한 금액">
-          {props.order.pay_price.toLocaleString('ko-kr')} 원
+        <div className="flex-col flex items-center w-2/12">
+          <div title="상품별 주문한 금액">
+            {props.order.pay_price.toLocaleString('ko-kr')} 원
+          </div>
+          <div className="text-gray-500">
+            <div title="주문한 상품 수량">{props.order.order_quantity} 개</div>
+          </div>
         </div>
-        <div className="text-gray-500">
-          <div title="주문한 상품 수량">{props.order.order_quantity} 개</div>
+
+        <div className="flex text-center w-2/12 items-center justify-center">
+          <b className="mr-2" title="주문 상태">
+            {props.order.state == 2
+              ? '결제완료'
+              : props.order.state == 7 || isRefund
+              ? '환불완료'
+              : '환불대기'}
+          </b>
+          {props.order.state == 2 && !isRefund ? (
+            <button
+              type="button"
+              title="환불 요청 버튼"
+              className="btn-refund flex h-8 leading-5"
+              onClick={handleClickRefund}
+            >
+              환불요청
+            </button>
+          ) : null}
+        </div>
+        <div className="flex text-center w-2/12 items-center justify-center">
+          {props.order.state == 2 && !isRefund ? (
+            <button
+              type="button"
+              title={`배송지 정보 ${isOpenDelivery ? '닫기' : '보기'} 버튼`}
+              className="btn-delivery"
+              onClick={() => setIsOpenDelivery(!isOpenDelivery)}
+            >
+              {`배송지 ${isOpenDelivery ? '닫기' : '보기'}`}
+            </button>
+          ) : null}
         </div>
       </div>
-
-      <div className="flex text-center w-2/12 items-center justify-center">
-        <b className="mr-2" title="주문 상태">
-          {props.order.state == 2
-            ? '결제완료'
-            : props.order.state == 7 || isRefund
-            ? '환불완료'
-            : '환불대기'}
-        </b>
-        {props.order.state == 2 && !isRefund ? (
-          <button
-            type="button"
-            title="환불 요청 버튼"
-            className="btn-refund flex h-8 leading-5"
-            onClick={handleClickRefund}
-          >
-            환불요청
-          </button>
-        ) : null}
-      </div>
-
+      {isOpenDelivery && (
+        <div className="flex justify-center">
+          <div className="text-center border border-black border-solid w-1/2 mt-3 p-3">
+            <p>수령인 : {props.order.recipient}</p>
+            <p>
+              주소 : {props.order.shipping_address1}&nbsp;
+              {props.order.shipping_address2}
+            </p>
+            <p>
+              요청사항 :&nbsp;
+              {props.order.delivery_request == '1'
+                ? '없음'
+                : props.order.delivery_request == '2'
+                ? '부재 시 경비실에 맡겨주세요'
+                : props.order.delivery_request == '3'
+                ? '부재 시 택배함에 넣어주세요'
+                : props.order.delivery_request == '4'
+                ? '부재 시 집 앞에 놔주세요'
+                : props.order.delivery_request == '5'
+                ? '배송 전 연락 바랍니다'
+                : props.order.delivery_request == '6'
+                ? '파손의 위험이 있는 상품이니 배송 시 주의해 주세요'
+                : props.order.delivery_request == '7'
+                ? props.order.delivery_request_direct
+                : null}
+            </p>
+          </div>
+        </div>
+      )}
       <style jsx>{`
-        button.btn-refund {
+        button.btn-refund,
+        button.btn-delivery {
           background-color: gray;
           color: #fff;
           padding: 5px 10px;
