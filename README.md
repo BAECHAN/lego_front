@@ -57,4 +57,3 @@ https://www.lego.com 에서 [인당 구매 가능 수량]을 제한해두었기 
 * 반응형 웹 디자인을 적용 x
 * 이미지 로딩 속도 해결 및 Prefetching 필요
 * 예외처리 시 HTTP Response Status에 따른 처리가 미흡
-* API 요청 시 로딩바 필요
