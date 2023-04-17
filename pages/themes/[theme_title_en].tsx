@@ -10,8 +10,10 @@ import {
   sortSelector,
   themeSelector,
 } from 'state/atoms'
-import { useRecoilState, useResetRecoilState } from 'recoil'
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import useProductList from 'pages/api/query/useProductList'
+
+import axios from 'axios'
 
 export async function getServerSideProps(context: any) {
   return {
@@ -23,12 +25,31 @@ export default function Theme(props: ThemeT) {
   const [page, setPage] = useState(1)
   const [sort, setSort] = useRecoilState(sortSelector)
 
+  const take = 15
+  const filter = useRecoilValue(selectedFilterSelector)
+
+  let url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product-list`
+
+  const axiosGets = async ({ pageParam = 0 }) => {
+    const res = await axios.get(url, {
+      params: {
+        theme_id: Number(props.theme_id),
+        page: pageParam,
+        take: take,
+        sort: sort,
+        filter: filter,
+      },
+      headers: { 'Content-Type': `application/json; charset=utf-8` },
+    })
+    return res.data
+  }
+
   const {
     data: productList,
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
-  } = useProductList(props)
+  } = useProductList(axiosGets)
 
   const handleClickMoreProduct = () => {
     fetchNextPage({ pageParam: page })

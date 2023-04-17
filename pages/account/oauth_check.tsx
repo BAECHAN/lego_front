@@ -100,13 +100,14 @@ export default function OauthCheck(props: { provider: string }) {
           <button
             type="button"
             title="OAuth 계정으로 회원가입 제출"
-            className="login-btn-credential"
+            className="btn-common min-w-[330px] h-33 fs-14"
             onClick={handleClickNewAccount}
           >
             회원가입
           </button>
           <button
             type="button"
+            className="text-sm"
             onClick={() => {
               signOut()
             }}
@@ -135,37 +136,6 @@ export default function OauthCheck(props: { provider: string }) {
             border: solid gray 1px;
             display: inline-block;
             padding: 5px;
-          }
-          button.login-btn-credential {
-            margin-top: 17px;
-            box-sizing: border-box;
-            outline: 0;
-            border: 0;
-            cursor: pointer;
-            user-select: none;
-            vertical-align: middle;
-            -webkit-appearance: none;
-            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-            font-weight: 500;
-            font-size: 0.875rem;
-            letter-spacing: 0.02857em;
-            text-transform: uppercase;
-            min-width: 500px;
-            padding: 6px 16px;
-            border-radius: 4px;
-            transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-              box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-              border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-              color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-            color: black;
-            text-decoration: none;
-            background-color: rgb(255, 207, 0);
-
-            :hover,
-            :focus {
-              background-color: black;
-              color: white;
-            }
           }
         }
       `}</style>

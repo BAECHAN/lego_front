@@ -1,5 +1,5 @@
-import '../styles/globals.css'
-import { ReactElement } from 'react'
+import '../styles/globals.scss'
+import { ReactElement, useCallback, useEffect } from 'react'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import { SessionProvider } from 'next-auth/react'
@@ -8,6 +8,7 @@ import { RecoilRoot } from 'recoil'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { CookiesProvider } from 'react-cookie'
 import Scripts from '@components/script'
+import { useRouter } from 'next/router'
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactElement
@@ -22,6 +23,23 @@ export default function MyApp({
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout): ReactElement {
   const getLayout = Component.getLayout || ((page: any) => page)
+
+  const router = useRouter()
+
+  const storePathValues = useCallback(() => {
+    const storage = globalThis?.sessionStorage
+
+    if (storage) {
+      const prevPath = storage.getItem('currentPath') as string
+      storage.setItem('prevPath', prevPath)
+      storage.setItem('currentPath', globalThis.location.pathname)
+    }
+  }, [])
+
+  useEffect(() => {
+    storePathValues()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.asPath])
 
   const queryClient = new QueryClient({
     defaultOptions: {

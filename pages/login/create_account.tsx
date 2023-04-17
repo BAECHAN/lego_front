@@ -398,7 +398,7 @@ export default function CreateAccount() {
             <button
               type="submit"
               title="회원가입 신청 버튼"
-              className="btnCreateAccount"
+              className="btn-common min-w-[330px] h-33 fs-14"
               disabled={disabledSubmit}
             >
               회원가입
@@ -426,37 +426,6 @@ export default function CreateAccount() {
             height: 35px;
             display: inline-block;
             padding: 5px;
-          }
-        }
-
-        .btnCreateAccount {
-          box-sizing: border-box;
-          outline: 0;
-          border: 0;
-          cursor: pointer;
-          user-select: none;
-          vertical-align: middle;
-          -webkit-appearance: none;
-          font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-          font-weight: 500;
-          font-size: 0.875rem;
-          letter-spacing: 0.02857em;
-          text-transform: uppercase;
-          min-width: 330px;
-          padding: 6px 16px;
-          border-radius: 4px;
-          transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-            box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-            border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-            color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-          color: black;
-          text-decoration: none;
-          background-color: rgb(255, 207, 0);
-
-          :hover,
-          :focus {
-            background-color: black;
-            color: white;
           }
         }
       `}</style>

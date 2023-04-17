@@ -3,11 +3,11 @@ import Layout from '../components/Layout'
 import Image from 'next/image'
 
 export default function Home() {
-  useEffect(() => {
-    alert(
-      '해당 페이지는 포트폴리오 제출용 사이트로 상업적 목적을 띄지 않습니다.'
-    )
-  }, [])
+  // useEffect(() => {
+  //   alert(
+  //     '해당 페이지는 포트폴리오 제출용 사이트로 상업적 목적을 띄지 않습니다.'
+  //   )
+  // }, [])
 
   return (
     <div className="min-h-[602px] m-10">
@@ -21,7 +21,10 @@ export default function Home() {
         </div>
       </div>
       <div className="flex justify-center text-2xl mt-3">
-        <h2>* 주의! 해당 사이트는 레고 공식 사이트가 아닙니다.</h2>
+        <h2>
+          * 주의! 해당 사이트는 포트폴리오 제출용 사이트로 상업적 목적을 띄지
+          않습니다.
+        </h2>
       </div>
       <style jsx>{`
         .home-image {
