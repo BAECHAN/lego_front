@@ -97,10 +97,6 @@ export async function middleware(request: NextRequest, response: NextResponse) {
       return NextResponse.redirect(url)
     }
   }
-
-  if (request.nextUrl.pathname.startsWith('/dashboard')) {
-    // This logic is only applied to /dashboard
-  }
 }
 
 export const config = {

@@ -4,38 +4,18 @@ import { ThemeT } from 'types'
 import { selectedFilterSelector, sortSelector } from 'state/atoms'
 import { useRecoilValue } from 'recoil'
 
-const useProductList = (props: ThemeT) => {
-  const take = 15
+const useProductList = (
+  axiosGets: ({ pageParam }: { pageParam?: number | undefined }) => Promise<any>
+) => {
   const sort = useRecoilValue(sortSelector)
   const filter = useRecoilValue(selectedFilterSelector)
 
-  let url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product-list`
-
-  return useInfiniteQuery(
-    ['product-list', filter, sort],
-    async ({ pageParam = 0 }) => {
-      const res = await axios.post(
-        url,
-        {
-          theme_id: Number(props.theme_id),
-          page: pageParam,
-          take: take,
-          sort: sort,
-          filter: filter,
-        },
-        {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
-        }
-      )
-      return res.data
-    },
-    {
-      onSuccess: (data) => {},
-      onError: (e) => console.log(e),
-      getNextPageParam: (lastPage) => !lastPage.isLast ?? undefined,
-      //keepPreviousData: true,
-    }
-  )
+  return useInfiniteQuery(['product-list', filter, sort], axiosGets, {
+    onSuccess: (data) => {},
+    onError: (e) => console.log(e),
+    getNextPageParam: (lastPage) => !lastPage.isLast ?? undefined,
+    //keepPreviousData: true,
+  })
 }
 
 export default useProductList

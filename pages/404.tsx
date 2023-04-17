@@ -14,7 +14,11 @@ export default function NotFound() {
       <div className="guide">
         <strong>404 Not Found</strong>
         <p>Sorry, that page can`t be found</p>
-        <button title="홈페이지로 이동 버튼" onClick={() => router.push(`/`)}>
+        <button
+          className="btn-common"
+          title="홈페이지로 이동 버튼"
+          onClick={() => router.push(`/`)}
+        >
           <span>
             Go to Homepage
             <FontAwesomeIcon
@@ -42,39 +46,7 @@ export default function NotFound() {
         .guide p {
           font-size: 25px;
         }
-        button {
-          box-sizing: border-box;
-          outline: 0;
-          border: 0;
-          margin: 0;
-          cursor: pointer;
-          user-select: none;
-          vertical-align: middle;
-          -webkit-appearance: none;
-          font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-          font-weight: 500;
-          font-size: 0.875rem;
-          line-height: 1.75;
-          letter-spacing: 0.02857em;
-          text-transform: uppercase;
-          min-width: 64px;
-          padding: 6px 16px;
-          border-radius: 4px;
-          transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-            box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-            border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-            color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-          color: black;
-          text-decoration: none;
-          box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
-            0px 4px 5px 0px rgba(0, 0, 0, 0.14),
-            0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-          background-color: rgb(255, 207, 0);
-        }
-        button:hover {
-          background-color: black;
-          color: white;
-        }
+
         .contents {
           min-height: 100vh;
           display: flex;

@@ -75,6 +75,22 @@ export default function Order() {
   useEffect(() => {
     setTotalPrice(orderPrice)
     setProductToPayCount(selectedOrder.length)
+
+    const storage = globalThis?.sessionStorage
+
+    if (storage) {
+      if (
+        !(
+          storage.getItem('currentPath') === '/mypage/cart' ||
+          storage.getItem('prevPath') === '/mypage/cart'
+        )
+      ) {
+        alert(
+          '직접 URL로 접근 시 해당 주문하기 페이지를 이용하실 수 없습니다.\r홈화면으로 이동합니다.'
+        )
+        router.push('/')
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

@@ -123,7 +123,7 @@ export default function UserInfo(req: NextApiRequest) {
               <button
                 type="button"
                 title="회원탈퇴 신청 버튼"
-                className="btn-withdraw flex flex-col justify-center items-center"
+                className="btn-common min-w-[500px] flex flex-col justify-center items-center"
                 onClick={handleClickWithdraw}
               >
                 회원탈퇴
@@ -133,40 +133,6 @@ export default function UserInfo(req: NextApiRequest) {
           </>
         ) : null}
       </div>
-      <style jsx>{`
-        button.btn-withdraw {
-          height: 50px;
-          margin-top: 17px;
-          box-sizing: border-box;
-          outline: 0;
-          border: 0;
-          cursor: pointer;
-          user-select: none;
-          vertical-align: middle;
-          -webkit-appearance: none;
-          font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-          font-weight: 500;
-          font-size: 20px;
-          letter-spacing: 0.02857em;
-          text-transform: uppercase;
-          min-width: 500px;
-          padding: 6px 16px;
-          border-radius: 4px;
-          transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-            box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-            border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-            color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-          color: black;
-          text-decoration: none;
-          background-color: rgb(255, 207, 0);
-
-          :hover,
-          :focus {
-            background-color: black;
-            color: white;
-          }
-        }
-      `}</style>
     </div>
   )
 }
