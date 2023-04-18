@@ -24,9 +24,12 @@ export async function getServerSideProps(context: any) {
 export default function Theme(props: ThemeT) {
   const [page, setPage] = useState(1)
   const [sort, setSort] = useRecoilState(sortSelector)
+  const [theme, setTheme] = useRecoilState(themeSelector)
 
   const take = 15
   const filter = useRecoilValue(selectedFilterSelector)
+
+  const recoilReset = useResetRecoilState(selectedFilterSelector)
 
   let url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product-list`
 
@@ -55,10 +58,6 @@ export default function Theme(props: ThemeT) {
     fetchNextPage({ pageParam: page })
     setPage(page + 1)
   }
-
-  const [theme, setTheme] = useRecoilState(themeSelector)
-
-  const recoilReset = useResetRecoilState(selectedFilterSelector)
 
   useEffect(() => {
     if (sessionStorage.getItem('isHistoryBack') === 'true') {

@@ -26,7 +26,7 @@ export default function Product(props: any) {
   let [plusDisabled, setPlusDisabled] = useState(false)
   let [detailOpen, setDetailOpen] = useState(true)
 
-  const { data: product, isLoading, isFetching, status } = useProduct(props)
+  const { data: product, isLoading } = useProduct(props)
   const [theme, setTheme] = useRecoilState(themeSelector)
 
   const router = useRouter()
@@ -35,27 +35,19 @@ export default function Product(props: any) {
     event: React.MouseEvent<HTMLButtonElement>,
     plusOrMinus: string
   ) => {
-    plusOrMinus === 'plus' ? setQuantity(++quantity) : setQuantity(--quantity)
+    plusOrMinus === 'plus'
+      ? setQuantity(quantity + 1)
+      : setQuantity(quantity - 1)
   }
 
   useEffect(() => {
     if (product && product.product_info && product.product_info.ea) {
-      if (quantity == 1) {
-        setMinusDisabled(true)
-      } else {
-        setMinusDisabled(false)
-      }
-
-      if (quantity < product.product_info.ea) {
-        setPlusDisabled(false)
-      } else if (quantity == product.product_info.ea) {
-        setPlusDisabled(true)
-      } else {
-        setPlusDisabled(true)
+      setMinusDisabled(quantity <= 1)
+      setPlusDisabled(quantity >= product.product_info.ea)
+      if (quantity > product.product_info.ea) {
         setQuantity(product.product_info.ea)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product, quantity])
 
   useEffect(() => {
@@ -130,7 +122,7 @@ export default function Product(props: any) {
                       width="700px"
                       height="400px"
                       priority
-                      quality={10}
+                      quality={30}
                       layout="responsive"
                       className="hover:scale-110"
                     />
@@ -154,7 +146,7 @@ export default function Product(props: any) {
                         width="80px"
                         height="80px"
                         priority
-                        quality={10}
+                        quality={30}
                       />
                     </div>
                   )

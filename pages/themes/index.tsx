@@ -36,7 +36,7 @@ export default function Themes() {
                           SJAAAADUlEQVR42mN8sFeoHgAGZAIwFY0DHwAAAABJRU5ErkJggg==`}
                             layout="responsive"
                             priority
-                            quality={75}
+                            quality={30}
                           />
                         </a>
                       </Link>

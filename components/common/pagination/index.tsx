@@ -18,15 +18,13 @@ export default function Pagination(props: {
   totalPage: number
   setTotalPage: React.Dispatch<React.SetStateAction<number>>
 }) {
-  const { data, isFetched, status } = useDeliveryShippingList(props.page)
+  const { data, status } = useDeliveryShippingList(props.page)
 
   useEffect(() => {
     if (status == 'success' && props.setTotalPage) {
       props.setTotalPage(Math.ceil(Number(data.shippingListCount / 5)))
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetched])
+  }, [data, props, status])
 
   let arr = []
   let pageCount = 10
