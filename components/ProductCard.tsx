@@ -37,7 +37,7 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
               placeholder="blur"
               blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc
               SJAAAADUlEQVR42mN8sFeoHgAGZAIwFY0DHwAAAABJRU5ErkJggg==`}
-              quality={100}
+              quality={10}
               layout="responsive"
             />
           </a>
