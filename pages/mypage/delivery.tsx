@@ -14,8 +14,6 @@ export async function getServerSideProps(context: any) {
   }
 }
 export default function Delivery(props: { from: string }) {
-  const router = useRouter()
-
   const [modalOpen, setModalOpen] = useState(false)
   const [modalShippingData, setModalShippingData] = useState<ShippingT>()
 

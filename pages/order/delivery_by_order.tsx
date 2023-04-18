@@ -25,14 +25,14 @@ export default function DeliveryByOrder(props: { from: string }) {
   const [startPage, setStartPage] = useState(1)
   const [totalPage, setTotalPage] = useState(0)
 
-  const { data, isFetched, status } = useDeliveryShippingList(page)
+  const { data, isFetched } = useDeliveryShippingList(page)
 
   useEffect(() => {
-    if (status == 'success') {
+    if (isFetched) {
       data.shippingList.length == 0 ? setModalOpen(true) : null
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetched])
+  }, [data])
 
   const handleClickModalOpen = (
     event: React.MouseEvent<HTMLButtonElement>,

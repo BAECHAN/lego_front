@@ -9,7 +9,7 @@ import { ProductCartT } from 'types'
 export default function ContentsCart() {
   const router = useRouter()
 
-  const { data, isFetched, isFetching } = useProductCartList()
+  const { data, isFetched } = useProductCartList()
 
   const [selectedOrder, setSelectedOrder] = useRecoilState(
     selectedOrderSelector
@@ -42,7 +42,7 @@ export default function ContentsCart() {
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetched, isFetching])
+  }, [data])
 
   const handleClickOrder = () => {
     router.push('/order')

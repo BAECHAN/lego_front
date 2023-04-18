@@ -120,7 +120,7 @@ export default function ShippingItem(props: {
         </div>
       </div>
 
-      <div className="w-[8%]">
+      <div className="w-[10%]">
         {props.shipping.shipping_default == '1' ? (
           <span className="text-blue-600">기본배송지</span>
         ) : null}
@@ -142,7 +142,7 @@ export default function ShippingItem(props: {
       </div>
 
       {/** 버튼 */}
-      <div className="w-1/6 flex items-center text-sm">
+      <div className="w-[20%] flex items-center text-sm">
         <button
           type="button"
           title="배송지 수정"

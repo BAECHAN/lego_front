@@ -7,7 +7,7 @@ import useUser from 'pages/api/query/useUser'
 import React from 'react'
 
 export default function UserInfo(req: NextApiRequest) {
-  const { data: userInfo, isFetched, isFetching, status } = useUser()
+  const { data: userInfo, isFetched, status } = useUser()
 
   const handleClickWithdraw = () => {
     if (isFetched && status == 'success') {

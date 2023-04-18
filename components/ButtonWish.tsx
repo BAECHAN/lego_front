@@ -43,7 +43,7 @@ export default function ButtonWish(props: {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, isFetched])
+  }, [data])
 
   const addWishAPI = useMutation(
     async (param: ProductWishSubmitT) => {
