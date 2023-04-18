@@ -130,7 +130,7 @@ export default function Product(props: any) {
                       width="700px"
                       height="400px"
                       priority
-                      quality={75}
+                      quality={10}
                       layout="responsive"
                       className="hover:scale-110"
                     />
@@ -154,7 +154,7 @@ export default function Product(props: any) {
                         width="80px"
                         height="80px"
                         priority
-                        quality={75}
+                        quality={10}
                       />
                     </div>
                   )

@@ -9,7 +9,6 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PageNumber from './PageNumber'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
-import { useQueryClient } from '@tanstack/react-query'
 
 export default function Pagination(props: {
   page: number
@@ -19,8 +18,6 @@ export default function Pagination(props: {
   totalPage: number
   setTotalPage: React.Dispatch<React.SetStateAction<number>>
 }) {
-  const queryClient = useQueryClient()
-
   const { data, isFetched, status } = useDeliveryShippingList(props.page)
 
   useEffect(() => {

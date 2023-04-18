@@ -5,7 +5,6 @@ import axiosRequest from 'pages/api/axios'
 import { InputRegExpT } from 'types'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { useRouter } from 'next/router'
 
 export default function ButtonSave(props: {
   infoKey: string
@@ -21,8 +20,6 @@ export default function ButtonSave(props: {
   setUploadFile: React.Dispatch<React.SetStateAction<File | undefined>>
 }) {
   const queryClient = useQueryClient()
-
-  const router = useRouter()
 
   useEffect(() => {
     if (props.isEnter) {
