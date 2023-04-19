@@ -43,6 +43,7 @@
     "recoil": "^0.7.6",
     "recoil-persist": "^4.2.0",
     "sharp": "^0.32.0",
+    "sweetalert2": "^11.7.3",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

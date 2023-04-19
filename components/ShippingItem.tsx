@@ -49,9 +49,6 @@ export default function ShippingItem(props: {
       } else {
         return false
       }
-    } else if (type == 'choice') {
-      alert('간택당함')
-      router.push('/order')
     }
   }
 
@@ -183,18 +180,6 @@ export default function ShippingItem(props: {
 
           :hover {
             background-color: #000;
-          }
-        }
-
-        button.btn-choice-shipping {
-          background-color: black;
-          color: #fff;
-          padding: 5px 10px;
-          border-radius: 4px;
-
-          :hover {
-            background-color: #98dfd6;
-            color: black;
           }
         }
       `}</style>

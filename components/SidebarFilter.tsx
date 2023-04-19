@@ -3,9 +3,6 @@ import SidebarFilterAccordian from './SidebarFilterAccordion'
 import SidebarFilterSelected from './SidebarFilterSelected'
 import { useRecoilValue } from 'recoil'
 import { selectedFilterSelector } from 'state/atoms'
-type HelmetType = {
-  pathname: string
-}
 
 export default function SidebarFilter(props: { themes: ThemeT }) {
   const selectedFilter = useRecoilValue(selectedFilterSelector)
@@ -44,10 +41,6 @@ export default function SidebarFilter(props: { themes: ThemeT }) {
           margin-right: 5px;
           accent-color: orange;
         }
-
-        /* aside.filter .filter-option > div {
-          padding: 0px 0px 10px 5px;
-        } */
 
         aside.filter label {
           position: relative;

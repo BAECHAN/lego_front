@@ -6,7 +6,6 @@ import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 import React, { useState } from 'react'
 import { ShippingT } from 'types'
 import Pagination from '@components/common/pagination/index'
-import { useRouter } from 'next/router'
 
 export async function getServerSideProps(context: any) {
   return {

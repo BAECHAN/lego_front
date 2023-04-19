@@ -145,9 +145,7 @@ export default function Theme(props: ThemeT) {
     </div>
   )
 }
-/*
 
-*/
 Theme.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>
 }
