@@ -3,10 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { ChangeEvent, useRef, useState, useEffect } from 'react'
 import Postcode from './Postcode'
 import { DeliverySubmitT, ShippingT } from 'types'
-import * as common from '@components/common/event/CommonFunction'
 import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
+
+import * as common from '@components/common/event/CommonFunction'
+import * as swal from '@components/common/custom/SweetAlert'
 
 export default function ModalDelivery(props: {
   onClose: any
@@ -233,9 +235,9 @@ export default function ModalDelivery(props: {
       onSuccess: (response) => {
         if (response?.status === 200) {
           if (isUpdate) {
-            alert('배송지를 수정하였습니다.')
+            swal.SweetAlertSuccess('배송지를 수정하였습니다.')
           } else {
-            alert('배송지를 등록하였습니다.')
+            swal.SweetAlertSuccess('배송지를 등록하였습니다.')
             if (props.listLength == 5) {
               // 페이지 내 게시물 개수 가 5인 경우
 

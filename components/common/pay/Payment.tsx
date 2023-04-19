@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React from 'react'
+import * as swal from '@components/common/custom/SweetAlert'
 
 declare const window: typeof globalThis & {
   IMP: any
@@ -81,7 +82,10 @@ export default function Payment(props: {
     {
       onSuccess: async (response) => {
         if (response.result == 1) {
-          alert('주문이 완료되었습니다.\r주문 내역 페이지로 이동합니다.')
+          swal.SweetAlertSuccess(
+            '주문이 완료되었습니다.',
+            '주문 내역 페이지로 이동합니다.'
+          )
           queryClient.invalidateQueries(['user-order'])
           router.push('/mypage/order_history')
         } else {

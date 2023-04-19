@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { OrderT } from 'types'
 import Image from 'next/image'
 import Link from 'next/link'
-import * as common from '@components/common/event/CommonFunction'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import axios from 'axios'
+
+import * as common from '@components/common/event/CommonFunction'
+import * as swal from '@components/common/custom/SweetAlert'
 
 export default function ProductInOrderHistory(props: { order: OrderT }) {
   const { data: session, status } = useSession()
@@ -62,7 +64,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
     {
       onSuccess: async (response) => {
         if (response.result == 1) {
-          alert('환불처리 되었습니다.')
+          swal.SweetAlertSuccess('환불처리 되었습니다.')
           queryClient.invalidateQueries(['order-list'])
           setIsRefund(true)
         } else {

@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import axiosRequest from 'pages/api/axios'
 import React from 'react'
 import { ProductT, ProductAddCartSubmitT } from 'types'
 

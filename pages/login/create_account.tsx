@@ -2,6 +2,7 @@ import Layout from '@components/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
+import * as swal from '@components/common/custom/SweetAlert'
 
 import React, { ChangeEvent, useState, FocusEvent } from 'react'
 import { InputRegExpT, UserCreateT, UserSubmitT } from 'types'
@@ -219,7 +220,10 @@ export default function CreateAccount() {
     )
       .then((response) => {
         if (response?.status === 200) {
-          alert('회원가입되었습니다.\r로그인 페이지로 이동합니다.')
+          swal.SweetAlertSuccess(
+            '회원가입되었습니다.',
+            '로그인 페이지로 이동합니다.'
+          )
           router.push('/login')
         }
       })
