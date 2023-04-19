@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react'
-import * as swal from '@components/common/custom/SweetAlert'
 
 export default function Header() {
   const { data: session, status } = useSession()
@@ -29,13 +28,7 @@ export default function Header() {
             <a className="relative top-[6px]">최근 본 상품</a>
           </Link>
           <div>|</div>
-          <button
-            onClick={() => {
-              signOut(), swal.SweetAlertSuccess('로그아웃 하였습니다.')
-            }}
-          >
-            로그아웃
-          </button>
+          <button onClick={() => signOut()}>로그아웃</button>
         </div>
       ) : (
         <>
