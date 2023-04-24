@@ -14,6 +14,7 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import useProductList from 'pages/api/query/useProductList'
 
 import axios from 'axios'
+import { QueryClient } from 'react-query'
 
 export async function getServerSideProps(context: any) {
   return {
@@ -25,6 +26,8 @@ export default function Theme(props: ThemeT) {
   const [page, setPage] = useState(1)
   const [sort, setSort] = useRecoilState(sortSelector)
   const [theme, setTheme] = useRecoilState(themeSelector)
+
+  const queryClient = new QueryClient()
 
   const take = 15
   const filter = useRecoilValue(selectedFilterSelector)
@@ -50,6 +53,7 @@ export default function Theme(props: ThemeT) {
   const {
     data: productList,
     hasNextPage,
+    isFetched,
     isFetchingNextPage,
     fetchNextPage,
   } = useProductList(axiosGets)
@@ -58,6 +62,15 @@ export default function Theme(props: ThemeT) {
     fetchNextPage({ pageParam: page })
     setPage(page + 1)
   }
+
+  useEffect(() => {
+    if (hasNextPage && isFetched) {
+      queryClient.prefetchQuery(['product-list', filter, sort], () =>
+        axiosGets({ pageParam: page })
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, isFetched])
 
   useEffect(() => {
     if (sessionStorage.getItem('isHistoryBack') === 'true') {
@@ -104,7 +117,7 @@ export default function Theme(props: ThemeT) {
           </div>
         </div>
         <div className="flex">
-          <SidebarFilter themes={props} />
+          <SidebarFilter themes={props} setPage={setPage} />
           <div className="mr-5 w-full">
             <ul className="flex flex-wrap">
               {productList?.pages.map((page, index) => (
