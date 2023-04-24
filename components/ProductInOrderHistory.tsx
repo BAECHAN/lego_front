@@ -93,8 +93,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
                   style={{ cursor: 'pointer' }}
                   priority
                   placeholder="blur"
-                  blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc
-                  SJAAAADUlEQVR42mN8sFeoHgAGZAIwFY0DHwAAAABJRU5ErkJggg==`}
+                  blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
                   quality={100}
                   layout="responsive"
                 />

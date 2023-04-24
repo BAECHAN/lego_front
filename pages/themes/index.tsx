@@ -32,8 +32,7 @@ export default function Themes() {
                             alt={theme.theme_title + '_썸네일'}
                             className="hover:opacity-70"
                             placeholder="blur"
-                            blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc
-                          SJAAAADUlEQVR42mN8sFeoHgAGZAIwFY0DHwAAAABJRU5ErkJggg==`}
+                            blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
                             layout="responsive"
                             priority
                             quality={30}

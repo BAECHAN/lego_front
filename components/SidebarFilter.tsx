@@ -4,7 +4,10 @@ import SidebarFilterSelected from './SidebarFilterSelected'
 import { useRecoilValue } from 'recoil'
 import { selectedFilterSelector } from 'state/atoms'
 
-export default function SidebarFilter(props: { themes: ThemeT }) {
+export default function SidebarFilter(props: {
+  themes: ThemeT
+  setPage: React.Dispatch<React.SetStateAction<number>>
+}) {
   const selectedFilter = useRecoilValue(selectedFilterSelector)
 
   return (
@@ -15,15 +18,35 @@ export default function SidebarFilter(props: { themes: ThemeT }) {
             <SidebarFilterSelected />
           ) : null}
           <hr />
-          <SidebarFilterAccordian label="가격(원)" themes={props.themes} />
+          <SidebarFilterAccordian
+            label="가격(원)"
+            themes={props.themes}
+            setPage={props.setPage}
+          />
           <hr />
-          <SidebarFilterAccordian label="연령" themes={props.themes} />
+          <SidebarFilterAccordian
+            label="연령"
+            themes={props.themes}
+            setPage={props.setPage}
+          />
           <hr />
-          <SidebarFilterAccordian label="구매가능" themes={props.themes} />
+          <SidebarFilterAccordian
+            label="구매가능"
+            themes={props.themes}
+            setPage={props.setPage}
+          />
           <hr />
-          <SidebarFilterAccordian label="할인여부" themes={props.themes} />
+          <SidebarFilterAccordian
+            label="할인여부"
+            themes={props.themes}
+            setPage={props.setPage}
+          />
           <hr />
-          <SidebarFilterAccordian label="부품수" themes={props.themes} />
+          <SidebarFilterAccordian
+            label="부품수"
+            themes={props.themes}
+            setPage={props.setPage}
+          />
           <hr />
         </div>
       </div>

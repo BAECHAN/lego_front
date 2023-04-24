@@ -123,6 +123,8 @@ export default function Product(props: any) {
                       height="400px"
                       priority
                       quality={30}
+                      placeholder="blur"
+                      blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
                       layout="responsive"
                       className="hover:scale-110"
                     />

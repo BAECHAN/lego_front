@@ -34,10 +34,9 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
               alt={props.product.title}
               style={{ cursor: 'pointer' }}
               priority
-              placeholder="blur"
-              blurDataURL={`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFc
-              SJAAAADUlEQVR42mN8sFeoHgAGZAIwFY0DHwAAAABJRU5ErkJggg==`}
               quality={30}
+              placeholder="blur"
+              blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
               layout="responsive"
             />
           </a>

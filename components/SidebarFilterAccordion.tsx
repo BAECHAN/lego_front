@@ -9,6 +9,7 @@ import { useRecoilState } from 'recoil'
 export default function SidebarFilterAccordian(prop: {
   label: string
   themes: ThemeT
+  setPage: React.Dispatch<React.SetStateAction<number>>
 }) {
   const [isOpen, setIsOpen] = useState(true)
 
@@ -154,6 +155,8 @@ export default function SidebarFilterAccordian(prop: {
   )
 
   const handleChangeCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+    prop.setPage(1)
+
     setSelectedFilter({
       ...selectedFilter,
       [e.currentTarget.id]: e.currentTarget.checked ? 1 : 0,
