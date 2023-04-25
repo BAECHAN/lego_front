@@ -15,6 +15,7 @@ import useProductList from 'pages/api/query/useProductList'
 
 import axios from 'axios'
 import { QueryClient } from 'react-query'
+import { queryKeys } from 'pages/api/query/queryKeys'
 
 export async function getServerSideProps(context: any) {
   return {
@@ -34,9 +35,11 @@ export default function Theme(props: ThemeT) {
 
   const recoilReset = useResetRecoilState(selectedFilterSelector)
 
-  let url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product-list`
+  const queryKey = queryKeys.productList
 
-  const axiosGets = async ({ pageParam = 0 }) => {
+  let url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}`
+
+  const axiosGets = async ({ pageParam = 1 }) => {
     const res = await axios.get(url, {
       params: {
         theme_id: Number(props.theme_id),
@@ -59,18 +62,9 @@ export default function Theme(props: ThemeT) {
   } = useProductList(axiosGets)
 
   const handleClickMoreProduct = () => {
-    fetchNextPage({ pageParam: page })
+    fetchNextPage({ pageParam: page + 1 })
     setPage(page + 1)
   }
-
-  useEffect(() => {
-    if (hasNextPage && isFetched) {
-      queryClient.prefetchQuery(['product-list', filter, sort], () =>
-        axiosGets({ pageParam: page })
-      )
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, isFetched])
 
   useEffect(() => {
     if (sessionStorage.getItem('isHistoryBack') === 'true') {

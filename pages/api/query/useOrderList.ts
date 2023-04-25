@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
+import { queryKeys } from './queryKeys'
 
 const useOrderList = () => {
   const { data: session } = useSession()
 
-  const queryKey = 'order-list'
+  const queryKey = queryKeys.orderList
 
   const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}`
 

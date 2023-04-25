@@ -166,8 +166,12 @@ export default function UserInfoContentsLine(props: {
                   setIsChange={setIsChange}
                 />
               )
-            ) : props.onConnect ? (
-              <p className="text-blue-600 font-bold">ON</p>
+            ) : props.infoKey == 'onKakao' || props.infoKey == 'onGoogle' ? (
+              props.onConnect ? (
+                <p className="text-blue-600 font-bold">ON</p>
+              ) : (
+                <p className="text-red-600 font-bold">OFF</p>
+              )
             ) : null}
           </div>
           <div className="w-1/6" />
