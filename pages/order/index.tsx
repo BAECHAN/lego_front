@@ -82,7 +82,9 @@ export default function Order() {
       if (
         !(
           storage.getItem('currentPath') === '/mypage/cart' ||
-          storage.getItem('prevPath') === '/mypage/cart'
+          storage.getItem('prevPath') === '/mypage/cart' ||
+          storage.getItem('currentPath') === '/order/delivery_by_order' ||
+          storage.getItem('prevPath') === '/order/delivery_by_order'
         )
       ) {
         alert(
