@@ -1,11 +1,14 @@
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
+import { queryKeys } from './queryKeys'
 
 const useProductViewedList = () => {
   const [page, setPage] = useState(0)
 
-  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/product-viewed-list?page=${page}`
+  const queryKey = queryKeys.productViewedList
+
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}?page=${page}`
 
   let viewedProductsJSON: string[] = []
 
@@ -17,7 +20,7 @@ const useProductViewedList = () => {
   }
 
   return useQuery(
-    ['product-viewed-list', page],
+    [queryKey, page],
     async () => {
       const res = await axios.post(
         url,

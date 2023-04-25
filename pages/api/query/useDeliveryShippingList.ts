@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
+import { queryKeys } from './queryKeys'
 
 const useDeliveryShippingList = (page?: number) => {
   const { data: session } = useSession()
 
-  const queryKey = 'shipping-list'
+  const queryKey = queryKeys.shippingList
 
   const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}`
 

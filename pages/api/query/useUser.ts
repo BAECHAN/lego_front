@@ -2,12 +2,14 @@ import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import { UserT } from 'types'
 import { useSession } from 'next-auth/react'
+import { queryKeys } from './queryKeys'
 
 const useUser = () => {
   const { data: session } = useSession()
 
-  const queryKey = 'user-info'
-  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-user-info?email=${session?.user?.email}`
+  const queryKey = queryKeys.userInfo
+
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-${queryKey}?email=${session?.user?.email}`
 
   return useQuery<UserT>(
     [queryKey],

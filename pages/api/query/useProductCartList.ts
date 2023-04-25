@@ -2,12 +2,13 @@ import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
+import { queryKeys } from './queryKeys'
 
 const useProductCartList = () => {
   const [page, setPage] = useState(0)
   const { data: session } = useSession()
 
-  const queryKey = 'product-cart-list'
+  const queryKey = queryKeys.productCartList
 
   const url =
     `${process.env.NEXT_PUBLIC_SERVER_URL}` +
