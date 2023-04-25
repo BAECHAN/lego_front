@@ -20,6 +20,11 @@
 * 배포는 CloudType 서비스를 이용하였습니다.
 * 해당 프로젝트에서 보여지는 레고 이미지는 https://www.lego.com 사이트의 cdn 이미지 서버 주소를 그대로 가져와서 이미지 로딩 속도가 느릴 수 있습니다.
 
+<hr />
+
+## 테스트 계정
+* id : test123@test.com
+* pw : test123!
 
 ## Advanced Feature
 
