@@ -1,30 +1,88 @@
-![port-0-lego-front-nx562olfs8ljco sel3 cloudtype app_themes](https://user-images.githubusercontent.com/54573684/230388894-fe5b46e2-000b-478b-9d76-4b432953d6c8.png)
-
-## Demo : https://port-0-lego-front-nx562olfs8ljco.sel3.cloudtype.app/
+# 프로젝트 개발 일지
  
-## 주제 : 레고 사이트
+## 1. 주제 : Lego (가제)
+ 
+## 2. 개발환경
 
-## 기술 스택
-### FrontEnd : 
-### HTML5 / CSS3 / ES6+ / Typescript / React / React-query / Recoil / Next.js 
-### SCSS / TailwindCSS / Font Awesome 
-<hr />
+Spring boot /
+IntellJ Ultimate /
+Java 8 /
+Gradle /
+MariaDB /
+Mybatis
+ 
+HTML5 /
+CSS3 /
+ES6 + Typescript /
+React /
+recoil - 클라이언트 상태 관리 /
+react-query - 서버 상태 관리 /
+Next.js
+<br />
 
-### BackEnd : 
-### Spring Boot / Java / MariaDB / Mybatis / Gradle
-<hr />
+Styled JSX /
+tailwindcss /
+Font Awesome
 
-## 개요
-* 레고 사이트를 벤치마킹하여 해당 프로젝트를 진행하였습니다.
-* 해당 프로젝트는 개인 프로젝트입니다.
-* 배포는 CloudType 서비스를 이용하였습니다.
+## 3. 구현 페이지 목록
+
+* 회원가입
+* 로그인
+* 아이디 / 비밀번호 찾기
+<br />
+
+* 마이페이지
+* 마이페이지 - 주문 내역 조회
+* 마이페이지 - 장바구니
+* 마이페이지 - 회원정보
+* 마이페이지 - 배송지 관리
+* 마이페이지 - 최근 본 상품
+* 마이페이지 - 좋아요
+<br />
+
+* 레고 테마 목록 페이지
+* 레고 상품 목록 페이지
+* 레고 상품 상세 페이지
+<br />
+
+* 주문페이지
+<br />
+
+* 홈화면
+<br />
+
+* 탈퇴계정 / 휴면계정 / 잠긴계정 안내 페이지
+<br />
+
+## 4. 구현 기능 목록
+* 페이지네이션 && 더보기
+* 결제하기 ( PG )
+* 배너 - '오늘 하루 보지 않기'
+* OAuth 로그인 연동
+* 최근 본 상품
+* 아이디 찾기 & 비밀번호 찾기
+* 상품 목록 정렬 & 필터
+* 좋아요
+* 모달창
+* 파일첨부
+* 배포 ( CloudType )
+
+## 5. 진행 과정
 
 
-## Advanced Feature
 
-1. 상품 목록
-![port-0-lego-front-nx562olfs8ljco sel3 cloudtype app__callbackUrl=https%3A%2F%2Fport-0-lego-front-nx562olfs8ljco sel3 cloudtype app%2Fthemes%2Ftechnic%3Ftheme_title%3D%25ED%2585%258C%25ED%2581%25AC%25EB%258B%2589%26the](https://user-images.githubusercontent.com/54573684/230388377-af8b72c1-d766-4dd3-b588-e1e65a0a8e17.png)
 
-2. 주문하기 
 
-3. 배송지 관리
+
+
+
+
+
+
+
+
+
+
+
+
+
