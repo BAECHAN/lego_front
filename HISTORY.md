@@ -168,52 +168,10 @@ npx tailwindcss init -p
 </code>
 
 ---
-### prettier
+### prettier 추가
 prettier 적용 - 코드 포맷터  
-Dynamic Routes 적용 중 - 파일명과 router.query 명과 일치시켜야 되는거였는데 삽질하였음
 
-### 쿼리스트링으로 한글타이틀 전달 후 Navbar 컴포넌트에 props로 전달하기
 
-Navbar에 현재 페이지명 출력 시 한글로 테마명을 보여주고싶었음
-
-해결방법
-1. Link 클릭 시 현재 경로 뿐만아니라 쿼리스트링으로  title_ko라는 한글 테마명을 전달
-```
-# pages/themes/index.tsx
-<Link href={`/themes/${item.theme_title_en}?title_ko=${item.theme_title}`}>
-```
- 
-2. 쿼리스트링 값을 꺼내 Navbar 컴포넌트에 props로 전달, useRouter.query 에는 {title_ko: '닌자고', theme: 'ninjago'} 라는 Object 타입으로 존재
-
-```
-# pages/themes/[theme].tsx
-export default function Theme(){
-  const router = useRouter();
- 
-  return(
-    <div>
-      <Navbar currentPage={router.query.title_ko}/>
-```
-3. Navbar 컴포넌트에서 currentPage라는 props를 Navbar에서 출력함
-
-typescript가 아니였으면 Navbar(prop)으로 끝났을텐데 
-typescript여서 Props라는 타입을 생성하여 prop에 타입으로 지정함
-
-```
-# components/Navbar.tsx
-// Props 타입 선언, 다른 곳에서 Navbar 사용 시 currentPage를 Prop으로 사용하지 않을 수 있으므로
-
-type Props = {
-  currentPage? : string | string[] | undefined;	
-}
-
-export default function Navbar(prop:Props) {	// Props타입 부착
-
-const router = useRouter();
-const [home, series, theme] = ['홈', '시리즈별', prop.currentPage];
-```
-
----
 
 ### lint-staged & husky 설치
 
@@ -281,6 +239,239 @@ export default function Button() {
 // 커밋하면 lint-staged에서 prettier –-write를 실행 시켜 
 // Button.tsx파일에서 세미콜론이 빠진 상태로 commit을 하게 됨
 ```
+
+### sitemap 추가
+```
+yarn add -D next-sitemap
+```
+
+### React-query 추가
+
+https://tanstack.com/query/v4
+```
+yarn add -D @tanstack/react-query
+```
+
+### ※ 주의
+페이지경로로 직접 이동 시 useRouter의 query를 가져오는 것보다 fetch해서 데이터를 가져오는게 빨라서 api/getProductInfo?product_number=NaN 이런식으로 경로가 넘어가서 데이터를 못불러오고 있었기 때문에 
+
+기존에는 useEffect를 써서 데이터가 변경되면 렌더링을 다시하는 식이였는데 useQuery도 데이터를 보고 있다가 변경이 되면 렌더링을 하는 방식이기 때문에 
+getServerSideProps에서 context를 이용하여 현재 경로를 가져와 fetch 처리하도록 함
+
+```
+# [product_number].tsx
+export async function getServerSideProps(context: any){
+ 
+  return {
+    props: context.query
+  }
+}
+
+export default function Product(props: any) {
+  const { data: product } = useQuery<ProductT>(['http://localhost:5000/api/getProductInfo'], async () => {
+    const res = await fetch(`http://localhost:5000/api/getProductInfo?product_number=${Number(props.product_number)}`);
+    return res.json();
+  },
+  {
+    onSuccess: data => console.log(data),
+    onError: e => console.log(e),  
+  });
+```
+
+### font-awesome regular와 solid 같이 쓰고싶은데 변수명이 같을 경우
+
+```
+import { faHeart } from '@fortawesome/free-regular-svg-icons'
+import { faHeart as faHeartSolid } from '@fortawesome/free-solid-svg-icons'
+// 하나를 alias 주면 됨
+```
+
+---
+
+### 캐러셀 이미지 웹크롤링
+lego_insert_detail_img.py 파일 참고
+
+### 회원가입 
+
+유효성검사 RegExp 추가  
+회원가입 시 form 전송
+
+#### ※ 이메일 중복 onchange 발생 시 마다 검사
+회원가입 시 이메일 중복 체크 시 타이핑할때 ( input onchange ) 중복검사 api를 날려서 실시간으로 중복에 대한 상태값을 보여주고 싶었지만  
+서버에 부담이 되는 것을 감안할 정도인가 생각하였을 때는 좋지 않아보임.  
+모든 타이핑이 아닌 정규표현식을 통과하였을 경우에만 api 전송시키지만  
+다른 상황에선 계속 api요청을 보내게 될 수 있기 때문에 onchange 혹은 oninput으로 api 요청을 계속 보내기보다는 onBlur 시 처리하는게 합리적으로 보임
+
+#### 비밀번호 암호화
+Crypto 라이브러리 추가  
+<code>npm install -D @types/crypto-js</code>
+비밀번호 암호화 시 관리자도 확인할 수 없도록 해야하므로 단방향 알고리즘인 hmacSHA512를 사용
+
+```
+const secretKey = process.env.NEXT_PUBLIC_CRYPT_KEY
+
+if (secretKey !== undefined) {
+	pw = crypto.HmacSHA512(pw, secretKey).toString()
+	
+} else {
+	alert('secretKey is undefined')
+	return false
+}
+
+
+const userInfo = {
+	email,
+	pw,
+	pwChk,
+	nickname,
+}
+```
+
+#### 로그인 시 비밀번호 보임 추가 및 회원가입 시에는 비밀번호 보임 추가하지 않음
+
+=> 로그인시 password 보임버튼 추가, 회원가입시 input type=password 면 복붙 할 수 없게끔 처리해주기 때문에 회원가입할 경우에는 password 보임버튼을 추가하지 않음
+
+### Next-Auth
+
+OAuth로 카카오와 구글을 채택  
+<code>yarn add next-auth</code>
+
+#### JWT_SESSION_ERROR - 로그인이 안될 경우
+https://stackoverflow.com/questions/71385330/next-auth-jwedecryptionfailed
+
+#### Oauth로 ㄴ이버, ㅋ카오, ㄱ글 로그인 시 callbackUrl 사용하기
+https://stackoverflow.com/questions/65034405/redirect-after-successful-sign-in-or-sign-up-for-credentials-type-in-next-auth
+
+#### ※ 주의. 구글 OAuth 작업 중 
+<b>액세스 차단됨: 이 앱의 요청이 잘못되었습니다</b>  
+=> 에러 발생하여 구글클라우드 콘솔창에서 redirect url을 추가함
+
+https://console.cloud.google.com/apis/credentials?project=lego-377701
+
+※ useSession에 저장되는 data의 key가 한정되어있음( email , name, image )  
+GoogleProvider 같은 OAuth 기반의 Provider는 Profile라는 속성으로 custom 가능해보임
+
+https://next-auth.js.org/v3/configuration/providers#credentials-provider
+
+근데 나한테 필요한건 CredentialsProvider인데 찾아보니useSession으론 안되고 jwt ( next-auth/jwt )를 사용해서 token으로는 전달가능
+
+---
+
+#### ⧭ 로그인 후 유저의 state( 휴면계정, 잠금계정, 탈퇴계정 등.. )로 UI로 response 던져주기
+
+이해를 돕기 위해 “일반 유저 계정”과 “사용자 계정”을 예로 들면 admin인 경우 /admin 으로 redirect시키는 등의 작업을 하고 싶음 ( Spring으로 따지면 Interceptor 역할을 하는 )
+
+1. [...nextauth].ts에서 user 객체에 role 이라는 key를 추가함 
+```
+authorize: async (credentials, req) => {
+        let url = process.env.SERVER_URL + '/api/login-chk'
+       
+        let res: any = await axios
+          .get(url, {
+            params: {
+              email: credentials?.email,
+              password: credentials?.password,
+            },
+          })
+          .then((response) => {
+            const user = response.data.result
+
+
+            if (user) {
+              return {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                image: user.image,
+                role: 7
+              }
+            } else {
+              return null
+            }
+          })
+```
+
+2. [...nextauth].ts에서 config도 수정 ( session:  , callbacks: )
+하지만 callbacks: jwt 의 params 에서 user타입이 이미 정해져있어서 아래와 같이 에러 발생
+사진에 보이는 params.user타입에 role을 추가하여 에러를 없앰
+
+```
+session: {
+    maxAge: 24 * 60 * 60, // 1 days,
+    strategy: "jwt"
+  },
+  pages: {
+    signIn: '/login',
+    error: '/signin',
+  },
+
+
+  callbacks: {
+    async session({ session, token, user }) {
+      return session
+    },
+    async jwt(params){
+      if(params.user?.role) {
+        params.token.role = params.user.role;
+      }
+      return params.token
+    }
+  },
+```
+3. middleware.ts 에서 페이지 호출 시 interceptor같은 역할을 해주고 있으므로 이 곳에서 redirect 처리함
+
+참고 : https://www.youtube.com/watch?v=ollnut-J47s
+
+나는 잘 안되서 custom해서 코드 작성
+```
+import { getToken } from 'next-auth/jwt'
+import { NextRequest, NextResponse } from 'next/server'
+
+
+export async function middleware(request: NextRequest, response: NextResponse) {
+  const session = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  })
+
+
+	// session 체크할때마다 
+  if( request.nextUrl.pathname == '/'){
+
+
+    if(session?.state){
+
+
+      if(session.state != 1){
+        const url = request.nextUrl.clone()
+        url.pathname = '/notice/login_notice';
+        url.searchParams.set('state',String(session.state));	// url parameter 작성
+        return NextResponse.redirect(url)
+      }
+    }
+  }
+```
+
+⧭ next/router
+
+javascript에서 회원가입 후 로그인 페이지로 이동 시
+location.href = ‘/login’ 을 써왔는데 NextJS로 SPA 프레임워크에서는 새로고침 발생 시 기존에 참고하고 있던 데이터도 다시 재로딩 해야되기 때문에 
+Router.push를 이용한다.
+
+onSuccess: () => {
+        alert('회원가입되었습니다.\r로그인 페이지로 이동합니다.')
+        Router.push("/login");
+        //location.href = '/login'
+      },
+
+
+---
+
+
+
+
+
+
 
 
 
