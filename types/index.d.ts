@@ -4,6 +4,10 @@ export type ObjT_Str = {
   [key: string]: string
 }
 
+export type ObjT_StrArr = {
+  [key: string]: string[]
+}
+
 export type ParamT = {
   [key: string]: Object
 }
@@ -69,6 +73,7 @@ export type ProductFilterCountT = {
   filter_pieces5: number
   filter_pieces6: number
   filter_pieces7: number
+  [key: string]: number
 }
 
 export type ThemeT = {

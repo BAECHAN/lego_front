@@ -3,6 +3,7 @@ import SidebarFilterAccordian from './SidebarFilterAccordion'
 import SidebarFilterSelected from './SidebarFilterSelected'
 import { useRecoilValue } from 'recoil'
 import { selectedFilterSelector } from 'state/atoms'
+import { useRef } from 'react'
 
 export default function SidebarFilter(props: {
   themes: ThemeT
@@ -10,44 +11,33 @@ export default function SidebarFilter(props: {
 }) {
   const selectedFilter = useRecoilValue(selectedFilterSelector)
 
+  const labelList: string[] = [
+    '가격(원)',
+    '연령',
+    '구매가능',
+    '할인여부',
+    '부품수',
+  ]
+
   return (
     <aside className="filter mx-5 h-full sticky top-0 overflow-y-scroll overflow-x-hidden w-96">
-      <div className="h-[700px]">
+      <div className="h-[750px]">
         <div className="filter-option mb-3">
           {Object.values(selectedFilter).indexOf(1) > -1 ? (
             <SidebarFilterSelected />
           ) : null}
           <hr />
-          <SidebarFilterAccordian
-            label="가격(원)"
-            themes={props.themes}
-            setPage={props.setPage}
-          />
-          <hr />
-          <SidebarFilterAccordian
-            label="연령"
-            themes={props.themes}
-            setPage={props.setPage}
-          />
-          <hr />
-          <SidebarFilterAccordian
-            label="구매가능"
-            themes={props.themes}
-            setPage={props.setPage}
-          />
-          <hr />
-          <SidebarFilterAccordian
-            label="할인여부"
-            themes={props.themes}
-            setPage={props.setPage}
-          />
-          <hr />
-          <SidebarFilterAccordian
-            label="부품수"
-            themes={props.themes}
-            setPage={props.setPage}
-          />
-          <hr />
+
+          {labelList.map((item: string, index: number) => {
+            return (
+              <SidebarFilterAccordian
+                key={index}
+                label={item}
+                themes={props.themes}
+                setPage={props.setPage}
+              />
+            )
+          })}
         </div>
       </div>
 

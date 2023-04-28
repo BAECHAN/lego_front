@@ -1,8 +1,14 @@
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import useFilters from 'pages/api/query/useFilters'
-import { ProductFilterCountT, ProductFilterT, ThemeT } from 'types'
+import {
+  ObjT_Str,
+  ObjT_StrArr,
+  ProductFilterCountT,
+  ProductFilterT,
+  ThemeT,
+} from 'types'
 import { selectedFilterSelector } from 'state/atoms'
 import { useRecoilState } from 'recoil'
 
@@ -12,16 +18,6 @@ export default function SidebarFilterAccordian(prop: {
   setPage: React.Dispatch<React.SetStateAction<number>>
 }) {
   const [isOpen, setIsOpen] = useState(true)
-
-  useEffect(() => {
-    const elmntLi = document.querySelectorAll('.filter-option li')
-
-    elmntLi.forEach((element) => {
-      element.addEventListener('click', function (event) {
-        event?.stopPropagation()
-      })
-    })
-  })
 
   const { data: filters } = useFilters(prop.themes)
 
@@ -150,6 +146,73 @@ export default function SidebarFilterAccordian(prop: {
     }
   })
 
+  const filterPriceObjArr: {
+    id: string
+    label: string
+    title: string
+  }[] = [
+    {
+      id: 'filter_price1',
+      label: '0원 - 19,999원',
+      title: '가격이 0원 이상 2만원 미만 상품 보기',
+    },
+    {
+      id: 'filter_price2',
+      label: '20,000원 - 49,999원',
+      title: '가격이 2만원 이상 5만원 미만 상품 보기',
+    },
+    {
+      id: 'filter_price3',
+      label: '50,000원 - 99,999원',
+      title: '가격이 5만원 이상 10만원 미만 상품 보기',
+    },
+    {
+      id: 'filter_price4',
+      label: '100,000원 - 199,999원',
+      title: '가격이 10만원 이상 20만원 미만 상품 보기',
+    },
+    {
+      id: 'filter_price5',
+      label: '200,000원+',
+      title: '가격이 20만원 이상 상품 보기',
+    },
+  ]
+
+  const filterAgeObj: ObjT_Str = {
+    filter_ages7: '2',
+    filter_ages6: '4',
+    filter_ages5: '6',
+    filter_ages4: '9',
+    filter_ages3: '14',
+    filter_ages2: '16',
+    filter_ages1: '18',
+  }
+
+  const filterSaleEnabledObj: ObjT_Str = {
+    filter_sale_enabled1: '단종',
+    filter_sale_enabled2: '구매가능',
+    filter_sale_enabled3: '출시예정',
+    filter_sale_enabled4: '일시품절',
+  }
+
+  const filterDiscountingObj: ObjT_StrArr = {
+    filter_discounting1: ['정가 판매', '정가'],
+    filter_discounting2: ['할인 판매', '할인중'],
+  }
+
+  const filterPiecesObjArr: {
+    id: string
+    min: number
+    max: number
+  }[] = [
+    { id: 'filter_pieces1', min: 1, max: 99 },
+    { id: 'filter_pieces2', min: 100, max: 249 },
+    { id: 'filter_pieces3', min: 250, max: 499 },
+    { id: 'filter_pieces4', min: 500, max: 999 },
+    { id: 'filter_pieces5', min: 1000, max: 1999 },
+    { id: 'filter_pieces6', min: 2000, max: Infinity },
+  ]
+
   const [selectedFilter, setSelectedFilter] = useRecoilState(
     selectedFilterSelector
   )
@@ -164,401 +227,183 @@ export default function SidebarFilterAccordian(prop: {
   }
 
   return (
-    <button
-      onClick={() => setIsOpen(!isOpen)}
-      title="필터 항목 열기"
-      className="btn-accordion w-full my-3"
-    >
-      <span className="btn-label float-left">{prop.label}</span>
-      <FontAwesomeIcon
-        icon={isOpen ? faAngleUp : faAngleDown}
-        width="20px"
-        height="20px"
-        style={{
-          position: 'relative',
-          display: 'inline-block',
-          float: 'right',
-          right: '5px',
-          top: '4px',
-        }}
-      />
+    <div>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        title="필터 항목 열기"
+        className="btn-accordion w-full my-3"
+      >
+        <span className="btn-label float-left">{prop.label}</span>
+        <FontAwesomeIcon
+          icon={isOpen ? faAngleUp : faAngleDown}
+          width="20px"
+          height="20px"
+          style={{
+            position: 'relative',
+            display: 'inline-block',
+            float: 'right',
+            right: '5px',
+            top: '4px',
+          }}
+        />
 
-      {prop.label == '가격(원)' ? (
-        <div className="btn-option">
-          <ul className={isOpen ? 'open' : ''}>
-            {filterCount.filter_price1 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="가격이 0원 이상 2만원 미만 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_price1"
-                  defaultChecked={selectedFilter.filter_price1 ? true : false}
-                />
-                <label htmlFor="filter_price1">
-                  0원 - 19,999원 <span>[{filterCount.filter_price1}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_price2 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="가격이 2만원 이상 5만원 미만 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_price2"
-                  defaultChecked={selectedFilter.filter_price2 ? true : false}
-                />
-                <label htmlFor="filter_price2">
-                  20,000원 - 49,999원 <span>[{filterCount.filter_price2}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_price3 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="가격이 5만원 이상 10만원 미만 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_price3"
-                  defaultChecked={selectedFilter.filter_price3 ? true : false}
-                />
-                <label htmlFor="filter_price3">
-                  50,000원 - 99,999원 <span>[{filterCount.filter_price3}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_price4 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="가격이 10만원 이상 20만원 미만 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_price4"
-                  defaultChecked={selectedFilter.filter_price4 ? true : false}
-                />
-                <label htmlFor="filter_price4">
-                  100,000원 - 199,999원{' '}
-                  <span>[{filterCount.filter_price4}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_price5 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="가격이 20만원 이상 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_price5"
-                  defaultChecked={selectedFilter.filter_price5 ? true : false}
-                />
-                <label htmlFor="filter_price5">
-                  200,000원+ <span>[{filterCount.filter_price5}]</span>
-                </label>
-              </li>
-            ) : null}
-          </ul>
-        </div>
-      ) : null}
+        {prop.label == '가격(원)' ? (
+          <div className="btn-option">
+            <ul className={isOpen ? 'open' : ''}>
+              {filterPriceObjArr.map((filterObj) => {
+                return (
+                  filterCount[filterObj.id] > 0 && (
+                    <li
+                      onClick={(event) => event.stopPropagation()}
+                      key={filterObj.id}
+                      title={filterObj.title}
+                    >
+                      <input
+                        type="checkbox"
+                        onInput={handleChangeCheck}
+                        id={filterObj.id}
+                        defaultChecked={
+                          selectedFilter[filterObj.id] ? true : false
+                        }
+                      />
+                      <label htmlFor={filterObj.id}>
+                        {filterObj.label}&nbsp;
+                        <span>[{filterCount[filterObj.id]}]</span>
+                      </label>
+                    </li>
+                  )
+                )
+              })}
+            </ul>
+          </div>
+        ) : null}
 
-      {prop.label == '연령' ? (
-        <div className="btn-option">
-          <ul className={isOpen ? 'open' : ''}>
-            {filterCount.filter_ages7 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="2세 이상 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_ages7"
-                  defaultChecked={selectedFilter.filter_ages7 ? true : false}
-                />
-                <label htmlFor="filter_ages7">
-                  2+ <span>[{filterCount.filter_ages7}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_ages6 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="4세 이상 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_ages6"
-                  defaultChecked={selectedFilter.filter_ages6 ? true : false}
-                />
-                <label htmlFor="filter_ages6">
-                  4+ <span>[{filterCount.filter_ages6}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_ages5 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="6세 이상 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_ages5"
-                  defaultChecked={selectedFilter.filter_ages5 ? true : false}
-                />
-                <label htmlFor="filter_ages5">
-                  6+ <span>[{filterCount.filter_ages5}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_ages4 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="9세 이상 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_ages4"
-                  defaultChecked={selectedFilter.filter_ages4 ? true : false}
-                />
-                <label htmlFor="filter_ages4">
-                  9+ <span>[{filterCount.filter_ages4}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_ages3 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="14세 이상 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_ages3"
-                  defaultChecked={selectedFilter.filter_ages3 ? true : false}
-                />
-                <label htmlFor="filter_ages3">
-                  14+ <span>[{filterCount.filter_ages3}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_ages2 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="16세 이상 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_ages2"
-                  defaultChecked={selectedFilter.filter_ages2 ? true : false}
-                />
-                <label htmlFor="filter_ages2">
-                  16+ <span>[{filterCount.filter_ages2}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_ages1 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="18세 이상 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_ages1"
-                  defaultChecked={selectedFilter.filter_ages1 ? true : false}
-                />
-                <label htmlFor="filter_ages1">
-                  18+ <span>[{filterCount.filter_ages1}]</span>
-                </label>
-              </li>
-            ) : null}
-          </ul>
-        </div>
-      ) : null}
+        {prop.label == '연령' ? (
+          <div className="btn-option">
+            <ul className={isOpen ? 'open' : ''}>
+              {Object.keys(filterAgeObj).map((key) => {
+                return (
+                  filterCount[key] > 0 && (
+                    <li
+                      onClick={(event) => event.stopPropagation()}
+                      key={key}
+                      title={`${filterAgeObj[key]}세 이상 상품 보기`}
+                    >
+                      <input
+                        type="checkbox"
+                        onInput={handleChangeCheck}
+                        id={key}
+                        defaultChecked={selectedFilter[key] ? true : false}
+                      />
+                      <label htmlFor={key}>
+                        {filterAgeObj[key]}+ <span>[{filterCount[key]}]</span>
+                      </label>
+                    </li>
+                  )
+                )
+              })}
+            </ul>
+          </div>
+        ) : null}
 
-      {prop.label == '구매가능' ? (
-        <div className="btn-option">
-          <ul className={isOpen ? 'open' : ''}>
-            {/* {
-                filterCount.filter_sale_enabled1 > 0 
-                ? <li>
-                    <input type="checkbox" onInput={handleChangeCheck}  id="filter_sale_enabled1" />
-                    <label htmlFor="filter_sale_enabled1">단종 <span>[{filterCount.filter_sale_enabled1}]</span></label>
-                  </li>
-                : null
-              } */}
-            {filterCount.filter_sale_enabled2 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="구매가능 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_sale_enabled2"
-                  defaultChecked={
-                    selectedFilter.filter_sale_enabled2 ? true : false
-                  }
-                />
-                <label htmlFor="filter_sale_enabled2">
-                  구매가능 <span>[{filterCount.filter_sale_enabled2}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_sale_enabled3 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="출시예정 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_sale_enabled3"
-                  defaultChecked={
-                    selectedFilter.filter_sale_enabled3 ? true : false
-                  }
-                />
-                <label htmlFor="filter_sale_enabled3">
-                  출시예정 <span>[{filterCount.filter_sale_enabled3}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_sale_enabled4 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="일시품절 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_sale_enabled4"
-                  defaultChecked={
-                    selectedFilter.filter_sale_enabled4 ? true : false
-                  }
-                />
-                <label htmlFor="filter_sale_enabled4">
-                  일시품절 <span>[{filterCount.filter_sale_enabled4}]</span>
-                </label>
-              </li>
-            ) : null}
-          </ul>
-        </div>
-      ) : null}
+        {prop.label == '구매가능' ? (
+          <div className="btn-option">
+            <ul className={isOpen ? 'open' : ''}>
+              {Object.keys(filterSaleEnabledObj).map((key) => {
+                return (
+                  filterCount[key] > 0 && (
+                    <li
+                      onClick={(event) => event.stopPropagation()}
+                      key={key}
+                      title={`${filterSaleEnabledObj[key]} 상품 보기`}
+                    >
+                      <input
+                        type="checkbox"
+                        onInput={handleChangeCheck}
+                        id={key}
+                        defaultChecked={selectedFilter[key] ? true : false}
+                      />
+                      <label htmlFor={key}>
+                        {filterSaleEnabledObj[key]}{' '}
+                        <span>[{filterCount[key]}]</span>
+                      </label>
+                    </li>
+                  )
+                )
+              })}
+            </ul>
+          </div>
+        ) : null}
 
-      {prop.label == '할인여부' ? (
-        <div className="btn-option">
-          <ul className={isOpen ? 'open' : ''}>
-            {filterCount.filter_discounting1 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="정가 판매 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_discounting1"
-                  defaultChecked={
-                    selectedFilter.filter_discounting1 ? true : false
-                  }
-                />
-                <label htmlFor="filter_discounting1">
-                  정가 <span>[{filterCount.filter_discounting1}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_discounting2 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="할인 판매 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_discounting2"
-                  defaultChecked={
-                    selectedFilter.filter_discounting2 ? true : false
-                  }
-                />
-                <label htmlFor="filter_discounting2">
-                  할인중 <span>[{filterCount.filter_discounting2}]</span>
-                </label>
-              </li>
-            ) : null}
-          </ul>
-        </div>
-      ) : null}
+        {prop.label == '할인여부' ? (
+          <div className="btn-option">
+            <ul className={isOpen ? 'open' : ''}>
+              {Object.keys(filterDiscountingObj).map((key) => {
+                return (
+                  filterCount[key] > 0 && (
+                    <li
+                      onClick={(event) => event.stopPropagation()}
+                      key={key}
+                      title={`${filterDiscountingObj[key][0]} 상품 보기`}
+                    >
+                      <input
+                        type="checkbox"
+                        onInput={handleChangeCheck}
+                        id={key}
+                        defaultChecked={selectedFilter[key] ? true : false}
+                      />
+                      <label htmlFor={key}>
+                        {filterDiscountingObj[key][1]}{' '}
+                        <span>[{filterCount[key]}]</span>
+                      </label>
+                    </li>
+                  )
+                )
+              })}
+            </ul>
+          </div>
+        ) : null}
 
-      {prop.label == '부품수' ? (
-        <div className="btn-option">
-          <ul className={isOpen ? 'open' : ''}>
-            {filterCount.filter_pieces1 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="부품수 1개 이상 100개 미만 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_pieces1"
-                  defaultChecked={selectedFilter.filter_pieces1 ? true : false}
-                />
-                <label htmlFor="filter_pieces1">
-                  1-99 <span>[{filterCount.filter_pieces1}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_pieces2 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="부품수 100개 이상 250개 미만 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_pieces2"
-                  defaultChecked={selectedFilter.filter_pieces2 ? true : false}
-                />
-                <label htmlFor="filter_pieces2">
-                  100-249 <span>[{filterCount.filter_pieces2}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_pieces3 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="부품수 250개 이상 500개 미만 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_pieces3"
-                  defaultChecked={selectedFilter.filter_pieces3 ? true : false}
-                />
-                <label htmlFor="filter_pieces3">
-                  250-499 <span>[{filterCount.filter_pieces3}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_pieces4 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="부품수 500개 이상 1000개 미만 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_pieces4"
-                  defaultChecked={selectedFilter.filter_pieces4 ? true : false}
-                />
-                <label htmlFor="filter_pieces4">
-                  500-999 <span>[{filterCount.filter_pieces4}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_pieces5 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="부품수 1000개 이상 2000개 미만 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_pieces5"
-                  defaultChecked={selectedFilter.filter_pieces5 ? true : false}
-                />
-                <label htmlFor="filter_pieces5">
-                  1000-1999 <span>[{filterCount.filter_pieces5}]</span>
-                </label>
-              </li>
-            ) : null}
-            {filterCount.filter_pieces6 > 0 ? (
-              <li>
-                <input
-                  type="checkbox"
-                  title="부품수 2000개 이상 상품 보기"
-                  onInput={handleChangeCheck}
-                  id="filter_pieces6"
-                  defaultChecked={selectedFilter.filter_pieces6 ? true : false}
-                />
-                <label htmlFor="filter_pieces6">
-                  2000+ <span>[{filterCount.filter_pieces6}]</span>
-                </label>
-              </li>
-            ) : null}
-          </ul>
-        </div>
-      ) : null}
-
+        {prop.label == '부품수' ? (
+          <div className="btn-option">
+            <ul className={isOpen ? 'open' : ''}>
+              {filterPiecesObjArr.map((filterPiecesObj) => {
+                return (
+                  filterCount[filterPiecesObj.id] > 0 && (
+                    <li
+                      onClick={(event) => event.stopPropagation()}
+                      key={filterPiecesObj.id}
+                      title={
+                        filterPiecesObj.max != Infinity
+                          ? `부품수 ${filterPiecesObj.min}개 이상 ${
+                              filterPiecesObj.max + 1
+                            }개 미만 상품 보기`
+                          : `부품수 ${filterPiecesObj.min}개 이상 상품 보기`
+                      }
+                    >
+                      <input
+                        type="checkbox"
+                        onInput={handleChangeCheck}
+                        id={filterPiecesObj.id}
+                        defaultChecked={
+                          selectedFilter[filterPiecesObj.id] ? true : false
+                        }
+                      />
+                      <label htmlFor={filterPiecesObj.id}>
+                        {filterPiecesObj.max != Infinity
+                          ? `${filterPiecesObj.min}-${filterPiecesObj.max}`
+                          : `${filterPiecesObj.min}+`}
+                        <span>[{filterCount[filterPiecesObj.id]}]</span>
+                      </label>
+                    </li>
+                  )
+                )
+              })}
+            </ul>
+          </div>
+        ) : null}
+      </button>
+      <hr />
       <style jsx>{`
         span.btn-label {
           margin-left: 0px;
@@ -610,6 +455,6 @@ export default function SidebarFilterAccordian(prop: {
           }
         }
       `}</style>
-    </button>
+    </div>
   )
 }
