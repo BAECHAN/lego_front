@@ -61,11 +61,17 @@ export default function Theme(props: ThemeT) {
     fetchNextPage,
   } = useProductList(axiosGets)
 
+  /** 더보기 클릭 시 중복 데이터 가져옴 방지 */
   const handleClickMoreProduct = () => {
-    fetchNextPage({ pageParam: page + 1 })
-    setPage(page + 1)
+    console.log(productList?.pages.length)
+
+    if (productList && productList?.pages.length) {
+      fetchNextPage({ pageParam: productList.pages.length + 1 })
+      setPage(productList.pages.length + 1)
+    }
   }
 
+  /** 상세페이지에서 뒤로가기 시 스크롤 위치 가져오기 */
   useEffect(() => {
     if (sessionStorage.getItem('isHistoryBack') === 'true') {
       let scrollRestoration = setTimeout(() => {
@@ -79,8 +85,14 @@ export default function Theme(props: ThemeT) {
     } else {
       recoilReset()
       setTheme(props)
+      setPage(1)
     }
-  }, [props, recoilReset, setTheme])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    setPage(1)
+  }, [filter])
 
   return (
     <div className="px-16">
@@ -111,7 +123,7 @@ export default function Theme(props: ThemeT) {
           </div>
         </div>
         <div className="flex">
-          <SidebarFilter themes={props} setPage={setPage} />
+          <SidebarFilter themes={props} />
           <div className="mr-5 w-full">
             <ul className="flex flex-wrap">
               {productList?.pages.map((page, index) => (

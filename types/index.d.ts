@@ -76,6 +76,14 @@ export type ProductFilterCountT = {
   [key: string]: number
 }
 
+export type ProductFilterInfoT = {
+  filterPriceObjArr: { id: string; label: string; title: string }[]
+  filterAgeObjArr: { id: string; label: string; title: string }[]
+  filterSaleEnabledObjArr: { id: string; label: string; title: string }[]
+  filterDiscountingObjArr: { id: string; label: string; title: string }[]
+  filterPiecesObjArr: { id: string; label: string; title: string }[]
+}
+
 export type ThemeT = {
   theme_id: number
   theme_title: string

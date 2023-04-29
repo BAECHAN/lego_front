@@ -3,12 +3,8 @@ import SidebarFilterAccordian from './SidebarFilterAccordion'
 import SidebarFilterSelected from './SidebarFilterSelected'
 import { useRecoilValue } from 'recoil'
 import { selectedFilterSelector } from 'state/atoms'
-import { useRef } from 'react'
 
-export default function SidebarFilter(props: {
-  themes: ThemeT
-  setPage: React.Dispatch<React.SetStateAction<number>>
-}) {
+export default function SidebarFilter(props: { themes: ThemeT }) {
   const selectedFilter = useRecoilValue(selectedFilterSelector)
 
   const labelList: string[] = [
@@ -20,8 +16,8 @@ export default function SidebarFilter(props: {
   ]
 
   return (
-    <aside className="filter mx-5 h-full sticky top-0 overflow-y-scroll overflow-x-hidden w-96">
-      <div className="h-[750px]">
+    <aside className="filter mx-5 h-[40rem] sticky top-0 overflow-y-scroll overflow-x-hidden w-96">
+      <div>
         <div className="filter-option mb-3">
           {Object.values(selectedFilter).indexOf(1) > -1 ? (
             <SidebarFilterSelected />
@@ -34,7 +30,6 @@ export default function SidebarFilter(props: {
                 key={index}
                 label={item}
                 themes={props.themes}
-                setPage={props.setPage}
               />
             )
           })}

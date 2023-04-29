@@ -1,25 +1,19 @@
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import useFilters from 'pages/api/query/useFilters'
-import {
-  ObjT_Str,
-  ObjT_StrArr,
-  ProductFilterCountT,
-  ProductFilterT,
-  ThemeT,
-} from 'types'
-import { selectedFilterSelector } from 'state/atoms'
-import { useRecoilState } from 'recoil'
+import { ProductFilterCountT, ProductFilterT, ThemeT } from 'types'
+import SidebarFilterItem from './SidebarFilterItem'
+import { productFilterInfoSelector } from 'state/atoms'
+import { useRecoilValue } from 'recoil'
 
-export default function SidebarFilterAccordian(prop: {
+export default function SidebarFilterAccordian(props: {
   label: string
   themes: ThemeT
-  setPage: React.Dispatch<React.SetStateAction<number>>
 }) {
   const [isOpen, setIsOpen] = useState(true)
 
-  const { data: filters } = useFilters(prop.themes)
+  const { data: filters } = useFilters(props.themes)
 
   const data: ProductFilterT[] = filters?.productFilter
 
@@ -146,85 +140,7 @@ export default function SidebarFilterAccordian(prop: {
     }
   })
 
-  const filterPriceObjArr: {
-    id: string
-    label: string
-    title: string
-  }[] = [
-    {
-      id: 'filter_price1',
-      label: '0원 - 19,999원',
-      title: '가격이 0원 이상 2만원 미만 상품 보기',
-    },
-    {
-      id: 'filter_price2',
-      label: '20,000원 - 49,999원',
-      title: '가격이 2만원 이상 5만원 미만 상품 보기',
-    },
-    {
-      id: 'filter_price3',
-      label: '50,000원 - 99,999원',
-      title: '가격이 5만원 이상 10만원 미만 상품 보기',
-    },
-    {
-      id: 'filter_price4',
-      label: '100,000원 - 199,999원',
-      title: '가격이 10만원 이상 20만원 미만 상품 보기',
-    },
-    {
-      id: 'filter_price5',
-      label: '200,000원+',
-      title: '가격이 20만원 이상 상품 보기',
-    },
-  ]
-
-  const filterAgeObj: ObjT_Str = {
-    filter_ages7: '2',
-    filter_ages6: '4',
-    filter_ages5: '6',
-    filter_ages4: '9',
-    filter_ages3: '14',
-    filter_ages2: '16',
-    filter_ages1: '18',
-  }
-
-  const filterSaleEnabledObj: ObjT_Str = {
-    filter_sale_enabled1: '단종',
-    filter_sale_enabled2: '구매가능',
-    filter_sale_enabled3: '출시예정',
-    filter_sale_enabled4: '일시품절',
-  }
-
-  const filterDiscountingObj: ObjT_StrArr = {
-    filter_discounting1: ['정가 판매', '정가'],
-    filter_discounting2: ['할인 판매', '할인중'],
-  }
-
-  const filterPiecesObjArr: {
-    id: string
-    min: number
-    max: number
-  }[] = [
-    { id: 'filter_pieces1', min: 1, max: 99 },
-    { id: 'filter_pieces2', min: 100, max: 249 },
-    { id: 'filter_pieces3', min: 250, max: 499 },
-    { id: 'filter_pieces4', min: 500, max: 999 },
-    { id: 'filter_pieces5', min: 1000, max: 1999 },
-    { id: 'filter_pieces6', min: 2000, max: Infinity },
-  ]
-
-  const [selectedFilter, setSelectedFilter] = useRecoilState(
-    selectedFilterSelector
-  )
-
-  const handleChangeCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    prop.setPage(1)
-
-    setSelectedFilter({
-      ...selectedFilter,
-      [e.currentTarget.id]: e.currentTarget.checked ? 1 : 0,
-    })
-  }
+  const filterInfo = useRecoilValue(productFilterInfoSelector)
 
   return (
     <div>
@@ -233,7 +149,7 @@ export default function SidebarFilterAccordian(prop: {
         title="필터 항목 열기"
         className="btn-accordion w-full my-3"
       >
-        <span className="btn-label float-left">{prop.label}</span>
+        <span className="btn-label float-left">{props.label}</span>
         <FontAwesomeIcon
           icon={isOpen ? faAngleUp : faAngleDown}
           width="20px"
@@ -247,30 +163,17 @@ export default function SidebarFilterAccordian(prop: {
           }}
         />
 
-        {prop.label == '가격(원)' ? (
+        {props.label == '가격(원)' ? (
           <div className="btn-option">
             <ul className={isOpen ? 'open' : ''}>
-              {filterPriceObjArr.map((filterObj) => {
+              {filterInfo.filterPriceObjArr.map((filterObj) => {
                 return (
                   filterCount[filterObj.id] > 0 && (
-                    <li
-                      onClick={(event) => event.stopPropagation()}
+                    <SidebarFilterItem
                       key={filterObj.id}
-                      title={filterObj.title}
-                    >
-                      <input
-                        type="checkbox"
-                        onInput={handleChangeCheck}
-                        id={filterObj.id}
-                        defaultChecked={
-                          selectedFilter[filterObj.id] ? true : false
-                        }
-                      />
-                      <label htmlFor={filterObj.id}>
-                        {filterObj.label}&nbsp;
-                        <span>[{filterCount[filterObj.id]}]</span>
-                      </label>
-                    </li>
+                      filterObj={filterObj}
+                      filterCount={filterCount}
+                    />
                   )
                 )
               })}
@@ -278,27 +181,17 @@ export default function SidebarFilterAccordian(prop: {
           </div>
         ) : null}
 
-        {prop.label == '연령' ? (
+        {props.label == '연령' ? (
           <div className="btn-option">
             <ul className={isOpen ? 'open' : ''}>
-              {Object.keys(filterAgeObj).map((key) => {
+              {filterInfo.filterAgeObjArr.map((filterObj) => {
                 return (
-                  filterCount[key] > 0 && (
-                    <li
-                      onClick={(event) => event.stopPropagation()}
-                      key={key}
-                      title={`${filterAgeObj[key]}세 이상 상품 보기`}
-                    >
-                      <input
-                        type="checkbox"
-                        onInput={handleChangeCheck}
-                        id={key}
-                        defaultChecked={selectedFilter[key] ? true : false}
-                      />
-                      <label htmlFor={key}>
-                        {filterAgeObj[key]}+ <span>[{filterCount[key]}]</span>
-                      </label>
-                    </li>
+                  filterCount[filterObj.id] > 0 && (
+                    <SidebarFilterItem
+                      key={filterObj.id}
+                      filterObj={filterObj}
+                      filterCount={filterCount}
+                    />
                   )
                 )
               })}
@@ -306,28 +199,17 @@ export default function SidebarFilterAccordian(prop: {
           </div>
         ) : null}
 
-        {prop.label == '구매가능' ? (
+        {props.label == '구매가능' ? (
           <div className="btn-option">
             <ul className={isOpen ? 'open' : ''}>
-              {Object.keys(filterSaleEnabledObj).map((key) => {
+              {filterInfo.filterSaleEnabledObjArr.map((filterObj) => {
                 return (
-                  filterCount[key] > 0 && (
-                    <li
-                      onClick={(event) => event.stopPropagation()}
-                      key={key}
-                      title={`${filterSaleEnabledObj[key]} 상품 보기`}
-                    >
-                      <input
-                        type="checkbox"
-                        onInput={handleChangeCheck}
-                        id={key}
-                        defaultChecked={selectedFilter[key] ? true : false}
-                      />
-                      <label htmlFor={key}>
-                        {filterSaleEnabledObj[key]}{' '}
-                        <span>[{filterCount[key]}]</span>
-                      </label>
-                    </li>
+                  filterCount[filterObj.id] > 0 && (
+                    <SidebarFilterItem
+                      key={filterObj.id}
+                      filterObj={filterObj}
+                      filterCount={filterCount}
+                    />
                   )
                 )
               })}
@@ -335,28 +217,17 @@ export default function SidebarFilterAccordian(prop: {
           </div>
         ) : null}
 
-        {prop.label == '할인여부' ? (
+        {props.label == '할인여부' ? (
           <div className="btn-option">
             <ul className={isOpen ? 'open' : ''}>
-              {Object.keys(filterDiscountingObj).map((key) => {
+              {filterInfo.filterDiscountingObjArr.map((filterObj) => {
                 return (
-                  filterCount[key] > 0 && (
-                    <li
-                      onClick={(event) => event.stopPropagation()}
-                      key={key}
-                      title={`${filterDiscountingObj[key][0]} 상품 보기`}
-                    >
-                      <input
-                        type="checkbox"
-                        onInput={handleChangeCheck}
-                        id={key}
-                        defaultChecked={selectedFilter[key] ? true : false}
-                      />
-                      <label htmlFor={key}>
-                        {filterDiscountingObj[key][1]}{' '}
-                        <span>[{filterCount[key]}]</span>
-                      </label>
-                    </li>
+                  filterCount[filterObj.id] > 0 && (
+                    <SidebarFilterItem
+                      key={filterObj.id}
+                      filterObj={filterObj}
+                      filterCount={filterCount}
+                    />
                   )
                 )
               })}
@@ -364,38 +235,17 @@ export default function SidebarFilterAccordian(prop: {
           </div>
         ) : null}
 
-        {prop.label == '부품수' ? (
-          <div className="btn-option">
+        {props.label == '부품수' ? (
+          <div className="btn-option mb-5">
             <ul className={isOpen ? 'open' : ''}>
-              {filterPiecesObjArr.map((filterPiecesObj) => {
+              {filterInfo.filterPiecesObjArr.map((filterObj) => {
                 return (
-                  filterCount[filterPiecesObj.id] > 0 && (
-                    <li
-                      onClick={(event) => event.stopPropagation()}
-                      key={filterPiecesObj.id}
-                      title={
-                        filterPiecesObj.max != Infinity
-                          ? `부품수 ${filterPiecesObj.min}개 이상 ${
-                              filterPiecesObj.max + 1
-                            }개 미만 상품 보기`
-                          : `부품수 ${filterPiecesObj.min}개 이상 상품 보기`
-                      }
-                    >
-                      <input
-                        type="checkbox"
-                        onInput={handleChangeCheck}
-                        id={filterPiecesObj.id}
-                        defaultChecked={
-                          selectedFilter[filterPiecesObj.id] ? true : false
-                        }
-                      />
-                      <label htmlFor={filterPiecesObj.id}>
-                        {filterPiecesObj.max != Infinity
-                          ? `${filterPiecesObj.min}-${filterPiecesObj.max}`
-                          : `${filterPiecesObj.min}+`}
-                        <span>[{filterCount[filterPiecesObj.id]}]</span>
-                      </label>
-                    </li>
+                  filterCount[filterObj.id] > 0 && (
+                    <SidebarFilterItem
+                      key={filterObj.id}
+                      filterObj={filterObj}
+                      filterCount={filterCount}
+                    />
                   )
                 )
               })}
@@ -413,11 +263,6 @@ export default function SidebarFilterAccordian(prop: {
           }
         }
 
-        .btn-option span {
-          font-weight: 300;
-          color: gray;
-        }
-
         ul {
           text-align: left;
           padding-top: 0px;
@@ -432,27 +277,6 @@ export default function SidebarFilterAccordian(prop: {
           padding-top: 15px;
           height: auto;
           opacity: 1;
-        }
-
-        li {
-          display: flex;
-        }
-
-        input[type='checkbox'] {
-          width: 25px;
-          height: 25px;
-          margin-right: 5px;
-          accent-color: orange;
-        }
-
-        label {
-          width: 100%;
-          position: relative;
-          cursor: pointer;
-          user-select: none;
-          :hover {
-            font-weight: 700;
-          }
         }
       `}</style>
     </div>

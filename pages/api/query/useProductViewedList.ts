@@ -36,7 +36,6 @@ const useProductViewedList = () => {
     {
       onSuccess: (data) => {},
       onError: (e) => console.log(e),
-      //getNextPageParam: (lastPage) => !lastPage.isLast ?? undefined,
       keepPreviousData: true,
       enabled: viewedProductsJSON.length > 0,
     }
