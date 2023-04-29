@@ -127,6 +127,7 @@ export default function Product(props: any) {
                       blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
                       layout="responsive"
                       className="hover:scale-110"
+                      onDragStart={(e) => e.preventDefault()}
                     />
                   )
                 })
