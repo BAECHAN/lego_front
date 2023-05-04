@@ -4,29 +4,23 @@ import Image from 'next/image'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import { MouseEvent, FormEvent } from 'react'
+import FontAwesomeEye from '@components/FontAwesomeEye'
+import { useRecoilValue } from 'recoil'
+import { passwordEyeSelector } from 'state/atoms'
 
 export default function Login() {
-  const [isShowPw, setIsShowPw] = useState<boolean>(false)
-
   const router = useRouter()
 
-  const handleClickEye = () => {
-    setIsShowPw(!isShowPw)
+  const passwordType = useRecoilValue(passwordEyeSelector)
 
-    isShowPw
-      ? document.getElementById('password')?.setAttribute('type', 'password')
-      : document.getElementById('password')?.setAttribute('type', 'text')
-  }
-
-  const login = async (e: any) => {
+  const login = async (e: FormEvent<HTMLFormElement>) => {
     // 원래 실행되는 이벤트 취소
     e.preventDefault()
+
     // Form 안에서 이메일, 패스워드 가져오기
-    let email = e.target.email.value
-    let password = e.target.password.value
+    let email = e.currentTarget.email.value
+    let password = e.currentTarget.password.value
 
     if (!email) {
       alert('이메일 주소를 입력해주세요.')
@@ -72,12 +66,12 @@ export default function Login() {
     }
   }
 
-  const loginKakao = async (e: any) => {
+  const loginKakao = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     await signIn('kakao')
   }
 
-  const loginGoogle = async (e: any) => {
+  const loginGoogle = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     await signIn('google')
   }
@@ -113,27 +107,13 @@ export default function Login() {
               비밀번호
               <br />
               <input
-                type="password"
+                type={passwordType}
                 title="비밀번호 입력란"
                 name="password"
                 id="password"
                 autoComplete="off"
               />
-              {isShowPw ? (
-                <FontAwesomeIcon
-                  icon={faEyeSlash}
-                  onClick={handleClickEye}
-                  cursor="pointer"
-                  className="w-5 relative ml-[304px] -mt-[26px]"
-                ></FontAwesomeIcon>
-              ) : (
-                <FontAwesomeIcon
-                  icon={faEye}
-                  onClick={handleClickEye}
-                  cursor="pointer"
-                  className="w-5 relative ml-[304px] -mt-[26px]"
-                ></FontAwesomeIcon>
-              )}
+              <FontAwesomeEye />
             </label>
 
             <button

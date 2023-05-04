@@ -316,3 +316,18 @@ export const selectedShippingSelector = selector({
     set(selectedShippingAtom, newValue)
   },
 })
+
+const passwordEyeAtom = atom<string>({
+  key: `passwordEyeAtom`,
+  default: 'password',
+})
+
+export const passwordEyeSelector = selector({
+  key: `passwordEyeSelector`,
+  get: ({ get }) => {
+    return get(passwordEyeAtom)
+  },
+  set: ({ set }, newValue) => {
+    set(passwordEyeAtom, newValue)
+  },
+})

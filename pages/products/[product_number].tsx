@@ -12,14 +12,16 @@ import { useRecoilState } from 'recoil'
 import { themeSelector } from 'state/atoms'
 import { useRouter } from 'next/router'
 import ButtonAddCart from '@components/ButtonAddCart'
+import { GetServerSidePropsContext } from 'next'
+import { ProductT } from 'types'
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: context.query,
   }
 }
 
-export default function Product(props: any) {
+export default function Product(props: ProductT) {
   const [carouselIdx, setCarouselIdx] = useState(0)
   let [quantity, setQuantity] = useState(1)
   let [minusDisabled, setMinusDisabled] = useState(true)
@@ -27,6 +29,9 @@ export default function Product(props: any) {
   let [detailOpen, setDetailOpen] = useState(true)
 
   const { data: product, isLoading } = useProduct(props)
+  console.log(props)
+  console.log(typeof props)
+
   const [theme, setTheme] = useRecoilState(themeSelector)
 
   const router = useRouter()
@@ -76,7 +81,7 @@ export default function Product(props: any) {
       if (viewedProductsJSON) {
         viewedProductsArr = JSON.parse(viewedProductsJSON)
 
-        viewedProductsArr.unshift(props.product_number)
+        viewedProductsArr.unshift(String(props.product_number))
         viewedProductsArr.length = 10
 
         const viewedProductsSet = new Set<string>(viewedProductsArr)

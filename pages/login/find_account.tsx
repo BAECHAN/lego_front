@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import axios from 'axios'
 import ButtonFindAccountToggle from '@components/login/ButtonFindAccountToggle'
 import FontAwesomeAngleRight from '@components/FontAwesomeAngleRight'
@@ -9,11 +9,11 @@ export default function FindAccount() {
   const [isSubmit, setIsSubmit] = useState(false)
   const [isFind, setIsFind] = useState(false)
 
-  const findId = async (e: any) => {
+  const findId = async (e: FormEvent<HTMLFormElement>) => {
     // 원래 실행되는 이벤트 취소
     e.preventDefault()
     // Form 안에서 이메일, 패스워드 가져오기
-    let email = e.target.email.value
+    let email = e.currentTarget.email.value
 
     if (!email) {
       alert('이메일 주소를 입력해주세요.')

@@ -4,7 +4,7 @@ import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 import * as swal from '@components/common/custom/SweetAlert'
 
-import React, { ChangeEvent, useState, FocusEvent } from 'react'
+import React, { ChangeEvent, useState, FocusEvent, FormEvent } from 'react'
 import { InputRegExpT, UserCreateT, UserSubmitT } from 'types'
 import axios from 'axios'
 import crypto from 'crypto-js'
@@ -159,7 +159,7 @@ export default function CreateAccount() {
     }
   }
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     setDisabledSubmit(true)
     event.preventDefault()
 

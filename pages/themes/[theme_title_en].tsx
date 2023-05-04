@@ -1,7 +1,6 @@
 import Layout from '../../components/Layout'
 import SidebarFilter from '../../components/SidebarFilter'
 import Navbar from '../../components/NavigationBar'
-
 import { ThemeT, ProductT } from 'types'
 import ProductCard from '@components/ProductCard'
 import React, { useEffect, useState } from 'react'
@@ -16,8 +15,9 @@ import useProductList from 'pages/api/query/useProductList'
 import axios from 'axios'
 import { QueryClient } from 'react-query'
 import { queryKeys } from 'pages/api/query/queryKeys'
+import { GetServerSidePropsContext } from 'next'
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: context.query,
   }

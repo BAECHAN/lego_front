@@ -9,25 +9,20 @@ import axiosRequest from 'pages/api/axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { useSession } from 'next-auth/react'
+import { useRecoilValue } from 'recoil'
+import { passwordEyeSelector } from 'state/atoms'
+import FontAwesomeEye from '@components/FontAwesomeEye'
 
 export default function CheckPassword() {
   const { data: session, status } = useSession()
 
-  const [password, setPassword] = useState('')
-
-  const [isShowPw, setIsShowPw] = useState(false)
-
   const router = useRouter()
 
+  const [password, setPassword] = useState('')
+
+  const passwordType = useRecoilValue(passwordEyeSelector)
+
   const pwRef = useRef<HTMLInputElement>(null)
-
-  const handleClickEye = () => {
-    setIsShowPw(!isShowPw)
-
-    isShowPw
-      ? pwRef.current?.setAttribute('type', 'password')
-      : pwRef.current?.setAttribute('type', 'text')
-  }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -117,7 +112,7 @@ export default function CheckPassword() {
               기존 비밀번호 입력
               <br />
               <input
-                type="password"
+                type={passwordType}
                 title="기존 비밀번호 입력란"
                 name="password"
                 id="password"
@@ -126,23 +121,7 @@ export default function CheckPassword() {
                 onChange={(e) => setPassword(e.currentTarget.value)}
                 ref={pwRef}
               />
-              {isShowPw ? (
-                <FontAwesomeIcon
-                  icon={faEyeSlash}
-                  title="비밀번호 숨김"
-                  onClick={handleClickEye}
-                  cursor="pointer"
-                  className="w-5 relative ml-[304px] -mt-[26px]"
-                ></FontAwesomeIcon>
-              ) : (
-                <FontAwesomeIcon
-                  icon={faEye}
-                  title="비밀번호 표시"
-                  onClick={handleClickEye}
-                  cursor="pointer"
-                  className="w-5 relative ml-[304px] -mt-[26px]"
-                ></FontAwesomeIcon>
-              )}
+              <FontAwesomeEye />
             </label>
 
             <button

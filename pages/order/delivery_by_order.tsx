@@ -9,8 +9,9 @@ import Pagination from '@components/common/pagination/index'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { GetServerSidePropsContext } from 'next'
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: context.query,
   }
