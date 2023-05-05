@@ -6,7 +6,7 @@ import * as swal from '@components/common/custom/SweetAlert'
 
 import React, { ChangeEvent, useState, FocusEvent, FormEvent } from 'react'
 import { InputRegExpT, UserCreateT, UserSubmitT } from 'types'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import crypto from 'crypto-js'
 import axiosRequest from 'pages/api/axios'
 import { useRouter } from 'next/router'
@@ -50,17 +50,23 @@ export default function CreateAccount() {
   const [disabledSubmit, setDisabledSubmit] = useState(false)
 
   const [isEmailOverlap, setIsEmailOverlap] = useState(false)
+  const [isNicknameOverlap, setIsNicknameOverlap] = useState(false)
 
   const handleBlurEmail = (e: FocusEvent<HTMLInputElement>) => {
     if (inputsPass.emailPass && email.length > 0) {
-      axios
-        .get(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/email-chk?email=${email}`
-        )
+      axiosRequest(
+        'post',
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/email-chk`,
+        { email }
+      )
         .then((response) => {
-          response.data.result > 0
-            ? setIsEmailOverlap(true)
-            : setIsEmailOverlap(false)
+          if (response?.status === 409) {
+            setIsEmailOverlap(true)
+          } else if (response?.status === 200) {
+            setIsEmailOverlap(false)
+          } else {
+            console.log('의도치 않은 응답입니다.')
+          }
         })
         .catch((error) => {
           console.log(error)
@@ -70,14 +76,16 @@ export default function CreateAccount() {
     }
   }
 
-  const [isNicknameOverlap, setIsNicknameOverlap] = useState(false)
-
   const handleBlurNickname = (e: FocusEvent<HTMLInputElement>) => {
     if (inputsPass.nicknamePass && nickname.length > 0) {
+      const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/nickname-chk`
+
+      const param = { nickname }
+
       axios
-        .get(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/nickname-chk?nickname=${nickname}`
-        )
+        .post(url, JSON.stringify(param), {
+          headers: { 'Content-Type': `application/json; charset=utf-8` },
+        })
         .then((response) => {
           response.data.result > 0
             ? setIsNicknameOverlap(true)

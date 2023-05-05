@@ -22,12 +22,14 @@ export default NextAuth({
       authorize: async (credentials, req) => {
         const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/login-chk`
 
+        const param = {
+          email: credentials?.email,
+          password: credentials?.password,
+        }
+
         let res: any = await axios
-          .get(url, {
-            params: {
-              email: credentials?.email,
-              password: credentials?.password,
-            },
+          .post(url, JSON.stringify(param), {
+            headers: { 'Content-Type': `application/json; charset=utf-8` },
           })
           .then((response) => {
             const user = response.data.result

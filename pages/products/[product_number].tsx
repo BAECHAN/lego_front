@@ -89,7 +89,6 @@ export default function Product(props: ProductT) {
         const viewedProductsSetJSON = JSON.stringify(
           Array.from(viewedProductsSet)
         )
-
         localStorage.setItem('viewed_products', viewedProductsSetJSON)
       } else {
         localStorage.setItem(
