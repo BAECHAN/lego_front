@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { FormEvent, useState } from 'react'
-import axios, { AxiosError } from 'axios'
 import ButtonFindAccountToggle from '@components/login/ButtonFindAccountToggle'
 import FontAwesomeAngleRight from '@components/FontAwesomeAngleRight'
 import axiosRequest from 'pages/api/axios'
