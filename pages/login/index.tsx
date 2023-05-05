@@ -4,80 +4,78 @@ import Image from 'next/image'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import { MouseEvent, FormEvent, useRef, useState } from 'react'
+import FontAwesomeEye from '@components/FontAwesomeEye'
+import { useRecoilValue } from 'recoil'
+import { passwordEyeSelector } from 'state/atoms'
 
 export default function Login() {
-  const [isShowPw, setIsShowPw] = useState<boolean>(false)
-
   const router = useRouter()
 
-  const handleClickEye = () => {
-    setIsShowPw(!isShowPw)
+  const passwordType = useRecoilValue(passwordEyeSelector)
 
-    isShowPw
-      ? document.getElementById('password')?.setAttribute('type', 'password')
-      : document.getElementById('password')?.setAttribute('type', 'text')
-  }
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const login = async (e: any) => {
-    // 원래 실행되는 이벤트 취소
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
+
+  const login = async (e: FormEvent<HTMLFormElement>) => {
+    // submit 새로고침 방지
     e.preventDefault()
-    // Form 안에서 이메일, 패스워드 가져오기
-    let email = e.target.email.value
-    let password = e.target.password.value
 
-    if (!email) {
+    if (email.trim() === '') {
       alert('이메일 주소를 입력해주세요.')
-      document.getElementById('email')?.focus()
+      emailRef.current?.focus()
       return false
-    } else if (!password) {
+    } else if (password.trim() === '') {
       alert('비밀번호를 입력해주세요.')
-      document.getElementById('password')?.focus()
+      passwordRef.current?.focus()
       return false
     }
 
     const secretKey = process.env.NEXT_PUBLIC_CRYPT_KEY
+
     if (secretKey !== undefined) {
-      password = crypto.HmacSHA512(password, secretKey).toString()
+      const hashedPassword = crypto.HmacSHA512(password, secretKey).toString()
+
+      const response = await signIn('email-password-credential', {
+        email,
+        password: hashedPassword,
+        redirect: false,
+      })
+
+      if (response !== undefined) {
+        if (response.ok) {
+          if (
+            router.query.callbackUrl != undefined &&
+            router.query.callbackUrl.indexOf('account') < 0
+          ) {
+            router.back()
+          } else {
+            router.push('/')
+          }
+        } else {
+          if (response.status === 401) {
+            alert('아이디 혹은 패스워드를 확인하세요.')
+            setPassword('')
+            passwordRef.current?.focus()
+            return false
+          }
+        }
+      }
     } else {
       alert('secretKey is undefined')
       return false
     }
-
-    const response = await signIn('email-password-credential', {
-      email,
-      password,
-      redirect: false,
-    })
-
-    if (response !== undefined) {
-      if (response.ok) {
-        if (
-          router.query.callbackUrl != undefined &&
-          router.query.callbackUrl.indexOf('account') < 0
-        ) {
-          router.back()
-        } else {
-          router.push('/')
-        }
-      } else {
-        if (response.status === 401) {
-          alert('아이디 혹은 패스워드를 확인하세요.')
-          document.getElementById('password')?.focus()
-          return false
-        }
-      }
-    }
   }
 
-  const loginKakao = async (e: any) => {
+  const loginKakao = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     await signIn('kakao')
   }
 
-  const loginGoogle = async (e: any) => {
+  const loginGoogle = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     await signIn('google')
   }
@@ -105,6 +103,9 @@ export default function Login() {
                 title="이메일 입력란"
                 name="email"
                 id="email"
+                value={email}
+                onChange={(e) => setEmail(e.currentTarget.value)}
+                ref={emailRef}
                 placeholder="예) lego@lego.co.kr"
                 autoComplete="off"
               />
@@ -113,27 +114,16 @@ export default function Login() {
               비밀번호
               <br />
               <input
-                type="password"
+                type={passwordType}
                 title="비밀번호 입력란"
                 name="password"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.currentTarget.value)}
+                ref={passwordRef}
                 autoComplete="off"
               />
-              {isShowPw ? (
-                <FontAwesomeIcon
-                  icon={faEyeSlash}
-                  onClick={handleClickEye}
-                  cursor="pointer"
-                  className="w-5 relative ml-[304px] -mt-[26px]"
-                ></FontAwesomeIcon>
-              ) : (
-                <FontAwesomeIcon
-                  icon={faEye}
-                  onClick={handleClickEye}
-                  cursor="pointer"
-                  className="w-5 relative ml-[304px] -mt-[26px]"
-                ></FontAwesomeIcon>
-              )}
+              <FontAwesomeEye />
             </label>
 
             <button

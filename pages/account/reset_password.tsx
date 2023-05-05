@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { InputRegExpT } from 'types'
 import axios from 'axios'
 import Router, { useRouter } from 'next/router'
@@ -34,8 +34,11 @@ export default function ResetPassword() {
         })
         .catch((error) => {
           console.log(error)
+          alert('잘못된 접근입니다.')
+          router.push('/')
         })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [email, router.isReady, token])
 
   const [inputs, setInputs] = useState({
@@ -120,7 +123,7 @@ export default function ResetPassword() {
     }
   }
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     setDisabledSubmit(true)
     event.preventDefault()
 

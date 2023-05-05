@@ -36,9 +36,16 @@ export async function middleware(request: NextRequest, response: NextResponse) {
         url.pathname == '/' &&
         !url.search.includes('onConnect')
       ) {
-        const requestURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-user-info-oauth?email=${session.email}&provider=${session.provider}`
+        const requestURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-user-info-oauth`
 
-        const response = await fetch(requestURL)
+        const response = await fetch(requestURL, {
+          method: 'post',
+          body: JSON.stringify({
+            email: session.email,
+            provider: session.provider,
+          }),
+          headers: { 'Content-Type': `application/json; charset=utf-8` },
+        })
           .then((response) => {
             return response
           })

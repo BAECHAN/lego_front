@@ -1,6 +1,12 @@
 import { faSquareXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { ChangeEvent, useRef, useState, useEffect } from 'react'
+import React, {
+  ChangeEvent,
+  useRef,
+  useState,
+  useEffect,
+  FormEvent,
+} from 'react'
 import Postcode from './Postcode'
 import { DeliverySubmitT, ShippingT } from 'types'
 import { useSession } from 'next-auth/react'
@@ -117,7 +123,7 @@ export default function ModalDelivery(props: {
     }
   }
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     setDisabledSubmit(true)
     event.preventDefault()
 

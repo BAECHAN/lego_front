@@ -1,15 +1,15 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { signOut, useSession } from 'next-auth/react'
-import useUser from 'pages/api/query/useUser'
 import crypto from 'crypto-js'
 import * as common from '@components/common/event/CommonFunction'
 import axiosRequest from 'pages/api/axios'
 import { useRouter } from 'next/router'
 import { UserOAuthSubmitT } from 'types'
+import { GetServerSidePropsContext } from 'next'
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
     props: context.query,
   }

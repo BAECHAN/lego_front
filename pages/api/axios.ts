@@ -9,6 +9,9 @@ export default async function axiosRequest(
   const JSONParam = JSON.stringify(param)
   const config = {
     headers: { 'Content-Type': `application/json; charset=utf-8` },
+    validateStatus: function (status: number) {
+      return status < 500
+    }, // 허용 가능한 HttpStatus 범위 지정 ( 500 미만 ), 이 경우 catch로 빠지는게 아닌 then으로
   }
 
   let response

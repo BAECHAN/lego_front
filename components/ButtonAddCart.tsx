@@ -4,6 +4,7 @@ import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { ProductT, ProductAddCartSubmitT } from 'types'
+import { queryKeys } from 'pages/api/query/queryKeys'
 
 export default function ButtonAddCart(props: {
   product_info: ProductT
@@ -47,10 +48,10 @@ export default function ButtonAddCart(props: {
             router.push('/mypage/cart')
           }
 
-          queryClient.invalidateQueries(['product-info'])
-          queryClient.invalidateQueries(['product-list'])
-          queryClient.invalidateQueries(['product-viewed-list'])
-          queryClient.invalidateQueries(['product-wish-list'])
+          queryClient.invalidateQueries([queryKeys.productInfo])
+          queryClient.invalidateQueries([queryKeys.productList])
+          queryClient.invalidateQueries([queryKeys.productViewedList])
+          queryClient.invalidateQueries([queryKeys.productWishList])
         } else {
           alert(
             '장바구니 추가에 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'

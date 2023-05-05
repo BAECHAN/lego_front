@@ -1,43 +1,41 @@
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
 import { queryKeys } from './queryKeys'
+import qs from 'qs'
 
 const useProductViewedList = () => {
-  const [page, setPage] = useState(0)
-
   const queryKey = queryKeys.productViewedList
 
-  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}?page=${page}`
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}`
 
   let viewedProductsJSON: string[] = []
 
   if (typeof window !== 'undefined') {
-    const viewedProducts = localStorage.getItem('viewed_products')
-    if (viewedProducts) {
-      viewedProductsJSON = JSON.parse(viewedProducts)
-    }
+    viewedProductsJSON = JSON.parse(
+      localStorage.getItem('viewed_products') as string
+    )
+  }
+
+  const params = {
+    product_number_arr: viewedProductsJSON,
   }
 
   return useQuery(
-    [queryKey, page],
+    [queryKey],
     async () => {
-      const res = await axios.post(
-        url,
-        {
-          product_number_arr: viewedProductsJSON,
+      const res = await axios.get(url, {
+        params,
+        paramsSerializer: function (params) {
+          return qs.stringify(params, { arrayFormat: 'repeat' })
         },
-        {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
-        }
-      )
+        headers: { 'Content-Type': `application/json; charset=utf-8` },
+      })
       return res.data
     },
     {
       onSuccess: (data) => {},
       onError: (e) => console.log(e),
       keepPreviousData: true,
-      enabled: viewedProductsJSON.length > 0,
     }
   )
 }

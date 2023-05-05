@@ -26,7 +26,9 @@ const useOrderList = () => {
       return res.data
     },
     {
-      onSuccess: (data) => {},
+      onSuccess: (data) => {
+        console.log(data)
+      },
       onError: (e) => console.log(e),
       getNextPageParam: (lastPage) => !lastPage.isLast ?? undefined,
       enabled: !!session?.user?.email,

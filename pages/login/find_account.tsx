@@ -1,19 +1,19 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
-import axios from 'axios'
+import { FormEvent, useState } from 'react'
 import ButtonFindAccountToggle from '@components/login/ButtonFindAccountToggle'
 import FontAwesomeAngleRight from '@components/FontAwesomeAngleRight'
+import axiosRequest from 'pages/api/axios'
 
 export default function FindAccount() {
   const [isSubmit, setIsSubmit] = useState(false)
   const [isFind, setIsFind] = useState(false)
 
-  const findId = async (e: any) => {
+  const findId = async (e: FormEvent<HTMLFormElement>) => {
     // 원래 실행되는 이벤트 취소
     e.preventDefault()
     // Form 안에서 이메일, 패스워드 가져오기
-    let email = e.target.email.value
+    let email = e.currentTarget.email.value
 
     if (!email) {
       alert('이메일 주소를 입력해주세요.')
@@ -22,15 +22,25 @@ export default function FindAccount() {
     }
 
     /** DB에 아이디 있는지 확인 후 return하는 api */
-    axios
-      .get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/email-chk?email=${email}`)
+
+    axiosRequest(
+      'post',
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/email-chk`,
+      { email }
+    )
       .then((response) => {
         setIsSubmit(true)
 
-        response.data.result > 0 ? setIsFind(true) : setIsFind(false)
+        if (response?.status === 409) {
+          setIsFind(true)
+        } else if (response?.status === 200) {
+          setIsFind(false)
+        } else {
+          console.log('의도치 않은 응답입니다.')
+        }
       })
       .catch((error) => {
-        console.log(error)
+        console.error(error)
       })
   }
 

@@ -10,12 +10,17 @@ const useProductWishList = () => {
 
   const queryKey = queryKeys.productWishList
 
-  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}?page=${page}&email=${session?.user?.email}`
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}`
+
+  const param = {
+    page: page,
+    email: session?.user?.email,
+  }
 
   return useQuery(
     [queryKey, page],
     async () => {
-      const res = await axios.get(url, {
+      const res = await axios.post(url, JSON.stringify(param), {
         headers: { 'Content-Type': `application/json; charset=utf-8` },
       })
       return res.data
