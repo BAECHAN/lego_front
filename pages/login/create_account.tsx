@@ -3,10 +3,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 import * as swal from '@components/common/custom/SweetAlert'
+import { inputRegExp } from '@components/common/custom/RegExp'
 
 import React, { ChangeEvent, useState, FocusEvent, FormEvent } from 'react'
-import { InputRegExpT, UserCreateT, UserSubmitT } from 'types'
-import axios, { AxiosError } from 'axios'
+import { UserCreateT } from 'types'
+import axios from 'axios'
 import crypto from 'crypto-js'
 import axiosRequest from 'pages/api/axios'
 import { useRouter } from 'next/router'
@@ -29,13 +30,6 @@ export default function CreateAccount() {
   })
 
   let { email, pw, pwChk, nickname } = inputs
-
-  const inputRegExp: InputRegExpT = {
-    email:
-      /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
-    pw: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/,
-    nickname: /^(?=.*[a-z0-9A-Z가-힣])[a-z0-9A-Z가-힣]{2,16}$/,
-  }
 
   const isPass = (state: boolean, e: ChangeEvent<HTMLInputElement>): void => {
     const { name } = e.target

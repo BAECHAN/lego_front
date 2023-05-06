@@ -2,9 +2,9 @@ import Layout from '@components/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
+import { inputRegExp } from '@components/common/custom/RegExp'
 
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import { InputRegExpT } from 'types'
 import axios from 'axios'
 import Router, { useRouter } from 'next/router'
 import crypto from 'crypto-js'
@@ -52,10 +52,6 @@ export default function ResetPassword() {
   })
 
   let { pw, pwChk } = inputs
-
-  const inputRegExp: InputRegExpT = {
-    pw: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/,
-  }
 
   const isPass = (state: boolean, e: ChangeEvent<HTMLInputElement>): void => {
     const { name } = e.target

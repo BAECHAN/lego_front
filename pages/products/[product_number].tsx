@@ -29,8 +29,6 @@ export default function Product(props: ProductT) {
   let [detailOpen, setDetailOpen] = useState(true)
 
   const { data: product, isLoading } = useProduct(props)
-  console.log(props)
-  console.log(typeof props)
 
   const [theme, setTheme] = useRecoilState(themeSelector)
 

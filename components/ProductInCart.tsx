@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import {
   ProductCartT,
   ProductDeleteCartSubmitT,
@@ -30,7 +30,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
 
   let [totalPrice, setTotalPrice] = useRecoilState(orderPriceSelector)
 
-  const plusOrMinus = useRef('')
+  let plusOrMinus = ''
   const { data: session, status } = useSession()
 
   const queryClient = useQueryClient()
@@ -39,14 +39,14 @@ export default function ProductInCart(props: { product: ProductCartT }) {
     e: React.MouseEvent<HTMLButtonElement>,
     clickOption: string
   ) => {
-    plusOrMinus.current = clickOption
+    plusOrMinus = clickOption
 
     if (quantity && status == 'authenticated' && session.user?.email) {
       let reqParam: ProductUpdateCartSubmitT = {
         email: session.user.email,
         cart_id: Number(e.currentTarget.name.substring(12)),
         product_id: props.product.product_id,
-        state: plusOrMinus.current == 'plus' ? 'updateAdd' : 'updateSub',
+        state: plusOrMinus == 'plus' ? 'updateAdd' : 'updateSub',
       }
 
       updateQuantityAPI.mutate(reqParam)
@@ -152,7 +152,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
           minusDisabled: minusDisabled,
         }
 
-        if (plusOrMinus.current == 'plus') {
+        if (plusOrMinus == 'plus') {
           setQuantity(quantity + 1)
 
           if (

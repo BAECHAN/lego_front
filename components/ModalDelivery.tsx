@@ -457,7 +457,7 @@ export default function ModalDelivery(props: {
                 <Postcode
                   inputs={inputs}
                   setInputs={setInputs}
-                  postButtonRef={postButtonRef}
+                  ref={postButtonRef}
                 />
               </div>
 

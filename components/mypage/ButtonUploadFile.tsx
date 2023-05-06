@@ -1,18 +1,19 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 
 export default function ButtonUploadFile(props: {
   newValue: string
   setNewValue: React.Dispatch<React.SetStateAction<string>>
-  fileInputRef: React.RefObject<HTMLInputElement>
   setUploadFile: React.Dispatch<React.SetStateAction<File | undefined>>
 }) {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
   const handleClickButton = (type: string) => {
     if (type == 'defaultImage') {
       props.setNewValue('/default_profile.png')
     } else if (type == 'searchImage') {
-      props.fileInputRef.current ? props.fileInputRef.current.click() : null
+      fileInputRef.current ? fileInputRef.current.click() : null
     }
   }
 
@@ -76,7 +77,7 @@ export default function ButtonUploadFile(props: {
         accept="image/*"
         className="hidden"
         title="input image hidden"
-        ref={props.fileInputRef}
+        ref={fileInputRef}
         onChange={handleChangeImage}
       />
 
