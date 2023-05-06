@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import { useDaumPostcodePopup } from 'react-daum-postcode'
 import { DeliverySubmitT } from 'types'
 
-export default function Postcode(props: {
-  inputs: DeliverySubmitT
-  setInputs: React.Dispatch<React.SetStateAction<DeliverySubmitT>>
-  postButtonRef: React.RefObject<HTMLButtonElement>
-}) {
+function Postcode(
+  props: {
+    inputs: DeliverySubmitT
+    setInputs: React.Dispatch<React.SetStateAction<DeliverySubmitT>>
+  },
+  postButtonRef: React.LegacyRef<HTMLButtonElement> | undefined
+) {
   const open = useDaumPostcodePopup()
 
   const handleComplete = (data: any) => {
@@ -43,7 +45,7 @@ export default function Postcode(props: {
       onClick={handleClick}
       title="주소 찾기 버튼"
       className="btn-search ml-2"
-      ref={props.postButtonRef}
+      ref={postButtonRef}
     >
       검색
       <style jsx>{`
@@ -61,3 +63,5 @@ export default function Postcode(props: {
     </button>
   )
 }
+
+export default forwardRef(Postcode)

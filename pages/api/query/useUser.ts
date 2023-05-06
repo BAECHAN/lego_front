@@ -9,12 +9,15 @@ const useUser = () => {
 
   const queryKey = queryKeys.userInfo
 
-  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-${queryKey}?email=${session?.user?.email}`
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-${queryKey}`
 
+  const params = {
+    email: session?.user?.email,
+  }
   return useQuery<UserT>(
     [queryKey],
     async () => {
-      const res = await axios.get(url, {
+      const res = await axios.post(url, JSON.stringify(params), {
         headers: { 'Content-Type': `application/json; charset=utf-8` },
       })
       return res.data.result

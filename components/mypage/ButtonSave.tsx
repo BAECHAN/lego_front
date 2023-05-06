@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCancel, faSave } from '@fortawesome/free-solid-svg-icons'
 import axiosRequest from 'pages/api/axios'
-import { InputRegExpT } from 'types'
+import { inputRegExp } from '@components/common/custom/RegExp'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 
@@ -31,13 +31,6 @@ export default function ButtonSave(props: {
   }, [props.isEnter])
 
   const handleClickButton = (type: string) => {
-    const inputRegExp: InputRegExpT = {
-      email:
-        /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
-      pw: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/,
-      nickname: /^(?=.*[a-z0-9A-Z가-힣])[a-z0-9A-Z가-힣]{2,16}$/,
-    }
-
     if (type == 'cancle') {
       props.setIsChange(!props.isChange)
       props.setNewValue('')

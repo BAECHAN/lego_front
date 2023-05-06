@@ -19,8 +19,6 @@ export default function UserInfoContentsLine(props: {
 
   const infoInputRef = useRef<HTMLInputElement>(null)
 
-  const fileInputRef = useRef<HTMLInputElement>(null)
-
   const [uploadFile, setUploadFile] = useState<File>()
 
   useEffect(() => {
@@ -147,7 +145,6 @@ export default function UserInfoContentsLine(props: {
                   <ButtonUploadFile
                     newValue={newValue}
                     setNewValue={setNewValue}
-                    fileInputRef={fileInputRef}
                     setUploadFile={setUploadFile}
                   />
                 ) : (
