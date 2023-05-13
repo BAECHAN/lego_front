@@ -50,8 +50,13 @@ export default function NavigationBar(prop: { productInfo?: ProductT }) {
         ) : null
       })}
 
-      {router.pathname === '/order' ? (
+      {router.pathname.startsWith('/order') ? (
         <>
+          <FontAwesomeAngleRight />
+          <Link href={`/mypage/order_history`}>
+            <a>{mypage}</a>
+          </Link>
+
           <FontAwesomeAngleRight />
           <Link href={`/mypage/cart`}>
             <a>장바구니</a>

@@ -32,7 +32,7 @@ export default function Banner() {
         <div className="banner">
           <span style={{ flexGrow: 1 }}></span>
           <p title="배너 제목" className="mx-2 my-3">
-            4월 신제품 출시!
+            6월 신제품 출시!
           </p>
           <Link href="/themes">
             <a title="상품 보러가기 링크" className="hover:text-blue-600">

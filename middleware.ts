@@ -58,9 +58,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
             url.searchParams.set('provider', String(session.provider))
             return NextResponse.redirect(url)
           } else if (response.status === 200) {
-            console.log(200)
           } else if (response.status === 204) {
-            console.log(204)
           }
         }
       }
@@ -82,14 +80,10 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     }
   }
 
-  if (
-    request.nextUrl.pathname.startsWith('/mypage') ||
-    request.nextUrl.pathname.startsWith('/order')
-  ) {
+  if (request.nextUrl.pathname.startsWith('/mypage')) {
     if (!session) {
       const url = request.nextUrl.clone()
       url.pathname = '/login'
-
       return NextResponse.redirect(url)
     }
   }
@@ -98,6 +92,28 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     const url = request.nextUrl.clone()
     url.pathname = '/mypage/order_history'
     return NextResponse.redirect(url)
+  }
+
+  if (request.nextUrl.pathname.startsWith('/order')) {
+    if (!session) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/login'
+      return NextResponse.redirect(url)
+    } else {
+      // 이전 경로가 order나 mypage가 아니면 redirect
+      const referer = request.headers.get('referer')
+
+      if (
+        !(
+          referer &&
+          (referer.includes('/order') || referer.includes('/mypage'))
+        )
+      ) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/'
+        return NextResponse.redirect(url)
+      }
+    }
   }
 
   if (request.nextUrl.pathname.startsWith('/login')) {
