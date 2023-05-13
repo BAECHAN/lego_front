@@ -20,13 +20,17 @@ const useProductWishList = () => {
   return useQuery(
     [queryKey, page],
     async () => {
-      const res = await axios.post(url, JSON.stringify(param), {
+      return await axios.post(url, JSON.stringify(param), {
         headers: { 'Content-Type': `application/json; charset=utf-8` },
       })
-      return res.data
     },
     {
-      onSuccess: (data) => {},
+      onSuccess: (response) => {
+        if (!(response.status === 200)) {
+          alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+          console.error(`HTTP status : ${response?.status}`)
+        }
+      },
       onError: (e) => console.log(e),
       enabled: !!session?.user?.email,
     }

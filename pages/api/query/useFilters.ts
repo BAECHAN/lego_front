@@ -9,13 +9,17 @@ const useFilters = (props: ThemeT) => {
   return useQuery(
     [queryKey],
     async () => {
-      const res = await axios.get(
+      return await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}?theme_id=${props.theme_id}`
       )
-      return res.data
     },
     {
-      onSuccess: (data) => {},
+      onSuccess: (response) => {
+        if (!(response.status === 200)) {
+          alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+          console.error(`HTTP status : ${response?.status}`)
+        }
+      },
       onError: (e) => console.log(e),
     }
   )

@@ -21,7 +21,7 @@ const handler: NextApiHandler<any> = async (req, res) => {
     return res.status(404).send({ error: 'Begone.' })
   }
 
-  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-token`
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/create-token`
 
   const token = await axios
     .post(
@@ -34,7 +34,12 @@ const handler: NextApiHandler<any> = async (req, res) => {
       }
     )
     .then((response) => {
-      return response.data.token
+      if (response.status === 201) {
+        return response.data.token
+      } else {
+        alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+        console.error(`HTTP status : ${response?.status}`)
+      }
     })
     .catch((error) => {
       console.log(error)
@@ -55,10 +60,9 @@ const handler: NextApiHandler<any> = async (req, res) => {
             비밀번호를 재설정 하시려면 아래의 링크를 클릭해주세요.<br />
             <span style="color:blue;">해당 링크는 발송 후 1시간 동안만 유효합니다.</span>
           </p>
-          <a href="https://port-0-lego-front-nx562olfs8ljco.sel3.cloudtype.app/account/reset_password?email=${recipient}&token=${token}">비밀번호 재설정하기</a>
+          <a href="https://port-0-lego-front-nx562olfs8ljco.sel3.cloudtype.app/account/reset_password?token=${token}">비밀번호 재설정하기</a>
         </div>`,
     })
-
     res.status(200).json(res.status)
   } catch (error) {
     res.status(500).json({ error: error })

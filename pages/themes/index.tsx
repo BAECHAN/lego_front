@@ -3,6 +3,8 @@ import Navbar from '../../components/NavigationBar'
 import Link from 'next/link'
 import Image from 'next/image'
 import useThemes from 'pages/api/query/useThemes'
+import { ThemeT } from 'types'
+import { useEffect } from 'react'
 
 export default function Themes() {
   const { data: themes, isFetched } = useThemes()
@@ -18,7 +20,7 @@ export default function Themes() {
             </h2>
             <ul className="flex justify-around flex-wrap">
               {themes &&
-                themes.map((theme) => {
+                themes.data.map((theme: ThemeT) => {
                   return (
                     <li key={theme.theme_id} className="m-5 w-1/5">
                       <Link

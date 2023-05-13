@@ -9,21 +9,25 @@ const useUser = () => {
 
   const queryKey = queryKeys.userInfo
 
-  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-${queryKey}`
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}`
 
   const params = {
     email: session?.user?.email,
   }
-  return useQuery<UserT>(
+  return useQuery(
     [queryKey],
     async () => {
-      const res = await axios.post(url, JSON.stringify(params), {
+      return await axios.post(url, JSON.stringify(params), {
         headers: { 'Content-Type': `application/json; charset=utf-8` },
       })
-      return res.data.result
     },
     {
-      onSuccess: (data) => {},
+      onSuccess: (response) => {
+        if (!(response.status === 200)) {
+          alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+          console.error(`HTTP status : ${response?.status}`)
+        }
+      },
       onError: (error) => {
         console.log(error)
       },

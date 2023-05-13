@@ -23,8 +23,8 @@ export default async function axiosRequest(
       console.error('Send parameters as a query string in GET METHOD')
     }
 
-    return (response = axios.get(url, config))
+    return (response = await axios.get(url, config))
   } else if (method == 'patch') {
-    return (response = axios.patch(url, JSONParam, config))
+    return (response = await axios.patch(url, JSONParam, config))
   }
 }

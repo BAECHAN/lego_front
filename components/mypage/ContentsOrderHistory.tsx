@@ -1,8 +1,8 @@
-import Layout from '@components/Layout'
 import ProductInOrderHistory from '@components/ProductInOrderHistory'
 import useOrderList from 'pages/api/query/useOrderList'
 import React, { useState } from 'react'
 import { OrderT } from 'types'
+import ButtonMore from '../common/pagination/ButtonMore'
 
 export default function ContentsOrderHistory() {
   const [page, setPage] = useState(1)
@@ -15,17 +15,12 @@ export default function ContentsOrderHistory() {
     fetchNextPage,
   } = useOrderList()
 
-  const handleClickMoreProduct = () => {
-    fetchNextPage({ pageParam: page })
-    setPage(page + 1)
-  }
-
   return (
     <div className="min-h-[602px]">
       {isFetched ? (
         <div className="p-3 mt-3">
           <div className="contents-box">
-            <div className="flex text-center mb-3">
+            <div className="flex text-center mb-20">
               <div className="w-3/12">상품정보</div>
               <div className="w-2/12">주문일자</div>
               <div className="w-1/12 text-right mr-4">주문번호</div>
@@ -49,26 +44,22 @@ export default function ContentsOrderHistory() {
                       }
                     )
                   ) : (
-                    <div className="text-xl">주문 내역이 없습니다.</div>
+                    <div className="text-2xl m-auto">주문 내역이 없습니다.</div>
                   )}
                 </React.Fragment>
               ))}
             </ul>
 
             {hasNextPage ? (
-              <button
-                type="button"
-                title="주문내역 더보기 버튼"
-                className="w-full bg-gray-300 h-10 rounded my-7 hover:bg-gray-400"
-                onClick={() => handleClickMoreProduct()}
-                disabled={!hasNextPage || isFetchingNextPage}
-              >
-                {isFetchingNextPage
-                  ? '불러오는 중...'
-                  : hasNextPage
-                  ? '더보기'
-                  : '없음'}
-              </button>
+              <ButtonMore
+                type="order"
+                page={page}
+                setPage={setPage}
+                fetchNextPage={fetchNextPage}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+                data={orderData}
+              />
             ) : (
               <br />
             )}

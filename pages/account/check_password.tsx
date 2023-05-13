@@ -18,14 +18,14 @@ export default function CheckPassword() {
 
   const router = useRouter()
 
-  const [password, setPassword] = useState('')
+  const [pw, setPw] = useState('')
 
   const passwordType = useRecoilValue(passwordEyeSelector)
 
   const pwRef = useRef<HTMLInputElement>(null)
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
 
     if (
       session &&
@@ -33,19 +33,24 @@ export default function CheckPassword() {
       session.user.email &&
       status == 'authenticated'
     ) {
-      let password = e.currentTarget.password.value
+      if (!pw && pwRef.current) {
+        alert(`${pwRef.current.title}을 확인해주시기 바랍니다.`)
+        pwRef.current.focus()
+        return false
+      }
 
       const secretKey = process.env.NEXT_PUBLIC_CRYPT_KEY
-      if (secretKey !== undefined) {
-        password = crypto.HmacSHA512(password, secretKey).toString()
+      let hashedPassword: string = ''
+
+      if (secretKey) {
+        hashedPassword = crypto.HmacSHA512(pw, secretKey).toString()
       } else {
-        alert('secretKey is undefined')
-        return false
+        throw new Error(`secretKey is undefined`)
       }
 
       const param = {
         email: session.user.email,
-        password,
+        pw: hashedPassword,
       }
 
       axiosRequest(
@@ -56,23 +61,13 @@ export default function CheckPassword() {
         .then((response) => {
           const data = response?.data
 
-          if (data.result == 1) {
+          if (Object.entries(data).length === 1) {
             router.push(
-              `/account/reset_password?email=${param.email}&token=${data.token}&callbackPage=user_info`
+              `/account/reset_password?token=${data.token}&callbackPage=user_info`
             )
-          } else if (data.result == 0) {
+          } else {
             alert('비밀번호가 일치하지 않습니다.')
             pwRef.current?.focus()
-            return false
-          } else if (data.result == -1) {
-            alert(
-              '토큰 생성에 실패하였습니다.\r고객센터에 문의하시기 바랍니다.'
-            )
-            return false
-          } else {
-            alert(
-              '비밀번호 확인을 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-            )
             return false
           }
         })
@@ -117,8 +112,8 @@ export default function CheckPassword() {
                 name="password"
                 id="password"
                 autoComplete="off"
-                value={password}
-                onChange={(e) => setPassword(e.currentTarget.value)}
+                value={pw}
+                onChange={(e) => setPw(e.currentTarget.value)}
                 ref={pwRef}
               />
               <FontAwesomeEye />

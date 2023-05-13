@@ -12,7 +12,7 @@ export default function UserInfo(req: NextApiRequest) {
   const handleClickWithdraw = () => {
     if (isFetched && status == 'success') {
       const param = {
-        email: userInfo.email,
+        email: userInfo.data.email,
       }
 
       axiosRequest(
@@ -21,23 +21,16 @@ export default function UserInfo(req: NextApiRequest) {
         param
       )
         .then((response) => {
-          if (response?.status === 200) {
-            if (response.data.result > 0) {
-              alert(
-                '회원탈퇴가 완료되었습니다.\r보다 나은 서비스로 다시 만나뵐 수 있기를 바랍니다.'
-              )
-              signOut()
-            } else {
-              alert(
-                '회원탈퇴 신청이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-              )
-              return false
-            }
+          if (response?.status === 204) {
+            alert(
+              '회원탈퇴가 완료되었습니다.\r보다 나은 서비스로 다시 만나뵐 수 있기를 바랍니다.'
+            )
+            signOut()
           } else {
             alert(
-              '회원탈퇴 신청이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
+              '의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.'
             )
-            return false
+            console.error(`HTTP status : ${response?.status}`)
           }
         })
         .catch((error) => {
@@ -58,30 +51,30 @@ export default function UserInfo(req: NextApiRequest) {
             <UserInfoContentsLine
               infoKey={'email'}
               infoName={'이메일(아이디)'}
-              infoValue={userInfo.email}
+              infoValue={userInfo.data.email}
               infoUpdate={false}
-              email={userInfo.email}
+              email={userInfo.data.email}
             />
             <UserInfoContentsLine
               infoKey={'password'}
               infoName={'비밀번호'}
               infoValue="***********"
               infoUpdate={true}
-              email={userInfo.email}
+              email={userInfo.data.email}
             />
             <UserInfoContentsLine
               infoKey={'name'}
               infoName={'닉네임'}
-              infoValue={userInfo.name}
+              infoValue={userInfo.data.name}
               infoUpdate={true}
-              email={userInfo.email}
+              email={userInfo.data.email}
             />
             <UserInfoContentsLine
               infoKey={'grade'}
               infoName={'등급'}
-              infoValue={userInfo.grade}
+              infoValue={userInfo.data.grade}
               infoUpdate={false}
-              email={userInfo.email}
+              email={userInfo.data.email}
             />
 
             <div className="my-20 order-info">
@@ -92,7 +85,7 @@ export default function UserInfo(req: NextApiRequest) {
                 infoKey={'address'}
                 infoName={'배송지'}
                 infoUpdate={true}
-                email={userInfo.email}
+                email={userInfo.data.email}
               />
             </div>
 
@@ -103,16 +96,16 @@ export default function UserInfo(req: NextApiRequest) {
               <UserInfoContentsLine
                 infoKey={'onKakao'}
                 infoName={'카카오 로그인 연동 상태'}
-                onConnect={userInfo.oauth_connect == 'kakao'}
+                onConnect={userInfo.data.oauth_connect == 'kakao'}
                 infoUpdate={false}
-                email={userInfo.email}
+                email={userInfo.data.email}
               />
               <UserInfoContentsLine
                 infoKey={'onGoogle'}
                 infoName={'구글 로그인 연동 상태'}
-                onConnect={userInfo.oauth_connect == 'google'}
+                onConnect={userInfo.data.oauth_connect == 'google'}
                 infoUpdate={false}
-                email={userInfo.email}
+                email={userInfo.data.email}
               />
 
               <div></div>

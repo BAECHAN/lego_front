@@ -17,11 +17,14 @@ export default function AccountExpiredAccount() {
         param
       )
         .then(async (response) => {
-          if (response?.status === 200 && response.data.result == 1) {
+          if (response?.status === 204) {
             alert('휴면을 해제하였습니다.\r다시 로그인 해주시기 바랍니다.')
             await signOut()
           } else {
-            new Error()
+            alert(
+              '의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.'
+            )
+            console.error(`HTTP status : ${response?.status}`)
           }
         })
         .catch((error) => {

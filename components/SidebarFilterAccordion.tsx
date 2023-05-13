@@ -15,7 +15,7 @@ export default function SidebarFilterAccordian(props: {
 
   const { data: filters } = useFilters(props.themes)
 
-  const data: ProductFilterT[] = filters?.productFilter
+  const productFilter: ProductFilterT[] = filters?.data
 
   let filterCount: ProductFilterCountT = {
     filter_price1: 0,
@@ -51,7 +51,7 @@ export default function SidebarFilterAccordian(props: {
     filter_pieces7: 0,
   }
 
-  data?.map((item) => {
+  productFilter?.map((item) => {
     // 가격
     if (item.filter_price === 1) {
       // 0 ~ 20,000원 미만

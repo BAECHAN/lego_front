@@ -30,18 +30,17 @@ export default function ButtonAddCart(props: {
 
   const addCartAPI = useMutation(
     async (param: ProductAddCartSubmitT) => {
-      const res = await axios.post(
+      return await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/add-cart`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
         }
       )
-      return res.data
     },
     {
-      onSuccess: (data) => {
-        if (data.result == 1) {
+      onSuccess: (response) => {
+        if (response.status === 201) {
           if (
             confirm('장바구니에 추가하였습니다.\r장바구니로 이동하시겠습니까?')
           ) {
@@ -53,10 +52,8 @@ export default function ButtonAddCart(props: {
           queryClient.invalidateQueries([queryKeys.productViewedList])
           queryClient.invalidateQueries([queryKeys.productWishList])
         } else {
-          alert(
-            '장바구니 추가에 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-          )
-          return false
+          alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+          console.error(`HTTP status : ${response?.status}`)
         }
       },
       onError: (error) => {
@@ -64,7 +61,6 @@ export default function ButtonAddCart(props: {
         alert(
           '장바구니 추가에 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
         )
-        return false
       },
     }
   )

@@ -20,7 +20,7 @@ export default function Order() {
 
   const { data: session, status } = useSession()
 
-  const { data: cartData, isFetched: cartFetched } = useProductCartList()
+  const { data: product, isFetched: cartFetched } = useProductCartList()
   const selectedOrder = useRecoilValue(selectedOrderSelector)
   const orderPrice = useRecoilValue(orderPriceSelector)
   const selectedShippingFromDelivery = useRecoilValue(selectedShippingSelector)
@@ -56,7 +56,7 @@ export default function Order() {
   })
 
   useEffect(() => {
-    if (status == 'authenticated' && cartData && selectedShipping) {
+    if (status == 'authenticated' && product && selectedShipping) {
       setSubmits({
         ...submits,
         email: session.user?.email ? session.user.email : '',
@@ -64,13 +64,13 @@ export default function Order() {
         delivery_request: selectsRef.current[0].value,
         delivery_request_direct:
           selectsRef.current[0].value == '7' ? inputsRef.current[0].value : '',
-        cart_info: cartData.cartList.filter((cartItem: ProductCartT) =>
+        cart_info: product.data.cartList.filter((cartItem: ProductCartT) =>
           selectedOrder.includes(cartItem.cart_id)
         ),
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedShipping, cartData, status, inputs])
+  }, [selectedShipping, product, status, inputs])
 
   useEffect(() => {
     setTotalPrice(orderPrice)
@@ -327,17 +327,17 @@ export default function Order() {
           <div className="p-3 mt-3">
             <h2 className="text-xl mb-3">상품 정보</h2>
             <div className="contents-box">
-              {cartData && cartData.cartList ? (
+              {product && product.data.cartList ? (
                 <ul>
-                  {cartData.cartList &&
-                    cartData.cartList.map(
+                  {product.data.cartList &&
+                    product.data.cartList.map(
                       (item: ProductCartT, index: number) => {
                         return selectedOrder.some(
                           (select) => select == item.cart_id
                         ) ? (
                           <li key={item.cart_id}>
                             <ProductInOrder product={item} />
-                            {index < cartData.cartList.length - 1 ? (
+                            {index < product.data.cartList.length - 1 ? (
                               <hr />
                             ) : null}
                           </li>

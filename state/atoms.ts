@@ -1,6 +1,7 @@
 import { atom, selector } from 'recoil'
 import { recoilPersist } from 'recoil-persist'
 import {
+  FindAccountT,
   ObjT_Str,
   ProductFilterCountT,
   ProductFilterInfoT,
@@ -329,5 +330,20 @@ export const passwordEyeSelector = selector({
   },
   set: ({ set }, newValue) => {
     set(passwordEyeAtom, newValue)
+  },
+})
+
+const findAccountAtom = atom<FindAccountT>({
+  key: `findAccountAtom`,
+  default: 'email',
+})
+
+export const findAccountSelector = selector({
+  key: `findAccountSelector`,
+  get: ({ get }) => {
+    return get(findAccountAtom)
+  },
+  set: ({ set }, newValue) => {
+    set(findAccountAtom, newValue)
   },
 })

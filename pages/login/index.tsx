@@ -6,8 +6,9 @@ import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import { MouseEvent, FormEvent, useRef, useState } from 'react'
 import FontAwesomeEye from '@components/FontAwesomeEye'
-import { useRecoilValue } from 'recoil'
-import { passwordEyeSelector } from 'state/atoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { findAccountSelector, passwordEyeSelector } from 'state/atoms'
+import { FindAccountT } from 'types'
 
 export default function Login() {
   const router = useRouter()
@@ -19,6 +20,9 @@ export default function Login() {
 
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
+
+  const [findAccountType, setFindAccountType] =
+    useRecoilState(findAccountSelector)
 
   const login = async (e: FormEvent<HTMLFormElement>) => {
     // submit 새로고침 방지
@@ -78,6 +82,11 @@ export default function Login() {
   const loginGoogle = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     await signIn('google')
+  }
+
+  const handleClickFindButton = (type: FindAccountT) => {
+    setFindAccountType(type)
+    router.push('/login/find')
   }
 
   return (
@@ -141,22 +150,20 @@ export default function Login() {
                 </a>
               </Link>
               <div className="flex-grow" />
-              <Link href="/login/find_account">
-                <a
-                  title="이메일 찾기 페이지로 이동"
-                  className="hover:underline mr-3"
-                >
-                  계정 찾기
-                </a>
-              </Link>
-              <Link href="/login/find_password">
-                <a
-                  title="비밀번호 찾기 페이지로 이동"
-                  className="hover:underline"
-                >
-                  비밀번호 찾기
-                </a>
-              </Link>
+              <button
+                type="button"
+                onClick={() => handleClickFindButton('email')}
+                className="hover:underline mr-3"
+              >
+                계정 찾기
+              </button>
+              <button
+                type="button"
+                onClick={() => handleClickFindButton('password')}
+                className="hover:underline mr-3"
+              >
+                비밀번호 찾기
+              </button>
             </div>
           </form>
 

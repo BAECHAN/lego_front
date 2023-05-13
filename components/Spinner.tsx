@@ -4,15 +4,22 @@ import '@fortawesome/fontawesome-svg-core/styles.css'
 
 export default function Spinner() {
   return (
-    <FontAwesomeIcon
-      icon={faSpinner}
-      width="400px"
-      height="400px"
-      style={{
-        position: 'relative',
-      }}
-      size="6x"
-      className="fa-spin"
-    />
+    <div className="spinner-container">
+      <FontAwesomeIcon
+        icon={faSpinner}
+        width="400px"
+        height="400px"
+        size="6x"
+        className="fa-spin"
+      />
+      <style jsx>{`
+        .spinner-container {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      `}</style>
+    </div>
   )
 }

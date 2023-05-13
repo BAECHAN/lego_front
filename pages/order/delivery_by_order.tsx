@@ -30,7 +30,7 @@ export default function DeliveryByOrder(props: { from: string }) {
 
   useEffect(() => {
     if (isFetched) {
-      data.shippingList.length == 0 ? setModalOpen(true) : null
+      data.shippingList.length == 0 ?? setModalOpen(true)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
@@ -39,118 +39,110 @@ export default function DeliveryByOrder(props: { from: string }) {
     event: React.MouseEvent<HTMLButtonElement>,
     shipping?: ShippingT
   ) => {
-    if (shipping) {
-      setModalShippingData(shipping)
-    } else {
-      setModalShippingData(undefined)
-    }
+    shipping ? setModalShippingData(shipping) : setModalShippingData(undefined)
 
     !modalOpen ? setModalOpen(true) : setModalOpen(false)
   }
 
   return (
     <div>
-      {isFetched ? (
-        <>
-          {data && data.shippingList.length > 0 ? (
-            <div className="min-h-[300px]">
-              <button
-                type="button"
-                title="주문페이지로 돌아가기 버튼"
-                className="m-3"
-                onClick={() => router.back()}
-              >
-                <FontAwesomeIcon
-                  icon={faArrowLeft}
-                  width="18px"
-                  height="18px"
-                  style={{ marginLeft: '3px' }}
-                />
-              </button>
-              <ul className="flex flex-col min-h-[403.2px]">
-                {data.shippingList.map((item: ShippingT, index: number) => {
-                  return (
-                    <li key={item.shipping_id}>
-                      <ShippingItemByOrder
-                        shipping={item}
-                        onOpen={handleClickModalOpen}
-                        page={page}
-                        setPage={setPage}
-                        startPage={startPage}
-                        setStartPage={setStartPage}
-                        totalPage={totalPage}
-                        setTotalPage={setTotalPage}
-                        isLastPage={data.isLastPage}
-                        listLength={data.shippingList.length}
-                        shippingListCount={data.shippingListCount}
-                      ></ShippingItemByOrder>
-                    </li>
-                  )
-                })}
-              </ul>
-              <div>
-                <Pagination
+      {data && data.shippingList.length > 0 ? (
+        <div className="min-h-[300px]">
+          <button
+            type="button"
+            title="주문페이지로 돌아가기 버튼"
+            className="m-3"
+            onClick={() => router.back()}
+          >
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              width="18px"
+              height="18px"
+              style={{ marginLeft: '3px' }}
+            />
+          </button>
+          <ul className="flex flex-col min-h-[403.2px]">
+            {data.shippingList.map((item: ShippingT, index: number) => {
+              return (
+                <li key={item.shipping_id}>
+                  <ShippingItemByOrder
+                    shipping={item}
+                    onOpen={handleClickModalOpen}
+                    page={page}
+                    setPage={setPage}
+                    startPage={startPage}
+                    setStartPage={setStartPage}
+                    totalPage={totalPage}
+                    setTotalPage={setTotalPage}
+                    isLastPage={data.isLastPage}
+                    listLength={data.shippingList.length}
+                    shippingListCount={data.shippingListCount}
+                  ></ShippingItemByOrder>
+                </li>
+              )
+            })}
+          </ul>
+          <div>
+            <Pagination
+              page={page}
+              setPage={setPage}
+              startPage={startPage}
+              setStartPage={setStartPage}
+              totalPage={totalPage}
+              setTotalPage={setTotalPage}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="text-xl">
+          <div>배송지가 없습니다.</div>
+        </div>
+      )}
+      <div className="text-xl">
+        <div className="flex justify-center my-10">
+          <button
+            type="button"
+            className="btn-add-address"
+            onClick={(event) => handleClickModalOpen(event)}
+          >
+            배송지 등록
+          </button>
+          {modalOpen && data && (
+            <Portal selector="#portal">
+              {modalShippingData ? (
+                <ModalDelivery
+                  onClose={handleClickModalOpen}
                   page={page}
                   setPage={setPage}
                   startPage={startPage}
                   setStartPage={setStartPage}
                   totalPage={totalPage}
                   setTotalPage={setTotalPage}
+                  listLength={
+                    data && data.shippingList ? data.shippingList.length : 0
+                  }
+                  shippingListCount={data.shippingListCount}
+                  shipping={modalShippingData}
                 />
-              </div>
-            </div>
-          ) : (
-            <div className="text-xl">
-              <div>배송지가 없습니다.</div>
-            </div>
-          )}
-          <div className="text-xl">
-            <div className="flex justify-center my-10">
-              <button
-                type="button"
-                className="btn-add-address"
-                onClick={(event) => handleClickModalOpen(event)}
-              >
-                배송지 등록
-              </button>
-              {modalOpen && data && (
-                <Portal selector="#portal">
-                  {modalShippingData ? (
-                    <ModalDelivery
-                      onClose={handleClickModalOpen}
-                      page={page}
-                      setPage={setPage}
-                      startPage={startPage}
-                      setStartPage={setStartPage}
-                      totalPage={totalPage}
-                      setTotalPage={setTotalPage}
-                      listLength={
-                        data && data.shippingList ? data.shippingList.length : 0
-                      }
-                      shippingListCount={data.shippingListCount}
-                      shipping={modalShippingData}
-                    />
-                  ) : (
-                    <ModalDelivery
-                      onClose={handleClickModalOpen}
-                      page={page}
-                      setPage={setPage}
-                      startPage={startPage}
-                      setStartPage={setStartPage}
-                      totalPage={totalPage}
-                      setTotalPage={setTotalPage}
-                      listLength={
-                        data && data.shippingList ? data.shippingList.length : 0
-                      }
-                      shippingListCount={data.shippingListCount}
-                    />
-                  )}
-                </Portal>
+              ) : (
+                <ModalDelivery
+                  onClose={handleClickModalOpen}
+                  page={page}
+                  setPage={setPage}
+                  startPage={startPage}
+                  setStartPage={setStartPage}
+                  totalPage={totalPage}
+                  setTotalPage={setTotalPage}
+                  listLength={
+                    data && data.shippingList ? data.shippingList.length : 0
+                  }
+                  shippingListCount={data.shippingListCount}
+                />
               )}
-            </div>
-          </div>
-        </>
-      ) : null}
+            </Portal>
+          )}
+        </div>
+      </div>
 
       <style jsx>{`
         button.btn-add-address {

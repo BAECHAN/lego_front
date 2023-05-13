@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import crypto from 'crypto-js'
 import * as common from '@components/common/event/CommonFunction'
@@ -19,6 +19,8 @@ export default function OauthCheck(props: { provider: string }) {
   const session = useSession()
 
   const router = useRouter()
+
+  const [disabledSubmit, setDisabledSubmit] = useState<boolean>(false)
 
   const handleClickNewAccount = () => {
     if (
@@ -51,7 +53,7 @@ export default function OauthCheck(props: { provider: string }) {
         userInfo
       )
         .then((response) => {
-          if (response?.status === 200) {
+          if (response?.status === 201) {
             alert('회원가입되었습니다.')
             router.push({
               pathname: '/',
@@ -61,6 +63,7 @@ export default function OauthCheck(props: { provider: string }) {
         })
         .catch((error) => {
           console.log(error)
+          setDisabledSubmit(true)
           alert('회원가입이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.')
           return false
         })
@@ -102,6 +105,7 @@ export default function OauthCheck(props: { provider: string }) {
             title="OAuth 계정으로 회원가입 제출"
             className="btn-common min-w-[330px] h-33 fs-14"
             onClick={handleClickNewAccount}
+            disabled={disabledSubmit}
           >
             회원가입
           </button>

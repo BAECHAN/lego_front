@@ -1,19 +1,19 @@
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React from 'react'
+import { useRecoilState } from 'recoil'
+import { findAccountSelector } from 'state/atoms'
 
-export default function ButtonFindAccountToggle() {
-  const router = useRouter()
-  const [isActiveId, setIsActiveId] = useState(
-    router.pathname.substring(7) == 'find_account' ? true : false
-  )
+export default function ButtonFindAccountToggle(props: { isLoading: boolean }) {
+  const [findAccountType, setFindAccountType] =
+    useRecoilState(findAccountSelector)
 
   const handleClickToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (event.currentTarget.className.indexOf('active') > -1) {
+    if (event.currentTarget.className.includes('active') || props.isLoading) {
       return false
     }
+
     event.currentTarget.id == 'findIdBtn'
-      ? router.push('/login/find_account')
-      : router.push('/login/find_password')
+      ? setFindAccountType('email')
+      : setFindAccountType('password')
   }
 
   return (
@@ -23,7 +23,9 @@ export default function ButtonFindAccountToggle() {
         id="findIdBtn"
         title="아이디 찾기 페이지로 전환"
         onClick={(event) => handleClickToggle(event)}
-        className={`btn-find-toggle ${isActiveId ? 'active' : ''}`}
+        className={`btn-find-toggle ${
+          findAccountType === 'email' ? 'active' : ''
+        }`}
       >
         아이디 찾기
       </button>
@@ -32,7 +34,9 @@ export default function ButtonFindAccountToggle() {
         id="findPwBtn"
         title="비밀번호 찾기 페이지로 전환"
         onClick={(event) => handleClickToggle(event)}
-        className={`btn-find-toggle ${!isActiveId ? 'active' : ''}`}
+        className={`btn-find-toggle ${
+          findAccountType === 'password' ? 'active' : ''
+        }`}
       >
         비밀번호 찾기
       </button>

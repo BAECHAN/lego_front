@@ -13,9 +13,9 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import useProductList from 'pages/api/query/useProductList'
 
 import axios from 'axios'
-import { QueryClient } from 'react-query'
 import { queryKeys } from 'pages/api/query/queryKeys'
 import { GetServerSidePropsContext } from 'next'
+import ButtonMore from '@components/common/pagination/ButtonMore'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
@@ -27,8 +27,6 @@ export default function Theme(props: ThemeT) {
   const [page, setPage] = useState(1)
   const [sort, setSort] = useRecoilState(sortSelector)
   const [theme, setTheme] = useRecoilState(themeSelector)
-
-  const queryClient = new QueryClient()
 
   const take = 15
   const filter = useRecoilValue(selectedFilterSelector)
@@ -56,20 +54,9 @@ export default function Theme(props: ThemeT) {
   const {
     data: productList,
     hasNextPage,
-    isFetched,
     isFetchingNextPage,
     fetchNextPage,
   } = useProductList(axiosGets)
-
-  /** 더보기 클릭 시 중복 데이터 가져옴 방지 */
-  const handleClickMoreProduct = () => {
-    console.log(productList?.pages.length)
-
-    if (productList && productList?.pages.length) {
-      fetchNextPage({ pageParam: productList.pages.length + 1 })
-      setPage(productList.pages.length + 1)
-    }
-  }
 
   /** 상세페이지에서 뒤로가기 시 스크롤 위치 가져오기 */
   useEffect(() => {
@@ -142,19 +129,15 @@ export default function Theme(props: ThemeT) {
             </ul>
 
             {hasNextPage ? (
-              <button
-                type="button"
-                title="상품 더보기 버튼"
-                className="w-full bg-gray-300 h-10 rounded my-7 hover:bg-gray-400"
-                onClick={() => handleClickMoreProduct()}
-                disabled={!hasNextPage || isFetchingNextPage}
-              >
-                {isFetchingNextPage
-                  ? '불러오는 중...'
-                  : hasNextPage
-                  ? '더보기'
-                  : '없음'}
-              </button>
+              <ButtonMore
+                type="product"
+                page={page}
+                setPage={setPage}
+                fetchNextPage={fetchNextPage}
+                hasNextPage={hasNextPage}
+                isFetchingNextPage={isFetchingNextPage}
+                data={productList}
+              />
             ) : (
               <br />
             )}

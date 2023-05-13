@@ -3,14 +3,30 @@ import Link from 'next/link'
 import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 import * as swal from '@components/common/custom/SweetAlert'
-import { inputRegExp } from '@components/common/custom/RegExp'
 
-import React, { ChangeEvent, useState, FocusEvent, FormEvent } from 'react'
-import { UserCreateT } from 'types'
-import axios from 'axios'
+import React, {
+  ChangeEvent,
+  useState,
+  FocusEvent,
+  FormEvent,
+  useRef,
+} from 'react'
+import {
+  EventTargetT,
+  InputRefsT,
+  InputT,
+  InputTNotPwchk,
+  ObjT_Bln,
+  UserCreateT,
+} from 'types'
 import crypto from 'crypto-js'
 import axiosRequest from 'pages/api/axios'
 import { useRouter } from 'next/router'
+
+import {
+  checkOverlapInput,
+  isPassRegExpInput,
+} from '@components/common/event/CommonFunction'
 
 export default function CreateAccount() {
   const router = useRouter()
@@ -22,219 +38,155 @@ export default function CreateAccount() {
     nickname: '',
   })
 
-  const [inputsPass, setInputsPass] = useState({
-    emailPass: false,
-    pwPass: false,
-    pwChkPass: false,
-    nicknamePass: false,
-  })
+  const inputRefs: InputRefsT = {
+    email: useRef<HTMLInputElement>(null),
+    pw: useRef<HTMLInputElement>(null),
+    pwChk: useRef<HTMLInputElement>(null),
+    nickname: useRef<HTMLInputElement>(null),
+  }
 
   let { email, pw, pwChk, nickname } = inputs
 
-  const isPass = (state: boolean, e: ChangeEvent<HTMLInputElement>): void => {
-    const { name } = e.target
+  const [disabledSubmit, setDisabledSubmit] = useState<boolean>(false)
 
-    e.target &&
-      setInputsPass({
-        ...inputsPass,
-        [`${name}Pass`]: state,
-      })
-  }
+  const [isOverlap, setIsOverlap] = useState<ObjT_Bln>({
+    email: false,
+    nickname: false,
+  })
 
-  const [disabledSubmit, setDisabledSubmit] = useState(false)
+  const [isPassRegExp, setIsPassRegExp] = useState<ObjT_Bln>({
+    email: false,
+    pw: false,
+    nickname: false,
+  })
 
-  const [isEmailOverlap, setIsEmailOverlap] = useState(false)
-  const [isNicknameOverlap, setIsNicknameOverlap] = useState(false)
+  const [isMatchPw, setIsMatchPw] = useState<boolean>(false)
 
-  const handleBlurEmail = (e: FocusEvent<HTMLInputElement>) => {
-    if (inputsPass.emailPass && email.length > 0) {
-      axiosRequest(
-        'post',
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/email-chk`,
-        { email }
+  const handleBlurInput = (e: FocusEvent<HTMLInputElement>) => {
+    const { name, value }: EventTargetT = e.target
+
+    if (typeof name === 'string' && value) {
+      checkOverlapInput(name as InputTNotPwchk, value).then(
+        (response: boolean) => {
+          setIsOverlap({
+            ...isOverlap,
+            [name]: response,
+          })
+        }
       )
-        .then((response) => {
-          if (response?.status === 409) {
-            setIsEmailOverlap(true)
-          } else if (response?.status === 200) {
-            setIsEmailOverlap(false)
-          } else {
-            console.log('의도치 않은 응답입니다.')
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-        })
     } else {
-      setIsEmailOverlap(false)
+      setIsOverlap({
+        ...isOverlap,
+        [name]: true,
+      })
     }
   }
 
-  const handleBlurNickname = (e: FocusEvent<HTMLInputElement>) => {
-    if (inputsPass.nicknamePass && nickname.length > 0) {
-      const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/nickname-chk`
+  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value }: EventTargetT = e.target
 
-      const param = { nickname }
+    setInputs({
+      ...inputs,
+      [name]: value,
+    })
 
-      axios
-        .post(url, JSON.stringify(param), {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
+    if (value) {
+      if (['email', 'pw', 'nickname'].includes(name)) {
+        setIsPassRegExp({
+          ...isPassRegExp,
+          [name]: isPassRegExpInput(name as InputTNotPwchk, value),
         })
-        .then((response) => {
-          response.data.result > 0
-            ? setIsNicknameOverlap(true)
-            : setIsNicknameOverlap(false)
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    } else {
-      setIsNicknameOverlap(false)
-    }
-  }
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.target
-
-    if (name == 'pw' || name == 'pwChk') {
-      setInputs({
-        ...inputs,
-        [name]: value.trim(),
-        // [name]: crypto.createChi(value.trim(),"123").toString()
-      })
-    } else {
-      setInputs({
-        ...inputs,
-        [name]: value.trim(),
-      })
-    }
-
-    if (value.trim().length > 0) {
-      const regExp = inputRegExp[name]
-
-      if (name == 'email') {
-        if (regExp.test(value)) {
-          isPass(true, e)
-        } else {
-          isPass(false, e)
-        }
-      } else if (name == 'pw') {
-        if (regExp.test(value)) {
-          if (pwChk.length > 0) {
-            if (pw != pwChk) {
-              setInputsPass({
-                ...inputsPass,
-                pwPass: true,
-                pwChkPass: false,
-              })
-            } else {
-              setInputsPass({
-                ...inputsPass,
-                pwPass: true,
-                pwChkPass: true,
-              })
-            }
+        if (name === 'pw') {
+          if (pwChk === value) {
+            setIsMatchPw(true)
           } else {
-            isPass(true, e)
+            setIsMatchPw(false)
           }
         } else {
-          isPass(false, e)
-        }
-      } else if (name == 'pwChk') {
-        if (pw == e.currentTarget.value) {
-          isPass(true, e)
-        } else {
-          isPass(false, e)
-        }
-      } else if (name == 'nickname') {
-        if (regExp.test(value)) {
-          isPass(true, e)
-        } else {
-          isPass(false, e)
+          isOverlap &&
+            setIsOverlap({
+              ...isOverlap,
+              [name]: false,
+            })
         }
       } else {
-        alert('검증할 수 없는 입력란입니다.')
-        return false
+        if (pw === value) {
+          setIsMatchPw(true)
+        } else {
+          setIsMatchPw(false)
+        }
       }
     } else {
-      isPass(false, e)
+      if (['email', 'pw', 'nickname'].includes(name)) {
+        setIsPassRegExp({
+          ...isPassRegExp,
+          [name]: false,
+        })
+      } else {
+        setIsMatchPw(false)
+      }
     }
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    setDisabledSubmit(true)
-    event.preventDefault()
+    event.preventDefault() // reload 방지
 
-    let hasFalseIndex = Object.values(inputsPass).indexOf(false)
-
-    if (hasFalseIndex >= 0) {
-      if (hasFalseIndex == 0) {
-        alert('이메일 주소를 확인해주시기 바랍니다.')
-        document.getElementById('email')?.focus()
-      } else if (hasFalseIndex == 1) {
-        alert('비밀번호를 확인해주시기 바랍니다.')
-        document.getElementById('pw')?.focus()
-      } else if (hasFalseIndex == 2) {
-        alert('비밀번호확인을 확인해주시기 바랍니다.')
-        document.getElementById('pwChk')?.focus()
-      } else if (hasFalseIndex == 3) {
-        alert('닉네임을 확인해주시기 바랍니다.')
-        document.getElementById('nickname')?.focus()
+    Object.entries(inputs).some(([key, value]: string[]) => {
+      if (value.length === 0) {
+        alert(`${inputRefs[key]?.current?.title}을 확인해주시기 바랍니다.`)
+        inputRefs[key]?.current?.focus()
+        return true
       }
-      setDisabledSubmit(false)
-      return false
-    } else {
-      if (isEmailOverlap) {
-        alert(
-          '이미 가입된 이메일입니다.\r로그인 하시거나 비밀번호가 기억이 나지 않으시다면 비밀번호찾기를 이용해주시기 바랍니다.'
-        )
-        document.getElementById('email')?.focus()
-        setDisabledSubmit(false)
-        return false
+    })
+
+    if (
+      !isOverlap.email &&
+      !isOverlap.nickname &&
+      isPassRegExp.email &&
+      isPassRegExp.pw &&
+      isPassRegExp.nickname &&
+      pw === pwChk
+    ) {
+      const secretKey = process.env.NEXT_PUBLIC_CRYPT_KEY
+      let hashedPassword: string = ''
+
+      if (secretKey) {
+        hashedPassword = crypto.HmacSHA512(pw, secretKey).toString()
+      } else {
+        throw new Error(`secretKey is undefined`)
       }
 
-      if (isNicknameOverlap) {
-        alert('사용중인 닉네임입니다.\r다른 닉네임으로 변경해주시기 바랍니다.')
-        document.getElementById('nickname')?.focus()
-        setDisabledSubmit(false)
-        return false
+      const userInfo = {
+        email,
+        pw: hashedPassword,
+        nickname,
       }
-    }
 
-    const secretKey = process.env.NEXT_PUBLIC_CRYPT_KEY
-    if (secretKey !== undefined) {
-      pw = crypto.HmacSHA512(pw, secretKey).toString()
-    } else {
-      alert('secretKey is undefined')
-      return false
+      axiosRequest(
+        'post',
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/create-account`,
+        userInfo
+      )
+        .then((response) => {
+          if (response?.status === 201) {
+            swal.SweetAlertSuccess(
+              '회원가입되었습니다.',
+              '로그인 페이지로 이동합니다.'
+            )
+            setDisabledSubmit(true)
+            router.push('/login')
+          } else {
+            throw new Error(`HTTP status : ${response?.status}`)
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+          setDisabledSubmit(true)
+          alert('회원가입이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.')
+          return false
+        })
     }
-
-    const userInfo = {
-      email,
-      pw,
-      nickname,
-    }
-
-    axiosRequest(
-      'post',
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/create-account`,
-      userInfo
-    )
-      .then((response) => {
-        if (response?.status === 200) {
-          swal.SweetAlertSuccess(
-            '회원가입되었습니다.',
-            '로그인 페이지로 이동합니다.'
-          )
-          router.push('/login')
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-        alert('회원가입이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.')
-        setDisabledSubmit(false)
-        return false
-      })
   }
 
   return (
@@ -253,32 +205,44 @@ export default function CreateAccount() {
               </a>
             </Link>
             <label>
-              이메일 주소
-              <FontAwesomeAsterisk />
-              <br />
+              <div className="flex">
+                <span>이메일 주소</span>
+                <span>
+                  <FontAwesomeAsterisk />
+                </span>
+                <div className="flex-grow"></div>
+                <i className="text-[8px] leading-6 text-gray-600">
+                  사용하고 계시는 이메일을 입력해주세요.
+                </i>
+              </div>
               <input
                 type="text"
                 id="email"
                 name="email"
-                className={
-                  email.length == 0
-                    ? 'border-gray-500 border-2 border-solid'
-                    : inputsPass.emailPass && !isEmailOverlap
-                    ? 'border-green-500 border-2 border-solid'
-                    : 'border-red-500 border-2 border-solid'
-                }
-                title="이메일 입력란"
+                title="이메일 주소 입력란"
+                className={`${
+                  !email
+                    ? 'border-gray'
+                    : isOverlap.email || !isPassRegExp.email
+                    ? 'border-red'
+                    : 'border-green'
+                }`}
                 value={email}
-                onChange={handleChange}
-                onBlur={handleBlurEmail}
+                onChange={handleChangeInput}
+                onBlur={handleBlurInput}
+                ref={inputRefs.email}
                 placeholder="예) lego@lego.co.kr"
                 autoComplete="off"
               />
             </label>
-            {inputsPass.emailPass || email.length == 0 ? (
-              isEmailOverlap ? (
-                <>
-                  <span className="text-red-500 self-start ml-4">
+            {email ? (
+              !isPassRegExp.email ? (
+                <span className="text-red-500">
+                  이메일 양식이 맞지 않습니다.
+                </span>
+              ) : isOverlap.email ? (
+                <div>
+                  <span className="text-red-500 ml-4">
                     이미 가입된 이메일입니다.
                   </span>
                   <div className="ml-10">
@@ -294,113 +258,107 @@ export default function CreateAccount() {
                       </a>
                     </Link>
                   </div>
-                </>
-              ) : (
-                ''
-              )
-            ) : (
-              <span className="text-red-500 self-start ml-4">
-                이메일 양식이 맞지 않습니다.
-              </span>
-            )}
+                </div>
+              ) : null
+            ) : null}
+
             <label>
-              비밀번호
+              <span>비밀번호</span>
               <FontAwesomeAsterisk />
               <br />
               <input
                 type="password"
                 id="pw"
                 name="pw"
-                className={
-                  pw.length == 0
-                    ? 'border-gray-500 border-2 border-solid'
-                    : inputsPass.pwPass
-                    ? 'border-green-500 border-2 border-solid'
-                    : 'border-red-500 border-2 border-solid'
-                }
                 title="비밀번호 입력란"
+                className={`${
+                  !pw
+                    ? 'border-gray'
+                    : !isPassRegExp.pw
+                    ? 'border-red'
+                    : 'border-green'
+                }`}
                 value={pw}
-                onChange={handleChange}
-                onBlur={handleChange}
+                onChange={(event) => handleChangeInput(event)}
+                ref={inputRefs.pw}
                 placeholder="8~16자 영문 대 소문자, 숫자, 특수문자"
                 autoComplete="off"
               />
             </label>
-            {inputsPass.pwPass || pw.length == 0 ? (
-              ''
-            ) : (
-              <span className="text-red-500 ml-4">
-                8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
-              </span>
-            )}
+            {pw ? (
+              !isPassRegExp.pw ? (
+                <span className="text-red-500">
+                  8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
+                </span>
+              ) : null
+            ) : null}
+
             <label>
-              비밀번호확인
+              <span>비밀번호확인</span>
               <FontAwesomeAsterisk />
               <br />
               <input
                 type="password"
                 id="pwChk"
                 name="pwChk"
-                className={
-                  pwChk.length == 0
-                    ? 'border-gray-500 border-2 border-solid'
-                    : inputsPass.pwChkPass
-                    ? 'border-green-500 border-2 border-solid'
-                    : 'border-red-500 border-2 border-solid'
-                }
                 title="비밀번호 확인 입력란"
+                className={`${
+                  !pwChk
+                    ? 'border-gray'
+                    : pw !== pwChk
+                    ? 'border-red'
+                    : 'border-green'
+                }`}
                 value={pwChk}
-                onChange={handleChange}
-                onBlur={handleChange}
+                onChange={(event) => handleChangeInput(event)}
+                ref={inputRefs.pwChk}
                 placeholder="8~16자 영문 대 소문자, 숫자, 특수문자"
                 autoComplete="off"
               />
             </label>
-            {pwChk.length == 0 ? (
-              ''
-            ) : inputsPass.pwChkPass ? (
-              ''
-            ) : (
-              <span className="text-red-500 self-start ml-4">
-                비밀번호가 일치하지 않습니다.
-              </span>
-            )}
+            {pwChk ? (
+              !isMatchPw ? (
+                <span className="text-red-500">
+                  비밀번호가 일치하지 않습니다.
+                </span>
+              ) : null
+            ) : null}
+
             <label>
-              닉네임
+              <span>닉네임</span>
               <FontAwesomeAsterisk />
               <br />
               <input
                 type="text"
                 id="nickname"
                 name="nickname"
-                className={
-                  nickname.length == 0
-                    ? 'border-gray-500 border-2 border-solid'
-                    : inputsPass.nicknamePass && !isNicknameOverlap
-                    ? 'border-green-500 border-2 border-solid'
-                    : 'border-red-500 border-2 border-solid'
-                }
                 title="닉네임 입력란"
+                className={`${
+                  !nickname
+                    ? 'border-gray'
+                    : isOverlap.nickname || !isPassRegExp.nickname
+                    ? 'border-red'
+                    : 'border-green'
+                }`}
                 value={nickname}
-                onChange={handleChange}
-                onBlur={handleBlurNickname}
+                onChange={(event) => handleChangeInput(event)}
+                onBlur={(event) => {
+                  handleBlurInput(event)
+                }}
+                ref={inputRefs.nickname}
                 placeholder="2글자 이상 16글자 이하의 한글 또는 영문"
                 autoComplete="off"
               />
             </label>
-            {inputsPass.nicknamePass || nickname.length == 0 ? (
-              isNicknameOverlap ? (
-                <span className="text-red-500 self-start ml-4">
-                  사용중인 닉네임입니다.
+            {nickname ? (
+              !isPassRegExp.nickname ? (
+                <span className="text-red-500">
+                  닉네임 양식이 맞지 않습니다.
                 </span>
-              ) : (
-                ''
-              )
-            ) : (
-              <span className="text-red-500 self-start ml-4">
-                닉네임 양식이 맞지 않습니다.
-              </span>
-            )}
+              ) : isOverlap.nickname ? (
+                <span className="text-red-500">사용중인 닉네임입니다.</span>
+              ) : null
+            ) : null}
             <button
               type="submit"
               title="회원가입 신청 버튼"
@@ -432,6 +390,18 @@ export default function CreateAccount() {
             height: 35px;
             display: inline-block;
             padding: 5px;
+
+            &.border-gray {
+              border: 2px gray solid;
+            }
+
+            &.border-red {
+              border: 2px red solid;
+            }
+
+            &.border-green {
+              border: 2px green solid;
+            }
           }
         }
       `}</style>
