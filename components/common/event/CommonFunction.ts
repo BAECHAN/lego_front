@@ -1,4 +1,7 @@
+import axiosRequest from 'pages/api/axios'
 import React, { ChangeEvent } from 'react'
+import { InputT } from 'types'
+import { inputRegExp } from '../custom/RegExp'
 
 export function CommonHandleChangeValue(
   option: string,
@@ -105,4 +108,45 @@ export function RandomPasswordIssuance() {
   }
 
   return temp_pw
+}
+
+export async function checkOverlapInput(
+  inputType: InputT,
+  inputValue: string
+): Promise<boolean> {
+  if (inputType === 'email' || inputType === 'nickname') {
+    return await axiosRequest(
+      'post',
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${inputType}-chk`,
+      { [inputType]: inputValue }
+    )
+      .then((response) => {
+        if (response && response.status === 200) {
+          if (response.data?.isOverlap) {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          throw new Error(`의도하지 않은 Response입니다.`)
+        }
+      })
+      .catch((error) => {
+        throw new Error(error)
+      })
+  } else {
+    throw new Error(`허용되지 않은 타입 : ${inputType}`)
+  }
+}
+
+export function isPassRegExpInput(inputType: InputT, inputValue: string) {
+  if (inputType === 'email' || inputType === 'pw' || inputType === 'nickname') {
+    if (inputRegExp[inputType].test(inputValue)) {
+      return true
+    } else {
+      return false
+    }
+  } else {
+    throw new Error(`허용되지 않은 타입 : ${inputType}`)
+  }
 }

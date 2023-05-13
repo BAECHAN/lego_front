@@ -4,160 +4,117 @@ import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 import { inputRegExp } from '@components/common/custom/RegExp'
 
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 import axios from 'axios'
 import Router, { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import axiosRequest from 'pages/api/axios'
+import {
+  EventTargetT,
+  InputRefsT,
+  InputTNotPwchk,
+  ObjT_Bln,
+  UserPasswordSubmitT,
+} from 'types'
+import { isPassRegExpInput } from '@components/common/event/CommonFunction'
 
 export default function ResetPassword() {
   const router = useRouter()
 
-  const email = router.query.email
-  const token = router.query.token
+  const token = router.query.token as string
 
   const [isExpired, setIsExpired] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    if (router.isReady) {
-      const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/token-chk?email=${email}&token=${token}`
-      axios
-        .get(url, {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
-        })
-        .then((response) => {
-          response.data.result.expired
-            ? setIsExpired(true)
-            : setIsExpired(false)
-          setIsLoading(false)
-        })
-        .catch((error) => {
-          console.log(error)
-          alert('잘못된 접근입니다.')
-          router.push('/')
-        })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [email, router.isReady, token])
-
-  const [inputs, setInputs] = useState({
+  const [inputs, setInputs] = useState<UserPasswordSubmitT>({
     pw: '',
     pwChk: '',
   })
 
-  const [inputsPass, setInputsPass] = useState({
-    pwPass: false,
-    pwChkPass: false,
-  })
+  const inputRefs: InputRefsT = {
+    pw: useRef<HTMLInputElement>(null),
+    pwChk: useRef<HTMLInputElement>(null),
+  }
 
   let { pw, pwChk } = inputs
 
-  const isPass = (state: boolean, e: ChangeEvent<HTMLInputElement>): void => {
-    const { name } = e.target
+  const [disabledSubmit, setDisabledSubmit] = useState<boolean>(false)
 
-    e.target &&
-      setInputsPass({
-        ...inputsPass,
-        [`${name}Pass`]: state,
-      })
-  }
+  const [isPassRegExp, setIsPassRegExp] = useState<ObjT_Bln>({
+    pw: false,
+  })
 
-  const [disabledSubmit, setDisabledSubmit] = useState(false)
+  const [isMatchPw, setIsMatchPw] = useState<boolean>(false)
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.target
+  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value }: EventTargetT = e.target
 
-    if (name == 'pw' || name == 'pwChk') {
-      setInputs({
-        ...inputs,
-        [name]: value.trim(),
-        // [name]: crypto.createChi(value.trim(),"123").toString()
-      })
-    } else {
-      setInputs({
-        ...inputs,
-        [name]: value.trim(),
-      })
-    }
+    setInputs({
+      ...inputs,
+      [name]: value,
+    })
 
-    if (value.trim().length > 0) {
-      const regExp = inputRegExp[name]
+    if (value) {
+      if (name === 'pw') {
+        setIsPassRegExp({
+          ...isPassRegExp,
+          [name]: isPassRegExpInput(name as InputTNotPwchk, value),
+        })
 
-      if (name == 'pw') {
-        if (regExp.test(value)) {
-          if (pwChk.length > 0) {
-            if (pw != pwChk) {
-              setInputsPass({
-                pwPass: true,
-                pwChkPass: false,
-              })
-            } else {
-              setInputsPass({
-                pwPass: true,
-                pwChkPass: true,
-              })
-            }
-          } else {
-            isPass(true, e)
-          }
-        } else {
-          isPass(false, e)
-        }
-      } else if (name == 'pwChk') {
-        if (pw == e.currentTarget.value) {
-          isPass(true, e)
-        } else {
-          isPass(false, e)
-        }
+        pwChk === value ? setIsMatchPw(true) : setIsMatchPw(false)
       } else {
-        alert('검증할 수 없는 입력란입니다.')
-        return false
+        pw === value ? setIsMatchPw(true) : setIsMatchPw(false)
       }
     } else {
-      isPass(false, e)
+      if (name === 'pw') {
+        setIsPassRegExp({
+          ...isPassRegExp,
+          [name]: false,
+        })
+      }
+      setIsMatchPw(false)
     }
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    setDisabledSubmit(true)
-    event.preventDefault()
+    event.preventDefault() // reload 방지
 
-    let hasFalseIndex = Object.values(inputsPass).indexOf(false)
-
-    if (hasFalseIndex >= 0) {
-      if (hasFalseIndex == 0) {
-        alert('비밀번호를 확인해주시기 바랍니다.')
-        document.getElementById('pw')?.focus()
-      } else if (hasFalseIndex == 1) {
-        alert('비밀번호확인을 확인해주시기 바랍니다.')
-        document.getElementById('pwChk')?.focus()
+    Object.entries(inputs).some(([key, value]: string[]) => {
+      if (value.length === 0) {
+        alert(`${inputRefs[key]?.current?.title}을 확인해주시기 바랍니다.`)
+        inputRefs[key]?.current?.focus()
+        return true
       }
-      setDisabledSubmit(false)
-      return false
-    }
+    })
 
-    const secretKey = process.env.NEXT_PUBLIC_CRYPT_KEY
-    if (secretKey !== undefined) {
-      pw = crypto.HmacSHA512(pw, secretKey).toString()
-    } else {
-      alert('secretKey is undefined')
-      return false
-    }
+    if (isPassRegExp.pw && pw === pwChk) {
+      const secretKey = process.env.NEXT_PUBLIC_CRYPT_KEY
+      let hashedPassword: string = ''
 
-    if (typeof email == 'string') {
-      const param = {
-        email,
-        pw,
+      if (secretKey) {
+        hashedPassword = crypto.HmacSHA512(pw, secretKey).toString()
+      } else {
+        throw new Error(`secretKey is undefined`)
+      }
+
+      const userInfo = {
+        pw: hashedPassword,
+        token: token,
       }
 
       axiosRequest(
         'patch',
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/update-password`,
-        param
+        userInfo
       )
         .then((response) => {
-          if (response?.status === 200) {
+          if (response?.status === 204) {
             if (router.query.callbackPage == 'user_info') {
               alert(
                 '비밀번호가 변경되었습니다.\r회원 정보 페이지로 이동합니다.'
@@ -167,6 +124,11 @@ export default function ResetPassword() {
               alert('비밀번호가 변경되었습니다.\r로그인 페이지로 이동합니다.')
               Router.push('/login')
             }
+          } else {
+            alert(
+              '의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.'
+            )
+            console.error(`HTTP status : ${response?.status}`)
           }
         })
         .catch((error) => {
@@ -179,6 +141,28 @@ export default function ResetPassword() {
         })
     }
   }
+
+  useEffect(() => {
+    if (router.isReady) {
+      const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/token-chk`
+
+      axiosRequest('post', url, { token: token })
+        .then((response) => {
+          if (response?.data.result.expired) {
+            setIsExpired(true)
+          } else {
+            setIsExpired(false)
+          }
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          console.log(error)
+          alert('잘못된 접근입니다.')
+          router.push('/')
+        })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady, token])
 
   return (
     <div>
@@ -202,67 +186,67 @@ export default function ResetPassword() {
                   </a>
                 </Link>
                 <label>
-                  새 비밀번호 입력
+                  <span>비밀번호</span>
                   <FontAwesomeAsterisk />
                   <br />
                   <input
                     type="password"
                     id="pw"
                     name="pw"
-                    className={
-                      pw.length == 0
-                        ? 'border-gray-500 border-2 border-solid'
-                        : inputsPass.pwPass
-                        ? 'border-green-500 border-2 border-solid'
-                        : 'border-red-500 border-2 border-solid'
-                    }
                     title="새 비밀번호 입력란"
+                    className={`${
+                      !pw
+                        ? 'border-gray'
+                        : !isPassRegExp.pw
+                        ? 'border-red'
+                        : 'border-green'
+                    }`}
                     value={pw}
-                    onChange={handleChange}
-                    onBlur={handleChange}
+                    onChange={(event) => handleChangeInput(event)}
+                    ref={inputRefs.pw}
                     placeholder="8~16자 영문 대 소문자, 숫자, 특수문자"
                     autoComplete="off"
                   />
                 </label>
-                {inputsPass.pwPass || pw.length == 0 ? (
-                  ''
-                ) : (
-                  <span className="text-red-500 ml-4">
-                    8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
-                  </span>
-                )}
+                {pw ? (
+                  !isPassRegExp.pw ? (
+                    <span className="text-red-500">
+                      8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
+                    </span>
+                  ) : null
+                ) : null}
+
                 <label>
-                  새 비밀번호 확인
+                  <span>비밀번호확인</span>
                   <FontAwesomeAsterisk />
                   <br />
                   <input
                     type="password"
                     id="pwChk"
                     name="pwChk"
-                    className={
-                      pwChk.length == 0
-                        ? 'border-gray-500 border-2 border-solid'
-                        : inputsPass.pwChkPass
-                        ? 'border-green-500 border-2 border-solid'
-                        : 'border-red-500 border-2 border-solid'
-                    }
                     title="새 비밀번호 확인 입력란"
+                    className={`${
+                      !pwChk
+                        ? 'border-gray'
+                        : pw !== pwChk
+                        ? 'border-red'
+                        : 'border-green'
+                    }`}
                     value={pwChk}
-                    onChange={handleChange}
-                    onBlur={handleChange}
+                    onChange={(event) => handleChangeInput(event)}
+                    ref={inputRefs.pwChk}
                     placeholder="8~16자 영문 대 소문자, 숫자, 특수문자"
                     autoComplete="off"
                   />
                 </label>
-                {pwChk.length == 0 ? (
-                  ''
-                ) : inputsPass.pwChkPass ? (
-                  ''
-                ) : (
-                  <span className="text-red-500 self-start ml-4">
-                    비밀번호가 일치하지 않습니다.
-                  </span>
-                )}
+                {pwChk ? (
+                  !isMatchPw ? (
+                    <span className="text-red-500">
+                      비밀번호가 일치하지 않습니다.
+                    </span>
+                  ) : null
+                ) : null}
+
                 <button
                   type="submit"
                   className="btn-common min-w-[330px] h-33 fs-14"
@@ -311,6 +295,18 @@ export default function ResetPassword() {
             height: 35px;
             display: inline-block;
             padding: 5px;
+
+            &.border-gray {
+              border: 2px gray solid;
+            }
+
+            &.border-red {
+              border: 2px red solid;
+            }
+
+            &.border-green {
+              border: 2px green solid;
+            }
           }
         }
 

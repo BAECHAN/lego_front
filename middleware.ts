@@ -52,16 +52,16 @@ export async function middleware(request: NextRequest, response: NextResponse) {
           .catch((error) => console.log(error))
 
         if (response) {
-          if (response.status == 204) {
+          if (response.status === 401) {
             const url = request.nextUrl.clone()
             url.pathname = '/account/oauth_check'
             url.searchParams.set('provider', String(session.provider))
             return NextResponse.redirect(url)
-          } else if (response.status == 200) {
-          } else if (response.status == 201) {
-          } else {
+          } else if (response.status === 200) {
+            console.log(200)
+          } else if (response.status === 204) {
+            console.log(204)
           }
-        } else {
         }
       }
     }
@@ -82,7 +82,10 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     }
   }
 
-  if (request.nextUrl.pathname.startsWith('/mypage')) {
+  if (
+    request.nextUrl.pathname.startsWith('/mypage') ||
+    request.nextUrl.pathname.startsWith('/order')
+  ) {
     if (!session) {
       const url = request.nextUrl.clone()
       url.pathname = '/login'

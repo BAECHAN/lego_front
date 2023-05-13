@@ -13,6 +13,7 @@ import { orderPriceSelector, selectedOrderSelector } from 'state/atoms'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
+import { queryKeys } from 'pages/api/query/queryKeys'
 
 export default function ProductInCart(props: { product: ProductCartT }) {
   const [quantity, setQuantity] = useState(props.product.order_quantity)
@@ -104,26 +105,24 @@ export default function ProductInCart(props: { product: ProductCartT }) {
 
   const delCartAPI = useMutation(
     async (param: ProductDeleteCartSubmitT) => {
-      const res = await axios.patch(
+      return await axios.patch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-cart`,
-
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
         }
       )
-      return res.data
     },
     {
-      onSuccess: async (data) => {
-        if (data.result == 1) {
-          setSelectedOrder(selectedOrder.filter((item) => item !== data.cartId))
-          queryClient.invalidateQueries(['product-cart-list'])
-        } else {
-          alert(
-            '장바구니에서 삭제하는데 문제가 발생하였습니다.\r고객센터에 문의해주시기 바랍니다.'
+      onSuccess: (response, variables) => {
+        if (response.status === 204) {
+          setSelectedOrder(
+            selectedOrder.filter((item) => item !== variables.cart_id)
           )
-          return false
+          queryClient.invalidateQueries([queryKeys.productCartList])
+        } else {
+          alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+          console.error(`HTTP status : ${response?.status}`)
         }
       },
       onError: (error) => console.log(error),
@@ -132,14 +131,13 @@ export default function ProductInCart(props: { product: ProductCartT }) {
 
   const updateQuantityAPI = useMutation(
     async (param: ProductUpdateCartSubmitT) => {
-      const res = await axios.patch(
+      return await axios.patch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-cart`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
         }
       )
-      return res.data
     },
     {
       onMutate: () => {
@@ -199,20 +197,17 @@ export default function ProductInCart(props: { product: ProductCartT }) {
 
         return prevInfo
       },
-      onSuccess: (data, values, rollback) => {
-        if (data.result == 1) {
-          console.log(data)
-        } else {
-          alert(
-            '수량을 변경하는데 문제가 발생하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-          )
+      onSuccess: (response, variables, rollback) => {
+        if (!(response.status === 204)) {
+          alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+          console.error(`HTTP status : ${response?.status}`)
+
           if (rollback) {
             setQuantity(rollback.quantity)
             setTotalPrice(rollback.totalPrice)
             setPlusDisabled(rollback.plusDisabled)
             setMinusDisabled(rollback.minusDisabled)
           }
-          return false
         }
       },
       onError: (error, values, rollback) => {

@@ -15,6 +15,7 @@ import axios from 'axios'
 
 import * as common from '@components/common/event/CommonFunction'
 import * as swal from '@components/common/custom/SweetAlert'
+import { queryKeys } from 'pages/api/query/queryKeys'
 
 export default function ModalDelivery(props: {
   onClose: any
@@ -228,18 +229,17 @@ export default function ModalDelivery(props: {
 
   const updateShippingAPI = useMutation(
     async (param: any) => {
-      const res = await axios.post(
+      return await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/manage-shipping`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
         }
       )
-      return res
     },
     {
       onSuccess: (response) => {
-        if (response?.status === 200) {
+        if (response?.status === 204) {
           if (isUpdate) {
             swal.SweetAlertSuccess('배송지를 수정하였습니다.')
           } else {
@@ -296,8 +296,11 @@ export default function ModalDelivery(props: {
           }
           setDisabledSubmit(false)
           props.onClose()
-          queryClient.invalidateQueries(['shipping-list'])
+          queryClient.invalidateQueries([queryKeys.shippingList])
           return true
+        } else {
+          alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+          console.error(`HTTP status : ${response?.status}`)
         }
       },
       onError: (error) => {

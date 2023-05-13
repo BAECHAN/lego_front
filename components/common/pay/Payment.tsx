@@ -86,13 +86,11 @@ export default function Payment(props: {
             '주문이 완료되었습니다.',
             '주문 내역 페이지로 이동합니다.'
           )
-          queryClient.invalidateQueries(['user-order'])
           router.push('/mypage/order_history')
         } else {
           alert(
             '결제정보를 저장하는데 문제가 발생하였습니다.\r고객센터에 문의해주시기 바랍니다.'
           )
-          queryClient.invalidateQueries(['user-order'])
           router.push('/mypage/order_history')
           return false
         }

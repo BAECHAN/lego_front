@@ -8,6 +8,7 @@ import axios from 'axios'
 
 import * as common from '@components/common/event/CommonFunction'
 import * as swal from '@components/common/custom/SweetAlert'
+import { queryKeys } from 'pages/api/query/queryKeys'
 
 export default function ProductInOrderHistory(props: { order: OrderT }) {
   const { data: session, status } = useSession()
@@ -65,7 +66,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
       onSuccess: async (response) => {
         if (response.result == 1) {
           swal.SweetAlertSuccess('환불처리 되었습니다.')
-          queryClient.invalidateQueries(['order-list'])
+          queryClient.invalidateQueries([queryKeys.orderList])
           setIsRefund(true)
         } else {
           alert(

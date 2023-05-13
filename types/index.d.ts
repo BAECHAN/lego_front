@@ -1,7 +1,27 @@
 import internal from 'stream'
 
+export type ButtonMoreType = 'order' | 'product'
+
+export type InputT = 'email' | 'pw' | 'pwChk' | 'nickname'
+export type InputTNotPwchk = 'email' | 'pw' | 'nickname'
+
+export type InputRefsT = {
+  [key in InputT | string]: React.RefObject<HTMLInputElement>
+}
+
+export type FindAccountT = 'email' | 'password'
+
+export type EventTargetT = {
+  name: string
+  value: string
+}
+
 export type ObjT_Str = {
   [key: string]: string
+}
+
+export type ObjT_Bln = {
+  [key: string]: boolean
 }
 
 export type ObjT_StrArr = {
@@ -119,6 +139,11 @@ export type UserSubmitT = {
 }
 
 export type UserCreateT = UserSubmitT & {
+  pwChk: string
+}
+
+export type UserPasswordSubmitT = {
+  pw: string
   pwChk: string
 }
 

@@ -6,6 +6,9 @@ import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { queryKeys } from 'pages/api/query/queryKeys'
+import ButtonEdit from './shipping/ButtonEdit'
+import ButtonDelete from './shipping/ButtonDelete'
 
 export default function ShippingItem(props: {
   shipping: ShippingT
@@ -54,18 +57,17 @@ export default function ShippingItem(props: {
 
   const deleteShippingAPI = useMutation(
     async (param: any) => {
-      const res = await axios.patch(
+      return await axios.patch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-shipping`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
         }
       )
-      return res
     },
     {
       onSuccess: (response) => {
-        if (response?.status === 200) {
+        if (response?.status === 204) {
           alert('배송지를 삭제하였습니다.')
 
           if (props.isLastPage) {
@@ -91,8 +93,10 @@ export default function ShippingItem(props: {
             }
           }
 
-          queryClient.invalidateQueries(['shipping-list'])
-          return true
+          queryClient.invalidateQueries([queryKeys.shippingList])
+        } else {
+          alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+          console.error(`HTTP status : ${response?.status}`)
         }
       },
       onError: (error) => {
@@ -100,7 +104,6 @@ export default function ShippingItem(props: {
         alert(
           '배송지 삭제가 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
         )
-        return false
       },
     }
   )
@@ -140,49 +143,19 @@ export default function ShippingItem(props: {
 
       {/** 버튼 */}
       <div className="w-[20%] flex items-center text-sm">
-        <button
-          type="button"
-          title="배송지 수정"
-          className="btn-update-shipping flex h-8 leading-5 m-2 items-center"
-          onClick={(event) => handleClickButton(event, 'update')}
-        >
-          수정
-          <FontAwesomeIcon
-            icon={faPenSquare}
-            width="23px"
-            height="23px"
-            style={{ marginLeft: '3px' }}
-          />
-        </button>
-        <button
-          type="button"
-          title="배송지 삭제"
-          className="btn-delete-shipping flex h-8 leading-5 m-2 items-center"
-          onClick={(event) => handleClickButton(event, 'delete')}
-        >
-          삭제
-          <FontAwesomeIcon
-            icon={faTrashCan}
-            width="23px"
-            height="23px"
-            style={{ marginLeft: '3px' }}
-          />
-        </button>
+        <ButtonEdit shipping={props.shipping} onOpen={props.onOpen} />
+        <ButtonDelete
+          shipping={props.shipping}
+          page={props.page}
+          setPage={props.setPage}
+          setStartPage={props.setStartPage}
+          totalPage={props.totalPage}
+          setTotalPage={props.setTotalPage}
+          isLastPage={props.isLastPage}
+          listLength={props.listLength}
+          shippingListCount={props.shippingListCount}
+        />
       </div>
-
-      <style jsx>{`
-        button.btn-update-shipping,
-        button.btn-delete-shipping {
-          background-color: gray;
-          color: #fff;
-          padding: 5px 10px;
-          border-radius: 4px;
-
-          :hover {
-            background-color: #000;
-          }
-        }
-      `}</style>
     </div>
   )
 }

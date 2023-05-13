@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { ProductT } from 'types'
 
 export default function ContentsViewedProducts() {
-  const { data: data, isFetched } = useProductViewedList()
+  const { data: product, isFetched } = useProductViewedList()
 
   useEffect(() => {
     if (sessionStorage.getItem('isHistoryBack') === 'true') {
@@ -17,8 +17,8 @@ export default function ContentsViewedProducts() {
     <div>
       {isFetched ? (
         <ul className="flex flex-wrap">
-          {data && data.productList.length > 0 ? (
-            data.productList?.map((item: ProductT, index: number) => {
+          {product?.data && product.data.productList.length > 0 ? (
+            product.data.productList?.map((item: ProductT, index: number) => {
               return <ProductCard product={item} key={index} />
             })
           ) : (

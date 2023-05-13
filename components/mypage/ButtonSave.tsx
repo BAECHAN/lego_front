@@ -5,6 +5,12 @@ import axiosRequest from 'pages/api/axios'
 import { inputRegExp } from '@components/common/custom/RegExp'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
+import {
+  checkOverlapInput,
+  isPassRegExpInput,
+} from '@components/common/event/CommonFunction'
+import { InputTNotPwchk } from 'types'
+import { queryKeys } from 'pages/api/query/queryKeys'
 
 export default function ButtonSave(props: {
   infoKey: string
@@ -37,41 +43,45 @@ export default function ButtonSave(props: {
       props.setUploadFile(undefined)
     } else {
       if (props.infoKey == 'name') {
-        if (inputRegExp.nickname.test(props.newValue)) {
-          axiosRequest(
-            'post',
-            `${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-nickname`,
-            {
-              email: props.email,
-              nickname: props.newValue,
-            }
-          )
-            .then(async (response) => {
-              if (response?.data.result > 0) {
+        if (isPassRegExpInput('nickname', props.newValue)) {
+          checkOverlapInput('nickname' as InputTNotPwchk, props.newValue).then(
+            (response: boolean) => {
+              if (!response) {
+                axiosRequest(
+                  'post',
+                  `${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-nickname`,
+                  {
+                    email: props.email,
+                    nickname: props.newValue,
+                  }
+                )
+                  .then((response) => {
+                    if (response?.status === 204) {
+                      alert('변경되었습니다.')
+                      props.setIsChange(!props.isChange)
+                      props.setValue(props.newValue)
+                    } else {
+                      alert(
+                        '의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.'
+                      )
+                      console.error(`HTTP status : ${response?.status}`)
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    alert(
+                      '닉네임 변경이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
+                    )
+                    return false
+                  })
+              } else {
                 alert(
                   '사용중인 닉네임입니다.\r다른 닉네임을 이용해주시기 바랍니다.'
                 )
                 return false
-              } else {
-                if (response?.data.result == -1) {
-                  alert(
-                    '닉네임 변경이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-                  )
-                  return false
-                } else {
-                  alert('변경되었습니다.')
-                  props.setIsChange(!props.isChange)
-                  props.setValue(props.newValue)
-                }
               }
-            })
-            .catch((error) => {
-              console.log(error)
-              alert(
-                '닉네임 변경이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-              )
-              return false
-            })
+            }
+          )
         } else {
           alert('닉네임 양식이 맞지 않습니다.')
           return false
@@ -107,7 +117,7 @@ export default function ButtonSave(props: {
       onSuccess: async (data) => {
         if (data.result == 1) {
           alert('변경되었습니다.')
-          queryClient.invalidateQueries(['user-info'])
+          queryClient.invalidateQueries([queryKeys.userInfo])
           props.setIsChange(!props.isChange)
         } else {
           alert(

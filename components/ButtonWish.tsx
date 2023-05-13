@@ -6,7 +6,7 @@ import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { ProductWishSubmitT } from 'types'
 import axios from 'axios'
-import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import useProductWishList from 'pages/api/query/useProductWishList'
 
 export default function ButtonWish(props: {
@@ -22,16 +22,12 @@ export default function ButtonWish(props: {
 
   const router = useRouter()
 
-  const { data, isFetched } = useProductWishList()
-
-  const queryClient = useQueryClient()
-
-  const key = 'product-wish-list'
+  const { data: product, isFetched } = useProductWishList()
 
   useEffect(() => {
     if (isFetched) {
-      if (data.wishList.length > 0) {
-        for (let wish of data.wishList) {
+      if (product && product.data.wishList.length > 0) {
+        for (let wish of product.data.wishList) {
           wish.product_id == wishInfo.product_id
             ? setWishInfo({
                 ...wishInfo,
@@ -43,18 +39,17 @@ export default function ButtonWish(props: {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [product])
 
   const addWishAPI = useMutation(
     async (param: ProductWishSubmitT) => {
-      const res = await axios.post(
+      return await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/add-wish`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
         }
       )
-      return res.data
     },
     {
       onMutate: async () => {
@@ -62,6 +57,12 @@ export default function ButtonWish(props: {
           ...wishInfo,
           wish: true,
         })
+      },
+      onSuccess: (response) => {
+        if (!(response.status === 201)) {
+          alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+          console.error(`HTTP status : ${response?.status}`)
+        }
       },
       onError: (error, values, rollback) => {
         alert(
@@ -80,14 +81,13 @@ export default function ButtonWish(props: {
 
   const delWishAPI = useMutation(
     async (param: ProductWishSubmitT) => {
-      const res = await axios.patch(
+      return await axios.patch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-wish`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
         }
       )
-      return res.data
     },
     {
       onMutate: async () => {
@@ -95,6 +95,12 @@ export default function ButtonWish(props: {
           ...wishInfo,
           wish: false,
         })
+      },
+      onSuccess: (response) => {
+        if (!(response.status === 204)) {
+          alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+          console.error(`HTTP status : ${response?.status}`)
+        }
       },
       onError: (error, values, rollback) => {
         alert(

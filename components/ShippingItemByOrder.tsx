@@ -12,6 +12,10 @@ import axios from 'axios'
 import { useRecoilState } from 'recoil'
 import { useRouter } from 'next/router'
 import { selectedShippingSelector } from 'state/atoms'
+import { queryKeys } from 'pages/api/query/queryKeys'
+import ButtonEdit from './shipping/ButtonEdit'
+import ButtonDelete from './shipping/ButtonDelete'
+import ButtonChoice from './shipping/ButtonChoice'
 
 export default function ShippingItemByOrder(props: {
   shipping: ShippingT
@@ -89,7 +93,7 @@ export default function ShippingItemByOrder(props: {
       onSuccess: (response) => {
         if (response?.status === 200) {
           router.push('/order')
-          queryClient.invalidateQueries(['shipping-list'])
+          queryClient.invalidateQueries([queryKeys.shippingList])
           setSelectedShipping(props.shipping.shipping_id)
           return true
         }
@@ -106,18 +110,17 @@ export default function ShippingItemByOrder(props: {
 
   const deleteShippingAPI = useMutation(
     async (param: any) => {
-      const res = await axios.patch(
+      return await axios.patch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-shipping`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
         }
       )
-      return res
     },
     {
       onSuccess: (response) => {
-        if (response?.status === 200) {
+        if (response?.status === 204) {
           alert('배송지를 삭제하였습니다.')
 
           if (props.isLastPage) {
@@ -143,8 +146,10 @@ export default function ShippingItemByOrder(props: {
             }
           }
 
-          queryClient.invalidateQueries(['shipping-list'])
-          return true
+          queryClient.invalidateQueries([queryKeys.shippingList])
+        } else {
+          alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+          console.error(`HTTP status : ${response?.status}`)
         }
       },
       onError: (error) => {
@@ -152,7 +157,6 @@ export default function ShippingItemByOrder(props: {
         alert(
           '배송지 삭제가 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
         )
-        return false
       },
     }
   )
@@ -209,51 +213,24 @@ export default function ShippingItemByOrder(props: {
           <div className="flex-grow"></div>
           <div>
             <div className="flex items-center text-sm">
-              <button
-                type="button"
-                className="btn-choice-shipping flex leading-5 m-2 items-center"
-                onClick={(event) => handleClickButton(event, 'choice')}
-              >
-                <FontAwesomeIcon
-                  icon={faCircleCheck}
-                  width="36px"
-                  height="36px"
-                  style={{ marginLeft: '3px' }}
-                />
-              </button>
+              <ButtonChoice shipping={props.shipping} />
             </div>
           </div>
         </div>
 
         <div className="flex text-sm self-end">
-          <button
-            type="button"
-            title="배송지 수정"
-            className="btn-update-shipping flex h-8 leading-5 m-2 items-center"
-            onClick={(event) => handleClickButton(event, 'update')}
-          >
-            수정
-            <FontAwesomeIcon
-              icon={faPenSquare}
-              width="23px"
-              height="23px"
-              style={{ marginLeft: '3px' }}
-            />
-          </button>
-          <button
-            type="button"
-            title="배송지 삭제"
-            className="btn-delete-shipping flex h-8 leading-5 m-2 items-center"
-            onClick={(event) => handleClickButton(event, 'delete')}
-          >
-            삭제
-            <FontAwesomeIcon
-              icon={faTrashCan}
-              width="23px"
-              height="23px"
-              style={{ marginLeft: '3px' }}
-            />
-          </button>
+          <ButtonEdit shipping={props.shipping} onOpen={props.onOpen} />
+          <ButtonDelete
+            shipping={props.shipping}
+            page={props.page}
+            setPage={props.setPage}
+            setStartPage={props.setStartPage}
+            totalPage={props.totalPage}
+            setTotalPage={props.setTotalPage}
+            isLastPage={props.isLastPage}
+            listLength={props.listLength}
+            shippingListCount={props.shippingListCount}
+          />
         </div>
       </div>
       <style jsx>{`
@@ -263,27 +240,6 @@ export default function ShippingItemByOrder(props: {
           padding: 10px;
           border: 0.5px solid rgb(99, 97, 97, 0.5);
           border-radius: 5px;
-        }
-
-        button.btn-update-shipping,
-        button.btn-delete-shipping {
-          background-color: gray;
-          color: #fff;
-          padding: 5px 10px;
-          border-radius: 4px;
-
-          :hover {
-            background-color: #000;
-          }
-        }
-
-        button.btn-choice-shipping {
-          color: gray;
-          padding: 5px 10px;
-
-          :hover {
-            color: #98dfd6;
-          }
         }
       `}</style>
     </div>

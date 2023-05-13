@@ -4,14 +4,14 @@ import React from 'react'
 import { ProductT } from 'types'
 
 export default function ContentsWishList() {
-  const { data, isFetched } = useProductWishList()
+  const { data: product, isFetched } = useProductWishList()
 
   return (
     <div>
       {isFetched ? (
         <ul className="flex flex-wrap">
-          {data && data.wishList.length > 0 ? (
-            data.wishList?.map((item: ProductT, index: number) => {
+          {product && product.data && product.data.wishList.length > 0 ? (
+            product.data.wishList?.map((item: ProductT, index: number) => {
               return <ProductCard product={item} key={index} />
             })
           ) : (

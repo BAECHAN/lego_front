@@ -9,7 +9,7 @@ import { ProductCartT } from 'types'
 export default function ContentsCart() {
   const router = useRouter()
 
-  const { data, isFetched } = useProductCartList()
+  const { data: product, isFetched } = useProductCartList()
 
   const [selectedOrder, setSelectedOrder] = useRecoilState(
     selectedOrderSelector
@@ -24,25 +24,26 @@ export default function ContentsCart() {
       resetSelectredOrder()
       resetTotalPrice()
 
-      data.cartList.map((item: ProductCartT, index: number) => {
-        setSelectedOrder((selectedOrder) => [...selectedOrder, item.cart_id])
+      product &&
+        product.data.cartList.map((item: ProductCartT, index: number) => {
+          setSelectedOrder((selectedOrder) => [...selectedOrder, item.cart_id])
 
-        let addPrice = 0
+          let addPrice = 0
 
-        if (item.discounting == 1 && item.rate_discount > 0) {
-          addPrice =
-            item.price *
-            item.order_quantity *
-            (1 - Number(item.rate_discount) / 100)
-        } else {
-          addPrice = item.price * item.order_quantity
-        }
+          if (item.discounting == 1 && item.rate_discount > 0) {
+            addPrice =
+              item.price *
+              item.order_quantity *
+              (1 - Number(item.rate_discount) / 100)
+          } else {
+            addPrice = item.price * item.order_quantity
+          }
 
-        setTotalPrice((totalPrice) => totalPrice + addPrice)
-      })
+          setTotalPrice((totalPrice) => totalPrice + addPrice)
+        })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [product])
 
   const handleClickOrder = () => {
     router.push('/order')
@@ -55,17 +56,19 @@ export default function ContentsCart() {
   return (
     <div>
       {isFetched ? (
-        data && data.cartList?.length > 0 ? (
+        product && product.data.cartList?.length > 0 ? (
           <div className="min-h-[600px]">
             <ul className="flex flex-col">
-              {data.cartList.map((item: ProductCartT, index: number) => {
-                return (
-                  <li key={item.cart_id}>
-                    <ProductInCart product={item} />
-                    {index < data.cartList.length - 1 && <hr />}
-                  </li>
-                )
-              })}
+              {product.data.cartList.map(
+                (item: ProductCartT, index: number) => {
+                  return (
+                    <li key={item.cart_id}>
+                      <ProductInCart product={item} />
+                      {index < product.data.cartList.length - 1 && <hr />}
+                    </li>
+                  )
+                }
+              )}
             </ul>
             <div className="flex justify-center">
               <p>주문할 상품 : {selectedOrder.length}개</p>

@@ -44,11 +44,11 @@ export default function Product(props: ProductT) {
   }
 
   useEffect(() => {
-    if (product && product.product_info && product.product_info.ea) {
+    if (product && product.data.product_info && product.data.product_info.ea) {
       setMinusDisabled(quantity <= 1)
-      setPlusDisabled(quantity >= product.product_info.ea)
-      if (quantity > product.product_info.ea) {
-        setQuantity(product.product_info.ea)
+      setPlusDisabled(quantity >= product.data.product_info.ea)
+      if (quantity > product.data.product_info.ea) {
+        setQuantity(product.data.product_info.ea)
       }
     }
   }, [product, quantity])
@@ -67,7 +67,16 @@ export default function Product(props: ProductT) {
             process.env.NEXT_PUBLIC_SERVER_URL
           }/api/theme-by-product?product_number=${Number(props.product_number)}`
         )
-        .then((response) => setTheme(response.data.result))
+        .then((response) => {
+          if (response.status === 200) {
+            setTheme(response.data.result)
+          } else {
+            alert(
+              '의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.'
+            )
+            console.error(`HTTP status : ${response?.status}`)
+          }
+        })
         .catch((error) => console.log(error))
 
       /** 최근 본 상품에 추가하기 */
@@ -99,7 +108,7 @@ export default function Product(props: ProductT) {
 
   return (
     <div className="px-32">
-      <Navbar productInfo={product?.product_info} />
+      <Navbar productInfo={product?.data.product_info} />
       <div className="prod-main flex flex-wrap">
         <div className="prod-img w-8/12 p-4">
           <Carousel
@@ -114,66 +123,70 @@ export default function Product(props: ProductT) {
             slideIndex={carouselIdx}
           >
             {product
-              ? product?.product_img_list &&
-                product?.product_img_list.map((img: string, index: number) => {
-                  return (
-                    <Image
-                      key={index}
-                      src={img}
-                      alt={String(index)}
-                      width="700px"
-                      height="400px"
-                      priority
-                      quality={30}
-                      placeholder="blur"
-                      blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
-                      layout="responsive"
-                      className="hover:scale-110"
-                      onDragStart={(e) => e.preventDefault()}
-                    />
-                  )
-                })
+              ? product?.data.product_img_list &&
+                product?.data.product_img_list.map(
+                  (img: string, index: number) => {
+                    return (
+                      <Image
+                        key={index}
+                        src={img}
+                        alt={String(index)}
+                        width="700px"
+                        height="400px"
+                        priority
+                        quality={30}
+                        placeholder="blur"
+                        blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
+                        layout="responsive"
+                        className="hover:scale-110"
+                        onDragStart={(e) => e.preventDefault()}
+                      />
+                    )
+                  }
+                )
               : null}
           </Carousel>
           <div className="text-center flex justify-around">
             {product
-              ? product.product_img_list &&
-                product.product_img_list.map((img: string, index: number) => {
-                  return (
-                    <div
-                      key={index}
-                      className="cursor-pointer"
-                      onClick={() => setCarouselIdx(index)}
-                    >
-                      <Image
-                        src={img}
-                        alt={String(index)}
-                        width="80px"
-                        height="80px"
-                        priority
-                        quality={30}
-                      />
-                    </div>
-                  )
-                })
+              ? product.data.product_img_list &&
+                product.data.product_img_list.map(
+                  (img: string, index: number) => {
+                    return (
+                      <div
+                        key={index}
+                        className="cursor-pointer"
+                        onClick={() => setCarouselIdx(index)}
+                      >
+                        <Image
+                          src={img}
+                          alt={String(index)}
+                          width="80px"
+                          height="80px"
+                          priority
+                          quality={30}
+                        />
+                      </div>
+                    )
+                  }
+                )
               : null}
           </div>
           <div className="prod-attr">
             <div>
               <div className="text-2xl mb-3">
-                {product?.product_info?.ages}+
+                {product?.data.product_info?.ages}+
               </div>
               <span className="text-base">연령</span>
             </div>
             <div>
               <div className="text-2xl mb-3">
-                {product?.product_info?.pieces}
+                {product?.data.product_info?.pieces}
               </div>
               <span className="text-base">부품수</span>
             </div>
             <div>
               <div className="text-2xl mb-3">
-                {product?.product_info?.product_number}
+                {product?.data.product_info?.product_number}
               </div>
               <span className="text-base">제품명</span>
             </div>
@@ -181,10 +194,10 @@ export default function Product(props: ProductT) {
         </div>
         <div className="prod-buy w-4/12 p-4">
           <div className="item-sale">
-            {product?.product_info?.discounting == 1 &&
-            product?.product_info?.rate_discount > 0 ? (
+            {product?.data.product_info?.discounting == 1 &&
+            product?.data.product_info?.rate_discount > 0 ? (
               <span className="bg-red-600 text-white p-1">
-                - {product?.product_info?.rate_discount}%
+                - {product?.data.product_info?.rate_discount}%
               </span>
             ) : (
               <span className="invisible">invisible</span>
@@ -192,37 +205,38 @@ export default function Product(props: ProductT) {
           </div>
           <div className="mt-5 mb-10">
             <p className="text-3xl break-normal">
-              {product?.product_info?.title}
+              {product?.data.product_info?.title}
             </p>
           </div>
           <div className="my-5">
             <div>
-              {product?.product_info?.discounting == 1 &&
-              product?.product_info?.rate_discount > 0 ? (
+              {product?.data.product_info?.discounting == 1 &&
+              product?.data.product_info?.rate_discount > 0 ? (
                 <span>
-                  <b className="line-through text-xl">{`${product?.product_info?.price.toLocaleString(
+                  <b className="line-through text-xl">{`${product?.data.product_info?.price.toLocaleString(
                     'ko-KR'
                   )} 원`}</b>
                   <b className="text-red-600 text-2xl ml-3">{`${(
-                    product?.product_info?.price *
-                    (1 - Number(product?.product_info?.rate_discount) / 100)
+                    product?.data.product_info?.price *
+                    (1 -
+                      Number(product?.data.product_info?.rate_discount) / 100)
                   ).toLocaleString('ko-KR')} 원`}</b>
                 </span>
               ) : (
-                <b className="text-2xl">{`${product?.product_info?.price?.toLocaleString(
+                <b className="text-2xl">{`${product?.data.product_info?.price?.toLocaleString(
                   'ko-KR'
                 )} 원`}</b>
               )}
             </div>
-            {product?.product_info?.sale_enabled === 1 ? (
+            {product?.data.product_info?.sale_enabled === 1 ? (
               <p className="text-green-600">구매 가능</p>
-            ) : product?.product_info?.sale_enabled === 9 ? (
+            ) : product?.data.product_info?.sale_enabled === 9 ? (
               <p className="text-red-600">일시 품절</p>
-            ) : product?.product_info?.sale_enabled === 8 ? (
+            ) : product?.data.product_info?.sale_enabled === 8 ? (
               <p className="text-orange-600">출시 예정</p>
             ) : null}
           </div>
-          {product?.product_info?.sale_enabled === 1 ? (
+          {product?.data.product_info?.sale_enabled === 1 ? (
             <div className="flex mb-5">
               <div className="prod-buy-quantity">
                 <button
@@ -253,27 +267,27 @@ export default function Product(props: ProductT) {
               </div>
               <div className="grow"></div>
               <div className="p-3">
-                {`구매 가능 수량 ${product?.product_info?.ea} 개`}
+                {`구매 가능 수량 ${product?.data.product_info?.ea} 개`}
               </div>
             </div>
           ) : null}
 
           <div className="flex">
-            {product?.product_info?.sale_enabled === 1 ? (
+            {product?.data.product_info?.sale_enabled === 1 ? (
               <ButtonAddCart
-                product_info={product.product_info}
+                product_info={product.data.product_info}
                 order_quantity={quantity}
               />
             ) : null}
 
             <div
               className={
-                product?.product_info?.sale_enabled === 1 ? 'm-auto' : ''
+                product?.data.product_info?.sale_enabled === 1 ? 'm-auto' : ''
               }
             >
               {product ? (
                 <ButtonWish
-                  product_id={product.product_info.product_id}
+                  product_id={product.data.product_info.product_id}
                   text={false}
                 />
               ) : null}

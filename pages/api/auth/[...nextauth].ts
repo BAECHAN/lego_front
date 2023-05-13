@@ -24,7 +24,7 @@ export default NextAuth({
 
         const param = {
           email: credentials?.email,
-          password: credentials?.password,
+          pw: credentials?.password,
         }
 
         let res: any = await axios
