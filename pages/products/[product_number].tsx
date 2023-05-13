@@ -54,6 +54,7 @@ export default function Product(props: ProductT) {
   }, [product, quantity])
 
   useEffect(() => {
+    // 뒤로가기 버튼 감지
     router.beforePopState(() => {
       sessionStorage.setItem('isHistoryBack', 'true')
       //state.options.scroll = true
@@ -130,7 +131,7 @@ export default function Product(props: ProductT) {
                       <Image
                         key={index}
                         src={img}
-                        alt={String(index)}
+                        alt={`${String(index)}번 이미지 메인`}
                         width="700px"
                         height="400px"
                         priority
@@ -159,7 +160,7 @@ export default function Product(props: ProductT) {
                       >
                         <Image
                           src={img}
-                          alt={String(index)}
+                          alt={`${String(index)}번 이미지 서브`}
                           width="80px"
                           height="80px"
                           priority

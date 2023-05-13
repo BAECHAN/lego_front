@@ -70,29 +70,25 @@ export default function Payment(props: {
 
   const insertOrderAPI = useMutation(
     async (param: any) => {
-      const res = await axios.post(
+      return await axios.post(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/add-order`,
         JSON.stringify(param),
         {
           headers: { 'Content-Type': `application/json; charset=utf-8` },
         }
       )
-      return res.data
     },
     {
       onSuccess: async (response) => {
-        if (response.result == 1) {
+        if (response.status === 201) {
           swal.SweetAlertSuccess(
             '주문이 완료되었습니다.',
             '주문 내역 페이지로 이동합니다.'
           )
           router.push('/mypage/order_history')
         } else {
-          alert(
-            '결제정보를 저장하는데 문제가 발생하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-          )
-          router.push('/mypage/order_history')
-          return false
+          alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+          console.error(`HTTP status : ${response?.status}`)
         }
       },
       onError: (error) => console.log(error),

@@ -38,7 +38,7 @@ export default function Theme(props: ThemeT) {
   let url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}`
 
   const axiosGets = async ({ pageParam = 1 }) => {
-    const res = await axios.get(url, {
+    return await axios.get(url, {
       params: {
         theme_id: Number(props.theme_id),
         page: pageParam,
@@ -48,7 +48,6 @@ export default function Theme(props: ThemeT) {
       },
       headers: { 'Content-Type': `application/json; charset=utf-8` },
     })
-    return res.data
   }
 
   const {
@@ -115,12 +114,15 @@ export default function Theme(props: ThemeT) {
             <ul className="flex flex-wrap">
               {productList?.pages.map((page, index) => (
                 <React.Fragment key={index}>
-                  {page.productList.length > 0 ? (
-                    page.productList?.map(
-                      (product: ProductT, index: number) => {
-                        return <ProductCard product={product} key={index} />
-                      }
-                    )
+                  {page.data.productList.length > 0 ? (
+                    page.data.productList?.map((product: ProductT) => {
+                      return (
+                        <ProductCard
+                          product={product}
+                          key={product.product_id}
+                        />
+                      )
+                    })
                   ) : (
                     <div className="text-xl">해당하는 상품이 없습니다.</div>
                   )}

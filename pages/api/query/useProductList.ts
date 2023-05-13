@@ -14,7 +14,7 @@ const useProductList = (
   return useInfiniteQuery([queryKey, filter, sort], axiosGets, {
     onSuccess: (data) => {},
     onError: (e) => console.log(e),
-    getNextPageParam: (lastPage) => !lastPage.isLast ?? undefined,
+    getNextPageParam: (lastPage) => !lastPage.data.isLast ?? undefined,
     keepPreviousData: true,
   })
 }

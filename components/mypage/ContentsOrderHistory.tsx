@@ -20,7 +20,7 @@ export default function ContentsOrderHistory() {
       {isFetched ? (
         <div className="p-3 mt-3">
           <div className="contents-box">
-            <div className="flex text-center mb-20">
+            <div className="flex text-center mb-3">
               <div className="w-3/12">상품정보</div>
               <div className="w-2/12">주문일자</div>
               <div className="w-1/12 text-right mr-4">주문번호</div>
@@ -32,8 +32,8 @@ export default function ContentsOrderHistory() {
             <ul className="flex flex-wrap">
               {orderData?.pages.map((page, index) => (
                 <React.Fragment key={index}>
-                  {page.orderList.length > 0 ? (
-                    page.orderList?.map(
+                  {page.data.orderList.length > 0 ? (
+                    page.data.orderList?.map(
                       (orderProduct: OrderT, index: number) => {
                         return (
                           <ProductInOrderHistory
