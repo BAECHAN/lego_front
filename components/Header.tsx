@@ -7,7 +7,7 @@ export default function Header() {
   const { data: session, status } = useSession()
 
   return (
-    <header className="flex items-center p-3 text-xl bg-yellow-400">
+    <header className="flex items-center p-3 text-xl bg-yellow-400 min-w-[880px]">
       <Link href="/">
         <a>
           <Image src="/main.svg" width="50px" height="50px" alt="메인으로" />

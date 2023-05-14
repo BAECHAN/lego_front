@@ -15,9 +15,9 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
 
   return (
     <li
-      className={
-        router.pathname.indexOf('mypage') > -1 ? `item-box-mypage` : `item-box`
-      }
+      className={`item-box ${
+        router.pathname.indexOf('mypage') > -1 ? 'mypage' : ''
+      }`}
     >
       <div id={String(props.product.product_id)}>
         <ButtonWish product_id={props.product.product_id} text={true} />
@@ -91,17 +91,17 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
           width: 33%;
           border: 1px solid #ddd;
           padding: 15px;
-        }
+          min-width: 184px;
 
-        .item-box-mypage {
-          width: 20%;
-          border: 1px solid #ddd;
-          padding: 15px;
+          &.mypage {
+            width: 20%;
+          }
         }
 
         .item-content > * {
           margin: 13px 0px;
         }
+
         li {
           width: 300px;
         }

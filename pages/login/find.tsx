@@ -73,7 +73,7 @@ export default function Find() {
 
   return (
     <div className="h-full bg-gray-200">
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center min-w-[760px]">
         {isLoading && (
           <Portal selector="#portal">
             <Spinner />

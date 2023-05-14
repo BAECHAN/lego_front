@@ -2,8 +2,6 @@ import Layout from '@components/Layout'
 import ButtonUserWithdraw from '@components/mypage/ButtonUserWithdraw'
 import UserInfoContentsLine from '@components/mypage/UserInfoContentsLine'
 import { NextApiRequest } from 'next'
-import { signOut } from 'next-auth/react'
-import axiosRequest from 'pages/api/axios'
 import useUser from 'pages/api/query/useUser'
 import React from 'react'
 
@@ -74,8 +72,6 @@ export default function UserInfo(req: NextApiRequest) {
                 infoUpdate={false}
                 email={userInfo.data.email}
               />
-
-              <div></div>
             </div>
 
             <div className="flex justify-center">

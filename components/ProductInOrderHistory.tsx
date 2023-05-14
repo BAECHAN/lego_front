@@ -77,7 +77,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
   )
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-[788px]">
       <div className="product-in-order w-full flex justify-start items-center">
         <div className="w-3/12 flex-col flex justify-center m-3">
           <div className="product-in-order-image w-32 scale-75 hover:scale-90 transition-all ease-in-out mb-1">
@@ -130,7 +130,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
             <button
               type="button"
               title="환불 요청 버튼"
-              className="btn-refund flex h-8 leading-5"
+              className="btn-refund flex h-8 leading-5 min-w-[84px]"
               onClick={handleClickRefund}
             >
               환불요청
@@ -142,7 +142,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
             <button
               type="button"
               title={`배송지 정보 ${isOpenDelivery ? '닫기' : '보기'} 버튼`}
-              className="btn-delivery"
+              className="btn-delivery min-w-[106px]"
               onClick={() => setIsOpenDelivery(!isOpenDelivery)}
             >
               {`배송지 ${isOpenDelivery ? '닫기' : '보기'}`}

@@ -12,7 +12,7 @@ export default function Themes() {
   return (
     <div className="px-32">
       <Navbar />
-      <div className="min-h-[1500px]">
+      <div className="min-h-[1500px] min-w-[780px]">
         {isFetched ? (
           <>
             <h2 className="bg-sky-600	text-white p-3 text-3xl text-center">
