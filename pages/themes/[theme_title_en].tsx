@@ -86,7 +86,7 @@ export default function Theme(props: ThemeT) {
       <div>
         <div className="list-summary flex mx-7 my-3">
           <div className="list-count">
-            {productList?.pages[0].productListCount}개 제품 표시
+            {productList?.pages[0].data.productListCount}개 제품 표시
           </div>
           <div className="flex-grow" />
           <div className="list-sort">
@@ -111,7 +111,7 @@ export default function Theme(props: ThemeT) {
         <div className="flex">
           <SidebarFilter themes={props} />
           <div className="mr-5 w-full">
-            <ul className="flex flex-wrap">
+            <ul className="flex flex-wrap min-w-[588px]">
               {productList?.pages.map((page, index) => (
                 <React.Fragment key={index}>
                   {page.data.productList.length > 0 ? (

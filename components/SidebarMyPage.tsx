@@ -8,7 +8,7 @@ export default function SidebarMyPage() {
   const mypageList = useRecoilValue(mypageListSelector)
 
   return (
-    <aside className="filter mx-5 h-full w-60">
+    <aside className="filter mx-5 h-full min-w-[180px]">
       <p className="font-semibold text-2xl mt-5">나의 쇼핑 활동</p>
       <ul>
         {Object.keys(mypageList).map((key) => {

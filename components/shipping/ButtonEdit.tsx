@@ -36,6 +36,8 @@ export default function ButtonEdit(props: {
           line-height: 20px;
           margin: 8px;
 
+          min-width: 74px;
+
           background-color: gray;
           color: #fff;
           padding: 5px 10px;

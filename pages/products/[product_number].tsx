@@ -110,8 +110,8 @@ export default function Product(props: ProductT) {
   return (
     <div className="px-32">
       <Navbar productInfo={product?.data.product_info} />
-      <div className="prod-main flex flex-wrap">
-        <div className="prod-img w-8/12 p-4">
+      <div className="prod-main flex flex-wrap min-w-[1000px]">
+        <div className="prod-img w-8/12 min-w-[645px] p-4">
           <Carousel
             autoplay
             autoplayInterval={5000}
@@ -193,7 +193,7 @@ export default function Product(props: ProductT) {
             </div>
           </div>
         </div>
-        <div className="prod-buy w-4/12 p-4">
+        <div className="prod-buy w-4/12 min-w-[320px] p-4 ">
           <div className="item-sale">
             {product?.data.product_info?.discounting == 1 &&
             product?.data.product_info?.rate_discount > 0 ? (

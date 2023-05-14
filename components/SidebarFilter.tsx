@@ -16,7 +16,7 @@ export default function SidebarFilter(props: { themes: ThemeT }) {
   ]
 
   return (
-    <aside className="filter mx-5 h-[40rem] sticky top-0 overflow-y-scroll overflow-x-hidden w-96">
+    <aside className="filter mx-5 h-[40rem] sticky top-0 overflow-y-scroll overflow-x-hidden w-96 min-w-[240px]">
       <div>
         <div className="filter-option mb-3">
           {Object.values(selectedFilter).indexOf(1) > -1 ? (
