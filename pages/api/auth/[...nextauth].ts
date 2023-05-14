@@ -92,6 +92,10 @@ export default NextAuth({
         params.token.provider = params.account.provider
       }
 
+      if (params.trigger === 'update' && params.session?.name) {
+        params.token.name = params.session.name
+      }
+
       return params.token
     },
   },

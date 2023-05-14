@@ -1,4 +1,5 @@
 import Layout from '@components/Layout'
+import ButtonUserWithdraw from '@components/mypage/ButtonUserWithdraw'
 import UserInfoContentsLine from '@components/mypage/UserInfoContentsLine'
 import { NextApiRequest } from 'next'
 import { signOut } from 'next-auth/react'
@@ -8,40 +9,6 @@ import React from 'react'
 
 export default function UserInfo(req: NextApiRequest) {
   const { data: userInfo, isFetched, status } = useUser()
-
-  const handleClickWithdraw = () => {
-    if (isFetched && status == 'success') {
-      const param = {
-        email: userInfo.data.email,
-      }
-
-      axiosRequest(
-        'patch',
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/withdraw-account`,
-        param
-      )
-        .then((response) => {
-          if (response?.status === 204) {
-            alert(
-              '회원탈퇴가 완료되었습니다.\r보다 나은 서비스로 다시 만나뵐 수 있기를 바랍니다.'
-            )
-            signOut()
-          } else {
-            alert(
-              '의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.'
-            )
-            console.error(`HTTP status : ${response?.status}`)
-          }
-        })
-        .catch((error) => {
-          console.log(error)
-          alert(
-            '회원탈퇴 신청이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-          )
-          return false
-        })
-    }
-  }
 
   return (
     <div className="min-h-[600px]">
@@ -113,14 +80,7 @@ export default function UserInfo(req: NextApiRequest) {
 
             <div className="flex justify-center">
               <div className="flex-grow w-1/4" />
-              <button
-                type="button"
-                title="회원탈퇴 신청 버튼"
-                className="btn-common min-w-[500px] flex flex-col justify-center items-center"
-                onClick={handleClickWithdraw}
-              >
-                회원탈퇴
-              </button>
+              <ButtonUserWithdraw />
               <div className="flex-grow w-1/2" />
             </div>
           </>

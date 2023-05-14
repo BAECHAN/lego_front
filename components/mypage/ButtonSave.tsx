@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCancel, faSave } from '@fortawesome/free-solid-svg-icons'
 import axiosRequest from 'pages/api/axios'
-import { inputRegExp } from '@components/common/custom/RegExp'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import {
@@ -11,6 +10,7 @@ import {
 } from '@components/common/event/CommonFunction'
 import { InputTNotPwchk } from 'types'
 import { queryKeys } from 'pages/api/query/queryKeys'
+import { useSession } from 'next-auth/react'
 
 export default function ButtonSave(props: {
   infoKey: string
@@ -26,6 +26,8 @@ export default function ButtonSave(props: {
   setUploadFile: React.Dispatch<React.SetStateAction<File | undefined>>
 }) {
   const queryClient = useQueryClient()
+
+  const { data: session, update } = useSession()
 
   useEffect(() => {
     if (props.isEnter) {
@@ -55,11 +57,14 @@ export default function ButtonSave(props: {
                     nickname: props.newValue,
                   }
                 )
-                  .then((response) => {
+                  .then(async (response) => {
                     if (response?.status === 204) {
                       alert('변경되었습니다.')
                       props.setIsChange(!props.isChange)
                       props.setValue(props.newValue)
+                      update({
+                        name: props.newValue,
+                      })
                     } else {
                       alert(
                         '의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.'
