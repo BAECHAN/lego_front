@@ -6,23 +6,17 @@ import React, { FormEvent, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import axiosRequest from 'pages/api/axios'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { useSession } from 'next-auth/react'
-import { useRecoilValue } from 'recoil'
-import { passwordEyeSelector } from 'state/atoms'
-import FontAwesomeEye from '@components/FontAwesomeEye'
+import InputPassword from '@components/common/input/InputPassword'
 
 export default function CheckPassword() {
   const { data: session, status } = useSession()
 
   const router = useRouter()
 
-  const [pw, setPw] = useState('')
+  const [password, setPassword] = useState('')
 
-  const passwordType = useRecoilValue(passwordEyeSelector)
-
-  const pwRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -33,9 +27,9 @@ export default function CheckPassword() {
       session.user.email &&
       status == 'authenticated'
     ) {
-      if (!pw && pwRef.current) {
-        alert(`${pwRef.current.title}을 확인해주시기 바랍니다.`)
-        pwRef.current.focus()
+      if (!password && passwordRef.current) {
+        alert(`${passwordRef.current.title}을 확인해주시기 바랍니다.`)
+        passwordRef.current.focus()
         return false
       }
 
@@ -43,7 +37,7 @@ export default function CheckPassword() {
       let hashedPassword: string = ''
 
       if (secretKey) {
-        hashedPassword = crypto.HmacSHA512(pw, secretKey).toString()
+        hashedPassword = crypto.HmacSHA512(password, secretKey).toString()
       } else {
         throw new Error(`secretKey is undefined`)
       }
@@ -67,7 +61,7 @@ export default function CheckPassword() {
             )
           } else {
             alert('비밀번호가 일치하지 않습니다.')
-            pwRef.current?.focus()
+            passwordRef.current?.focus()
             return false
           }
         })
@@ -85,7 +79,7 @@ export default function CheckPassword() {
   }
 
   useEffect(() => {
-    pwRef.current ? pwRef.current.focus() : null
+    passwordRef.current ? passwordRef.current.focus() : null
   }, [])
 
   return (
@@ -103,21 +97,11 @@ export default function CheckPassword() {
                 />
               </a>
             </Link>
-            <label>
-              기존 비밀번호 입력
-              <br />
-              <input
-                type={passwordType}
-                title="기존 비밀번호 입력란"
-                name="password"
-                id="password"
-                autoComplete="off"
-                value={pw}
-                onChange={(e) => setPw(e.currentTarget.value)}
-                ref={pwRef}
-              />
-              <FontAwesomeEye />
-            </label>
+            <InputPassword
+              password={password}
+              setPassword={setPassword}
+              ref={passwordRef}
+            />
 
             <button
               type="submit"

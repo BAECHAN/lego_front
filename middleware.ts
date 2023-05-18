@@ -106,7 +106,9 @@ export async function middleware(request: NextRequest, response: NextResponse) {
       if (
         !(
           referer &&
-          (referer.includes('/order') || referer.includes('/mypage'))
+          (referer.includes('/mypage/cart') ||
+            referer.includes('/mypage/delivery?from=order') ||
+            referer.includes('/order'))
         )
       ) {
         const url = request.nextUrl.clone()

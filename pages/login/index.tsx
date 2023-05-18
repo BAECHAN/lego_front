@@ -4,11 +4,14 @@ import Image from 'next/image'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
-import { MouseEvent, FormEvent, useRef, useState } from 'react'
-import FontAwesomeEye from '@components/FontAwesomeEye'
+import { FormEvent, useRef, useState } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { findAccountSelector, passwordEyeSelector } from 'state/atoms'
 import { FindAccountT } from 'types'
+import InputPassword from '@components/common/input/InputPassword'
+import InputEmail from '@components/common/input/InputEmail'
+import ButtonLoginKakao from '@components/login/ButtonLoginKakao'
+import ButtonLoginGoogle from '@components/login/ButtonLoginGoogle'
 
 export default function Login() {
   const router = useRouter()
@@ -74,16 +77,6 @@ export default function Login() {
     }
   }
 
-  const loginKakao = async (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    await signIn('kakao')
-  }
-
-  const loginGoogle = async (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    await signIn('google')
-  }
-
   const handleClickFindButton = (type: FindAccountT) => {
     setFindAccountType(type)
     router.push('/login/find')
@@ -104,36 +97,13 @@ export default function Login() {
                 />
               </a>
             </Link>
-            <label>
-              이메일 주소
-              <br />
-              <input
-                type="email"
-                title="이메일 입력란"
-                name="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.currentTarget.value)}
-                ref={emailRef}
-                placeholder="예) lego@lego.co.kr"
-                autoComplete="off"
-              />
-            </label>
-            <label>
-              비밀번호
-              <br />
-              <input
-                type={passwordType}
-                title="비밀번호 입력란"
-                name="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.currentTarget.value)}
-                ref={passwordRef}
-                autoComplete="off"
-              />
-              <FontAwesomeEye />
-            </label>
+
+            <InputEmail email={email} setEmail={setEmail} ref={emailRef} />
+            <InputPassword
+              password={password}
+              setPassword={setPassword}
+              ref={passwordRef}
+            />
 
             <button
               type="submit"
@@ -170,30 +140,8 @@ export default function Login() {
           <div className="sns-login-title">
             <span>SNS 계정으로 로그인</span>
           </div>
-          <button
-            onClick={loginKakao}
-            className="flex justify-center login-btn-oauth relative left-9"
-          >
-            <Image
-              src="/kakao_login_medium_wide.png"
-              width="328px"
-              height="50px"
-              alt="카카오계정으로 로그인"
-              quality={100}
-            ></Image>
-          </button>
-          <button
-            onClick={loginGoogle}
-            className="flex justify-center login-btn-oauth relative left-8"
-          >
-            <Image
-              src="/btn_google_signin_light_normal_web.png"
-              width="335px"
-              height="50px"
-              alt="구글계정으로 로그인"
-              quality={100}
-            ></Image>
-          </button>
+          <ButtonLoginKakao />
+          <ButtonLoginGoogle />
         </div>
       </div>
       <style jsx>{`
@@ -222,29 +170,8 @@ export default function Login() {
           }
         }
 
-        .login-btn-oauth {
-          margin-bottom: 20px;
-          :hover {
-            cursor: pointer;
-            position: relative;
-            top: 3px;
-          }
-        }
-
-        .login-btn-google {
-          width: 328px;
-          background-color: #ffffff;
-          position: relative;
-          left: 36px;
-          border-radius: 3px;
-
-          :focus {
-            border: 3px solid black;
-          }
-        }
-
         .login-box {
-          min-width: 400px;
+          width: 400px;
           vertical-align: middle;
           display: flex;
           flex-direction: column;
@@ -253,14 +180,6 @@ export default function Login() {
 
           > * {
             margin: 8px 0px;
-          }
-
-          input {
-            width: 330px;
-            height: 35px;
-            border: solid gray 1px;
-            display: inline-block;
-            padding: 5px;
           }
         }
       `}</style>
