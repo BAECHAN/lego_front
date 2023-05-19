@@ -1560,4 +1560,195 @@ const themeAtom = atom<ThemeT>({
 	) : null
 }
 ```
+### 결제 - iamport cdn 연동
+### 클라이언트 배포 시 계속 [...nextauth].ts 파일에서 session.user.state 의 타입이 존재하지 않는다고 에러가 발생
+Property `state` does not exist on type `User | AdapterUser` in NextAuth
 
+=> 그래서 아래와 같이 types/next-auth.d.ts 파일을 생성후 아래와 같이 소스 작성한 후에 yarn build 후 github에 push
+```
+// types/next-auth.d.ts
+import { Session } from 'next-auth'
+import { JWT } from 'next-auth/jwt'
+
+declare module 'next-auth' {
+  interface Session {
+    id: string
+    state: number
+  }
+
+  interface User {
+    id: string
+    state: number
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    id: string
+    state: number
+    provider: string
+    oauthConnect: string
+  }
+}
+```
+			
+### prefetchInfinityQuery 적용하려는데 첫 렌더링 시에는 1페이지 기준이니까 미리 2페이지까지 가져오지만  
+그 이후인 2페이지로 넘어가면 2페이지는 가져오지만 미리 3페이지를 못가져옴( prefetching 안됨 )
+
+=> 해결 : useQueryClient() -> new QueryClient()로 변경
+```
+import { QueryClient } from 'react-query'  
+const queryClient = new QueryClient();
+```
+
+### SidebarFilter 코드 중복 제거하여 반복문 처리
+input checkbox 변경 시 setPage(1) 처리 해주기 위해 setPage를 props로 하위 컴포넌트에 전달하였지만 그럴 필요 없이,  
+변경 발생 시 selectedFilterSelector라는 recoil selector 변경 시 setPage(1) 처리함
+			
+```
+const filter = useRecoilValue(selectedFilterSelector)
+
+  useEffect(()=>{
+    setPage(1)
+  },[filter])
+```
+하지만 더보기 클릭 후 page가 2가 되었지만 filter를 체크했다가 풀면 page가 1로 초기화 되지만 실제적으로 화면에 보이는 상품들은 2페이지까지 보여지는 상태임
+이 때 더보기 클릭 하면 2페이지 데이터를 다시 가져오는 경우가 발생
+
+=> 더보기 클릭 시 데이터의 길이를 체크하여 setPage를 다시 지정함
+```
+const handleClickMoreProduct = () => {
+    if(productList && productList?.pages.length){
+      fetchNextPage({ pageParam: productList.pages.length + 1 })
+      setPage(productList.pages.length + 1)
+    }
+  }
+```
+			
+그렇기 때문에 ‘필터 삭제 버튼’ 클릭 시 selectedFilter라는 recoil 데이터를 
+input checkbox 영역에서 useEffect로 감시하다가 변경되면 checkbox를 풀어주려고 해서 아래와 같이 수정함
+
+```
+	// SidebarFilterItem.tsx
+  const [isChecked, setIsChecked] = useState(false);
+
+
+  useEffect(()=>{
+    selectedFilter[props.filterObj.id] == 0 ? setIsChecked(false) : setIsChecked(true)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[selectedFilter[props.filterObj.id]])		
+// selectedFilter가 한번 바뀌어도 필터에 있는 체크박스를 포함한 모든 컴포넌트가 바뀌지 않도록 
+selectedFilter 내 현재 컴포넌트에 해당하는 id를 가진 key가 바뀔 경우에만 setIsChecked 처리함 
+
+
+ 	// SidebarFilterSelected.tsx
+  const handleClickRecoilReset = useResetRecoilState(selectedFilterSelector)
+
+
+  const handleClickDeleteTag = (filter: string) => {
+    setSelectedFilter({
+      ...selectedFilter,
+      [filter]: 0,
+    })
+  }
+```
+
+굳이 useRef로 input checkbox 를 다른 컴포넌트에 넘기지 않아도
+input checkbox를 가지는 컴포넌트에서 useEffect의 의존성 배열로 할당하여 
+변경됨을 감지하여 state 값을 바꾸는 방식으로 고려해야 한다.
+
+### 상품 상세 페이지 캐러셀(슬라이드 영역)에서 이미지 드래그 시 깔끔하게 슬라이드 넘기기가 안됨 ( 이미지가 드래그 되는 현상이 발생 )
+
+Next/Image 컴포넌트에서 onDragStart 속성에 event.preventDefault() 처리함
+```
+<Image
+      key={index}
+      src={img}
+      alt={String(index)}
+      width="700px"
+      height="400px"
+      ...
+      onDragStart={(e) => e.preventDefault()}
+    />
+```
+	
+### 정규표현식 같은 잘 바뀌지 않고 전역적으로 쓰는 경우 client side state로 분류해두지 않고 module로 따로 빼서 관리한다.
+1) regexp 모듈화
+2) useRef 를 자식 컴포넌트로 전달 시 forwardRef를 사용하려던 중에 전달 후 자식 컴포넌트에서 current속성을 사용하려고 할때 TypeError가 발생하였다.
+useRef의 타입에 따라 사용할 수 없다고 하는데
+https://stackoverflow.com/questions/62238716/using-ref-current-in-react-forwardref
+
+> 나의 경우 자식 컴포넌트로 전달 후 자식 컴포넌트에서만 current요소로 접근하여 핸들링 했기 때문에 ref를 전달하지 않고 자식 컴포넌트에서 useRef를 생성하여 직접 핸들링함
+
+3) useRef 불필요한 부분들 제거
+리렌더링이 발생하여도 state값을 유지하고 싶을 때 useRef를 사용할 수 있는데
+
+const plusOrMinus  = useRef(‘’) 로 유지할 수 있음
+
+물론 나의 경우 필요없어서 let plusOrMinus = ‘’로 변경
+
+### 배송지 목록에서 페이지 이동 시 깜빡하는 현상이 발생
+원인 : 데이터를 가져오는 동안 null이였다가 데이터를 가져오면 렌더링하기 때문에 크기가 줄었다가 늘었다가 하는 과정때문에 깜빡이는 거처럼 보였음
+```
+{
+	isFetching
+	? <div>{data}</div>
+	: null
+} 
+```
+로 코딩해놔서 fetching 해오는 동안 null로 보여졌기 때문에 isFetching을 뺌
+해결 :  isFetching 제거
+
+### 회원정보에서 닉네임 변경 시 header에도 변경되게 보여지게하는법
+
+Button save 시 useSession update로 sesison update 후 보여지도록 처리
+	
+```
+  // 1. next-auth 4.20 이후 버전으로 변경 ( 기존 프로젝트는 4.18이여서 npm install 처리하여 4.22로 )
+  // package.json
+  "next-auth": "^4.22.1",
+ 
+  // 2. useSession 훅 선언 후 이름 변경 작업 후 변경 완료처리하면 update 속성으로 name 변경
+  // ButtonSave.tsx
+  import { useSession } from "next-auth/react"	// 0. 의존성 주입
+
+
+  const { data: session, update } = useSession()   // 1. useSession 훅 선언
+
+
+  const handleClickButton = (type: string) => {
+    ... 검증 후 api 요청 과정 생략
+    alert('변경되었습니다.')
+                      
+     update({							// 2. update 속성으로 name 변경
+      name: props.newValue
+     });
+
+
+  // 3. [...nextauth].ts 파일에서 callbacks.jwt trigger===”update” 시 name 수정하는 코드 추가
+
+
+  // [...nextauth].ts
+  callbacks: {
+    async jwt(params) {
+      ... 다른 코드 생략 
+     
+ 	// 1. params.trigger로 update가 발생하였는지 체크 후 session.name을 token.name으로 전달
+      if(params.trigger === "update" && params.session?.name){
+        params.token.name = params.session.name
+      }
+
+
+      return params.token
+    },
+  },
+
+
+  // 4. 따로 Header.tsx파일에선 해줄 게 없었음
+```
+	
+### 파라미터로 가져온 변수를 state로 관리 vs 변수 그대로 관리
+
+해답 :  가져온 변수가 페이지 내에서 변경되어야 하거나 여러 컴포넌트 간에 공유되어야 하는 경우, 상태 관리를 고려한다.
+
+만약 상태변경이 필요하지 않거나, 간단한 컴포넌트 간 데이터 전달만 필요한 경우에는 가져온 변수 그대로를 사용하는 것도 괜찮다.
