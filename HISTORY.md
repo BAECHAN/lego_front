@@ -452,7 +452,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
   }
 ```
 
-⧭ next/router
+### next/router
 
 javascript에서 회원가입 후 로그인 페이지로 이동 시
 location.href = ‘/login’ 을 써왔는데 NextJS로 SPA 프레임워크에서는 새로고침 발생 시 기존에 참고하고 있던 데이터도 다시 재로딩 해야되기 때문에 
@@ -477,6 +477,12 @@ onSuccess: () => {
 그러던 와중 체크박스 클릭 시 드랍다운 버튼도 같이 눌려서 ( 이벤트 버블링 ) 발생하여 
 이벤트 전파를 막기 위해 모든 li 태그에 event.stopPropagation() 적용  
 
+드롭다운에서 애니메이션 추가 관련
+
+애니메이션을 굳이 추가할 필요 없이 transition으로만 처리하려고함
+transition은 숫자의 증감으로 변화를 인식하기 때문에 갑자기 바뀌는 display: hidden 같은 속성은 transition이 안되기 때문에 height 를 0 에서 특정 px 까지 하는거로 변경함
+
+### React query에서 recoil의 selector가 변경될 경우 인식해서 refetch하기
 
 
 
