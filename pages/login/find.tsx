@@ -5,18 +5,11 @@ import ButtonFindAccountToggle from '@components/login/ButtonFindAccountToggle'
 import FontAwesomeAngleRight from '@components/FontAwesomeAngleRight'
 import { checkOverlapInput } from '@components/common/event/CommonFunction'
 import axios from 'axios'
-import { GetServerSidePropsContext } from 'next'
-import { FindAccountT } from 'types'
 import { findAccountSelector } from 'state/atoms'
 import { useRecoilValue } from 'recoil'
 import Spinner from '@components/Spinner'
 import Portal from '@components/Portal'
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return {
-    props: context.query,
-  }
-}
+import InputEmail from '@components/common/input/InputEmail'
 
 export default function Find() {
   const findAccountType = useRecoilValue(findAccountSelector)
@@ -79,7 +72,7 @@ export default function Find() {
             <Spinner />
           </Portal>
         )}
-        <form onSubmit={findId} className="login-box">
+        <form onSubmit={findId} className="find-box">
           <Link href="/">
             <a title="홈페이지로 이동 링크">
               <Image
@@ -117,21 +110,7 @@ export default function Find() {
             </div>
           )}
 
-          <label>
-            아이디(이메일) 입력
-            <br />
-            <input
-              type="email"
-              title="이메일 확인 입력란"
-              name="email"
-              id="email"
-              value={email}
-              onChange={(event) => setEmail(event.currentTarget.value)}
-              ref={emailRef}
-              placeholder="예) lego@lego.co.kr"
-              autoComplete="off"
-            />
-          </label>
+          <InputEmail email={email} setEmail={setEmail} ref={emailRef} />
 
           {isSubmit ? (
             isFind ? (
@@ -234,7 +213,7 @@ export default function Find() {
         </form>
       </div>
       <style jsx>{`
-        .login-box {
+        .find-box {
           min-width: 800px;
           vertical-align: middle;
           display: flex;
@@ -244,14 +223,6 @@ export default function Find() {
 
           > * {
             margin: 8px 0px;
-          }
-
-          input {
-            width: 500px;
-            height: 35px;
-            border: solid gray 1px;
-            display: inline-block;
-            padding: 5px;
           }
         }
       `}</style>

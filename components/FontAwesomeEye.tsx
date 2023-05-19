@@ -10,18 +10,13 @@ export default function FontAwesomeEye() {
   return (
     <FontAwesomeIcon
       icon={passwordType === 'password' ? faEye : faEyeSlash}
-      title={
-        passwordType === 'password'
-          ? '패스워드 보기 버튼'
-          : '패스워드 숨김 버튼'
-      }
       onClick={() =>
         passwordType === 'password'
           ? setPasswordType('text')
           : setPasswordType('password')
       }
       cursor="pointer"
-      className="w-5 relative ml-[304px] -mt-[26px]"
+      className="w-5 absolute right-2 top-[42px] -translate-y-1/2"
     ></FontAwesomeIcon>
   )
 }

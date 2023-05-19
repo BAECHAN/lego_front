@@ -163,7 +163,7 @@ export default function Order() {
   }
 
   const handleClickChangeShipping = () => {
-    router.push(`/order/delivery_by_order`)
+    router.push(`/mypage/delivery?from=order`)
   }
 
   return (
@@ -177,37 +177,33 @@ export default function Order() {
                 <div className="delivery-info">
                   <div>배송지</div>
                   <div>
-                    {shippingData.shippingList.map(
-                      (item: ShippingT, index: number) => {
-                        return (
-                          <label
-                            key={item.shipping_id}
-                            className="cursor-pointer"
-                          >
-                            <input
-                              type="radio"
-                              name="ShippingName"
-                              className={
-                                item.shipping_default == 1 ? '' : 'ml-5'
-                              }
-                              value={item.shipping_name}
-                              defaultChecked={
-                                selectedShippingFromDelivery == item.shipping_id
-                                  ? true
-                                  : item.shipping_default == 1 &&
-                                    selectedShippingFromDelivery == 0
-                                  ? true
-                                  : false
-                              }
-                              onChange={(event) =>
-                                handleChangeShipping(event, item)
-                              }
-                            />
-                            {item.shipping_name}
-                          </label>
-                        )
-                      }
-                    )}
+                    {shippingData.shippingList.map((item: ShippingT) => {
+                      return (
+                        <label
+                          key={item.shipping_id}
+                          className="cursor-pointer"
+                        >
+                          <input
+                            type="radio"
+                            name="ShippingName"
+                            className={item.shipping_default == 1 ? '' : 'ml-5'}
+                            value={item.shipping_name}
+                            defaultChecked={
+                              selectedShippingFromDelivery == item.shipping_id
+                                ? true
+                                : item.shipping_default == 1 &&
+                                  selectedShippingFromDelivery == 0
+                                ? true
+                                : false
+                            }
+                            onChange={(event) =>
+                              handleChangeShipping(event, item)
+                            }
+                          />
+                          {item.shipping_name}
+                        </label>
+                      )
+                    })}
                   </div>
                   <button
                     type="button"

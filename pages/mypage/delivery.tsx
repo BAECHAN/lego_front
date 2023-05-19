@@ -1,19 +1,19 @@
 import Layout from '@components/Layout'
 import ModalDelivery from '@components/ModalDelivery'
 import Portal from '@components/Portal'
-import ShippingItem from '@components/ShippingItem'
+import ShippingItem from '@components/shipping/ShippingItem'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ShippingT } from 'types'
 import Pagination from '@components/common/pagination/index'
-import { GetServerSidePropsContext } from 'next'
+import { useRouter } from 'next/router'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import ShippingItemByOrder from '@components/shipping/ShippingItemByOrder'
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return {
-    props: context.query,
-  }
-}
-export default function Delivery(props: { from: string }) {
+export default function Delivery() {
+  const router = useRouter()
+
   const [modalOpen, setModalOpen] = useState(false)
   const [modalShippingData, setModalShippingData] = useState<ShippingT>()
 
@@ -21,28 +21,62 @@ export default function Delivery(props: { from: string }) {
   const [startPage, setStartPage] = useState(1)
   const [totalPage, setTotalPage] = useState(0)
 
+  const { data, isFetched } = useDeliveryShippingList(page)
+
+  useEffect(() => {
+    if (isFetched && router.query.from === 'order') {
+      data.shippingList.length == 0 ? setModalOpen(true) : null
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data])
+
   const handleClickModalOpen = (
     event: React.MouseEvent<HTMLButtonElement>,
     shipping?: ShippingT
   ) => {
-    if (shipping) {
-      setModalShippingData(shipping)
-    } else {
-      setModalShippingData(undefined)
-    }
+    shipping ? setModalShippingData(shipping) : setModalShippingData(undefined)
 
     !modalOpen ? setModalOpen(true) : setModalOpen(false)
   }
-
-  const { data } = useDeliveryShippingList(page)
 
   return (
     <div>
       {data && data.shippingList.length > 0 ? (
         <div className="min-h-[300px]">
+          {router.query.from === 'order' ? (
+            <button
+              type="button"
+              title="주문페이지로 돌아가기 버튼"
+              className="m-3"
+              onClick={() => router.back()}
+            >
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                width="18px"
+                height="18px"
+                style={{ marginLeft: '3px' }}
+              />
+            </button>
+          ) : null}
           <ul className="flex flex-col min-h-[403.2px]">
             {data.shippingList.map((item: ShippingT, index: number) => {
-              return (
+              return router.query.from === 'order' ? (
+                <li key={item.shipping_id}>
+                  <ShippingItemByOrder
+                    shipping={item}
+                    onOpen={handleClickModalOpen}
+                    page={page}
+                    setPage={setPage}
+                    startPage={startPage}
+                    setStartPage={setStartPage}
+                    totalPage={totalPage}
+                    setTotalPage={setTotalPage}
+                    isLastPage={data.isLastPage}
+                    listLength={data.shippingList.length}
+                    shippingListCount={data.shippingListCount}
+                  ></ShippingItemByOrder>
+                </li>
+              ) : (
                 <li key={item.shipping_id}>
                   <ShippingItem
                     shipping={item}
