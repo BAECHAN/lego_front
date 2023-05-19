@@ -791,4 +791,230 @@ useEffect(() => {
   }, [props, recoilReset, setTheme])
 ```
 		  
+### Wish List (좋아요 혹은 찜하기)
 		  
+하나의 id에 여러 product_id를 담을 수 있도록 서버에 저장하여 처리  
+client_side에 저장할지 server_side에 저장할지 고민했었는데   
+처음에는 client_side에 저장하려고 했었음 ( 사용자 UI에만 영향을 주지 않을까 하여.. )  
+그런데 생각보다 자주 api 요청을 보낼 수 있지 않을까 싶어 server_side에 저장하기로 정함  
+  
+물론 나중에 좋아요로 다른 사람들에게도 보여질 수 있는 경우 ( 예를들어 상품 정보에서 좋아요 수가 보인다던가 ) 하게 될 수도 있으니 더더욱 server_side에 저장하도록하여 react_query로 저장
+		  
+**좋아요 한 리스트 가져오려고 /api/getProductWishList api 에**  
+**useSession으로 가져온 session.user.email을 react-query로 api 요청할 때**  
+**session이 안가져온 상태에서 api요청을 날리다보니 에러가 발생하여 enabled로 처리하니까 됨**  
+
+```
+const useProductsWishList = () => {
+  const [page, setPage] = useState(0)
+  const { data: session } = useSession()
+
+
+  let url = 'http://localhost:5000' + '/api/getProductWishList?page=' + page + 
+'&email=' + session?.user?.email
+ 
+  return useQuery(
+    ['getProductWishList', page],
+    async () => {
+      const res = await axios.get(url)
+      return res.data
+    },
+    {
+      onSuccess: (data) => console.log(data),
+      onError: (e) => console.log(e),
+      enabled: !!session?.user?.email
+    },
+  )
+}
+```
+
+상품 목록 리스트에서 좋아요 버튼 클릭되어있는 상품이 있는 상태에서 filter 혹은 sort 시
+
+좋아요 버튼이 이전 위치에 계속 유지되는 경우가 발생함 ( 상품은 바뀌었지만 button눌러짐은 유지되는 중 )
+=> 상품 목록 리스트를 가져오는 react-query에 option으로 keepPreviousData: true 를 주면
+다음 데이터가 fetch 되기전 까지 이전 데이터를 유지하게 되어 이를 풀어주니까 해결됨
+
+
+ButtonWish.tsx파일에서 useProductWishList.ts 파일의 return은 react-query인데
+
+좋아요 눌려진 상품들의 목록을 가져와서 보여지는 상품 목록들과 product_id가 일치하는 경우가 있으면
+useState에 있는 wishInfo를 setWishInfo로 값을 세팅하여 wish가 1이면 좋아요가 눌러진 버튼으로 처리
+
+만약 좋아요 버튼 클릭하여 handleClickLike 함수를 실행 시 session 없으면 login화면으로
+session 있으면 좋아요 반영하고 email과 product_id를 파라미터로 update 처리합니다
+
+만약 좋아요가 안되어있었으면 addWishAPI로 데이터 갱신해주는데 기존에 user_wish 테이블에 있었으면
+update wish = 1로 처리, 없었으면 insert 처리
+해당 쿼리는 insert into ~ on duplicate key update 문법을 사용 ( 오라클의 merge 문법과 비슷 )
+
+```
+insert into user_wish(wish_id, email, product_id)
+        values(
+            (   select wish_id
+                from user_wish a
+                where a.email = #{email} and a.product_id = #{product_id}
+            ), #{email}, #{product_id}
+        ) on duplicate key update date_updated = now(), wish = 1;
+```
+여기서 wish_id는 auto_increment라 위와 같이 처리
+
+insert하려는 테이블의 pk가 중복되면 update처리 pk가 없으면 insert 처리
+
+좋아요가 되어있었으면 delWishAPI로 update wish = 0으로 처리
+
+고민이 되는 부분은 wishInfo를 list형식으로해서 react-query로 관리하였다면 더 쉽게 처리할 수 있었을 것 ( oldData도 활용하기 가능한데 아래의 코드에서는 임의로 지정하여 불안정 해보임 )
+
+아래와 같이 한 이유는 좋아요 목록 리스트를 한번 더 활용하려고 억지로 짜둔 코드인데 
+	return data를 관리하기가 어려울줄 몰랐음
+
+작업 중 좋아요 버튼 클릭 시 api는 바로바로 요청이 가지만 return 받아오는데 시간이 걸려 useState가 바로바로 반영이 안되는 현상이 발생하여
+useMutation에서 제공하는 옵션 중 Optimistic update라는 기능이 있는데 이 기능은
+api 요청 후 response를 받기 전에 미리 완료 처리되었다고 판단하여 UI에 미리 적용하는 방식이 있어서
+적용함
+대신 실패 시에는 rollback 처리해 주어야함 ( 이마저도 react-query로 data를 다루었다면 데이터의 안정성이 높아졌을거라 보인다. )
+참고 : https://velog.io/@raverana96/react-query-Optimistic-Update 블로그의 스크롤 35% 지점부터 보면됨
+
+참고 : https://tanstack.com/query/v4/docs/react/guides/optimistic-updates
+
+delWishAPI는 useMutation 시 Optimistic update 안하였는데 addWishAPI가 오래 걸림
+```
+const [wishInfo, setWishInfo] = useState({
+    product_id: props.product?.product_id,
+    wish: false,
+  })
+
+
+  const { data: session } = useSession()
+
+
+  const router = useRouter()
+
+
+  const { data } = useProductWishList()
+
+
+  useEffect(() => {
+    if (data?.wishList.length > 0) {
+      for (let wish of data.wishList) {
+        wish.product_id == props.product?.product_id
+          ? setWishInfo({
+              product_id: wish.product_id,
+              wish: true,
+            })
+          : null
+      }
+    }
+  }, [data?.wishList, props.product?.product_id])
+
+
+  const addWishAPI = useMutation(
+    async (param: ProductWishSubmitT) => {
+      const res = await axios.post(
+        'http://localhost:5000/api/add-wish',
+        JSON.stringify(param),
+        {
+          headers: { 'Content-Type': `application/json; charset=utf-8` },
+        }
+      )
+      return res.data
+    },
+    {
+      onMutate: () => {
+        setWishInfo({
+          ...wishInfo,
+          wish: !wishInfo.wish
+        })
+
+
+        return () => {
+          setWishInfo({
+            ...wishInfo,
+            wish: !wishInfo.wish
+          })
+        }
+      },
+      onSuccess: (data) => {
+        // setWishInfo({
+        //   product_id: data.product_id,
+        //   wish: data.wish,
+        // })
+      },
+      onError: (error, values, rollback) => {
+        if(rollback){
+          rollback()
+        }else{
+          console.log(error)
+        }
+      },
+    }
+  )
+
+
+  const delWishAPI = useMutation(
+    async (param: ProductWishSubmitT) => {
+      const res = await axios.patch(
+        'http://localhost:5000/api/del-wish',
+        JSON.stringify(param),
+        {
+          headers: { 'Content-Type': `application/json; charset=utf-8` },
+        }
+      )
+      return res.data
+    },
+    {
+      onSuccess: (data) => {
+        setWishInfo({
+          product_id: data.product_id,
+          wish: data.wish,
+        })
+      },
+      onError: (error) => {
+        console.log(error)
+      },
+    }
+  )
+
+
+  const handleClickLike = () => {
+    if (session) {
+      let param: ProductWishSubmitT = {
+        email: session.user?.email,
+        product_id: props.product?.product_id,
+      }
+
+
+      if (!wishInfo.wish) {
+        // wish 등록 - 만약 wish 이력 있으면 patch 처리 , wish 이력 없으면 post 처리
+        addWishAPI.mutate(param)
+      } else {
+        // wish 취소 - wish 이력 있을거니까 patch 처리
+        delWishAPI.mutate(param)
+      }
+    } else {
+      signIn()
+    }
+  }
+
+
+  return (
+    <button
+      type="button"
+      name={String(props.product?.product_id)}
+      className="flex justify-start cursor-pointer"
+      onClick={handleClickLike}
+    >
+      {wishInfo?.wish == true ? (
+        <FontAwesomeIcon
+          icon={faHeartSolid}
+          className="ml-5 w-4 text-blue-700"
+        />
+      ) : (
+        <FontAwesomeIcon icon={faHeart} className="ml-5 w-4 text-blue-700" />
+      )}
+```
+
+
+
+좋아요 페이지에서 좋아요 취소해도 바로바로 상품이 목록에서 안보여지게 처리하지는 않았는데
+혹시 좋아요를 다시 누를수도 있으니 바로 지워지게끔은 하지 않았습니다.
+물론 데이터상으론 처리된 상태이고 새로고침하거나 페이지에 재진입 시에는 좋아요 취소한 상품은 보이지 않게 됩니다.
