@@ -108,7 +108,6 @@ export default function ModalDelivery(props: {
         setDirectOpen(false)
       }
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -155,71 +154,58 @@ export default function ModalDelivery(props: {
       }
 
       for (let i = 0; i < inputsRef.current.length; i++) {
-        if (
-          !(
-            i == 1 ||
-            i == 2 ||
-            i == 3 ||
-            i == 4 ||
-            i == 5 ||
-            i == 6 ||
-            i == 8 ||
-            i == 9
-          )
-        ) {
+        if (i == 1) {
+          if (inputsRef.current[i].value.trim().length == 0) {
+            param.shippingName = recipient
+          }
+        } else if (i == 2) {
+          if (inputsRef.current[i].value.trimEnd().length != 3) {
+            alert(
+              `${inputsRef.current[i].title}을(를) 정확히 입력해주시기 바랍니다.`
+            )
+            inputsRef.current[i].focus()
+            setDisabledSubmit(false)
+            return false
+          }
+        } else if (i == 3 || i == 4) {
+          if (inputsRef.current[i].value.trimEnd().length != 4) {
+            alert(
+              `${inputsRef.current[i].title}을(를) 정확히 입력해주시기 바랍니다.`
+            )
+            inputsRef.current[i].focus()
+            setDisabledSubmit(false)
+            return false
+          }
+        } else if (i == 5) {
+          if (
+            shippingZipCode.trim().length == 0 ||
+            shippingAddress1.trim().length == 0
+          ) {
+            alert('검색 버튼을 클릭하여 주소를 선택해주시기 바랍니다.')
+            postButtonRef.current?.click()
+            setDisabledSubmit(false)
+            return false
+          }
+        } else if (i == 7) {
           if (inputsRef.current[i].value.trim().length == 0) {
             alert(`${inputsRef.current[i].title}을(를) 입력해주시기 바랍니다.`)
             inputsRef.current[i].focus()
             setDisabledSubmit(false)
             return false
           }
-        } else {
-          if (i == 1) {
-            if (inputsRef.current[i].value.trim().length == 0) {
-              param.shippingName = recipient
-            }
-          } else if (i == 2) {
-            if (inputsRef.current[i].value.trimEnd().length != 3) {
-              alert(
-                `${inputsRef.current[i].title}을(를) 정확히 입력해주시기 바랍니다.`
-              )
-              inputsRef.current[i].focus()
-              setDisabledSubmit(false)
-              return false
-            }
-          } else if (i == 3 || i == 4) {
-            if (inputsRef.current[i].value.trimEnd().length != 4) {
-              alert(
-                `${inputsRef.current[i].title}을(를) 정확히 입력해주시기 바랍니다.`
-              )
-              inputsRef.current[i].focus()
-              setDisabledSubmit(false)
-              return false
-            }
-          } else if (i == 5) {
-            if (
-              shippingZipCode.trim().length == 0 ||
-              shippingAddress1.trim().length == 0
-            ) {
-              alert('검색 버튼을 클릭하여 주소를 선택해주시기 바랍니다.')
-              postButtonRef.current?.click()
-              setDisabledSubmit(false)
-              return false
-            }
-          } else if (i == 8) {
-            if (props.listLength == 0 && !isUpdate) {
-              param.shippingDefault = true
-            }
-          } else if (i == 9) {
-            if (
-              deliveryRequest == '7' &&
-              deliveryRequestDirect.trim().length == 0
-            ) {
-              alert(`${inputsRef.current[i].title}을 입력해주시기 바랍니다.`)
-              inputsRef.current[i].focus()
-              setDisabledSubmit(false)
-              return false
-            }
+        } else if (i == 8) {
+          if (props.listLength == 0 && !isUpdate) {
+            param.shippingDefault = true
+          }
+        } else if (i == 9) {
+          if (
+            deliveryRequest == '7' &&
+            deliveryRequestDirect.trim().length == 0
+          ) {
+            alert(`${inputsRef.current[i].title}을 입력해주시기 바랍니다.`)
+            inputsRef.current[i].focus()
+            setDisabledSubmit(false)
+            return false
           }
         }
       }

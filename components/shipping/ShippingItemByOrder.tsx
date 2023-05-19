@@ -1,8 +1,8 @@
 import React from 'react'
 import { ShippingT } from 'types'
-import ButtonEdit from './shipping/ButtonEdit'
-import ButtonDelete from './shipping/ButtonDelete'
-import ButtonChoice from './shipping/ButtonChoice'
+import ButtonEdit from './ButtonEdit'
+import ButtonDelete from './ButtonDelete'
+import ButtonChoice from './ButtonChoice'
 
 export default function ShippingItemByOrder(props: {
   shipping: ShippingT

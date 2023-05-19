@@ -98,11 +98,7 @@ export default function CreateAccount() {
         })
 
         if (name === 'pw') {
-          if (pwChk === value) {
-            setIsMatchPw(true)
-          } else {
-            setIsMatchPw(false)
-          }
+          pwChk === value ? setIsMatchPw(true) : setIsMatchPw(false)
         } else {
           isOverlap &&
             setIsOverlap({
@@ -111,11 +107,7 @@ export default function CreateAccount() {
             })
         }
       } else {
-        if (pw === value) {
-          setIsMatchPw(true)
-        } else {
-          setIsMatchPw(false)
-        }
+        pw === value ? setIsMatchPw(true) : setIsMatchPw(false)
       }
     } else {
       if (['email', 'pw', 'nickname'].includes(name)) {

@@ -1,7 +1,7 @@
 import Layout from '@components/Layout'
 import ModalDelivery from '@components/ModalDelivery'
 import Portal from '@components/Portal'
-import ShippingItem from '@components/ShippingItem'
+import ShippingItem from '@components/shipping/ShippingItem'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 import React, { useEffect, useState } from 'react'
 import { ShippingT } from 'types'
@@ -9,7 +9,7 @@ import Pagination from '@components/common/pagination/index'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
-import ShippingItemByOrder from '@components/ShippingItemByOrder'
+import ShippingItemByOrder from '@components/shipping/ShippingItemByOrder'
 
 export default function Delivery() {
   const router = useRouter()

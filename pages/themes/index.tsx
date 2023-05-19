@@ -4,7 +4,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import useThemes from 'pages/api/query/useThemes'
 import { ThemeT } from 'types'
-import { useEffect } from 'react'
 
 export default function Themes() {
   const { data: themes, isFetched } = useThemes()
