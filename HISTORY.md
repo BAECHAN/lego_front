@@ -310,7 +310,7 @@ Crypto 라이브러리 추가
 const secretKey = process.env.NEXT_PUBLIC_CRYPT_KEY
 
 if (secretKey !== undefined) {
-	pw = crypto.HmacSHA512(pw, secretKey).toString()
+	hashedPw = crypto.HmacSHA512(pw, secretKey).toString()
 	
 } else {
 	alert('secretKey is undefined')
@@ -320,7 +320,7 @@ if (secretKey !== undefined) {
 
 const userInfo = {
 	email,
-	pw,
+	pw : hashedPw,
 	pwChk,
 	nickname,
 }
