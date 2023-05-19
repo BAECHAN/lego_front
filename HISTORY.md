@@ -482,16 +482,313 @@ onSuccess: () => {
 애니메이션을 굳이 추가할 필요 없이 transition으로만 처리하려고함
 transition은 숫자의 증감으로 변화를 인식하기 때문에 갑자기 바뀌는 display: hidden 같은 속성은 transition이 안되기 때문에 height 를 0 에서 특정 px 까지 하는거로 변경함
 
-### React query에서 recoil의 selector가 변경될 경우 인식해서 refetch하기
+### 화면 이동 시 ( 닌자고 카테고리에서 디즈니 카테고리로 이동하였는데 선택된 필터가 안풀리는 상황이 발생하여 theme에 접근할 때마다 recoilReset 처리함
+
+```
+// [theme].tsx
+const recoilReset = useResetRecoilState(selectedFilterSelector);
+
+useEffect(()=>{
+  recoilReset();
+},[])
+```
+
+### React에서 Object를 key value 반복문 처리하여 element로 보여줄 때
+
+```
+// Navbar.tsx
+const mypageObj: ObjT_Str = {
+    viewed_products: '최근 본 상품',
+    orders: '주문 내역 조회'
+  }
+
+return (
+{
+        Object.keys(mypageObj).map(key => {
+          return (
+            router.pathname.indexOf(`/mypage/${key}`) > -1
+            ? <p key={key} className='inline'>
+                <FontAwesomeAngleRight />
+                <Link href={`/mypage`}>
+                  <a>{mypage}</a>
+                </Link>
+       
+                <FontAwesomeAngleRight />
+                <span>{mypageObj[key]}</span>
+            </p>
+            : null
+          )
+        })
+      }
+)
+```
+
+### 최근 본 상품 
+
+1) DB에 저장
+2) 쿠키에 저장
+3) 로컬스토리지에 저장
+
+이 정도 방법을 떠올릴 수 있었는데 
+
+db에 저장하기에는 1. 비회원의 경우에도 제공했으면 좋겠기도했고 2. db에 저장하기에는 리소스를 너무 많이 잡아먹겠다는 생각도 있었으며 3. 서버로 계속 통신을 보내는 것도 비효율적으로 보임
+
+쿠키에 저장하기에는 
+1. request 시 최근 본 상품을 같이 보내줘야하는데 굳이 보낼 필요 없음 나중에 진짜 필요할 때만 보내주면 됨 
+2. 만료기한이 있다.( 오랜 시간이 지난 후 상품을 다시 봤을 때 살 수도 있으니 냅두면 사용자에게 더 많은 물건을 판매할 수 있지 않을까 생각 )
+
+로컬스토리지에 저장하기에는 1. 만료기한이 없어 오랫동안 클라이언트의 자원을 잡아먹는다.
+
+**<<로컬스토리지에 저장하는거로 결정>>**
+
+배열 중복 제거는 new Set( 배열 ) 로 처리하여 중복제거하는게 효율적
+
+최근 본 상품 오픈 시
+
+로컬스토리지의 배열객체로 for문 돌려서 화면에 출력
+
+로컬스토리지 아예 없으면 = localstorage.getItem == null 이면
+=> 현재 데이터만 setItem
+
+로컬스토리지 있는데 localStorage.getItem에 내 번호가 있으면
+=> getItem으로 가져오고 JSON.parse로 배열화 시킨 후 
+현재 데이터를 unshift함수로 맨앞에 추가 후 new Set()으로 중복 제거 후 JSON.stringify로 JSON화
+setItem(JSON화한 데이터)
+
+로컬스토리지 있는데 localStorage.getItem에 내 번호가 없으면
+=> 위와 동일하게 처리해도 될 것 같아서 viewedProductsJSON의 null 유무만 체크하여 처리
+
+```
+const viewedProductsJSON:string | null = localStorage.getItem('viewed_products');
+let viewedProductsArr: string[] = [];
+
+if(viewedProductsJSON){
+	viewedProductsArr = JSON.parse(viewedProductsJSON)
+
+	viewedProductsArr.unshift(props.product_number)
+
+	const viewedProductsSet = new Set<string>(viewedProductsArr)
+	const viewedProductsSetJSON = JSON.stringify(Array.from(viewedProductsSet))
+
+	localStorage.setItem('viewed_products',viewedProductsSetJSON)
+}else{
+	localStorage.setItem('viewed_products',JSON.stringify([props.product_number]))
+}
+
+```
 
 
+#### ※ 주의. 만약 localstorage is not defined 에러 발생 시
+Next js는 서버에서 렌더링 후 클라이언트에서 렌더링 되기 때문에 
+서버 렌더링 시에는 window객체가 없어 오류가 발생 ( document.getElement 등의 객체 선택도 안되는 건 이러한 이유때문임 ) 때문에 아래 와 같이 분기 처리하여 
+클라이언트 렌더링 시 해당 코드가 실행되도록 처리합니다.
+```
+// viewed_products.tsx
+
+let viewedProductsArr = useRef([]);
+
+if(typeof window !== 'undefined'){
+
+const viewedProductsJSON:string | null =localStorage.getItem('viewed_products');
+
+viewedProductsJSON
+    ? viewedProductsArr.current = JSON.parse(viewedProductsJSON)
+    : null
+  }
+
+const { data: data } = useProductsViewedList(viewedProductsArr.current)
+		
+		
+// useProductsViewedList.ts
+
+const useProductsList = (props: string[]) => {
+
+  const [page, setPage] = useState(0)
+  let url = 'http://localhost:5000' + '/api/getProductViewedList?page=' + page
+
+  return useQuery(
+    ['getProductViewedList', page],
+    async () => {
+      const res = await axios.post(
+        url,
+        {
+          product_number_arr: props,
+        },
+        {
+          headers: { 'Content-Type': `application/json; charset=utf-8` },
+        }
+      )
+      return res.data
+    },
+    {
+      onSuccess: (data) => console.log(data),
+      onError: (e) => console.log(e),
+      //getNextPageParam: (lastPage) => !lastPage.isLast ?? undefined,
+      keepPreviousData: true,
+      enabled: props.length > 0
+    }
+  )
+}
+```
+#### ※ 주의. 위에서는 Post 메서드로 api를 요청하였지만, Restful API를 생각하면 Get 메서드로 요청하는게 맞을 거 같아 수정하려했더니 배열 직렬화가 필요해서 처리함
+
+```
+import axios from 'axios'
+import { useQuery } from '@tanstack/react-query'
+import { queryKeys } from './queryKeys'
+import qs from 'qs'
 
 
+const useProductViewedList = () => {
 
+  const queryKey = queryKeys.productViewedList
 
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}`
 
+  let viewedProductsJSON: string[] = []
 
+  if (typeof window !== 'undefined') {
+    viewedProductsJSON = JSON.parse(localStorage.getItem('viewed_products') as string)
+  }
 
+  const params = {
+    product_number_arr: viewedProductsJSON,
+  }
 
+  return useQuery(
+    [queryKey],
+    async () => {
+      const res = await axios.get(
+        url,
+        {
+          params,
+          paramsSerializer: function(params) {
+            return qs.stringify(params, { arrayFormat: 'repeat'})
+          },
+          headers: { 'Content-Type': `application/json; charset=utf-8` }
+        }
+      )
+      return res.data
+    },
+    {
+      onSuccess: (data) => {},
+      onError: (e) => console.log(e),
+      keepPreviousData: true,
+    }
+  )
+}
 
+export default useProductViewedList
+```
 
+최근 본 순서대로 select 결과가 뿌려주었으면 싶었는데 배열 값들만 넘어가서 순서가 내가 원하는 바와 다르게 나와서  
+mybatis에서 foreach로 in절에 값을 넣은 순서대로 order by 처리해주었음
+최근 본 상품 개수 제한하기  
+=> 나는 10개로 제한 함  
+
+```
+if (viewedProductsJSON) {
+   viewedProductsArr = JSON.parse(viewedProductsJSON)
+ 
+   viewedProductsArr.unshift(props.product_number)
+   viewedProductsArr.length = 10		// 배열.length = 10으로 고정
+```
+
+### 상품 상세보기 클릭했다가 상품 목록으로 다시 이동했을 때 스크롤바 기억하기
+
+무슨 방법이 있을까 하여 
+1. store에 저장  
+2. session storage에 저장 ( 브라우저 창이 켜져있는 상태에서 목록 페이지 url 입력 시 session이 남아 초기 화면에서도 스크롤이 이동되어진 상태가 되어버림 => 분기처리해서 뒤로가기 버튼으로 접근했는지 판단하여 처리하게끔 함 )
+https://selfish-developer.com/entry/nextjs-%EC%8A%A4%ED%81%AC%EB%A1%A4-%EC%A0%80%EC%9E%A5-%EA%B8%B0%EC%96%B5%ED%95%98%EA%B8%B0
+3. cookie에 저장
+4. next js에서 제공하는 게 있지 않을까 생각 -> 제공한다고는 하는데 버전에 따라 다른듯? 저는 안되었음
+5. parameter로 넘겨준다 ( mpa 프레임워크에서 사용했던 방법 )
+
+https://nookpi.tistory.com/38 에 작성된 내용을 따르면
+
+CRA 프로젝트를 진행하면서는 스크롤 상태 유지(scroll restoration)를 하기 용이했다.
+근데 next로 넘어오면서 자체 라우팅 시스템을 사용함에 따라 react-router-dom을 사용한 기존 방식
+(router에서 넘어온 history객체 내에 action을 감지해서 pop 식별 후 처리)을 사용할 수 없게 되었다.
+ Next 내부에서 기본적으로 스크롤 복원 기능을 제공하기는 한다.
+
+=> REACT로만 스크롤 상태 유지 하는 방법과 NEXT JS로 유지하는 방법이 다름
+NEXT 에서 제공하는 기능이 있나 봄
+
+=> 처리방법
+
+상품목록페이지에서 상품상세페이지 클릭 시 현재스크롤바 위치를 sessionStorage에 저장하고
+상품상세페이지 이동하는거도 next/link 사용하고 있었는데 바로 이동시키지 않고 
+onclick태그를 사용하여 sessionStorage에 저장 하고 router.push로 페이지 이동
+
+( localStorage를 안쓰고 sessionStorage를 한 이유는 localStorage는 화면을 닫아도 남아있기 때문 
+=> 근데 어차피 removeItem으로 지울 거 같긴한데 
+=> 목록페이지로 와서 지우는거지 상세페이지에서 닫으면 안지워짐 )
+
+onClick 속성은 
+<Link href=’/’>
+	<a onClick>
+</Link>
+로 주었다가 onClick 후 router.push 와 Link href=’/’ 가 충돌할 수 있겠다 싶어서
+Link태그 없애고 <a onClick> 으로만 처리
+	
+```
+const handleClick = (path: string) => {
+    sessionStorage.setItem('scrollY', `${window.scrollY}`)
+    router.push(path)
+  }
+
+return (
+    ...
+          <a
+            onClick={() =>
+              handleClick(`/products/${props.product.product_number}`)
+            }
+          >
+)
+```
+상품의 상세페이지로 이동 후 뒤로가기 버튼 감지( useRouter.beforePopState 메서드 활용 ) 하면 sessionStorage에 뒤로가기버튼으로 목록페이지를 접근했는지를 알기 위해 
+( 뒤로가기버튼으로 접근했는지 분기처리 안하면 목록페이지를 새로 접근해도 계속 스크롤바를 들고 있기 때문에 ) 
+sessionStorage에 추가  
+		  
+```
+useEffect(() =>
+    router.beforePopState((state) => {
+      sessionStorage.setItem('isHistoryBack', 'true')
+      // state.options.scroll = false	// 이건 beforePopState의 속성으로
+							// false면 스크롤 최상단으로 , true면 스크롤 유지		
+      return true
+    })
+  )
+```
+뒤로가기 버튼 클릭하여 다시 상품 목록페이지로 오면 useEffect로 sessionStorage에서 뒤로가기버튼으로 접근했는지 저장해둔 sessionStorage를 꺼내서 true면 scrollY값을 sessionStorage에서 또 꺼내가지고 지정
+
+근데 지정이 안되길래 setTimeout(()=>{ window.scrollTo(0, sessionStorage에서 꺼낸 값 } , 0)  하면 된다는데 안되가지고 확인해보니 0이 아니라 시간이 늘리면 setTimeout 잘 되면서 이동하긴 함 
+렌더링 문제인 것 같아보이는데 useEffect는 렌더링이 다 끝나고 실행되는 부분인데도 이렇게 됨
+아마 하위컴포넌트의 useEffect라서 상위컴포넌트의 렌더링은 덜 끝난 상태에서 하위컴포넌트의 렌더링만 끝났다 판단해가지고 이런 현상이 발생한 것 같음=> _app.tsx에서 했는데도 안되네..
+
+아무튼 scrollTo 처리 하고 sessionStorage.removeItem 으로 sessionStorage 제거 ( 안그러면 기록이 남아서 스크롤바가 나중에도 처리 될 수 있음 )
+
+또한 setTimeout도 컴포넌트 위에서 사용했다보니 clearTimeout도 써줌
+
+만약 뒤로가기버튼으로 접근 안하고 그냥 접근했을 경우에는 원래대로 처리
+		  
+```
+useEffect(() => {
+    if (sessionStorage.getItem('isHistoryBack') === 'true') {
+      let scrollRestoration = setTimeout(() => {
+        window.scrollTo(0, Number(sessionStorage.getItem('scrollY')))
+        sessionStorage.removeItem('scrollY')
+      }, 100)
+
+      sessionStorage.removeItem('isHistoryBack')
+     
+      return () => clearTimeout(scrollRestoration)
+
+    } else {
+      recoilReset()
+      setTheme(props)
+    }
+  }, [props, recoilReset, setTheme])
+```
+		  
+		  
