@@ -1246,3 +1246,318 @@ samesite 활용하기 :
 SameSite를 default값으로 Lax를 설정해야하며 None인 경우 secure 플래그를 붙여서 쿠키를 넘겨주어야함
 => 현재 속성값이 바뀌긴 하나 localhost 주소로 생성되는 쿠키의 samesite를 바꿔야 하는게 아닌 youtube ( 외부링크 ) 에 대해서 samesite 설정을 바꿔줘야하기에 로컬에서는 되지 않을 것으로 보임
 
+### 특정 페이지에서 로그인 페이지로 이동 시 로그인 성공하면 이전 페이지로 routing하기
+next/router에서 next/auth으로 로그인 시 이전페이지 ( callbackUrl ) 경로를 받아올 수 있다.
+http://localhost:3000/login?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fthemes
+router.back 객체를 사용하면 뒤로가기를 바로 사용할 수 있지만 url이 뭔지 까지는 모름
+그렇기 때문에 routing할때 callbackUrl을 같이 보냄
+받은 callbackUrl은 외부링크에서 로그인페이지로 직접 이동했을 경우 로그인 후 router.back하게되면
+외부링크로 다시 돌아가게 되므로 callbackUrl의 값으로 외부링크인지 구분하여 처리함
+
+router.query에서 쿼리스트링 형식으로 적은 파라미터 꺼내기
+router.query.파라미터_key
+
+
+언제 쓰이냐면 보고 있던 페이지에서 로그인을 하고 싶을 경우 로그인페이지로 이동하는데
+로그인이 성공하면 보고 있던 페이지로 이동하게 해주고 싶음
+
+이 경우 next-auth에서는 이전페이지를 queryString형식으로 callbackUrl을 로그인페이지로 이동 시 같이 담아서 전달
+
+http://localhost:3000/login?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fthemes
+이 상황에서 router.query 객체를 사용하게 되면 URI를 불러오며, router.query.callbackUrl로 URI에 있는 callbackUrl이라는 key를 가져와 그 값을 꺼내 쓸 수 있음
+
+
+```
+	import { useRouter } from next/router
+	const router = useRouter()
+
+
+	console.log(router.query) 	
+// { callbackUrl : http%3A%2F%2Flocalhost%3A3000%2Fthemes }
+        if(router.query.callbackUrl != undefined){
+          router.back()
+        }else{
+          router.push('/')
+        }
+```
+
+### 로그인 시 middleware에서 message 전달하기
+
+로그인 후 잠금계정이나 탈퇴계정이면 message를 가지로 response를 return 해주는 방법을 생각하고 있었는데
+nextjs 공식문서에서 그렇게하지말고, routing하여 안내하는 페이지를 보여주라고 함 ( 하단 링크 참고 )
+https://nextjs.org/docs/messages/returning-response-body-in-middleware
+
+### 배송지 등록 처리
+
+onChange에 정규표현식을 적용 ( 숫자만 입력 )
+
+value.length를 이용하여 length가 넘어가지않을 경우에만 setState 처리 ( 길이 제한 ) 
+
+※ 추가로, maxLength를 쓰면 간단했겠지만 애초에 입력 단계에서 부터 막고 싶어서 maxLength를 사용하지 않았고 또한, 입력 후 onChange 시 적용되는 타입이라 javascript 영역에서 처리
+
+### 모달창 열기
+
+React 컴포넌트 위에서 모달창을 열어도 최상위 Root에서 열어야 하기 때문에 모달창이 제대로 동작하지 않을 수 있다.
+
+그렇기 때문에 우리는 어떤 컴포넌트에서 호출하여도 최상위 ROOT로 Modal창을 보내는 방법을 사용하여 Modal창을 구현해야한다.
+
+React Portal과 React Modal 을 참고하기 바란다.
+
+최상위 ROOT 단계로 이동할 수 있는 포탈 ( Portal )을 열고 이동한다.
+
+> yarn add react-portal
+
+이 때 사용할 파일은
+Portal.tsx 			- Modal.tsx 파일을 최상위 Root 옆에 위치시키기 위한 포탈
+_document.tsx			- Portal.tsx와 Modal.tsx를 최상위 Root 옆에 위치시킨다.
+Modal.tsx			- Modal Open 시 보여질 Modal UI이다.
+[모달이 보여질 페이지].tsx	- 이름은 아무거나 하시고, 모달 오픈 버튼 클릭 시 해당 페이지 위에 Modal을 띄울 예정
+
+```
+	Portal.tsx
+import ReactDOM from 'react-dom'
+import { ReactNode } from 'react'
+
+
+type Portal = {
+  children: ReactNode
+  selector: string
+}
+
+
+export default function Portal({ children, selector }: Portal) {
+  const element =
+    typeof window !== 'undefined' && document.querySelector(selector)
+
+
+  return element && children ? ReactDOM.createPortal(children, element) : null
+}
+
+
+	_document.tsx
+import { Html, Head, Main, NextScript } from 'next/document'
+
+
+export default function Document() {
+  return (
+    <Html>
+      <Head />
+      <body>
+        <Main />
+        <div id="portal" />		// Portal.tsx의 selector에 해당하는 element이다.
+        <NextScript />
+      </body>
+    </Html>
+  )
+}
+
+
+	delivery.tsx			// Modal창을 띄울 페이지
+import Modal from '@components/Modal'
+import Portal from '@components/Portal'
+
+
+export default function Delivery() {
+  const [modalOpen, setModalOpen] = useState(false)
+
+
+  const handleClickModalOpen = () => {
+    !modalOpen ? setModalOpen(true) : setModalOpen(false)
+  }
+
+
+   return (
+<button
+            type="button"
+            className="btn-add-address"
+            onClick={handleClickModalOpen}
+          >
+            배송지 등록
+          </button>
+          {modalOpen && (			// 여기서 Portal과 Modal 컴포넌트 선언,
+            <Portal selector="#portal">	// selector로 넘겨지는 값은 _document.tsx와 일치시켜야
+              <Modal onClose={handleClickModalOpen} />
+            </Portal>
+          )}
+        </div>
+
+
+
+
+	Modal.tsx
+
+
+	// props로 넘겨받는 onClose로 모달창을 닫을 수 있다.
+export default function ModalDelivery({ onClose }: any) {		
+
+
+	// 또한 Javascript 영역에서도 onClose 사용가능
+	axiosRequest('post', `http://localhost:5000/api/add-shipping`, param)
+        .then((response) => {
+          if (response?.status === 200) {
+            alert('배송지를 등록하였습니다.')
+            setDisabledSubmit(false)
+            onClose()
+            return true
+          }
+        })
+
+
+	
+	return (
+		<div>
+          <button
+            id="bannerClose"
+            className="btn-modal-close"
+            onClick={onClose}
+            title="창 닫기"
+          >버튼</button>
+```
+
+### PostCode 우편주소 api 가져오기 ( feat. 다음카카오 주소찾기 API )
+```yarn add react-daum-postcode```
+라이브러리 설치 후 가져다 쓰기만하면됨
+
+컴포넌트는 총 2개만 있으면 되는데
+PostCode.tsx					- 다음카카오 주소찾기 API 소스가 들어 있음
+PostCode사용할 페이지.tsx			- PostCode.tsx 컴포넌트를 추가하면 됩니다.
+			
+```
+PostCode.tsx
+import React from 'react'
+import { useDaumPostcodePopup } from 'react-daum-postcode'
+import { DeliverySubmitT } from 'types'
+
+
+export default function Postcode(props: {
+  inputs: DeliverySubmitT
+  setInputs: React.Dispatch<React.SetStateAction<DeliverySubmitT>>
+  postButtonRef: React.RefObject<HTMLButtonElement>
+}) {
+  const open = useDaumPostcodePopup()
+
+
+  const handleComplete = (data: any) => {
+    let fullAddress = data.address
+    let extraAddress = ''
+
+
+    if (data.addressType === 'R') {
+      if (data.bname !== '') {
+        extraAddress += data.bname
+      }
+      if (data.buildingName !== '') {
+        extraAddress +=
+          extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : ''
+    }
+
+
+    props.setInputs({
+      ...props.inputs,
+      shippingZipCode: data.zonecode,
+      shippingAddress1: fullAddress,
+    })
+
+
+    //console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+  }
+
+
+  const handleClick = () => {
+    open({ onComplete: handleComplete })
+  }
+
+
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      className="btn-search ml-2"
+      ref={props.postButtonRef}
+    >
+      검색
+    </button>
+  )
+}
+
+
+
+
+	[주소찾기 기능 추가할 페이지].tsx ( Lego App에서는 ModalDelivery.tsx )
+	// 여기서 사용되는 props들은 선택으로, PostCode.tsx에서 callback처리하여 
+// 기존 화면에 적용시키기 위함
+<Postcode
+         inputs={inputs}
+         setInputs={setInputs}
+         postButtonRef={postButtonRef}
+      />
+```
+#### ※ 주의. recoil Duplicate key 에러 발생 시 해결방법
+			
+1) key에다가 UUID 넣어서 중복되지 않도록 ( 이 경우 recoil-persist 안될 것으로 보임) 
+2) RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED=false 선언
+3) node-module/recoil 폴더 들어가서 에러메세지 띄우는 부분 주석처리하기
+
+1번의 경우로 원래는 작업을 해왔지만 새로고침 recoil 전역 변수가 초기화되는 상황이 발생함( 장바구니에 담고 주문하기 페이지로 이동 후 새로고침 시 )
+
+그래서 새로고침 시에도 recoil의 데이터를 유지하고 싶었음
+
+3번도 해보았는데 우회할 뿐이므로 근본적인 해결책이 아닌 와중에 recoil 0.7.6버전에서 ( 레고앱이 0.7.6 버전임 )
+```
+// .env.local
+RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED=false
+```
+최상위 env 파일에서 위와 같이 선언하면 key가 중복되어도 괜찮았음
+그럼으로 인해 recoil-persist도 사용 가능해짐
+	
+```
+const themeAtom = atom<ThemeT>({
+  key: `themeAtom`, // 원래는  key: `themeAtom/${v1()}` 이렇게 선언,
+  default: {
+    theme_id: 0,
+    theme_title: '',
+    theme_title_en: '',
+    thumbnail_link: '',
+    theme_dscrp: '',
+  },
+})
+```
+
+#### ※ 주의. Hydration failed because the initial UI does not match what was rendered on the server 에러 발생 시
+
+일단 위 에러의 대중적인 원인은 SWR에서 클라이언트 사이드와 서버 사이드가 둘다 돌아가므로 window 객체 호출 시 서버사이드의 경우 window 객체가 없어서 undefined되니까 useEffect위에서 사용해라인거고
+두번째 원인은 <p> <div>~</div></p> 와 같이 p태그 안에 div 태그를 넣을 수 없다 이런 에러이긴한데
+			
+나의 경우에는 아래와 같이 바로 꺼냈을 경우 새로고침하니까 react-hydration-error가 발생
+```
+  let selectedOrder = useRecoilValue(selectedOrderSelector)
+
+  return (
+	{selectedOrder}
+  )
+```
+			
+해결방법은 그냥 직접 호출하지 않고 selectedOrder가 [ 51,52,50 ] 이런식으로 cart_id 라는 react-query에 들어있는 데이터와 비교해서 값을 가져오는 형식이였기 때문에 아래의 반복문으로 호출하니까 에러가 없어짐
+```
+{
+	cartData && cartData.cartList ? (
+	<div>
+	  {
+	    cartData.cartList && cartData.cartList.map((item: ProductCartT, index:number) => {
+	      return (
+		selectedOrder.some(select => select == item.cart_id)
+		? (
+		    <li key={item.cart_id}>
+		      {item.cart_id}
+		    </li>
+		) : null
+	      )
+	    })
+	  }
+	</div>
+	) : null
+}
+```
+
