@@ -1018,3 +1018,116 @@ const [wishInfo, setWishInfo] = useState({
 좋아요 페이지에서 좋아요 취소해도 바로바로 상품이 목록에서 안보여지게 처리하지는 않았는데
 혹시 좋아요를 다시 누를수도 있으니 바로 지워지게끔은 하지 않았습니다.
 물론 데이터상으론 처리된 상태이고 새로고침하거나 페이지에 재진입 시에는 좋아요 취소한 상품은 보이지 않게 됩니다.
+
+### 아이디찾기 & 비밀번호찾기
+아이디찾기는 회원가입 시 회원을 구분을 할 수 있는 unique한 데이터는 이메일이고  
+이메일은 아이디 이기 때문에 이메일 체크하는 입력란으로 대체해야할 듯  
+
+아이디찾기 페이지
+비밀번호찾기 페이지
+
+아이디찾기 & 비밀번호찾기 toggle 버튼은 컴포넌트로 따로 분리
+
+#### 아이디찾기
+아이디 찾기 시 사용자가 직접 아이디를 검색하여 회원가입되어있는지 체크
+회원가입되어있지 않다면 회원가입페이지 이동 링크를 화면에 띄워줌
+
+#### 비밀번호찾기
+비밀번호 찾기 시에는 이메일(아이디)를 검색하여 아이디가 존재하면 해당 이메일로 이메일 send
+이때 send는 next-auth email에서도 사용되는 nodemailer 라이브러리 사용할 예정
+	    
+```yarn add nodemailer```
+
+ts파일에서 import 에러나서
+```npm i --save-dev @types/nodemailer```
+
+하고 import다시 걸어주면 에러없어짐
+
+
+아이디가 존재하지않으면 회원가입 혹은 로그인 링크를 화면에 띄워줌
+
+
+nodemailer 에서 gmail계정을 사용하여 이메일 보내기
+
+### 장바구니
+react-query에 저장할지 recoil에 저장할지 고민..
+
+recoil에도 초기값에 react-query의 초기 데이터를 저장시켜둠
+장바구니에 있는 상품들 중 결제페이지 까지 가져갈 상품들은 체크박스의 유무에따라 처리하는데
+
+체크박스 onInput 이벤트 발생 시 체크박스 되어있으면 recoil의 atom에 추가
+체크박스 안되어있으면 atom에서 빼기
+
+cart 화면 처음 페이지로 갈 때 재렌더링이 발생하다보니 selectedOrder의 값이 계속 늘어남
+( 상품은 원래 7개 인데 6개만 체크한 상태로 화면을 이동했다가 다시 돌아오면 +7이 또 되서 13개가 됨 )
+	    
+```
+useEffect(()=>{
+    if(isFetched){
+      data.cartList.map((item: ProductCartT, index: number) => {
+        setSelectedOrder((selectedOrder) => [...selectedOrder, item.cart_id])
+      })
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[isFetched])
+```
+그래서 아래와 같이 useResetRecoilState를 사용
+```
+const { data, isFetched } = useProductCartList()
+const [selectedOrder,setSelectedOrder] = useRecoilState(selectedOrderSelector)
+
+const handleClickRecoilReset = useResetRecoilState(selectedOrderSelector)
+
+useEffect(()=>{
+    if(isFetched){
+      handleClickRecoilReset()
+
+      data.cartList.map((item: ProductCartT, index: number) => {
+        setSelectedOrder((selectedOrder) => [...selectedOrder, item.cart_id])
+      })
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[isFetched])
+```
+
+### useMutation 후 useQuery의 데이터를 refetch처리하기
+	    
+장바구니에서 삭제 시 장바구니 목록 을 refetch 하고 싶었음
+useMutation onSuccess 후 useQuery를 refetch 처리함
+
+useMutation하여 update하는 patch api 요청 후 refetch() 함수 실행하여 해당 장바구니 화면에서 바로 삭제시킴
+```
+const { data, refetch } = useProductCartList()
+
+const handleClickDelete =(e: React.MouseEvent<HTMLButtonElement>) => {
+    if (session?.user?.email) {
+      let param: ProductUpdateCartSubmitT = {
+        email: session.user.email,
+        cart_id: Number(e.currentTarget.name.substring(15))
+      }
+      delCartAPI.mutate(param)
+    }
+  }
+
+  const delCartAPI = useMutation(
+    async (param: ProductUpdateCartSubmitT) => {
+      const res = await axios.patch(
+        'http://localhost:5000/api/del-cart',
+        JSON.stringify(param),
+        {
+          headers: { 'Content-Type': `application/json; charset=utf-8` },
+        }
+      )
+      return res.data
+    },
+    {
+      onSuccess: (data) => {
+        console.log(data)
+        if(data.result == 1){
+          refetch()
+        }
+      },
+      onError: (error) => console.log(error)
+    }
+  )
+```
