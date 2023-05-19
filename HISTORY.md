@@ -1131,3 +1131,118 @@ const handleClickDelete =(e: React.MouseEvent<HTMLButtonElement>) => {
     }
   )
 ```
+### React-cookie
+```yarn add react-cookie```
+
+공식문서 - https://www.npmjs.com/package/react-cookie
+
+예제 - 로그인에 쿠키 붙이는건 레퍼런스 많으니까 저는 Banner 로 “ 오늘 하루 보지 않기 “ 버튼 구현
+
+1) useEffect로 cookie가 있으면 isClose라는 useState<boolean> true로 주고 없으면 false로 줌
+2) 배너에서 “오늘 하루 보지 않기” 닫기 버튼을 클릭하면 handleClickClose함수가 실행되어
+isClose 스위치 시키고 setCookie로 expires를 new Date로 계산한 후 하루를 저장시켜
+만료되면 쿠키가 삭제되게끔 함
+```
+// 1. 최상단 Root에 추가
+// _app.tsx
+
+import { CookiesProvider } from 'react-cookie'
+
+return (
+    <SessionProvider session={session}>
+      <CookiesProvider>
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
+          <RecoilRoot>{getLayout(<Component {...pageProps} />)}</RecoilRoot>
+        </QueryClientProvider>
+      </CookiesProvider>
+    </SessionProvider>
+  )
+
+// 2. 쿠키 생성 및 쿠키 판별( setCookie, getCookie )
+//component/Banner.tsx
+	    
+import { useCookies } from 'react-cookie'
+
+export default function Banner() {
+
+  const [cookies, setCookie] = useCookies(['lego-cookie'])	// 1. useCookies 훅 선언
+  const [isClose, setIsClose] = useState(false)			// 닫기버튼 state
+
+  useEffect(()=> {
+    cookies['lego-cookie'] ? setIsClose(true) : setIsClose(false)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
+
+  const handleClickClose = () => { // 닫기 버튼 클릭 시 실행 될 코드
+
+    setIsClose(!isClose)		// 닫기 버튼 클릭하여 state 전환
+
+    let after1d = new Date();	// new Date로 현재 시간 가져옴
+    after1d.setDate(after1d.getDate() + 1)	// setDate로 1일 추가
+
+    // 2. setCookie 사용하여 cookie 생성
+    setCookie(						// setCookie( name, value, option? )
+'lego-cookie', 					// name
+'banner',						// value ( JWT Token 코드를 넣거나 함 )
+ { 							// option
+    path: '/', 					// path : 쿠키 경로 ( 모든 페이지에서 쿠키에 
+                                        // 액세스할 수 있도록 하려면 ‘/’ 경로로 사용
+    expires: after1d, 				// expires : 쿠키 기한 만료 날짜
+    sameSite: 'strict', 			// sameSite : 자세한 내용은 하단의 samesite참고
+    /** httpOnly: true */			// httpOnly : 브라우저에서 쿠키 못읽게
+})
+
+
+  }
+
+  return (
+    <div>
+    {
+      !isClose ?
+        <button
+          id="bannerClose"
+          className="mr-5 -ml-5 text-gray-500 hover:cursor-pointer hover:text-black"
+          onClick={handleClickClose}
+          title="오늘 하루 보지 않기"
+        >
+        </button> : null
+    }
+    </div>
+  )
+}
+```
+	    
+#### ※ 주의 발생할 수 있는 에러 
+Error : Hydration failed because the initial UI does not match what was rendered on the server.
+=> Next js는 서버사이드 와 클라이언트 사이드 둘다 실행되기 때문에 클라이언트 사이드에서 실행될때만
+처리해줘야함 ( 원래 isClose라는 useState에 초기값으로 바로 주었다가 에러 나서 useEffect 안에서 처리 )
+	   
+###  HttpOnly
+*tip. 서버에서 생성한 쿠키가 개발자도구 – Application에는 있지만 document.cookie에는 읽히지 않는 이유
+console.log(document.cookie); // ‘’
+=> 개발자도구 – Application에서 해당 쿠키가 HttpOnly인 경우는 읽히지 않음
+
+### SameSite
+
+2020년 초부터 chrome에서는 samesite default값을 samesite=none에서 samesite=Lax로 변경하였습니다. 비어있으면 samesite=Lax 되어있는 것임
+ 
+samesite 옵션
+1) none : 현 주소의 url과 다른 url을 가진 리소스를 화면에서 보여주고 있을 때 현 주소의 url에 해당하는 쿠키를 다른 url에 모두 전송
+ 
+2) strict : 내가 접속한 사이트의 주소 표시창을 봤을 때 이와 동일한 사이트의 경우에만 쿠키가 전송됩니다.
+ 
+3) Lax : Strict와 같이 동일한 사이트의 경우에만 쿠키가 전송되는데 추가적으로 a태그 등으로
+링크를 눌러서 다른 사이트의 url로 이동하는 경우 쿠키값을 붙여서 넘겨줍니다.
+ 
+same site의 이점 :
+1) 예전에는 모든 HTTP 요청에서 브라우저에 쿠키가 저장되어 있다면 그 쿠키값을 활용하여 고객(클라이언트) 맞춤광고 식으로도 가능하였고 또 어떠한 서버들은 그 쿠키를 활용하지 않고 버리는 서버가 있을 터 인데
+유저입장에서 내 쿠키가 일단 전송은 되고, 어떤 서버에서 어ᄄᅠᇂ게 활용되는지는 알 방법이 없었지만
+지금은 samesite값이 어떤지에 따라 쿠키값이 어ᄄᅠᇂ게 활용되는지 고객이 확인할 수 있음
+2) 보안적인 관점에서의 이점도 있는데 사이트가 다를 경우 쿠키값을 보내지 않으니ᄁᆞ CSRF같은 공격도 방어가 되고 samesite가 none인 경우 secure 플래그를 사용하라고 기본 설정으로 바뀌게 되면서
+cross site간의 쿠키 전송할 때는 무조건 HTTPS로 전송해야함 ( 쿠키 생성 시 httpOnly 옵션 true로 )
+ 
+samesite 활용하기 :
+SameSite를 default값으로 Lax를 설정해야하며 None인 경우 secure 플래그를 붙여서 쿠키를 넘겨주어야함
+=> 현재 속성값이 바뀌긴 하나 localhost 주소로 생성되는 쿠키의 samesite를 바꿔야 하는게 아닌 youtube ( 외부링크 ) 에 대해서 samesite 설정을 바꿔줘야하기에 로컬에서는 되지 않을 것으로 보임
+
