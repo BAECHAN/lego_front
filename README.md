@@ -20,10 +20,6 @@
 * 배포는 CloudType 서비스를 이용하였습니다.
 * 해당 프로젝트에서 보여지는 레고 이미지는 https://www.lego.com 사이트의 cdn 이미지 서버 주소를 그대로 가져와서 이미지 로딩 속도가 느릴 수 있습니다.
 
-### 개발과정
-https://github.com/BAECHAN/lego_front/blob/main/HISTORY.md
-<hr />
-
 ## 테스트 계정
 * id : test123@test.com
 * pw : test123!
@@ -63,3 +59,7 @@ https://www.lego.com 에서 [인당 구매 가능 수량]을 제한해두었기 
 ## 개선 사항
 * 반응형 웹 디자인 적용 필요
 * 이미지 로딩 속도 해결 및 Prefetching 필요
+
+
+## 개발과정
+https://github.com/BAECHAN/lego_front/blob/main/HISTORY.md
