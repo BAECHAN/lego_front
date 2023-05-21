@@ -24,9 +24,7 @@ export default function OauthCheck(props: { provider: string }) {
 
   const handleClickNewAccount = () => {
     if (
-      session &&
-      session.data &&
-      session.data.user &&
+      session?.data?.user &&
       session.data.user.email &&
       session.data.user.name
     ) {

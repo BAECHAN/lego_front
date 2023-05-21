@@ -30,8 +30,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
       const url = request.nextUrl.clone()
 
       if (
-        session &&
-        session.email &&
+        session?.email &&
         (session.provider == 'kakao' || session.provider == 'google') &&
         url.pathname == '/' &&
         !url.search.includes('onConnect')

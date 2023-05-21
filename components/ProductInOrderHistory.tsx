@@ -31,12 +31,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
   }, [])
 
   const handleClickRefund = () => {
-    if (
-      status == 'authenticated' &&
-      session &&
-      session.user &&
-      session.user.email
-    ) {
+    if (status == 'authenticated' && session?.user && session.user.email) {
       let param = {
         email: session.user.email,
         order_group_id: props.order.order_group_id,

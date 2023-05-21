@@ -24,23 +24,22 @@ export default function ContentsCart() {
       resetSelectredOrder()
       resetTotalPrice()
 
-      product &&
-        product.data.cartList.map((item: ProductCartT, index: number) => {
-          setSelectedOrder((selectedOrder) => [...selectedOrder, item.cart_id])
+      product?.data.cartList.map((item: ProductCartT, index: number) => {
+        setSelectedOrder((selectedOrder) => [...selectedOrder, item.cart_id])
 
-          let addPrice = 0
+        let addPrice = 0
 
-          if (item.discounting == 1 && item.rate_discount > 0) {
-            addPrice =
-              item.price *
-              item.order_quantity *
-              (1 - Number(item.rate_discount) / 100)
-          } else {
-            addPrice = item.price * item.order_quantity
-          }
+        if (item.discounting == 1 && item.rate_discount > 0) {
+          addPrice =
+            item.price *
+            item.order_quantity *
+            (1 - Number(item.rate_discount) / 100)
+        } else {
+          addPrice = item.price * item.order_quantity
+        }
 
-          setTotalPrice((totalPrice) => totalPrice + addPrice)
-        })
+        setTotalPrice((totalPrice) => totalPrice + addPrice)
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product])

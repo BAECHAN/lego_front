@@ -22,7 +22,7 @@ export default function UserInfoContentsLine(props: {
   const [uploadFile, setUploadFile] = useState<File>()
 
   useEffect(() => {
-    if (infoInputRef && infoInputRef.current) {
+    if (infoInputRef?.current) {
       infoInputRef.current.focus()
     }
   }, [isChange])
