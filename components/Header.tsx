@@ -1,13 +1,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react'
-import { useEffect } from 'react'
 
 export default function Header() {
   const { data: session, status } = useSession()
 
   return (
-    <header className="flex items-center p-3 text-xl bg-yellow-400 min-w-[880px]">
+    <header className="flex items-center p-3 text-xl bg-yellow-400">
       <Link href="/">
         <a>
           <Image src="/main.svg" width="50px" height="50px" alt="메인으로" />

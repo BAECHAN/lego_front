@@ -121,7 +121,7 @@ export async function checkOverlapInput(
       { [inputType]: inputValue }
     )
       .then((response) => {
-        if (response && response.status === 200) {
+        if (response?.status === 200) {
           if (response.data?.isOverlap) {
             return true
           } else {

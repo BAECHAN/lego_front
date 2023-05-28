@@ -18,7 +18,7 @@ const handler: NextApiHandler<any> = async (req, res) => {
   const recipient: string = JSON.parse(req.body.param).email
 
   if (req.method !== 'POST') {
-    return res.status(404).send({ error: 'Begone.' })
+    return res.status(404).send({ error: 'Request method is not POST' })
   }
 
   const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/create-token`

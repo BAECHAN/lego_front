@@ -21,12 +21,7 @@ export default function CheckPassword() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    if (
-      session &&
-      session.user &&
-      session.user.email &&
-      status == 'authenticated'
-    ) {
+    if (session?.user?.email && status == 'authenticated') {
       if (!password && passwordRef.current) {
         alert(`${passwordRef.current.title}을 확인해주시기 바랍니다.`)
         passwordRef.current.focus()

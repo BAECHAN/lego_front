@@ -23,7 +23,7 @@ export default function ButtonMore(props: {
       props.setPage(props.page + 1)
     } else if (props.type === 'product') {
       /** 더보기 클릭 시 중복 데이터 가져옴 방지 */
-      if (props.data && props.data?.pages.length) {
+      if (props?.data?.pages.length) {
         props.fetchNextPage({ pageParam: props.data.pages.length + 1 })
         props.setPage(props.data.pages.length + 1)
       } else {

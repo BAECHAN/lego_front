@@ -44,7 +44,7 @@ export default function Product(props: ProductT) {
   }
 
   useEffect(() => {
-    if (product && product.data.product_info && product.data.product_info.ea) {
+    if (product?.data?.product_info.ea) {
       setMinusDisabled(quantity <= 1)
       setPlusDisabled(quantity >= product.data.product_info.ea)
       if (quantity > product.data.product_info.ea) {
@@ -123,54 +123,48 @@ export default function Product(props: ProductT) {
             cellSpacing={300}
             slideIndex={carouselIdx}
           >
-            {product
-              ? product?.data.product_img_list &&
-                product?.data.product_img_list.map(
-                  (img: string, index: number) => {
-                    return (
-                      <Image
-                        key={index}
-                        src={img}
-                        alt={`${String(index)}번 이미지 메인`}
-                        width="700px"
-                        height="400px"
-                        priority
-                        quality={30}
-                        placeholder="blur"
-                        blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
-                        layout="responsive"
-                        className="hover:scale-110"
-                        onDragStart={(e) => e.preventDefault()}
-                      />
-                    )
-                  }
+            {product?.data.product_img_list?.map(
+              (img: string, index: number) => {
+                return (
+                  <Image
+                    key={index}
+                    src={img}
+                    alt={`${String(index)}번 이미지 메인`}
+                    width="700px"
+                    height="400px"
+                    priority
+                    quality={30}
+                    placeholder="blur"
+                    blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
+                    layout="responsive"
+                    className="hover:scale-110"
+                    onDragStart={(e) => e.preventDefault()}
+                  />
                 )
-              : null}
+              }
+            )}
           </Carousel>
           <div className="text-center flex justify-around">
-            {product
-              ? product.data.product_img_list &&
-                product.data.product_img_list.map(
-                  (img: string, index: number) => {
-                    return (
-                      <div
-                        key={index}
-                        className="cursor-pointer"
-                        onClick={() => setCarouselIdx(index)}
-                      >
-                        <Image
-                          src={img}
-                          alt={`${String(index)}번 이미지 서브`}
-                          width="80px"
-                          height="80px"
-                          priority
-                          quality={30}
-                        />
-                      </div>
-                    )
-                  }
+            {product?.data.product_img_list?.map(
+              (img: string, index: number) => {
+                return (
+                  <div
+                    key={index}
+                    className="cursor-pointer"
+                    onClick={() => setCarouselIdx(index)}
+                  >
+                    <Image
+                      src={img}
+                      alt={`${String(index)}번 이미지 서브`}
+                      width="80px"
+                      height="80px"
+                      priority
+                      quality={30}
+                    />
+                  </div>
                 )
-              : null}
+              }
+            )}
           </div>
           <div className="prod-attr">
             <div>

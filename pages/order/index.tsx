@@ -172,7 +172,7 @@ export default function Order() {
         <div>
           <div className="p-3">
             <h2 className="text-xl mb-3">배송 정보</h2>
-            {shippingData && shippingData.shippingList.length > 0 ? (
+            {shippingData?.shippingList.length > 0 ? (
               <div className="contents-box">
                 <div className="delivery-info">
                   <div>배송지</div>
@@ -305,25 +305,22 @@ export default function Order() {
           <div className="p-3 mt-3">
             <h2 className="text-xl mb-3">상품 정보</h2>
             <div className="contents-box">
-              {product && product.data.cartList ? (
-                <ul>
-                  {product.data.cartList &&
-                    product.data.cartList.map(
-                      (item: ProductCartT, index: number) => {
-                        return selectedOrder.some(
-                          (select) => select == item.cart_id
-                        ) ? (
-                          <li key={item.cart_id}>
-                            <ProductInOrder product={item} />
-                            {index < product.data.cartList.length - 1 ? (
-                              <hr />
-                            ) : null}
-                          </li>
-                        ) : null
-                      }
-                    )}
-                </ul>
-              ) : null}
+              <ul>
+                {product?.data?.cartList?.map(
+                  (item: ProductCartT, index: number) => {
+                    return selectedOrder.some(
+                      (select) => select == item.cart_id
+                    ) ? (
+                      <li key={item.cart_id}>
+                        <ProductInOrder product={item} />
+                        {index < product.data.cartList.length - 1 ? (
+                          <hr />
+                        ) : null}
+                      </li>
+                    ) : null
+                  }
+                )}
+              </ul>
             </div>
             <h2 className="flex justify-end">총 {productToPayCount} 건</h2>
           </div>
@@ -359,9 +356,7 @@ export default function Order() {
                   price={totalPrice > 0 ? totalPrice + deliveryPrice : 0}
                   submits={submits}
                   enabled={
-                    selectedShipping &&
-                    shippingData &&
-                    shippingData.shippingList.length > 0
+                    selectedShipping && shippingData?.shippingList.length > 0
                       ? true
                       : false
                   }

@@ -128,8 +128,7 @@ export default function ModalDelivery(props: {
     event.preventDefault()
 
     if (
-      inputsRef &&
-      inputsRef.current &&
+      inputsRef?.current &&
       status == 'authenticated' &&
       session.user &&
       session.user.email

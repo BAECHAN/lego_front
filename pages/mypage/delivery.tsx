@@ -41,7 +41,7 @@ export default function Delivery() {
 
   return (
     <div>
-      {data && data.shippingList.length > 0 ? (
+      {data?.shippingList.length > 0 ? (
         <div className="min-h-[300px]">
           {router.query.from === 'order' ? (
             <button
@@ -133,9 +133,7 @@ export default function Delivery() {
                   setStartPage={setStartPage}
                   totalPage={totalPage}
                   setTotalPage={setTotalPage}
-                  listLength={
-                    data && data.shippingList ? data.shippingList.length : 0
-                  }
+                  listLength={data.shippingList ? data.shippingList.length : 0}
                   shippingListCount={data.shippingListCount}
                   shipping={modalShippingData}
                 />
@@ -148,9 +146,7 @@ export default function Delivery() {
                   setStartPage={setStartPage}
                   totalPage={totalPage}
                   setTotalPage={setTotalPage}
-                  listLength={
-                    data && data.shippingList ? data.shippingList.length : 0
-                  }
+                  listLength={data.shippingList ? data.shippingList.length : 0}
                   shippingListCount={data.shippingListCount}
                 />
               )}

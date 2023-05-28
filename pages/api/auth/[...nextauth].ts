@@ -84,11 +84,11 @@ export default NextAuth({
       return session
     },
     async jwt(params) {
-      if (params.user && (params.user.state as number)) {
+      if (params.user?.state as number) {
         params.token.state = params.user.state
       }
 
-      if (params.account && (params.account.provider as string)) {
+      if (params.account && (params.account?.provider as string)) {
         params.token.provider = params.account.provider
       }
 
