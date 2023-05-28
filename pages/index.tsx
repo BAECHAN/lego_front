@@ -7,7 +7,13 @@ export default function Home({ data }: { data: ObjT_Str }) {
     <div className="min-h-[602px] m-10">
       <div className="flex justify-center">
         <div className="home-image">
-          <Image src={data.imageUrl} alt="레고 홈 화면 이미지" layout="fill" />
+          <Image
+            src={data.imageUrl}
+            alt="레고 홈 화면 이미지"
+            layout="fill"
+            placeholder="blur"
+            blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
+          />
         </div>
       </div>
       <div className="flex justify-center text-2xl mt-3">
@@ -22,12 +28,6 @@ export default function Home({ data }: { data: ObjT_Str }) {
           overflow: hidden;
           width: 1600px;
           height: 500px;
-        }
-
-        @media (max-width: 1600px) {
-          .home-image {
-            width: 1400px;
-          }
         }
       `}</style>
     </div>

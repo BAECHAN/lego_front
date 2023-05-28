@@ -8,5 +8,5 @@ export const queryKeys = {
   productViewedList: 'product-viewed-list',
   productWishList: 'product-wish-list',
   themeList: 'theme-list',
-  userInfo: 'get-user-info',
+  userInfo: 'user-info',
 }
