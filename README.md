@@ -32,6 +32,7 @@
 * [상품 목록] 은 React-query의 useInfiniteQuery로 구현하였습니다.
 * 사이드바의 필터 항목은 Sticky와 Scroll을 추가하여 상품 목록 스크롤이 길어지더라도 충분히 반영할 수 있도록 처리하였습니다.
 * 왼쪽 사이드바의 필터와 오른쪽 상단의 정렬 선택 을 추가하여 사용자의 Needs에 적합한 상품을 찾을 수 있도록 하였습니다.
+* 왼쪽 사이드바의 필터가 바뀌어도 more button을 이용한 페이지네이션을 캐시해두어, 이전 필터로 돌아가도 사용하던 페이지를 계속 이용할 수 있도록 처리하였습니다.
 
 ### 2. 상품 상세
 ![port-0-lego-front-nx562olfs8ljco sel3 cloudtype app_products_42143](https://user-images.githubusercontent.com/54573684/230402918-4674c046-f118-463e-b120-d259c88c2c90.png)
