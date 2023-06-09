@@ -1,4 +1,4 @@
-import ProductCard from '@components/ProductCard'
+import ProductCard from '@components/product/ProductCard'
 import useProductViewedList from 'pages/api/query/useProductViewedList'
 import React, { useEffect } from 'react'
 import { ProductT } from 'types'

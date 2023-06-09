@@ -7,7 +7,7 @@ import Footer from './Footer'
 import Contents from './Contents'
 import ButtonScrollTop from './ButtonScrollTop'
 import Navbar from './NavigationBar'
-import SidebarMyPage from './SidebarMyPage'
+import SidebarMyPage from './sidebar/SidebarMyPage'
 import { useRecoilValue } from 'recoil'
 import { mypageListSelector } from 'state/atoms'
 

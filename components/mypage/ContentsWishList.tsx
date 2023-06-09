@@ -1,4 +1,4 @@
-import ProductCard from '@components/ProductCard'
+import ProductCard from '@components/product/ProductCard'
 import useProductWishList from 'pages/api/query/useProductWishList'
 import React from 'react'
 import { ProductT } from 'types'

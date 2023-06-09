@@ -62,6 +62,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
           swal.SweetAlertSuccess('환불처리 되었습니다.')
           queryClient.invalidateQueries([queryKeys.orderList])
           setIsRefund(true)
+          setIsOpenDelivery(false)
         } else {
           alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
           console.error(`HTTP status : ${response?.status}`)

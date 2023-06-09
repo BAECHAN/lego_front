@@ -48,6 +48,7 @@ export default function Header() {
         a:hover,
         button:hover {
           font-weight: 700;
+          text-decoration: underline;
         }
       `}</style>
     </header>

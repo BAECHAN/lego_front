@@ -1,4 +1,4 @@
-import ProductInOrderHistory from '@components/ProductInOrderHistory'
+import ProductInOrderHistory from '@components/product/ProductInOrderHistory'
 import useOrderList from 'pages/api/query/useOrderList'
 import React, { useState } from 'react'
 import { OrderT } from 'types'

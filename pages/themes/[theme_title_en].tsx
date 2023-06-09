@@ -1,8 +1,8 @@
 import Layout from '../../components/Layout'
-import SidebarFilter from '../../components/SidebarFilter'
+import SidebarFilter from '../../components/sidebar/SidebarFilter'
 import Navbar from '../../components/NavigationBar'
 import { ThemeT, ProductT } from 'types'
-import ProductCard from '@components/ProductCard'
+import ProductCard from '@components/product/ProductCard'
 import React, { useEffect, useState } from 'react'
 import {
   selectedFilterSelector,
