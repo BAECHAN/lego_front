@@ -81,7 +81,7 @@ export default function Theme(props: ThemeT) {
   }, [filter])
 
   return (
-    <div className="px-16">
+    <div className="desktop:pl-16 mobile:text-xs desktop:text-base">
       <Navbar />
       <div>
         <div className="list-summary flex mx-7 my-3">
@@ -111,7 +111,7 @@ export default function Theme(props: ThemeT) {
         <div className="flex">
           <SidebarFilter themes={props} />
           <div className="mr-5 w-full">
-            <ul className="flex flex-wrap min-w-[588px]">
+            <ul className="flex flex-wrap desktop:min-w-[588px]">
               {productList?.pages.map((page, index) => (
                 <React.Fragment key={index}>
                   {page.data.productList.length > 0 ? (

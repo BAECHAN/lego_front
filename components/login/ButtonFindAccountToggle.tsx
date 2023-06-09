@@ -17,7 +17,7 @@ export default function ButtonFindAccountToggle(props: { isLoading: boolean }) {
   }
 
   return (
-    <div className="flex w-full">
+    <div className="btn-find-group">
       <button
         type="button"
         id="findIdBtn"
@@ -42,6 +42,11 @@ export default function ButtonFindAccountToggle(props: { isLoading: boolean }) {
       </button>
 
       <style jsx>{`
+        .btn-find-group {
+          display: flex;
+          width: 100%;
+        }
+
         .btn-find-toggle {
           background-color: #d5f3fe;
           width: 50%;

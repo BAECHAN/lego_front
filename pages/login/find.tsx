@@ -66,7 +66,7 @@ export default function Find() {
 
   return (
     <div className="h-full bg-gray-200">
-      <div className="flex justify-center items-center min-w-[760px]">
+      <div className="flex justify-center items-center">
         {isLoading && (
           <Portal selector="#portal">
             <Spinner />
@@ -206,7 +206,7 @@ export default function Find() {
                 ? '아이디 존재 유무 확인 버튼'
                 : '새 비밀번호를 발급받기 위한 인증번호를 이메일로 전송하기'
             }
-            className="btn-common min-w-[500px] h-33 fs-14"
+            className="btn-common h-33 fs-14 desktop:min-w-[500px] mobile:w-full"
           >
             {findAccountType === 'email' ? '검색' : '비밀번호 찾기'}
           </button>
@@ -223,6 +223,10 @@ export default function Find() {
 
           > * {
             margin: 8px 0px;
+          }
+
+          @media (max-width: 768px) {
+            min-width: 50%;
           }
         }
       `}</style>

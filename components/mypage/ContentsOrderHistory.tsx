@@ -16,7 +16,7 @@ export default function ContentsOrderHistory() {
   } = useOrderList()
 
   return (
-    <div className="min-h-[602px]">
+    <div className="desktop:min-h-[602px]">
       {isFetched ? (
         <div className="p-3 mt-3">
           <div className="contents-box">
