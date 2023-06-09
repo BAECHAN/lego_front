@@ -1,5 +1,5 @@
 import Layout from '@components/Layout'
-import ProductInOrder from '@components/ProductInOrder'
+import ProductInOrder from '@components/product/ProductInOrder'
 import * as common from '@components/common/event/CommonFunction'
 import { useRouter } from 'next/router'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'

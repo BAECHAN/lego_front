@@ -1,4 +1,4 @@
-import ProductInCart from '@components/ProductInCart'
+import ProductInCart from '@components/product/ProductInCart'
 import { useRouter } from 'next/router'
 import useProductCartList from 'pages/api/query/useProductCartList'
 import React, { useEffect } from 'react'
