@@ -9,9 +9,9 @@ export default function Themes() {
   const { data: themes, isFetched } = useThemes()
 
   return (
-    <div className="px-32">
+    <div className="desktop:px-32">
       <Navbar />
-      <div className="min-h-[1500px] min-w-[780px]">
+      <div className="min-h-[1500px] desktop:min-w-[780px] mobile:text-sm">
         {isFetched ? (
           <>
             <h2 className="bg-sky-600	text-white p-3 text-3xl text-center">
@@ -20,7 +20,7 @@ export default function Themes() {
             <ul className="flex justify-around flex-wrap">
               {themes?.data.map((theme: ThemeT) => {
                 return (
-                  <li key={theme.theme_id} className="m-5 w-1/5">
+                  <li key={theme.theme_id} className="m-5 desktop:w-1/5">
                     <Link
                       href={`/themes/${theme.theme_title_en}?theme_title=${theme.theme_title}&theme_id=${theme.theme_id}`}
                     >

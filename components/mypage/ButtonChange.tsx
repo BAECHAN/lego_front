@@ -27,7 +27,7 @@ export default function ButtonChange(props: {
     <button
       type="button"
       title="정보 수정 버튼"
-      className="flex h-8 leading-5"
+      className="flex h-8 leading-5 whitespace-nowrap"
       onClick={handleClickButton}
     >
       {props.infoName}&nbsp;변경하기

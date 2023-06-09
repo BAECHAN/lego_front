@@ -73,7 +73,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
   )
 
   return (
-    <div className="w-full min-w-[788px]">
+    <div className="w-full desktop:min-w-[788px]">
       <div className="product-in-order w-full flex justify-start items-center">
         <div className="w-3/12 flex-col flex justify-center m-3">
           <div className="product-in-order-image w-32 scale-75 hover:scale-90 transition-all ease-in-out mb-1">
