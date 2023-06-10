@@ -1754,3 +1754,4 @@ Button save 시 useSession update로 sesison update 후 보여지도록 처리
 
 ### 해야할 일
 1. ~~sort 처리 시 db 접근할 필요없이 처리~~ -> 페이지네이션으로 인해 전체 데이터를 한번에 들고 있는 것이 아니라 정렬 및 페이지 이동 시 api 요청을 하게 됨
+2. mobile UI 제공 - media query로 처리할 수 있는 부분들은 최대한 처리하고 컴포넌트 구조가 바뀌는 경우에는 useMediaQuery를 사용하여 모바일컴포넌트와 웹컴포넌트를 분리할 예정
