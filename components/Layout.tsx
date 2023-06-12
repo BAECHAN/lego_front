@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import Helmet from './Helmet'
 import Banner from './Banner'
 import Header from './Header'
+import MobileHeader from './mobile/Header'
 import Footer from './Footer'
 import Contents from './Contents'
 import ButtonScrollTop from './ButtonScrollTop'
@@ -10,11 +11,19 @@ import Navbar from './NavigationBar'
 import SidebarMyPage from './sidebar/SidebarMyPage'
 import { useRecoilValue } from 'recoil'
 import { mypageListSelector } from 'state/atoms'
+import { useMediaQuery } from 'react-responsive'
 
 export default function Layout({
   children,
 }: React.PropsWithChildren): ReactElement {
   const router = useRouter()
+
+  const isMobile_ = useMediaQuery({ query: '(max-width: 768px)' })
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(isMobile_)
+  }, [isMobile_])
 
   const mypageListObj = useRecoilValue(mypageListSelector)
 
@@ -23,8 +32,8 @@ export default function Layout({
       <Helmet
         pathname={router.pathname.slice(1, router.pathname.length)}
       ></Helmet>
-      <Banner />
-      <Header />
+      {isMobile ? null : <Banner />}
+      {isMobile ? <MobileHeader /> : <Header />}
       {router.pathname.indexOf('mypage') > -1 ||
       router.pathname.indexOf('order') > -1 ? (
         <div className="px-16">
