@@ -9,7 +9,7 @@ export default function ContentsWishList() {
   return (
     <div>
       {isFetched ? (
-        <ul className="flex flex-wrap min-w-[588px]">
+        <ul className="flex flex-wrap desktop:min-w-[588px]">
           {product?.data && product.data.wishList.length > 0 ? (
             product.data.wishList?.map((item: ProductT, index: number) => {
               return <ProductCard product={item} key={index} />

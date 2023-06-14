@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import ShippingItemByOrder from '@components/shipping/ShippingItemByOrder'
+import ButtonBack from '@components/mypage/ButtonBack'
 
 export default function Delivery() {
   const router = useRouter()
@@ -43,21 +44,7 @@ export default function Delivery() {
     <div>
       {data?.shippingList.length > 0 ? (
         <div className="min-h-[300px]">
-          {router.query.from === 'order' ? (
-            <button
-              type="button"
-              title="주문페이지로 돌아가기 버튼"
-              className="m-3"
-              onClick={() => router.back()}
-            >
-              <FontAwesomeIcon
-                icon={faArrowLeft}
-                width="18px"
-                height="18px"
-                style={{ marginLeft: '3px' }}
-              />
-            </button>
-          ) : null}
+          {router.query.from === 'order' ? <ButtonBack /> : null}
           <ul className="flex flex-col min-h-[403.2px]">
             {data.shippingList.map((item: ShippingT, index: number) => {
               return router.query.from === 'order' ? (

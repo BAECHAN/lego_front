@@ -16,7 +16,7 @@ export default function ContentsViewedProducts() {
   return (
     <div>
       {isFetched ? (
-        <ul className="flex flex-wrap min-w-[588px]">
+        <ul className="flex flex-wrap desktop:min-w-[588px]">
           {product?.data && product.data.productList.length > 0 ? (
             product.data.productList?.map((item: ProductT, index: number) => {
               return <ProductCard product={item} key={index} />

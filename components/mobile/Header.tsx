@@ -2,13 +2,21 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react'
 import FontAwesomeMobileBars from '@components/FontAwesomeMobileBars'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import MobileHeaderSidebar from './HeaderSidebar'
+import { useRouter } from 'next/router'
 
 export default function MobileHeader() {
-  const { data: session, status } = useSession()
-
   const [isOpenBars, setIsOpenBars] = useState(false)
+
+  const router = useRouter()
+
+  useEffect(() => {
+    // 라우팅 발생 시 함수 실행
+    router.events.on('routeChangeComplete', () => {
+      setIsOpenBars(false) // 라우팅이 발생하면 isOpenBars를 초기화
+    })
+  }, [router.events])
 
   return (
     <header className="flex items-center p-3 bg-yellow-400">
