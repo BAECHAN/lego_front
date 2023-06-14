@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { ReactElement, useEffect, useState } from 'react'
+import React, { ReactElement } from 'react'
 import Helmet from './Helmet'
 import Banner from './Banner'
 import Header from './Header'
@@ -11,19 +11,14 @@ import Navbar from './NavigationBar'
 import SidebarMyPage from './sidebar/SidebarMyPage'
 import { useRecoilValue } from 'recoil'
 import { mypageListSelector } from 'state/atoms'
-import { useMediaQuery } from 'react-responsive'
+import useIsMobile from './common/custom/isMobile'
 
 export default function Layout({
   children,
 }: React.PropsWithChildren): ReactElement {
   const router = useRouter()
 
-  const isMobile_ = useMediaQuery({ query: '(max-width: 768px)' })
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    setIsMobile(isMobile_)
-  }, [isMobile_])
+  const isMobile = useIsMobile()
 
   const mypageListObj = useRecoilValue(mypageListSelector)
 
