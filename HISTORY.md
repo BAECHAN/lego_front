@@ -1755,3 +1755,37 @@ Button save 시 useSession update로 sesison update 후 보여지도록 처리
 ### 해야할 일
 1. ~~sort 처리 시 db 접근할 필요없이 처리~~ -> 페이지네이션으로 인해 전체 데이터를 한번에 들고 있는 것이 아니라 정렬 및 페이지 이동 시 api 요청을 하게 됨
 2. mobile UI 제공 - media query로 처리할 수 있는 부분들은 최대한 처리하고 컴포넌트 구조가 바뀌는 경우에는 useMediaQuery를 사용하여 모바일컴포넌트와 웹컴포넌트를 분리할 예정
+	
+### 모바일 인지 판단 하는 useMediaQuery 훅 사용
+```
+import { useEffect, useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
+
+export default function useIsMobile(): boolean {
+  const isMobile_ = useMediaQuery({ query: '(max-width: 768px)' })
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(isMobile_)
+  }, [isMobile_])
+
+  return isMobile
+}
+```
+전반적인 화면은 flex 디자인으로 css를 작성해놓았지만 모바일 UI가 필요한 경우가 발생 ( 메뉴바, 필터 등 )  
+mobile 페이지를 따로 추가 ( 주로 마이페이지 )
+headerMobile 화면 구성 시 Menubar 는 라우팅 발생 시 isOpenBars State를 초기화 해주어야 하여 아래 코드로 처리
+	
+```
+const [isOpenBars, setIsOpenBars] = useState(false)
+
+const router = useRouter()
+
+useEffect(() => {
+    // 라우팅 발생 시 함수 실행
+    router.events.on('routeChangeComplete', () => {
+      setIsOpenBars(false) // 라우팅이 발생하면 isOpenBars를 초기화
+    })
+}, [router.events])
+```
+타 사이트 모바일 화면을 참고해보니 사이드바 오픈 시 새로운 화면을 제공하는 경우가 있는데 일단 임시로 드롭다운 박스로 처리 ( 23-06-14 )
