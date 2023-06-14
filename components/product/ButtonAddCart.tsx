@@ -2,9 +2,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ProductT, ProductAddCartSubmitT } from 'types'
 import { queryKeys } from 'pages/api/query/queryKeys'
+import { useMediaQuery } from 'react-responsive'
 
 export default function ButtonAddCart(props: {
   product_info: ProductT
@@ -13,6 +14,13 @@ export default function ButtonAddCart(props: {
   const router = useRouter()
   const { data: session } = useSession()
   const queryClient = useQueryClient()
+
+  const isMobile_ = useMediaQuery({ query: '(max-width: 768px)' })
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(isMobile_)
+  }, [isMobile_])
 
   const handleClickAddCart = () => {
     if (session?.user?.email) {
@@ -44,7 +52,9 @@ export default function ButtonAddCart(props: {
           if (
             confirm('장바구니에 추가하였습니다.\r장바구니로 이동하시겠습니까?')
           ) {
-            router.push('/mypage/cart')
+            isMobile
+              ? router.push('/mobile/mypage/cart')
+              : router.push('/mypage/cart')
           }
 
           queryClient.invalidateQueries([queryKeys.productInfo])
