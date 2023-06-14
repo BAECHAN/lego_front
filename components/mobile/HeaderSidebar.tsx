@@ -1,9 +1,12 @@
+import useIsMobile from '@components/common/custom/isMobile'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import React, { useRef } from 'react'
+import React from 'react'
 
 export default function MobileHeaderSidebar(props: { isOpenBars: boolean }) {
   const { data: session, status } = useSession()
+
+  const isMobile = useIsMobile()
 
   return (
     <div className={props.isOpenBars ? '' : 'relative overflow-hidden'}>
@@ -21,7 +24,13 @@ export default function MobileHeaderSidebar(props: { isOpenBars: boolean }) {
                 </Link>
               </li>
               <li>
-                <Link href="/mypage/viewed_products">
+                <Link
+                  href={
+                    isMobile
+                      ? `/mobile/mypage/viewed_products`
+                      : `/mypage/viewed_products`
+                  }
+                >
                   <a className="relative">최근 본 상품</a>
                 </Link>
               </li>
