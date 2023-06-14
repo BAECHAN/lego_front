@@ -95,6 +95,10 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
 
           &.mypage {
             width: 20%;
+
+            @media (max-width: 768px) {
+              width: 50%;
+            }
           }
         }
 
