@@ -32,7 +32,7 @@ export default function Layout({
       <Helmet
         pathname={router.pathname.slice(1, router.pathname.length)}
       ></Helmet>
-      {isMobile ? null : <Banner />}
+      {!isMobile && <Banner />}
       {isMobile ? <MobileHeader /> : <Header />}
       {router.pathname.indexOf('mypage') > -1 ||
       router.pathname.indexOf('order') > -1 ? (

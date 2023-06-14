@@ -52,7 +52,7 @@ export default function ButtonUserWithdraw() {
     <button
       type="button"
       title="회원탈퇴 신청 버튼"
-      className="btn-common min-w-[500px] flex flex-col justify-center items-center"
+      className="btn-common desktop:min-w-[500px] mobile:min-w-[200px] flex flex-col justify-center items-center"
       onClick={handleClickWithdraw}
     >
       회원탈퇴

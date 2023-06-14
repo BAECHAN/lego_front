@@ -88,9 +88,25 @@ export async function middleware(request: NextRequest, response: NextResponse) {
   }
 
   if (request.nextUrl.pathname == '/mypage') {
-    const url = request.nextUrl.clone()
-    url.pathname = '/mypage/order_history'
-    return NextResponse.redirect(url)
+    if (request) {
+      const userAgent: string = request.headers.get('user-agent') as string
+      const isMobile =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          userAgent
+        )
+
+      if (isMobile) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/mobile/mypage'
+        return NextResponse.redirect(url)
+      } else {
+        const url = request.nextUrl.clone()
+        url.pathname = '/mypage/order_history'
+        return NextResponse.redirect(url)
+      }
+    } else {
+      console.log('Request is not existed')
+    }
   }
 
   if (request.nextUrl.pathname.startsWith('/order')) {

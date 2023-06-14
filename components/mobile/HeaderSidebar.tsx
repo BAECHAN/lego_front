@@ -1,6 +1,6 @@
 import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useRef } from 'react'
 
 export default function MobileHeaderSidebar(props: { isOpenBars: boolean }) {
   const { data: session, status } = useSession()
