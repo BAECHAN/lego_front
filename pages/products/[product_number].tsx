@@ -1,6 +1,6 @@
 import Layout from '../../components/Layout'
 import Image from 'next/image'
-import Carousel from 'nuka-carousel'
+import Carousel from '../../components/common/custom/Carousel'
 import Navbar from '@components/NavigationBar'
 import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -112,60 +112,7 @@ export default function Product(props: ProductT) {
       <Navbar productInfo={product?.data.product_info} />
       <div className="prod-main flex flex-wrap desktop:min-w-[1000px]">
         <div className="prod-img desktop:w-8/12 p-4 desktop:min-w-[645px] mobile:min-w-[320px]">
-          <Carousel
-            autoplay
-            autoplayInterval={5000}
-            pauseOnHover
-            wrapAround
-            withoutControls={true}
-            zoomScale={0.85}
-            animation="zoom"
-            cellSpacing={300}
-            slideIndex={carouselIdx}
-          >
-            {product?.data.product_img_list?.map(
-              (img: string, index: number) => {
-                return (
-                  <Image
-                    key={index}
-                    src={img}
-                    alt={`${String(index)}번 이미지 메인`}
-                    width="700px"
-                    height="400px"
-                    priority
-                    quality={30}
-                    placeholder="blur"
-                    blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
-                    layout="responsive"
-                    className="hover:scale-110"
-                    onDragStart={(e) => e.preventDefault()}
-                  />
-                )
-              }
-            )}
-          </Carousel>
-          <div className="text-center flex justify-around">
-            {product?.data.product_img_list?.map(
-              (img: string, index: number) => {
-                return (
-                  <div
-                    key={index}
-                    className="cursor-pointer"
-                    onClick={() => setCarouselIdx(index)}
-                  >
-                    <Image
-                      src={img}
-                      alt={`${String(index)}번 이미지 서브`}
-                      width="80px"
-                      height="80px"
-                      priority
-                      quality={30}
-                    />
-                  </div>
-                )
-              }
-            )}
-          </div>
+          <Carousel product={props} />
           <div className="prod-attr">
             <div>
               <div className="text-2xl mb-3">
