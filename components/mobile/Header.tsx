@@ -2,12 +2,18 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react'
 import FontAwesomeMobileBars from '@components/FontAwesomeMobileBars'
-import { useCallback, useEffect, useState } from 'react'
+import { forwardRef, useCallback, useEffect, useState } from 'react'
 import MobileHeaderSidebar from './HeaderSidebar'
 import { useRouter } from 'next/router'
+import { isOpenMobileSidebarSelector } from 'state/atoms'
+import { useRecoilState } from 'recoil'
 
-export default function MobileHeader() {
-  const [isOpenBars, setIsOpenBars] = useState(false)
+export default function MobileHeader(props: {
+  sidebarRef: React.MutableRefObject<null>
+}) {
+  const [isOpenBars, setIsOpenBars] = useRecoilState(
+    isOpenMobileSidebarSelector
+  )
 
   const router = useRouter()
 
@@ -16,7 +22,7 @@ export default function MobileHeader() {
     router.events.on('routeChangeComplete', () => {
       setIsOpenBars(false) // 라우팅이 발생하면 isOpenBars를 초기화
     })
-  }, [router.events])
+  }, [router.events, setIsOpenBars])
 
   return (
     <header className="flex items-center p-3 bg-yellow-400">
@@ -31,10 +37,10 @@ export default function MobileHeader() {
       <div className="flex-grow" />
 
       <button onClick={() => setIsOpenBars(!isOpenBars)}>
-        <FontAwesomeMobileBars isOpenBars={isOpenBars} />
+        <FontAwesomeMobileBars />
       </button>
 
-      <MobileHeaderSidebar isOpenBars={isOpenBars} />
+      <MobileHeaderSidebar ref={props.sidebarRef} />
 
       <style jsx>{`
         header {

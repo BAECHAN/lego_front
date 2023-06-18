@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useRef } from 'react'
 import Helmet from './Helmet'
 import Banner from './Banner'
 import Header from './Header'
@@ -9,8 +9,8 @@ import Contents from './Contents'
 import ButtonScrollTop from './ButtonScrollTop'
 import Navbar from './NavigationBar'
 import SidebarMyPage from './sidebar/SidebarMyPage'
-import { useRecoilValue } from 'recoil'
-import { mypageListSelector } from 'state/atoms'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { isOpenMobileSidebarSelector, mypageListSelector } from 'state/atoms'
 import useIsMobile from './common/custom/isMobile'
 
 export default function Layout({
@@ -22,13 +22,28 @@ export default function Layout({
 
   const mypageListObj = useRecoilValue(mypageListSelector)
 
+  const [isOpenBars, setIsOpenBars] = useRecoilState(
+    isOpenMobileSidebarSelector
+  )
+
+  const sidebarRef = useRef(null)
+
+  const handleClickOut = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (sidebarRef.current !== event.target && isOpenBars) {
+      setIsOpenBars(false)
+    }
+  }
+
   return (
-    <div className="flex flex-col h-auto relative">
+    <div
+      className="flex flex-col h-auto relative"
+      onClick={(event) => handleClickOut(event)}
+    >
       <Helmet
         pathname={router.pathname.slice(1, router.pathname.length)}
       ></Helmet>
       {!isMobile && <Banner />}
-      {isMobile ? <MobileHeader /> : <Header />}
+      {isMobile ? <MobileHeader sidebarRef={sidebarRef} /> : <Header />}
       {router.pathname.indexOf('mypage') > -1 ||
       router.pathname.indexOf('order') > -1 ? (
         <div className="px-16">

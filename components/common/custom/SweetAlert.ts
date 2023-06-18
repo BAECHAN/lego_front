@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
 
 export function SweetAlertSuccess(title: string, text?: string) {

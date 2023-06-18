@@ -13,7 +13,6 @@ export default function Payment(props: {
   enabled: boolean
   setIsShippingBlinking: React.Dispatch<React.SetStateAction<boolean>>
 }) {
-  const queryClient = useQueryClient()
   const router = useRouter()
 
   const onClickPayment = () => {
