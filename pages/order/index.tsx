@@ -53,6 +53,8 @@ export default function Order() {
     delivery_request: '',
     delivery_request_direct: '',
     cart_info: {},
+    total_price: 0,
+    product_count: 0,
   })
 
   useEffect(() => {
@@ -67,6 +69,8 @@ export default function Order() {
         cart_info: product.data.cartList.filter((cartItem: ProductCartT) =>
           selectedOrder.includes(cartItem.cart_id)
         ),
+        total_price: totalPrice,
+        product_count: productToPayCount,
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

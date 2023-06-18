@@ -347,3 +347,18 @@ export const findAccountSelector = selector({
     set(findAccountAtom, newValue)
   },
 })
+
+const isOpenMobileSidebarAtom = atom<boolean>({
+  key: `isOpenMobileSidebarAtom`,
+  default: false,
+})
+
+export const isOpenMobileSidebarSelector = selector({
+  key: `isOpenMobileSidebarSelector`,
+  get: ({ get }) => {
+    return get(isOpenMobileSidebarAtom)
+  },
+  set: ({ set }, newValue) => {
+    set(isOpenMobileSidebarAtom, newValue)
+  },
+})

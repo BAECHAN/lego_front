@@ -2,7 +2,6 @@ import Layout from '@components/Layout'
 import Link from 'next/link'
 import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
-import { inputRegExp } from '@components/common/custom/RegExp'
 
 import React, {
   ChangeEvent,
@@ -11,7 +10,6 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import axios from 'axios'
 import Router, { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import axiosRequest from 'pages/api/axios'

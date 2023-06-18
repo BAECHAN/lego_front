@@ -1,23 +1,30 @@
 import useIsMobile from '@components/common/custom/isMobile'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import React from 'react'
+import React, { forwardRef } from 'react'
+import { useRecoilValue } from 'recoil'
+import { isOpenMobileSidebarSelector } from 'state/atoms'
 
-export default function MobileHeaderSidebar(props: { isOpenBars: boolean }) {
+function MobileHeaderSidebar(
+  props: {},
+  sidebarRef: React.LegacyRef<HTMLUListElement> | undefined
+) {
   const { data: session, status } = useSession()
 
   const isMobile = useIsMobile()
 
+  const isOpenBars = useRecoilValue(isOpenMobileSidebarSelector)
+
   return (
-    <div className={props.isOpenBars ? '' : 'relative overflow-hidden'}>
+    <div className={isOpenBars ? '' : 'relative overflow-hidden'}>
       <aside
         className={`mobile-header-sidebar shadow-md ${
-          props.isOpenBars ? 'active' : ''
+          isOpenBars ? 'active' : ''
         }`}
       >
         <div className="mobile-header-sidebar-items flex flex-col">
           {session && status == 'authenticated' ? (
-            <ul>
+            <ul ref={sidebarRef}>
               <li>
                 <Link href="/mypage">
                   <a className="relative">마이페이지</a>
@@ -75,3 +82,5 @@ export default function MobileHeaderSidebar(props: { isOpenBars: boolean }) {
     </div>
   )
 }
+
+export default forwardRef(MobileHeaderSidebar)
