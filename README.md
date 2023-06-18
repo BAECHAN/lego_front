@@ -63,7 +63,7 @@ https://www.lego.com 에서 [인당 구매 가능 수량]을 제한해두었기 
 ## 개선 사항
 * 모바일 화면 디자인 수정 필요
 * 이미지 로딩 속도 해결 및 Prefetching 필요 ( 이미지 파일을 서버에 저장해서 쓰려고했으나 레고사이트에서 이미지 파일 저장에 관대하지 않기 때문에 이미지 링크로 대체 )
-
+* 주문내역에서 현재는 상품별로 UI를 제공하고 있지만 주문별로 UI를 제공할 필요가 있음
 
 ## 개발과정
 https://github.com/BAECHAN/lego_front/blob/main/HISTORY.md
