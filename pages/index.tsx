@@ -1,8 +1,11 @@
 import { ObjT_Str } from 'types'
 import Layout from '../components/Layout'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 export default function Home({ data }: { data: ObjT_Str }) {
+  const router = useRouter()
+
   return (
     <div className="min-h-[602px] m-10">
       <div className="flex justify-center">
@@ -22,6 +25,12 @@ export default function Home({ data }: { data: ObjT_Str }) {
           않습니다.
         </h2>
       </div>
+      <div className="flex justify-center">
+        <button className="btn-common" onClick={() => router.push('/themes')}>
+          쇼핑하러 가기
+        </button>
+      </div>
+
       <style jsx>{`
         .home-image {
           position: relative;
