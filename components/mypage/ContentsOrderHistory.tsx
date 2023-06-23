@@ -15,8 +15,6 @@ export default function ContentsOrderHistory() {
     fetchNextPage,
   } = useOrderList()
 
-  console.log(orderData)
-
   return (
     <div className="desktop:min-h-[602px]">
       {isFetched ? (
@@ -32,26 +30,6 @@ export default function ContentsOrderHistory() {
               <div className="w-2/12">상품상세</div>
             </div>
 
-            {/* <ul className="flex flex-wrap">
-              {orderData?.pages.map((page, index) => (
-                <React.Fragment key={index}>
-                  {page.data.orderList.length > 0 ? (
-                    page.data.orderList?.map(
-                      (orderProduct: OrderT, index: number) => {
-                        return (
-                          <ProductInOrderHistory
-                            order={orderProduct}
-                            key={index}
-                          />
-                        )
-                      }
-                    )
-                  ) : (
-                    <div className="text-2xl m-auto">주문 내역이 없습니다.</div>
-                  )}
-                </React.Fragment>
-              ))}
-            </ul> */}
             <ul className="flex flex-wrap">
               {orderData?.pages.map((item, index1) => (
                 <React.Fragment key={index1}>
