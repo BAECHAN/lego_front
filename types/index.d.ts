@@ -212,6 +212,20 @@ export type OrderT = {
   delivery_request_direct: string
 }
 
+export type OrderGroupT = {
+  order_group_id: number
+  state: number
+  date_registed: Date
+  recipient: string
+  tel_number: string
+  shipping_address1: string
+  shipping_address2: string
+  delivery_request: string
+  delivery_request_direct: string
+  total_price: number
+  product_count: number
+}
+
 export type UserOAuthSubmitT = UserSubmitT & {
   provider: string
 }
