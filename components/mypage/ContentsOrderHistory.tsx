@@ -1,7 +1,6 @@
-import ProductInOrderHistory from '@components/product/ProductInOrderHistory'
 import useOrderList from 'pages/api/query/useOrderList'
 import React, { useState } from 'react'
-import { OrderGroupT, OrderT } from 'types'
+import { OrderGroupT } from 'types'
 import ButtonMore from '../common/pagination/ButtonMore'
 import GroupInOrderHistory from '@components/product/GroupInOrderHistory'
 

@@ -15,10 +15,6 @@ export default function GroupInOrderHistory(props: {
   orderGroup: OrderGroupT
   order: OrderT[]
 }) {
-  console.log(props.orderGroup)
-  console.log(props.order)
-  console.log(props.order[0].product_number)
-
   const { data: session, status } = useSession()
 
   const queryClient = useQueryClient()

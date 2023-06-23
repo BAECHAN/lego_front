@@ -1,14 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { OrderT } from 'types'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
-import axios from 'axios'
-
-import * as common from '@components/common/event/CommonFunction'
-import * as swal from '@components/common/custom/SweetAlert'
-import { queryKeys } from 'pages/api/query/queryKeys'
 
 export default function ProductInOrderHistory(props: { order: OrderT }) {
   return (
