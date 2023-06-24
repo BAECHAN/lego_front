@@ -3,6 +3,7 @@ import ButtonChange from './ButtonChange'
 import Image from 'next/image'
 import ButtonSave from './ButtonSave'
 import ButtonUploadFile from './ButtonUploadFile'
+import useIsMobile from '@components/common/custom/isMobile'
 
 export default function UserInfoContentsLine(props: {
   infoKey: string
@@ -21,6 +22,8 @@ export default function UserInfoContentsLine(props: {
 
   const [uploadFile, setUploadFile] = useState<File>()
 
+  const isMobile = useIsMobile()
+
   useEffect(() => {
     if (infoInputRef?.current) {
       infoInputRef.current.focus()
@@ -33,19 +36,55 @@ export default function UserInfoContentsLine(props: {
     }
   }
 
+  const changeComponent = (
+    <div className="info-update-button flex desktop:w-2/6 desktop:flex-row-reverse mobile:justify-center mobile:mt-3">
+      {props.infoUpdate ? (
+        props.infoKey == 'image' ? (
+          isChange ? (
+            <ButtonUploadFile
+              newValue={newValue}
+              setNewValue={setNewValue}
+              setUploadFile={setUploadFile}
+            />
+          ) : (
+            <ButtonChange
+              infoKey={props.infoKey}
+              infoName={props.infoName}
+              isChange={isChange}
+              setIsChange={setIsChange}
+            />
+          )
+        ) : isChange ? null : (
+          <ButtonChange
+            infoKey={props.infoKey}
+            infoName={props.infoName}
+            isChange={isChange}
+            setIsChange={setIsChange}
+          />
+        )
+      ) : props.infoKey == 'onKakao' || props.infoKey == 'onGoogle' ? (
+        props.onConnect ? (
+          <p className="text-blue-600 font-bold">ON</p>
+        ) : (
+          <p className="text-red-600 font-bold">OFF</p>
+        )
+      ) : null}
+    </div>
+  )
+
   return (
     <>
       <div
-        className={`user-info-line flex w-full ${
+        className={`user-info-line desktop:flex mobile:block w-full ${
           props.infoKey == 'image' ? 'h-56' : ''
         } my-4`}
       >
-        <div className="user-info-cell flex w-full items-center">
-          <div className="info-name w-1/6">
+        <div className="user-info-cell w-full flex items-center">
+          <div className="info-name desktop:w-1/6 mobile:w-1/2 mobile:ml-3">
             <span title="회원정보 항목명">{props.infoName}</span>
           </div>
 
-          <div className="w-1/6" />
+          <div className="desktop:w-1/6" />
 
           <div className="info-value">
             {props.infoKey == 'image' ? (
@@ -132,47 +171,16 @@ export default function UserInfoContentsLine(props: {
                 ) : null}
               </div>
             ) : (
-              <p>{value}</p>
+              <p className="mobile:text-right">{value}</p>
             )}
           </div>
 
-          <div className="flex-grow" />
+          <div className="desktop:flex-grow" />
 
-          <div className="info-update-button flex w-2/6 flex-row-reverse">
-            {props.infoUpdate ? (
-              props.infoKey == 'image' ? (
-                isChange ? (
-                  <ButtonUploadFile
-                    newValue={newValue}
-                    setNewValue={setNewValue}
-                    setUploadFile={setUploadFile}
-                  />
-                ) : (
-                  <ButtonChange
-                    infoKey={props.infoKey}
-                    infoName={props.infoName}
-                    isChange={isChange}
-                    setIsChange={setIsChange}
-                  />
-                )
-              ) : isChange ? null : (
-                <ButtonChange
-                  infoKey={props.infoKey}
-                  infoName={props.infoName}
-                  isChange={isChange}
-                  setIsChange={setIsChange}
-                />
-              )
-            ) : props.infoKey == 'onKakao' || props.infoKey == 'onGoogle' ? (
-              props.onConnect ? (
-                <p className="text-blue-600 font-bold">ON</p>
-              ) : (
-                <p className="text-red-600 font-bold">OFF</p>
-              )
-            ) : null}
-          </div>
-          <div className="w-1/6" />
+          {isMobile ? null : changeComponent}
+          <div className="desktop:w-1/6" />
         </div>
+        {isMobile ? changeComponent : null}
       </div>
       <hr />
       <style jsx>{`

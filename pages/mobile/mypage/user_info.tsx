@@ -1,11 +1,8 @@
 import LayoutMobile from '@components/LayoutMobile'
+import ContentsUserInfo from '@components/mypage/ContentsUserInfo'
 
 export default function UserInfo() {
-  return (
-    <div className="flex justify-center h-10">
-      <strong>작성 중인 페이지입니다.</strong>
-    </div>
-  )
+  return <ContentsUserInfo />
 }
 UserInfo.getLayout = function getLayout(page: React.ReactElement) {
   return <LayoutMobile>{page}</LayoutMobile>

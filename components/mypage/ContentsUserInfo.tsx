@@ -41,7 +41,9 @@ export default function ContentsUserInfo() {
             />
 
             <div className="my-20 order-info">
-              <h1 className="text-2xl font-bold mb-3">배송 정보</h1>
+              <h1 className="text-2xl font-bold mb-3 mobile:text-center">
+                배송 정보
+              </h1>
               <hr className="border-black border-2" />
 
               <UserInfoContentsLine
@@ -53,7 +55,9 @@ export default function ContentsUserInfo() {
             </div>
 
             <div className="my-20 order-info">
-              <h1 className="text-2xl font-bold mb-3">로그인 연동 정보</h1>
+              <h1 className="text-2xl font-bold mb-3 mobile:text-center">
+                로그인 연동 정보
+              </h1>
               <hr className="border-black border-2" />
 
               <UserInfoContentsLine
@@ -73,9 +77,9 @@ export default function ContentsUserInfo() {
             </div>
 
             <div className="flex justify-center">
-              <div className="flex-grow w-1/4" />
+              <div className="flex-grow desktop:w-1/4" />
               <ButtonUserWithdraw />
-              <div className="flex-grow w-1/2" />
+              <div className="flex-grow desktop:w-1/2" />
             </div>
           </>
         ) : null}
