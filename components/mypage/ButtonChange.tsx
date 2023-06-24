@@ -2,6 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenSquare } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/router'
+import useIsMobile from '@components/common/custom/isMobile'
 
 export default function ButtonChange(props: {
   infoKey: string
@@ -11,11 +12,15 @@ export default function ButtonChange(props: {
 }) {
   const router = useRouter()
 
+  const isMobile = useIsMobile()
+
   const handleClickButton = () => {
     if (props.infoKey == 'password') {
       router.push('/account/check_password')
     } else if (props.infoKey == 'address') {
-      router.push('/mypage/delivery')
+      isMobile
+        ? router.push('/mobile/mypage/delivery')
+        : router.push('/mypage/delivery')
     } else if (props.infoKey == 'image') {
       props.setIsChange(!props.isChange)
     } else {
