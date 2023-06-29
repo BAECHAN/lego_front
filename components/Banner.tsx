@@ -26,13 +26,15 @@ export default function Banner() {
     })
   }
 
+  const thisMonth = new Date().getMonth()
+
   return (
     <div>
       {!isClose ? (
         <div className="banner">
           <span style={{ flexGrow: 1 }}></span>
           <p title="배너 제목" className="mx-2 my-3">
-            6월 신제품 출시!
+            {thisMonth + 1}월 신제품 출시!
           </p>
           <Link href="/themes">
             <a title="상품 보러가기 링크" className="hover:text-blue-600">

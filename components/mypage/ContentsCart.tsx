@@ -1,3 +1,4 @@
+import useIsMobile from '@components/common/custom/isMobile'
 import ProductInCart from '@components/product/ProductInCart'
 import { useRouter } from 'next/router'
 import useProductCartList from 'pages/api/query/useProductCartList'
@@ -8,6 +9,8 @@ import { ProductCartT } from 'types'
 
 export default function ContentsCart() {
   const router = useRouter()
+
+  const isMobile = useIsMobile()
 
   const { data: product, isFetched } = useProductCartList()
 
@@ -45,7 +48,7 @@ export default function ContentsCart() {
   }, [product])
 
   const handleClickOrder = () => {
-    router.push('/order')
+    isMobile ? router.push('/mobile/order') : router.push('/order')
   }
 
   const handleClickShopping = () => {
@@ -56,7 +59,7 @@ export default function ContentsCart() {
     <div>
       {isFetched ? (
         product && product.data.cartList?.length > 0 ? (
-          <div className="min-h-[600px]">
+          <div className="desktop:min-h-[600px] py-10">
             <ul className="flex flex-col">
               {product.data.cartList.map(
                 (item: ProductCartT, index: number) => {
@@ -73,14 +76,14 @@ export default function ContentsCart() {
               <p>주문할 상품 : {selectedOrder.length}개</p>
             </div>
             <div className="flex justify-center">
-              {totalPrice.toLocaleString('ko-KR')} 원
+              <b>{totalPrice.toLocaleString('ko-KR')} 원</b>
             </div>
             <div className="flex justify-center">
               <button
                 type="button"
                 title="선택한 상품들에 한하여 주문하기"
                 id="btnOrderRouter"
-                className="btn-common min-w-[500px]"
+                className="btn-common desktop:min-w-[500px] mobile:w-80"
                 onClick={handleClickOrder}
               >
                 주문하기
@@ -95,7 +98,7 @@ export default function ContentsCart() {
                 type="button"
                 title="쇼핑하러 가기 버튼"
                 id="btnShopRouter"
-                className="btn-common min-w-[500px]"
+                className="btn-common desktop:min-w-[500px] mobile:w-80"
                 onClick={handleClickShopping}
               >
                 쇼핑하러 가기
