@@ -79,7 +79,10 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     }
   }
 
-  if (request.nextUrl.pathname.startsWith('/mypage')) {
+  if (
+    request.nextUrl.pathname.startsWith('/mypage') ||
+    request.nextUrl.pathname.indexOf('/mobile/mypage') > -1
+  ) {
     if (!session) {
       const url = request.nextUrl.clone()
       url.pathname = '/login'
