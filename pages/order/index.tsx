@@ -121,7 +121,7 @@ export default function Order() {
   }, [selectedShipping])
 
   useEffect(() => {
-    if (directOpen && inputsRef) {
+    if (directOpen && inputsRef && inputsRef.current[0]) {
       inputsRef.current[0].focus()
     }
   }, [directOpen])
