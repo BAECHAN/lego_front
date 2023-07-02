@@ -1813,3 +1813,31 @@ order_group과 order가 1:N 구조이기 때문에 order_group 데이터는 중�
 
 api 요청 한번에 order_group과 order 데이터를 map에 담아 response로 받은 후 order_group 컴포넌트를 추가로 생성하여 order_group이 컨테이너 역할로써
 order 컴포넌트를 감싸서 처리하였다.(23-06-23)
+
+### 배포 시 에러 발생 ( 23-06-28 )  
+
+로컬에서는 상관없었지만 배포하였을 때 두가지 종류의 에러가 발생하였다.
+1. 하나는 배너 신제품 출시 날짜를 계속 수정해주는게 귀찮아서 new Date().getMonth()로 가져왔었지만  
+이 경우 배포 시 클라이언트의 시간과 서버의 시간이 맞지 않기 때문에 발생하는 거 같아
+아래의 링크를 참고하였습니다. 
+https://github.com/vercel/next.js/issues/37489
+
+2. 나머지 하나는 TypeError로 React에서는 흔하게 발생하는 .focus() 에러였는데 로컬에서는 문제가 없었지만 배포 시 에러가 발생
+
+#### Uncaught TypeError: Cannot read properties of undefined (reading 'focus')
+ 
+```
+useEffect(() => {
+    if (directOpen && inputsRef) {
+      inputsRef.current[0].focus()
+    }
+  }, [directOpen])
+
+아래 코드와 같이 inputsRef.current[0] 값 체크 후 focus() 처리하여
+
+useEffect(() => {
+    if (directOpen && inputsRef && inputsRef.current[0]) {
+      inputsRef.current[0].focus()
+    }
+  }, [directOpen])
+```
