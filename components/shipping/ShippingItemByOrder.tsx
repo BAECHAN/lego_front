@@ -3,6 +3,7 @@ import { ShippingT } from 'types'
 import ButtonEdit from './ButtonEdit'
 import ButtonDelete from './ButtonDelete'
 import ButtonChoice from './ButtonChoice'
+import useIsMobile from '@components/common/custom/isMobile'
 
 export default function ShippingItemByOrder(props: {
   shipping: ShippingT
@@ -17,6 +18,8 @@ export default function ShippingItemByOrder(props: {
   listLength: number
   shippingListCount: number
 }) {
+  const isMobile = useIsMobile()
+
   return (
     <div className="flex justify-center">
       <div className="flex flex-col shipping-box">
@@ -67,11 +70,13 @@ export default function ShippingItemByOrder(props: {
             </div>
           </div>
           <div className="flex-grow"></div>
-          <div>
-            <div className="flex items-center text-sm">
-              <ButtonChoice shipping={props.shipping} />
+          {!isMobile && (
+            <div>
+              <div className="flex items-center text-sm">
+                <ButtonChoice shipping={props.shipping} />
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="flex text-sm self-end">
@@ -96,6 +101,10 @@ export default function ShippingItemByOrder(props: {
           padding: 10px;
           border: 0.5px solid rgb(99, 97, 97, 0.5);
           border-radius: 5px;
+
+          @media (max-width: 768px) {
+            width: 85%;
+          }
         }
       `}</style>
     </div>
