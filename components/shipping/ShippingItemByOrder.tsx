@@ -4,6 +4,8 @@ import ButtonEdit from './ButtonEdit'
 import ButtonDelete from './ButtonDelete'
 import ButtonChoice from './ButtonChoice'
 import useIsMobile from '@components/common/custom/isMobile'
+import { useRecoilValue } from 'recoil'
+import { deliveryRequestSelector } from 'state/atoms'
 
 export default function ShippingItemByOrder(props: {
   shipping: ShippingT
@@ -19,6 +21,7 @@ export default function ShippingItemByOrder(props: {
   shippingListCount: number
 }) {
   const isMobile = useIsMobile()
+  const deliveryRequestOptions = useRecoilValue(deliveryRequestSelector)
 
   return (
     <div className="flex justify-center">
@@ -51,21 +54,14 @@ export default function ShippingItemByOrder(props: {
             </div>
             <div>
               <span className="text-gray-500">
-                {props.shipping.delivery_request == '1'
-                  ? '배송 시 요청사항을 선택해주세요'
-                  : props.shipping.delivery_request == '2'
-                  ? '부재 시 경비실에 맡겨주세요'
-                  : props.shipping.delivery_request == '3'
-                  ? '부재 시 택배함에 넣어주세요'
-                  : props.shipping.delivery_request == '4'
-                  ? '부재 시 집 앞에 놔주세요'
-                  : props.shipping.delivery_request == '5'
-                  ? '배송 전 연락 바랍니다'
-                  : props.shipping.delivery_request == '6'
-                  ? '파손의 위험이 있는 상품이니 배송 시 주의해 주세요'
-                  : props.shipping.delivery_request == '7'
-                  ? props.shipping.delivery_request_direct
-                  : null}
+                {deliveryRequestOptions.map((value: string, index: number) => {
+                  return props.shipping.delivery_request ===
+                    (index + 1).toString()
+                    ? index + 1 === 7
+                      ? props.shipping.delivery_request_direct
+                      : value
+                    : null
+                })}
               </span>
             </div>
           </div>

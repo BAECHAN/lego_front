@@ -16,6 +16,8 @@ import axios from 'axios'
 import * as common from '@components/common/event/CommonFunction'
 import * as swal from '@components/common/custom/SweetAlert'
 import { queryKeys } from 'pages/api/query/queryKeys'
+import { useRecoilValue } from 'recoil'
+import { deliveryRequestSelector } from 'state/atoms'
 
 export default function ModalDelivery(props: {
   onClose: any
@@ -72,6 +74,8 @@ export default function ModalDelivery(props: {
   const [directOpen, setDirectOpen] = useState(false)
 
   const postButtonRef = useRef<HTMLButtonElement>(null)
+
+  const deliveryRequestOptions = useRecoilValue(deliveryRequestSelector)
 
   useEffect(() => {
     if (inputsRef.current[9] && !deliveryRequestDirect) {
@@ -533,15 +537,15 @@ export default function ModalDelivery(props: {
                       : null
                   }}
                 >
-                  <option value="1">배송 시 요청사항을 선택해주세요</option>
-                  <option value="2">부재 시 경비실에 맡겨주세요</option>
-                  <option value="3">부재 시 택배함에 넣어주세요</option>
-                  <option value="4">부재 시 집 앞에 놔주세요</option>
-                  <option value="5">배송 전 연락 바랍니다</option>
-                  <option value="6">
-                    파손의 위험이 있는 상품이니 배송 시 주의해 주세요
-                  </option>
-                  <option value="7">직접 입력</option>
+                  {deliveryRequestOptions.map(
+                    (value: string, index: number) => {
+                      return (
+                        <option value={index + 1} key={index + 1}>
+                          {value}
+                        </option>
+                      )
+                    }
+                  )}
                 </select>
               </div>
 
