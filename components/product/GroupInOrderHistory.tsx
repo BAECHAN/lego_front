@@ -10,6 +10,8 @@ import * as common from '@components/common/event/CommonFunction'
 import * as swal from '@components/common/custom/SweetAlert'
 import { queryKeys } from 'pages/api/query/queryKeys'
 import ProductInOrderHistory from './ProductInOrderHistory'
+import { useRecoilValue } from 'recoil'
+import { deliveryRequestSelector } from 'state/atoms'
 
 export default function GroupInOrderHistory(props: {
   orderGroup: OrderGroupT
@@ -27,6 +29,8 @@ export default function GroupInOrderHistory(props: {
 
   const [isOpenDelivery, setIsOpenDelivery] = useState(false)
   const [isOpenDetail, setIsOpenDetail] = useState(false)
+
+  const deliveryRequestOptions = useRecoilValue(deliveryRequestSelector)
 
   useEffect(() => {
     if (props.orderGroup.state == 7) {
@@ -182,21 +186,14 @@ export default function GroupInOrderHistory(props: {
             </p>
             <p>
               요청사항 :&nbsp;
-              {props.orderGroup.delivery_request == '1'
-                ? '없음'
-                : props.orderGroup.delivery_request == '2'
-                ? '부재 시 경비실에 맡겨주세요'
-                : props.orderGroup.delivery_request == '3'
-                ? '부재 시 택배함에 넣어주세요'
-                : props.orderGroup.delivery_request == '4'
-                ? '부재 시 집 앞에 놔주세요'
-                : props.orderGroup.delivery_request == '5'
-                ? '배송 전 연락 바랍니다'
-                : props.orderGroup.delivery_request == '6'
-                ? '파손의 위험이 있는 상품이니 배송 시 주의해 주세요'
-                : props.orderGroup.delivery_request == '7'
-                ? props.orderGroup.delivery_request_direct
-                : null}
+              {deliveryRequestOptions.map((value: string, index: number) => {
+                return props.orderGroup.delivery_request ===
+                  (index + 1).toString()
+                  ? index + 1 === 7
+                    ? props.orderGroup.delivery_request_direct
+                    : value
+                  : null
+              })}
             </p>
           </div>
         </div>

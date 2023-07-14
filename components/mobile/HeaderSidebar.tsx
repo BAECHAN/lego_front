@@ -26,7 +26,7 @@ function MobileHeaderSidebar(
           {session && status == 'authenticated' ? (
             <ul ref={sidebarRef}>
               <li>
-                <Link href="/mypage">
+                <Link href="/mobile/mypage">
                   <a className="relative">마이페이지</a>
                 </Link>
               </li>
