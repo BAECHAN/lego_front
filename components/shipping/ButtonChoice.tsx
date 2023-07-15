@@ -1,11 +1,7 @@
 import React from 'react'
 import { ShippingT } from 'types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faPenSquare,
-  faTrashCan,
-  faCircleCheck,
-} from '@fortawesome/free-solid-svg-icons'
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'

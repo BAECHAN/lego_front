@@ -16,8 +16,7 @@ import axios from 'axios'
 import * as common from '@components/common/event/CommonFunction'
 import * as swal from '@components/common/custom/SweetAlert'
 import { queryKeys } from 'pages/api/query/queryKeys'
-import { useRecoilValue } from 'recoil'
-import { deliveryRequestSelector } from 'state/atoms'
+import { deliveryRequestOptions } from 'pages/api/common/deliveryRequestOptions'
 
 export default function ModalDelivery(props: {
   onClose: any
@@ -74,8 +73,6 @@ export default function ModalDelivery(props: {
   const [directOpen, setDirectOpen] = useState(false)
 
   const postButtonRef = useRef<HTMLButtonElement>(null)
-
-  const deliveryRequestOptions = useRecoilValue(deliveryRequestSelector)
 
   useEffect(() => {
     if (inputsRef.current[9] && !deliveryRequestDirect) {
@@ -495,11 +492,11 @@ export default function ModalDelivery(props: {
 
               <div className="flex my-5">
                 <div className="title"></div>
-                <label className="text-sm font-medium select-none flex items-center">
+                <label className="text-sm font-medium select-none flex items-center cursor-pointer">
                   <input
                     type="checkbox"
                     name="shippingDefault"
-                    className="modal-input w-4 mr-2"
+                    className="modal-input w-4 mr-2 cursor-pointer"
                     title="기본 배송지 설정 유무"
                     onChange={(e) =>
                       common.CommonHandleChangeValue(

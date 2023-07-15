@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
 import { ProductCartT } from 'types'
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import useIsMobile from '@components/common/custom/isMobile'
 import ProductCheckbox from './cart/ProductCheckbox'
 import ProductCartImage from './cart/ProductImage'

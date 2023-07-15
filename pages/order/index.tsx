@@ -7,7 +7,6 @@ import useProductCartList from 'pages/api/query/useProductCartList'
 import React, { useEffect, useState, ChangeEvent, useRef } from 'react'
 import { useRecoilValue } from 'recoil'
 import {
-  deliveryRequestSelector,
   orderPriceSelector,
   selectedOrderSelector,
   selectedShippingSelector,
@@ -15,6 +14,7 @@ import {
 import { ProductCartT, ShippingT } from 'types'
 import Payment from '@components/common/pay/Payment'
 import { useSession } from 'next-auth/react'
+import { deliveryRequestOptions } from 'pages/api/common/deliveryRequestOptions'
 
 export default function Order() {
   const router = useRouter()
@@ -25,7 +25,6 @@ export default function Order() {
   const selectedOrder = useRecoilValue(selectedOrderSelector)
   const orderPrice = useRecoilValue(orderPriceSelector)
   const selectedShippingFromDelivery = useRecoilValue(selectedShippingSelector)
-  const deliveryRequestOptions = useRecoilValue(deliveryRequestSelector)
 
   const [totalPrice, setTotalPrice] = useState(0)
   const [deliveryPrice, setDeliveryPrice] = useState(0)

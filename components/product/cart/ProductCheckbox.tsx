@@ -61,6 +61,10 @@ export default function ProductCheckbox(props: { product: ProductCartT }) {
           width: 25px;
           height: 25px;
           accent-color: #87ceeb;
+
+          :hover {
+            cursor: pointer;
+          }
         }
       `}</style>
     </div>

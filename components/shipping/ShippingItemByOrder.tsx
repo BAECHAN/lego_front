@@ -4,8 +4,7 @@ import ButtonEdit from './ButtonEdit'
 import ButtonDelete from './ButtonDelete'
 import ButtonChoice from './ButtonChoice'
 import useIsMobile from '@components/common/custom/isMobile'
-import { useRecoilValue } from 'recoil'
-import { deliveryRequestSelector } from 'state/atoms'
+import { deliveryRequestOptions } from 'pages/api/common/deliveryRequestOptions'
 
 export default function ShippingItemByOrder(props: {
   shipping: ShippingT
@@ -21,7 +20,6 @@ export default function ShippingItemByOrder(props: {
   shippingListCount: number
 }) {
   const isMobile = useIsMobile()
-  const deliveryRequestOptions = useRecoilValue(deliveryRequestSelector)
 
   return (
     <div className="flex justify-center">

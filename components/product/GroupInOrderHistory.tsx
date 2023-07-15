@@ -11,8 +11,7 @@ import * as swal from '@components/common/custom/SweetAlert'
 import { queryKeys } from 'pages/api/query/queryKeys'
 import ProductInOrderHistory from './ProductInOrderHistory'
 import { useRecoilValue } from 'recoil'
-import { deliveryRequestSelector } from 'state/atoms'
-
+import { deliveryRequestOptions } from 'pages/api/common/deliveryRequestOptions'
 export default function GroupInOrderHistory(props: {
   orderGroup: OrderGroupT
   order: OrderT[]
@@ -29,8 +28,6 @@ export default function GroupInOrderHistory(props: {
 
   const [isOpenDelivery, setIsOpenDelivery] = useState(false)
   const [isOpenDetail, setIsOpenDetail] = useState(false)
-
-  const deliveryRequestOptions = useRecoilValue(deliveryRequestSelector)
 
   useEffect(() => {
     if (props.orderGroup.state == 7) {
