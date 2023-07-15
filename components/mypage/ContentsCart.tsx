@@ -48,7 +48,13 @@ export default function ContentsCart() {
   }, [product])
 
   const handleClickOrder = () => {
-    isMobile ? router.push('/mobile/order') : router.push('/order')
+    selectedOrder.length > 0
+      ? isMobile
+        ? router.push('/mobile/order')
+        : router.push('/order')
+      : alert(
+          '상품이미지 왼쪽의 체크박스를 체크하여\r주문할 상품을 선택 후 주문해주시기 바랍니다.'
+        )
   }
 
   const handleClickShopping = () => {
