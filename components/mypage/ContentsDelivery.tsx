@@ -40,14 +40,18 @@ export default function ContentsDelivery() {
     !modalOpen ? setModalOpen(true) : setModalOpen(false)
   }
 
-  const modalProps = {
-    onClose: handleClickModalOpen,
+  const pageProps = {
     page,
     setPage,
     startPage,
     setStartPage,
     totalPage,
     setTotalPage,
+  }
+
+  const modalProps = {
+    onClose: handleClickModalOpen,
+    ...pageProps,
     listLength: data && data.shippingList ? data.shippingList.length : 0,
     shippingListCount: data && data.shippingListCount,
   }
@@ -64,12 +68,7 @@ export default function ContentsDelivery() {
                   <ShippingItemByOrder
                     shipping={item}
                     onOpen={handleClickModalOpen}
-                    page={page}
-                    setPage={setPage}
-                    startPage={startPage}
-                    setStartPage={setStartPage}
-                    totalPage={totalPage}
-                    setTotalPage={setTotalPage}
+                    {...pageProps}
                     isLastPage={data.isLastPage}
                     listLength={data.shippingList.length}
                     shippingListCount={data.shippingListCount}
@@ -80,12 +79,7 @@ export default function ContentsDelivery() {
                   <ShippingItem
                     shipping={item}
                     onOpen={handleClickModalOpen}
-                    page={page}
-                    setPage={setPage}
-                    startPage={startPage}
-                    setStartPage={setStartPage}
-                    totalPage={totalPage}
-                    setTotalPage={setTotalPage}
+                    {...pageProps}
                     isLastPage={data.isLastPage}
                     listLength={data.shippingList.length}
                     shippingListCount={data.shippingListCount}
@@ -96,14 +90,7 @@ export default function ContentsDelivery() {
             })}
           </ul>
           <div>
-            <Pagination
-              page={page}
-              setPage={setPage}
-              startPage={startPage}
-              setStartPage={setStartPage}
-              totalPage={totalPage}
-              setTotalPage={setTotalPage}
-            />
+            <Pagination {...pageProps} />
           </div>
         </div>
       ) : (
