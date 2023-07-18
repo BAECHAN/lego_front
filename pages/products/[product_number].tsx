@@ -1,5 +1,4 @@
 import Layout from '../../components/Layout'
-import Image from 'next/image'
 import Carousel from '../../components/common/custom/Carousel'
 import Navbar from '@components/NavigationBar'
 import { useEffect, useState } from 'react'
@@ -22,7 +21,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Product(props: ProductT) {
-  const [carouselIdx, setCarouselIdx] = useState(0)
   let [quantity, setQuantity] = useState(1)
   let [minusDisabled, setMinusDisabled] = useState(true)
   let [plusDisabled, setPlusDisabled] = useState(false)

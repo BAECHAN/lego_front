@@ -5,18 +5,17 @@ import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import { FormEvent, useRef, useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { findAccountSelector, passwordEyeSelector } from 'state/atoms'
+import { useRecoilState } from 'recoil'
+import { findAccountSelector } from 'state/atoms'
 import { FindAccountT } from 'types'
 import InputPassword from '@components/common/input/InputPassword'
 import InputEmail from '@components/common/input/InputEmail'
 import ButtonLoginKakao from '@components/login/ButtonLoginKakao'
 import ButtonLoginGoogle from '@components/login/ButtonLoginGoogle'
+import ButtonFindAccount from '@components/login/ButtonFindAccount'
 
 export default function Login() {
   const router = useRouter()
-
-  const passwordType = useRecoilValue(passwordEyeSelector)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -28,7 +27,6 @@ export default function Login() {
     useRecoilState(findAccountSelector)
 
   const login = async (e: FormEvent<HTMLFormElement>) => {
-    // submit 새로고침 방지
     e.preventDefault()
 
     if (email.trim() === '') {
@@ -120,20 +118,8 @@ export default function Login() {
                 </a>
               </Link>
               <div className="flex-grow" />
-              <button
-                type="button"
-                onClick={() => handleClickFindButton('email')}
-                className="hover:underline mr-3"
-              >
-                계정 찾기
-              </button>
-              <button
-                type="button"
-                onClick={() => handleClickFindButton('password')}
-                className="hover:underline mr-3"
-              >
-                비밀번호 찾기
-              </button>
+              <ButtonFindAccount type="email" />
+              <ButtonFindAccount type="password" />
             </div>
           </form>
 

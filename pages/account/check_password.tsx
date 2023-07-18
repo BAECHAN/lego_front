@@ -8,6 +8,7 @@ import crypto from 'crypto-js'
 import axiosRequest from 'pages/api/axios'
 import { useSession } from 'next-auth/react'
 import InputPassword from '@components/common/input/InputPassword'
+import ButtonFindAccount from '@components/login/ButtonFindAccount'
 
 export default function CheckPassword() {
   const { data: session, status } = useSession()
@@ -74,7 +75,7 @@ export default function CheckPassword() {
   }
 
   useEffect(() => {
-    passwordRef.current ? passwordRef.current.focus() : null
+    passwordRef.current && passwordRef.current.focus()
   }, [])
 
   return (
