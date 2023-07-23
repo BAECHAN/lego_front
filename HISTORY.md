@@ -1856,3 +1856,6 @@ useEffect(() => {
 cdn 서버에서 format=webp 형식으로 변경해서 이미지를 가져오는 것으로 db를 수정하여 개선하려는데 크게 바뀌는 건 없어보인다.  
 일단 webp 파일로 받아오는 것으로 변경, 개발자도구 network 탭에서 Response Headers - Content Type에 webp로 받아오는 것을 확인  
 => **Next.js에서 Image 태그 사용시 webp 확장자로 자동으로 변환하여 이미지를 가져오고 있었음**
+
+### CSS 일부를 SCSS로 변경, 공통된 css 모듈화하여 import 해서 가져오도록 처리
+### 환불요청 시 confirm메서드로 확답받은 후 환불처리
