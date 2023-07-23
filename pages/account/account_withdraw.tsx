@@ -2,6 +2,7 @@ import Layout from '@components/Layout'
 import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import styles from 'styles/account.module.scss'
 
 export default function AccountExpiredAccount() {
   const router = useRouter()
@@ -17,7 +18,9 @@ export default function AccountExpiredAccount() {
 
   return (
     <div className="min-h-[80vh] bg-gray-200">
-      <div className="flex justify-center items-center account-contents">
+      <div
+        className={`flex justify-center items-center ${styles['account-contents']}`}
+      >
         <h2 className="text-3xl ">탈퇴 계정 안내</h2>
         <p className="text-center">
           해당 계정은 탈퇴처리된 계정입니다.
@@ -35,28 +38,6 @@ export default function AccountExpiredAccount() {
           회원가입 하러가기
         </button>
       </div>
-      <style jsx>{`
-        .account-contents {
-          min-width: 800px;
-          vertical-align: middle;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: 20px;
-
-          > * {
-            margin: 8px 0px;
-          }
-
-          input {
-            width: 500px;
-            height: 35px;
-            border: solid gray 1px;
-            display: inline-block;
-            padding: 5px;
-          }
-        }
-      `}</style>
     </div>
   )
 }

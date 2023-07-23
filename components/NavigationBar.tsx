@@ -108,9 +108,10 @@ export default function NavigationBar(prop: { productInfo?: ProductT }) {
       <style jsx>{`
         a {
           color: #006db7;
-        }
-        a:hover {
-          text-decoration: underline;
+
+          :hover {
+            text-decoration: underline;
+          }
         }
 
         span {

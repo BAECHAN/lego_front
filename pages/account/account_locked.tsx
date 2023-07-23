@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { faPhone } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import styles from 'styles/account.module.scss'
 
 export default function AccountExpiredAccount() {
   const router = useRouter()
@@ -20,7 +21,9 @@ export default function AccountExpiredAccount() {
 
   return (
     <div className="min-h-[80vh] bg-gray-200">
-      <div className="flex justify-center items-center account-contents">
+      <div
+        className={`flex justify-center items-center ${styles['account-contents']}`}
+      >
         <h2 className="text-3xl ">잠금 계정 안내</h2>
         <p className="text-center">
           해당 계정은 이용약관에 위배되는 활동이 의심되어 잠긴 계정으로
@@ -42,28 +45,6 @@ export default function AccountExpiredAccount() {
           홈페이지로 이동
         </button>
       </div>
-      <style jsx>{`
-        .account-contents {
-          min-width: 800px;
-          vertical-align: middle;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: 20px;
-
-          > * {
-            margin: 8px 0px;
-          }
-
-          input {
-            width: 500px;
-            height: 35px;
-            border: solid gray 1px;
-            display: inline-block;
-            padding: 5px;
-          }
-        }
-      `}</style>
     </div>
   )
 }

@@ -8,6 +8,7 @@ import axiosRequest from 'pages/api/axios'
 import { useRouter } from 'next/router'
 import { UserOAuthSubmitT } from 'types'
 import { GetServerSidePropsContext } from 'next'
+import styles from 'styles/account.module.scss'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {
@@ -76,7 +77,7 @@ export default function OauthCheck(props: { provider: string }) {
   return (
     <div className="h-full bg-gray-200">
       <div className="flex justify-center items-center">
-        <div className="login-box">
+        <div className={`${styles['login-box']}`}>
           <Link href="/">
             <a title="홈페이지로 이동 링크">
               <Image
@@ -118,29 +119,6 @@ export default function OauthCheck(props: { provider: string }) {
           </button>
         </div>
       </div>
-
-      <style jsx>{`
-        .login-box {
-          min-width: 800px;
-          vertical-align: middle;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: 20px;
-
-          > * {
-            margin: 8px 0px;
-          }
-
-          input {
-            width: 500px;
-            height: 35px;
-            border: solid gray 1px;
-            display: inline-block;
-            padding: 5px;
-          }
-        }
-      `}</style>
     </div>
   )
 }

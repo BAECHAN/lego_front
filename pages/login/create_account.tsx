@@ -14,7 +14,6 @@ import React, {
 import {
   EventTargetT,
   InputRefsT,
-  InputT,
   InputTNotPwchk,
   ObjT_Bln,
   UserCreateT,

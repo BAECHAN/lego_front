@@ -43,20 +43,22 @@ export default function SidebarFilter(props: { themes: ThemeT }) {
           height: 40px;
         }
 
-        aside.filter input[type='checkbox'] {
-          width: 25px;
-          height: 25px;
-          margin-right: 5px;
-          accent-color: orange;
-        }
+        aside.filter {
+          input[type='checkbox'] {
+            width: 25px;
+            height: 25px;
+            margin-right: 5px;
+            accent-color: orange;
+          }
 
-        aside.filter label {
-          position: relative;
-          top: -7px;
-          cursor: pointer;
-          user-select: none;
-          :hover {
-            font-weight: 700;
+          label {
+            position: relative;
+            top: -7px;
+            cursor: pointer;
+            user-select: none;
+            :hover {
+              font-weight: 700;
+            }
           }
         }
       `}</style>

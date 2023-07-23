@@ -27,8 +27,8 @@ export default function Find() {
   }, [findAccountType])
 
   const findId = async (e: FormEvent<HTMLFormElement>) => {
-    // 원래 실행되는 이벤트 취소
     e.preventDefault()
+
     if (!email) {
       alert('이메일 주소를 입력해주세요.')
       emailRef?.current?.focus()

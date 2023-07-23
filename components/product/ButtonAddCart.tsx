@@ -96,10 +96,11 @@ export default function ButtonAddCart(props: {
           border-collapse: collapse;
           text-align: center;
           font-weight: 700;
-        }
-        .add-to-cart:hover {
-          color: white;
-          opacity: 0.7;
+
+          :hover {
+            color: white;
+            opacity: 0.7;
+          }
         }
       `}</style>
     </button>

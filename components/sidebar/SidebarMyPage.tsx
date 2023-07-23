@@ -29,10 +29,10 @@ export default function SidebarMyPage() {
       </ul>
 
       <style jsx>{`
-        aside > ul {
+        aside ul {
           margin: 20px 0px;
 
-          > li {
+          li {
             font-size: 20px;
             margin: 20px 0px;
             :hover {

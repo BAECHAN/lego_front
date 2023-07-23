@@ -271,12 +271,12 @@ export default function SidebarFilterAccordian(props: {
           opacity: 0;
           transition: all ease-in-out 0.2s;
           overflow: hidden;
-        }
 
-        ul.open {
-          padding-top: 15px;
-          height: auto;
-          opacity: 1;
+          &.open {
+            padding-top: 15px;
+            height: auto;
+            opacity: 1;
+          }
         }
       `}</style>
     </div>

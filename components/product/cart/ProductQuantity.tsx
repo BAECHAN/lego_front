@@ -184,22 +184,25 @@ export default function ProductQuantity(props: {
           @media (max-width: 768px) {
             width: 100%;
           }
-        }
-        .product-in-cart-quantity > * {
-          border: 1px solid #ddd;
-          padding: 8px;
-          width: 40px;
-          height: 40px;
-        }
 
-        .product-in-cart-quantity > button:nth-child(odd):hover {
-          cursor: pointer;
-        }
+          > {
+            * {
+              border: 1px solid #ddd;
+              padding: 8px;
+              width: 40px;
+              height: 40px;
+            }
 
-        .product-in-cart-quantity > div:nth-child(even) {
-          width: 52px;
-          text-align: center;
-          user-select: none;
+            button:nth-child(odd):hover {
+              cursor: pointer;
+            }
+
+            div:nth-child(even) {
+              width: 52px;
+              text-align: center;
+              user-select: none;
+            }
+          }
         }
       `}</style>
     </div>
