@@ -39,12 +39,14 @@ export default function NotFound() {
         .guide {
           margin-left: 50px;
           text-align: center;
-        }
-        .guide strong {
-          font-size: 60px;
-        }
-        .guide p {
-          font-size: 25px;
+
+          strong {
+            font-size: 60px;
+          }
+
+          p {
+            font-size: 25px;
+          }
         }
 
         .contents {

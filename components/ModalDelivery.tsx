@@ -674,16 +674,16 @@ export default function ModalDelivery(props: {
           width: 100%;
           height: 100%;
           overflow: auto;
-        }
 
-        .modal {
-          width: 675px;
-          height: 640px;
-          position: relative;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          background-color: #fff;
+          div.modal {
+            width: 675px;
+            height: 640px;
+            position: relative;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+          }
         }
 
         .btn-modal-close {

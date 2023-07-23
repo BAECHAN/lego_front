@@ -57,11 +57,11 @@ export default function Header() {
           @media (max-width: 768px) {
             margin: 0px 5px;
           }
-        }
-        a:hover,
-        button:hover {
-          font-weight: 700;
-          text-decoration: underline;
+
+          :hover {
+            font-weight: 700;
+            text-decoration: underline;
+          }
         }
       `}</style>
     </header>

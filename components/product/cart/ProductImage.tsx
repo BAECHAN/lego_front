@@ -15,6 +15,7 @@ export default function ProductCartImage(props: { product: ProductCartT }) {
             alt={props.product.title}
             style={{ cursor: 'pointer' }}
             priority
+            draggable={false}
             placeholder="blur"
             blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
             quality={100}

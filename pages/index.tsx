@@ -3,6 +3,19 @@ import Layout from '../components/Layout'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
+export async function getStaticProps() {
+  // 빌드 타임에 이미지 데이터를 불러옵니다.
+  const imageUrl = '/lego_main.jpeg'
+
+  return {
+    props: {
+      data: {
+        imageUrl,
+      },
+    },
+  }
+}
+
 export default function Home({ data }: { data: ObjT_Str }) {
   const router = useRouter()
 
@@ -14,6 +27,8 @@ export default function Home({ data }: { data: ObjT_Str }) {
             src={data.imageUrl}
             alt="레고 홈 화면 이미지"
             layout="fill"
+            //priority={true}
+            loading="lazy"
             placeholder="blur"
             blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
           />
@@ -45,17 +60,4 @@ export default function Home({ data }: { data: ObjT_Str }) {
 
 Home.getLayout = function getLayout(page: React.ReactElement) {
   return <Layout>{page}</Layout>
-}
-
-export async function getStaticProps() {
-  // 빌드 타임에 이미지 데이터를 불러옵니다.
-  const imageUrl = '/lego_main.jpeg'
-
-  return {
-    props: {
-      data: {
-        imageUrl,
-      },
-    },
-  }
 }

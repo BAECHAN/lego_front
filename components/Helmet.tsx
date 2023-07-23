@@ -7,15 +7,12 @@ type HelmetType = {
 
 export default function Helmet({ pathname }: HelmetType) {
   const router = useRouter()
-  let title = ''
 
-  if (router.query.theme_title_en) {
-    title = router.query.theme_title_en + ' | Lego'
-  } else if (pathname) {
-    title = pathname + ' | Lego'
-  } else {
-    title = 'Lego'
-  }
+  const title = router.query.theme_title_en
+    ? `${router.query.theme_title_en} | Lego`
+    : pathname
+    ? `${pathname} | Lego`
+    : 'Lego'
 
   return (
     <Head>

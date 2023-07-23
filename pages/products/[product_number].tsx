@@ -345,9 +345,11 @@ export default function Product(props: ProductT) {
         </div>
       </div>
       <style jsx>{`
-        .prod-features-contents li,
-        .prod-features-contents p {
-          margin: 20px 0px;
+        .prod-features-contents {
+          li,
+          p {
+            margin: 20px 0px;
+          }
         }
 
         .prod-main > * {
@@ -355,27 +357,32 @@ export default function Product(props: ProductT) {
           border-left: 1px solid #ddd;
           border-right: 1px solid #ddd;
         }
+
         .prod-buy-quantity {
           display: flex;
           margin: 5px 0px;
           width: 33%;
-        }
-        .prod-buy-quantity > * {
-          border: 1px solid #ddd;
-          padding: 8px;
-          width: 40px;
-          height: 40px;
+
+          > {
+            * {
+              border: 1px solid #ddd;
+              padding: 8px;
+              width: 40px;
+              height: 40px;
+            }
+
+            button:nth-child(odd):hover {
+              cursor: pointer;
+            }
+
+            div:nth-child(even) {
+              width: 80px;
+              text-align: center;
+              user-select: none;
+            }
+          }
         }
 
-        .prod-buy-quantity > button:nth-child(odd):hover {
-          cursor: pointer;
-        }
-
-        .prod-buy-quantity > div:nth-child(even) {
-          width: 80px;
-          text-align: center;
-          user-select: none;
-        }
         .prod-attr {
           display: flex;
           justify-content: space-around;

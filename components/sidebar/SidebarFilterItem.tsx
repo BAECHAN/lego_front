@@ -46,24 +46,30 @@ export default function SidebarFilterItem(props: {
       </label>
 
       <style jsx>{`
-        span {
-          font-weight: 300;
-          color: gray;
-        }
+        li {
+          > * {
+            cursor: pointer;
+          }
 
-        input[type='checkbox'] {
-          width: 25px;
-          height: 25px;
-          margin-right: 5px;
-          accent-color: orange;
-        }
+          input[type='checkbox'] {
+            width: 25px;
+            height: 25px;
+            margin-right: 5px;
+            accent-color: orange;
+          }
 
-        label {
-          width: 100%;
-          position: relative;
-          user-select: none;
-          :hover {
-            font-weight: 700;
+          label {
+            width: 100%;
+            position: relative;
+            user-select: none;
+            :hover {
+              font-weight: 700;
+            }
+
+            span {
+              font-weight: 300;
+              color: gray;
+            }
           }
         }
       `}</style>
