@@ -27,7 +27,7 @@ export default function ContentsOrderHistory() {
               <div className="w-2/12 pl-8">주문금액(항목)</div>
               <div className="w-2/12">주문상태</div>
               <div className="w-2/12">배송지정보</div>
-              <div className="w-2/12">상품상세</div>
+              <div className="w-2/12">주문상세</div>
             </div>
 
             <ul className="flex flex-wrap">

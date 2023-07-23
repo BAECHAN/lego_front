@@ -38,6 +38,10 @@ export default function GroupInOrderHistory(props: {
 
   const handleClickRefund = () => {
     if (status == 'authenticated' && session?.user && session.user.email) {
+      if (!confirm('환불처리 하시겠습니까?')) {
+        return false
+      }
+
       let param = {
         email: session.user.email,
         order_group_id: props.orderGroup.order_group_id,
@@ -165,11 +169,11 @@ export default function GroupInOrderHistory(props: {
         <div className="flex text-center w-2/12 items-center justify-center">
           <button
             type="button"
-            title={`상품상세 ${isOpenDetail ? '닫기' : '보기'} 버튼`}
+            title={`주문상세 ${isOpenDetail ? '닫기' : '보기'} 버튼`}
             className="btn-delivery min-w-[106px]"
             onClick={() => setIsOpenDetail(!isOpenDetail)}
           >
-            {`상품상세 ${isOpenDetail ? '닫기' : '보기'}`}
+            {`주문상세 ${isOpenDetail ? '닫기' : '보기'}`}
           </button>
         </div>
       </div>
@@ -209,11 +213,11 @@ export default function GroupInOrderHistory(props: {
           <div className="flex text-center items-center justify-center my-4">
             <button
               type="button"
-              title="상품상세 닫기 버튼"
+              title="주문상세 닫기 버튼"
               className="btn-delivery min-w-[106px]"
               onClick={() => setIsOpenDetail(!isOpenDetail)}
             >
-              상품상세 닫기
+              주문상세 닫기
             </button>
           </div>
         </div>
