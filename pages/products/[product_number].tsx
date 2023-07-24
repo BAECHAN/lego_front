@@ -110,6 +110,9 @@ export default function Product(props: ProductT) {
       <Navbar productInfo={product?.data.product_info} />
       <div className="prod-main flex flex-wrap desktop:min-w-[1000px]">
         <div className="prod-img desktop:w-8/12 p-4 desktop:min-w-[645px] mobile:min-w-[320px]">
+          <div className="text-right text-xs mb-3">
+            &#8251; 사진에 마우스를 올려두시면 슬라이드가 멈춥니다.
+          </div>
           <Carousel product={props} />
           <div className="prod-attr">
             <div>
