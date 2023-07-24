@@ -1,5 +1,5 @@
 import useProduct from 'pages/api/query/useProduct'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import NukaCarousel from 'nuka-carousel'
 import { ProductT } from 'types'
@@ -9,6 +9,10 @@ export default function Carousel(props: { product: ProductT }) {
   const [carouselIdx, setCarouselIdx] = useState(0)
 
   const { data: product, isLoading } = useProduct(props.product)
+
+  const handleSlideClick = (index: number) => {
+    setCarouselIdx(index)
+  }
 
   const isMobile = useIsMobile()
 
@@ -87,7 +91,7 @@ export default function Carousel(props: { product: ProductT }) {
                   <div
                     key={index}
                     className="cursor-pointer"
-                    onClick={() => setCarouselIdx(index)}
+                    onClick={() => handleSlideClick(index)}
                   >
                     <Image
                       src={img}

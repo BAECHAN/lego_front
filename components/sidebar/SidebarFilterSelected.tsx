@@ -32,78 +32,88 @@ export default function SidebarFilterSelected() {
           모든 필터 삭제
         </button>
         {filterInfo.filterPriceObjArr.map(({ id, label, title }) => {
-          return selectedFilter[id] === 1 ? (
-            <button
-              type="button"
-              key={id}
-              title={`${title} 필터 삭제 버튼`}
-              className="btn-selected-filter"
-              onClick={() => handleClickDeleteTag(id)}
-            >
-              {label}
-              <FontAwesomeXmark />
-            </button>
-          ) : null
+          return (
+            selectedFilter[id] === 1 && (
+              <button
+                type="button"
+                key={id}
+                title={`${title} 필터 삭제 버튼`}
+                className="btn-selected-filter"
+                onClick={() => handleClickDeleteTag(id)}
+              >
+                {label}
+                <FontAwesomeXmark />
+              </button>
+            )
+          )
         })}
 
         {filterInfo.filterAgeObjArr.map(({ id, label, title }) => {
-          return selectedFilter[id] === 1 ? (
-            <button
-              type="button"
-              key={id}
-              title={`${title} 필터 삭제 버튼`}
-              className="btn-selected-filter"
-              onClick={() => handleClickDeleteTag(id)}
-            >
-              연령 {label}
-              <FontAwesomeXmark />
-            </button>
-          ) : null
+          return (
+            selectedFilter[id] === 1 && (
+              <button
+                type="button"
+                key={id}
+                title={`${title} 필터 삭제 버튼`}
+                className="btn-selected-filter"
+                onClick={() => handleClickDeleteTag(id)}
+              >
+                연령 {label}
+                <FontAwesomeXmark />
+              </button>
+            )
+          )
         })}
 
         {filterInfo.filterSaleEnabledObjArr.map(({ id, label, title }) => {
-          return selectedFilter[id] === 1 ? (
-            <button
-              type="button"
-              key={id}
-              title={`${title} 필터 삭제 버튼`}
-              className="btn-selected-filter"
-              onClick={() => handleClickDeleteTag(id)}
-            >
-              {label}
-              <FontAwesomeXmark />
-            </button>
-          ) : null
+          return (
+            selectedFilter[id] === 1 && (
+              <button
+                type="button"
+                key={id}
+                title={`${title} 필터 삭제 버튼`}
+                className="btn-selected-filter"
+                onClick={() => handleClickDeleteTag(id)}
+              >
+                {label}
+                <FontAwesomeXmark />
+              </button>
+            )
+          )
         })}
 
         {filterInfo.filterDiscountingObjArr.map(({ id, label, title }) => {
-          return selectedFilter[id] === 1 ? (
-            <button
-              type="button"
-              key={id}
-              title={`${title} 필터 삭제 버튼`}
-              className="btn-selected-filter"
-              onClick={() => handleClickDeleteTag(id)}
-            >
-              {label}
-              <FontAwesomeXmark />
-            </button>
-          ) : null
+          return (
+            selectedFilter[id] === 1 && (
+              <button
+                type="button"
+                key={id}
+                title={`${title} 필터 삭제 버튼`}
+                className="btn-selected-filter"
+                onClick={() => handleClickDeleteTag(id)}
+              >
+                {label}
+                <FontAwesomeXmark />
+              </button>
+            )
+          )
         })}
 
         {filterInfo.filterPiecesObjArr.map(({ id, label, title }) => {
-          return selectedFilter[id] === 1 ? (
-            <button
-              type="button"
-              key={id}
-              title={`${title} 필터 삭제 버튼`}
-              className="btn-selected-filter"
-              onClick={() => handleClickDeleteTag(id)}
-            >
-              부품수 {label}
-              <FontAwesomeXmark />
-            </button>
-          ) : null
+          return (
+            selectedFilter[id] === 1 && (
+              <button
+                type="button"
+                key={id}
+                title={`${title} 필터 삭제 버튼`}
+                className="btn-selected-filter"
+                onClick={() => handleClickDeleteTag(id)}
+              >
+                부품수 {label}
+                <FontAwesomeXmark />
+              </button>
+            )
+          )
         })}
       </div>
 
