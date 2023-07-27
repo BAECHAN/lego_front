@@ -484,7 +484,7 @@ transition은 숫자의 증감으로 변화를 인식하기 때문에 갑자기 
 ### 화면 이동 시 ( 닌자고 카테고리에서 디즈니 카테고리로 이동하였는데 선택된 필터가 안풀리는 상황이 발생하여 theme에 접근할 때마다 recoilReset 처리함
 
 ```
-// [theme].tsx
+// [theme_title_en].tsx
 const recoilReset = useResetRecoilState(selectedFilterSelector);
 
 useEffect(()=>{
@@ -1859,3 +1859,13 @@ cdn 서버에서 format=webp 형식으로 변경해서 이미지를 가져오는
 
 ### CSS 일부를 SCSS로 변경, 공통된 css 모듈화하여 import 해서 가져오도록 처리
 ### 환불요청 시 confirm메서드로 확답받은 후 환불처리
+
+
+## 설계  
+1. 프로젝트 진행 시 컴포넌트 디자인 패턴을 고려하여 컴포넌트를 재활용하고 확장성있게 설계할 필요성이 있다. StoryBook 같은 라이브러리를 활용
+2. 변수명 규칙을 정해놓자
+3. tailwind css와 scss를 섞어서 쓰고 있는데 tailwindcss의 경우 길어질 때 가독성이 떨어지니 scss로 대체하며, 서로 섞어쓰지 않도록 하자( 관리하는데 classname속성과 style태그 모두를 확인해야함 )
+4. 프로젝트 진행 시 모바일 화면도 같이 제공하는 부분이라면 컴포넌트 디자인 설계 시 이를 고려하여 설계하자
+5. 이번 프로젝트와 같이 저작권 관련한 부분들은 알아보고 시작하자
+
+나중에 스터디할 때도 이를 신경쓰자
