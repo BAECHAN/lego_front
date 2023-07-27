@@ -307,13 +307,11 @@ export default function CreateAccount() {
                 autoComplete="off"
               />
             </label>
-            {pwChk ? (
-              !isMatchPw ? (
-                <span className="text-red-500">
-                  비밀번호가 일치하지 않습니다.
-                </span>
-              ) : null
-            ) : null}
+            {pwChk && !isMatchPw && (
+              <span className="text-red-500">
+                비밀번호가 일치하지 않습니다.
+              </span>
+            )}
 
             <label>
               <span>닉네임</span>
