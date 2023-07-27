@@ -216,24 +216,24 @@ export default function Product(props: ProductT) {
           ) : null}
 
           <div className="flex">
-            {product?.data.product_info?.sale_enabled === 1 ? (
+            {product?.data.product_info?.sale_enabled === 1 && (
               <ButtonAddCart
                 product_info={product.data.product_info}
                 order_quantity={quantity}
               />
-            ) : null}
+            )}
 
             <div
               className={
                 product?.data.product_info?.sale_enabled === 1 ? 'm-auto' : ''
               }
             >
-              {product ? (
+              {product && (
                 <ButtonWish
                   product_id={product.data.product_info.product_id}
                   text={false}
                 />
-              ) : null}
+              )}
             </div>
           </div>
         </div>
@@ -244,19 +244,12 @@ export default function Product(props: ProductT) {
             onClick={() => setDetailOpen(!detailOpen)}
           >
             <span className="relative left-10 text-2xl">제품상세정보</span>
-            <div className="flex-grow"></div>
+            <div className="flex-grow" />
             <div>
-              {detailOpen ? (
-                <FontAwesomeIcon
-                  icon={faMinus}
-                  className={'w-7 p-1 bg-white rounded-full relative right-10'}
-                />
-              ) : (
-                <FontAwesomeIcon
-                  icon={faPlus}
-                  className={'w-7 p-1 bg-white rounded-full relative right-10'}
-                />
-              )}
+              <FontAwesomeIcon
+                icon={detailOpen ? faMinus : faPlus}
+                className={'w-7 p-1 bg-white rounded-full relative right-10'}
+              />
             </div>
           </button>
           {detailOpen ? (
