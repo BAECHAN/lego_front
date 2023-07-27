@@ -484,7 +484,7 @@ transition은 숫자의 증감으로 변화를 인식하기 때문에 갑자기 
 ### 화면 이동 시 ( 닌자고 카테고리에서 디즈니 카테고리로 이동하였는데 선택된 필터가 안풀리는 상황이 발생하여 theme에 접근할 때마다 recoilReset 처리함
 
 ```
-// [theme].tsx
+// [theme_title_en].tsx
 const recoilReset = useResetRecoilState(selectedFilterSelector);
 
 useEffect(()=>{
