@@ -2,6 +2,7 @@ import React from 'react'
 import { ShippingT } from 'types'
 import ButtonEdit from './ButtonEdit'
 import ButtonDelete from './ButtonDelete'
+import * as common from '@components/common/event/CommonFunction'
 
 export default function ShippingItem(props: {
   shipping: ShippingT
@@ -29,7 +30,7 @@ export default function ShippingItem(props: {
       </div>
 
       <div className="w-[10%]">
-        {props.shipping.shipping_default == '1' ? (
+        {props.shipping.shipping_default === 1 ? (
           <span className="text-blue-600">기본배송지</span>
         ) : null}
       </div>
@@ -42,11 +43,7 @@ export default function ShippingItem(props: {
 
       {/** 연락처 */}
       <div className="w-[15%]">
-        <span>
-          {props.shipping.tel_number.substring(0, 3)}-
-          {props.shipping.tel_number.substring(3, 7)}-
-          {props.shipping.tel_number.substring(7, 11)}
-        </span>
+        <span>{common.formattedTelNumber(props.shipping.tel_number)}</span>
       </div>
 
       {/** 버튼 */}

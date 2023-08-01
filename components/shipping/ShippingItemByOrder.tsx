@@ -5,8 +5,9 @@ import ButtonDelete from './ButtonDelete'
 import ButtonChoice from './ButtonChoice'
 import useIsMobile from '@components/common/custom/isMobile'
 import { deliveryRequestOptions } from 'pages/api/common/deliveryRequestOptions'
+import * as common from '@components/common/event/CommonFunction'
 
-export default function ShippingItemByOrder(props: {
+const ShippingItemByOrder = (props: {
   shipping: ShippingT
   onOpen: any
   page: number
@@ -18,8 +19,26 @@ export default function ShippingItemByOrder(props: {
   isLastPage: boolean
   listLength: number
   shippingListCount: number
-}) {
+}) => {
   const isMobile = useIsMobile()
+
+  const {
+    shipping_name,
+    recipient,
+    shipping_default,
+    shipping_zipcode,
+    shipping_address1,
+    shipping_address2,
+    tel_number,
+    delivery_request,
+    delivery_request_direct,
+  } = props.shipping
+
+  const getDeliveryRequestLabel = () => {
+    const index = parseInt(delivery_request, 10) - 1
+    const value = deliveryRequestOptions[index]
+    return index === 6 ? delivery_request_direct : value
+  }
 
   return (
     <div className="flex justify-center">
@@ -28,39 +47,28 @@ export default function ShippingItemByOrder(props: {
           <div className="flex flex-col text-[12px] items-start w-3/4">
             <div className="font-bold">
               <span>
-                {props.shipping.shipping_name == props.shipping.recipient
-                  ? `${props.shipping.recipient}님의 배송지`
-                  : props.shipping.shipping_name}
+                {shipping_name === recipient
+                  ? `${recipient}님의 배송지`
+                  : shipping_name}
               </span>
               <span className="mx-1">/</span>
-              <span>{props.shipping.recipient}</span>
-              {props.shipping.shipping_default == '1' ? (
+              <span>{recipient}</span>
+              {shipping_default === 1 && (
                 <span className="text-blue-600 ml-1">기본배송지</span>
-              ) : null}
+              )}
             </div>
             <div>
-              <span>[{props.shipping.shipping_zipcode}]</span>
-              <span className="ml-1">{props.shipping.shipping_address1}</span>
-              <span>&nbsp;{props.shipping.shipping_address2}</span>
-            </div>
-            <div>
-              <span className="text-gray-500">
-                {props.shipping.tel_number.substring(0, 3)}-
-                {props.shipping.tel_number.substring(3, 7)}-
-                {props.shipping.tel_number.substring(7, 11)}
-              </span>
+              <span>[{shipping_zipcode}]</span>
+              <span className="ml-1">{shipping_address1}</span>
+              <span>&nbsp;{shipping_address2}</span>
             </div>
             <div>
               <span className="text-gray-500">
-                {deliveryRequestOptions.map((value: string, index: number) => {
-                  return props.shipping.delivery_request ===
-                    (index + 1).toString()
-                    ? index + 1 === 7
-                      ? props.shipping.delivery_request_direct
-                      : value
-                    : null
-                })}
+                {common.formattedTelNumber(tel_number)}
               </span>
+            </div>
+            <div>
+              <span className="text-gray-500">{getDeliveryRequestLabel()}</span>
             </div>
           </div>
           <div className="flex-grow"></div>
@@ -104,3 +112,5 @@ export default function ShippingItemByOrder(props: {
     </div>
   )
 }
+
+export default ShippingItemByOrder

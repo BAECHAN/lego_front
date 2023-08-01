@@ -46,7 +46,7 @@ export default function ModalDelivery(props: {
     shippingZipCode: '',
     shippingAddress1: '',
     shippingAddress2: '',
-    shippingDefault: false,
+    shippingDefault: 0,
     deliveryRequest: '',
     deliveryRequestDirect: '',
   })
@@ -64,7 +64,6 @@ export default function ModalDelivery(props: {
     deliveryRequest,
     deliveryRequestDirect,
   } = inputs
-
   const inputsRef = useRef<HTMLInputElement[]>([])
   const selectsRef = useRef<HTMLSelectElement[]>([])
 
@@ -195,7 +194,7 @@ export default function ModalDelivery(props: {
           }
         } else if (i == 8) {
           if (props.listLength == 0 && !isUpdate) {
-            param.shippingDefault = true
+            param.shippingDefault = 1
           }
         } else if (i == 9) {
           if (

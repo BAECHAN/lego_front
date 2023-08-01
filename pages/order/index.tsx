@@ -224,9 +224,8 @@ export default function Order() {
                   <div>
                     {selectedShipping?.recipient}
                     &nbsp;/&nbsp;
-                    {selectedShipping?.tel_number.substring(0, 3)}-
-                    {selectedShipping?.tel_number.substring(3, 7)}-
-                    {selectedShipping?.tel_number.substring(7, 11)}
+                    {selectedShipping &&
+                      common.formattedTelNumber(selectedShipping?.tel_number)}
                   </div>
                 </div>
                 <div className="delivery-info">

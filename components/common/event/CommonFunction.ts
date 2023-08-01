@@ -150,3 +150,10 @@ export function isPassRegExpInput(inputType: InputT, inputValue: string) {
     throw new Error(`허용되지 않은 타입 : ${inputType}`)
   }
 }
+
+export function formattedTelNumber(tel_number: string) {
+  return `${tel_number.substring(0, 3)}-${tel_number.substring(
+    3,
+    7
+  )}-${tel_number.substring(7, 11)}`
+}
