@@ -157,3 +157,13 @@ export function formattedTelNumber(tel_number: string) {
     7
   )}-${tel_number.substring(7, 11)}`
 }
+
+export function handleKeyPress(
+  event: KeyboardEvent,
+  key: string,
+  action: () => void
+) {
+  if (event.key === key) {
+    action()
+  }
+}

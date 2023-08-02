@@ -229,3 +229,11 @@ export type OrderGroupT = {
 export type UserOAuthSubmitT = UserSubmitT & {
   provider: string
 }
+
+export type PageButtonInfo = {
+  prevPage: { setPageValue: number; setStartPageValue: number }
+  nextPage: { setPageValue: number; setStartPageValue: number }
+  firstPage: { setPageValue: number; setStartPageValue: number }
+  lastPage: { setPageValue: number; setStartPageValue: number }
+  [key: string]: { setPageValue: number; setStartPageValue: number }
+}

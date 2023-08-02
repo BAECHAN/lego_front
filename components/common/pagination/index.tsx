@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PageNumber from './PageNumber'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 import useIsMobile from '../custom/isMobile'
+import { PageButtonInfo } from 'types'
 
 export default function Pagination(props: {
   page: number
@@ -29,53 +30,52 @@ export default function Pagination(props: {
 
   const isMobile = useIsMobile()
 
-  let arr = []
+  let arr: JSX.Element[] = []
   let pageCount = isMobile ? 5 : 10
 
   const handleClickPageButton = (event: MouseEvent<HTMLButtonElement>) => {
     const { name, innerText } = event.currentTarget
 
-    if (name == 'prevPage') {
-      props.setPage(props.page - 1 - ((props.page - 1) % pageCount))
-      props.setStartPage(
-        props.page - pageCount - ((props.page - 1) % pageCount)
-      )
-    } else if (name == 'nextPage') {
-      props.setStartPage(
-        props.page + pageCount - ((props.page - 1) % pageCount)
-      )
-      props.setPage(props.page + pageCount - ((props.page - 1) % pageCount))
-    } else if (name == 'firstPage') {
-      props.setStartPage(1)
-      props.setPage(1)
-    } else if (name == 'lastPage') {
-      props.setStartPage(props.totalPage - (props.totalPage % pageCount) + 1)
-      props.setPage(props.totalPage)
+    const pageButtonInfo: PageButtonInfo = {
+      prevPage: {
+        setPageValue: props.page - 1 - ((props.page - 1) % pageCount),
+        setStartPageValue:
+          props.page - pageCount - ((props.page - 1) % pageCount),
+      },
+      nextPage: {
+        setPageValue: props.page + pageCount - ((props.page - 1) % pageCount),
+        setStartPageValue:
+          props.page + pageCount - ((props.page - 1) % pageCount),
+      },
+      firstPage: {
+        setPageValue: 1,
+        setStartPageValue: 1,
+      },
+      lastPage: {
+        setPageValue: props.totalPage,
+        setStartPageValue: props.totalPage - (props.totalPage % pageCount) + 1,
+      },
+    }
+
+    if (name !== '') {
+      const { setPageValue, setStartPageValue } = pageButtonInfo[name]
+
+      props.setPage(setPageValue)
+      props.setStartPage(setStartPageValue)
     } else {
-      props.setPage(Number(innerText.toString()))
+      props.setPage(Number(innerText))
     }
   }
 
   for (let i = 1; i <= props.totalPage; i++) {
-    if (props.page == i) {
-      arr.push(
-        <PageNumber
-          key={i}
-          page={i}
-          handleClickPageButton={handleClickPageButton}
-          isActive={true}
-        />
-      )
-    } else {
-      arr.push(
-        <PageNumber
-          key={i}
-          page={i}
-          handleClickPageButton={handleClickPageButton}
-          isActive={false}
-        />
-      )
-    }
+    arr.push(
+      <PageNumber
+        key={i}
+        page={i}
+        handleClickPageButton={handleClickPageButton}
+        isActive={props.page === i ? true : false}
+      />
+    )
   }
 
   return (

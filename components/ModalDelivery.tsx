@@ -301,6 +301,18 @@ export default function ModalDelivery(props: {
     }
   )
 
+  useEffect(() => {
+    /** 모달 오픈 시 ESC 버튼으로 모달 닫기 처리 추가 */
+    const handleKeyPressFunction = (event: KeyboardEvent) => {
+      common.handleKeyPress(event, 'Escape', props.onClose)
+    }
+
+    document.addEventListener('keydown', handleKeyPressFunction)
+    return () => document.removeEventListener('keydown', handleKeyPressFunction) // 언마운트 될 때 이벤트 리스너 제거
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <div className="modal-wrap">
       <div className="modal">
@@ -310,9 +322,7 @@ export default function ModalDelivery(props: {
             className="btn-modal-close"
             onClick={props.onClose}
             title={`배송지 ${isUpdate ? '수정' : '등록'} 창 닫기`}
-          >
-            <FontAwesomeIcon icon={faSquareXmark} width="27px" height="27px" />
-          </button>
+          ></button>
         </div>
         <div className="modal-body">
           <h2 className="text-xl font-bold">
@@ -686,10 +696,12 @@ export default function ModalDelivery(props: {
         }
 
         .btn-modal-close {
-          color: #444;
-          :hover {
-            color: #000;
-          }
+          width: 50px;
+          height: 40px;
+          background-image: url("data:image/svg+xml,%3Csvg width='16' height='7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M.506 6h3.931V4.986H1.736v-1.39h2.488V2.583H1.736V1.196h2.69V.182H.506V6ZM8.56 1.855h1.18C9.721.818 8.87.102 7.574.102c-1.276 0-2.21.705-2.205 1.762-.003.858.602 1.35 1.585 1.585l.634.159c.633.153.986.335.988.727-.002.426-.406.716-1.03.716-.64 0-1.1-.295-1.14-.878h-1.19c.03 1.259.931 1.91 2.343 1.91 1.42 0 2.256-.68 2.259-1.745-.003-.969-.733-1.483-1.744-1.71l-.523-.125c-.506-.117-.93-.304-.92-.722 0-.375.332-.65.934-.65.588 0 .949.267.994.724ZM15.78 2.219C15.618.875 14.6.102 13.254.102c-1.537 0-2.71 1.086-2.71 2.989 0 1.898 1.153 2.989 2.71 2.989 1.492 0 2.392-.992 2.526-2.063l-1.244-.006c-.117.623-.606.98-1.262.98-.883 0-1.483-.656-1.483-1.9 0-1.21.591-1.9 1.492-1.9.673 0 1.159.389 1.253 1.028h1.244Z' fill='%23334155'/%3E%3C/svg%3E");
+          background-position: 50%;
+          background-repeat: no-repeat;
+          background-size: 57.1428571429% auto;
         }
       `}</style>
     </div>
