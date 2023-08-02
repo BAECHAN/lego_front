@@ -174,7 +174,7 @@ export type DeliverySubmitT = {
   shippingZipCode: string
   shippingAddress1: string
   shippingAddress2: string
-  shippingDefault: boolean
+  shippingDefault: number
   deliveryRequest: string
   deliveryRequestDirect: string
 }
@@ -188,7 +188,7 @@ export type ShippingT = {
   shipping_zipcode: string
   shipping_address1: string
   shipping_address2: string
-  shipping_default: int
+  shipping_default: number
   delivery_request: string
   delivery_request_direct: string
   state: number
@@ -228,4 +228,12 @@ export type OrderGroupT = {
 
 export type UserOAuthSubmitT = UserSubmitT & {
   provider: string
+}
+
+export type PageButtonInfo = {
+  prevPage: { setPageValue: number; setStartPageValue: number }
+  nextPage: { setPageValue: number; setStartPageValue: number }
+  firstPage: { setPageValue: number; setStartPageValue: number }
+  lastPage: { setPageValue: number; setStartPageValue: number }
+  [key: string]: { setPageValue: number; setStartPageValue: number }
 }
