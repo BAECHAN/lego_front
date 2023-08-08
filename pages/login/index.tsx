@@ -5,14 +5,12 @@ import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import { FormEvent, useRef, useState } from 'react'
-import { useRecoilState } from 'recoil'
-import { findAccountSelector } from 'state/atoms'
-import { FindAccountT } from 'types'
 import InputPassword from '@components/common/input/InputPassword'
 import InputEmail from '@components/common/input/InputEmail'
 import ButtonLoginKakao from '@components/login/ButtonLoginKakao'
 import ButtonLoginGoogle from '@components/login/ButtonLoginGoogle'
 import ButtonFindAccount from '@components/login/ButtonFindAccount'
+import HomeIconLink from '@components/HomeIconLink'
 
 export default function Login() {
   const router = useRouter()
@@ -22,9 +20,6 @@ export default function Login() {
 
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
-
-  const [findAccountType, setFindAccountType] =
-    useRecoilState(findAccountSelector)
 
   const login = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -52,10 +47,7 @@ export default function Login() {
 
       if (response !== undefined) {
         if (response.ok) {
-          if (
-            router.query.callbackUrl != undefined &&
-            router.query.callbackUrl.indexOf('account') < 0
-          ) {
+          if (router.query.callbackUrl != undefined && router.query.callbackUrl.indexOf('account') < 0) {
             router.back()
           } else {
             router.push('/')
@@ -75,44 +67,22 @@ export default function Login() {
     }
   }
 
-  const handleClickFindButton = (type: FindAccountT) => {
-    setFindAccountType(type)
-    router.push('/login/find')
-  }
-
   return (
     <div>
       <div className="flex justify-center items-center w-full bg-gray-200 h-[44rem]">
         <div className="h-full relative top-[3%]">
           <form onSubmit={login} className="login-box">
-            <Link href="/">
-              <a title="홈페이지로 이동 링크">
-                <Image
-                  src="/main.svg"
-                  width="50px"
-                  height="50px"
-                  alt="메인으로"
-                />
-              </a>
-            </Link>
+            <HomeIconLink />
 
             <InputEmail email={email} setEmail={setEmail} ref={emailRef} />
-            <InputPassword
-              password={password}
-              setPassword={setPassword}
-              ref={passwordRef}
-            />
+            <InputPassword password={password} setPassword={setPassword} ref={passwordRef} />
 
-            <button
-              type="submit"
-              title="로그인 버튼"
-              className="btn-common min-w-[330px] h-33 fs-14"
-            >
+            <button type="submit" title="로그인 버튼" className="btn-common min-w-[330px] h-33 fs-14">
               로그인
             </button>
 
             <div className="flex text-xs w-72 justify-between">
-              <Link href="/login/create_account">
+              <Link href="/login/create_account" passHref>
                 <a title="회원가입 페이지로 이동" className="hover:underline">
                   회원가입
                 </a>

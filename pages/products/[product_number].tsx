@@ -62,7 +62,7 @@ export default function Product(props: ProductT) {
             setTheme(response.data.result)
           } else {
             alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
-            console.error(`HTTP status : ${response?.status}`)
+            console.error(`HTTP status : ${response.status}`)
           }
         })
         .catch((error) => console.log(error))

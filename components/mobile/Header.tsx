@@ -7,13 +7,10 @@ import MobileHeaderSidebar from './HeaderSidebar'
 import { useRouter } from 'next/router'
 import { isOpenMobileSidebarSelector } from 'state/atoms'
 import { useRecoilState } from 'recoil'
+import HomeIconLink from '@components/HomeIconLink'
 
-export default function MobileHeader(props: {
-  sidebarRef: React.MutableRefObject<null>
-}) {
-  const [isOpenBars, setIsOpenBars] = useRecoilState(
-    isOpenMobileSidebarSelector
-  )
+export default function MobileHeader(props: { sidebarRef: React.MutableRefObject<null> }) {
+  const [isOpenBars, setIsOpenBars] = useRecoilState(isOpenMobileSidebarSelector)
 
   const router = useRouter()
 
@@ -26,12 +23,8 @@ export default function MobileHeader(props: {
 
   return (
     <header className="flex items-center p-3 bg-yellow-400">
-      <Link href="/">
-        <a>
-          <Image src="/main.svg" width="50px" height="50px" alt="메인으로" />
-        </a>
-      </Link>
-      <Link href="/themes">
+      <HomeIconLink />
+      <Link href="/themes" passHref>
         <a>쇼핑하기</a>
       </Link>
       <div className="flex-grow" />

@@ -7,7 +7,7 @@ export default function ProductInOrder(props: { product: ProductCartT }) {
   return (
     <div className="product-in-order w-full flex justify-start items-center">
       <div className="product-in-order-image w-32 scale-75 hover:scale-90 transition-all ease-in-out">
-        <Link href={`/products/${props.product.product_number}`}>
+        <Link href={`/products/${props.product.product_number}`} passHref>
           <a>
             <Image
               src={props.product.image}
@@ -25,7 +25,7 @@ export default function ProductInOrder(props: { product: ProductCartT }) {
         </Link>
       </div>
       <div className="product-in-order-content flex content-around">
-        <Link href={`/products/${props.product.product_number}`}>
+        <Link href={`/products/${props.product.product_number}`} passHref>
           <a className="prod-title">{props.product.title}</a>
         </Link>
       </div>

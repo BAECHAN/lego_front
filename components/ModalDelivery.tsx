@@ -56,8 +56,8 @@ export default function ModalDelivery(props: {
   const postButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    if (inputsRef.current[9] && !deliveryRequestDirect) {
-      inputsRef.current[9].focus()
+    if (inputsRef.current[8] && !deliveryRequestDirect) {
+      inputsRef.current[8].focus()
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,51 +127,56 @@ export default function ModalDelivery(props: {
       }
 
       for (let i = 0; i < inputsRef.current.length; i++) {
-        if (i === 1) {
-          if (inputsRef.current[i].value.trim().length == 0) {
+        const item = inputsRef.current[i]
+        const valueLength = item.value.trim().length
+
+        const afterProcessing = (message: string, process: void) => {
+          alert(message)
+          process
+          setDisabledSubmit(false)
+        }
+
+        if (i === 0) {
+          if (valueLength === 0) {
+            afterProcessing(`${item.title}을(를) 정확히 입력해주시기 바랍니다.`, item.focus())
+            return false
+          }
+        } else if (i === 1) {
+          if (valueLength === 0) {
             param.shippingName = recipient
           }
-        } else if (i == 2) {
-          if (inputsRef.current[i].value.trimEnd().length != 3) {
-            alert(`${inputsRef.current[i].title}을(를) 정확히 입력해주시기 바랍니다.`)
-            inputsRef.current[i].focus()
-            setDisabledSubmit(false)
+        } else if (i === 2) {
+          if (valueLength !== 3) {
+            afterProcessing(`${item.title}을(를) 정확히 입력해주시기 바랍니다.`, item.focus())
             return false
           }
         } else if (i === 3 || i === 4) {
-          if (inputsRef.current[i].value.trimEnd().length != 4) {
-            alert(`${inputsRef.current[i].title}을(를) 정확히 입력해주시기 바랍니다.`)
-            inputsRef.current[i].focus()
-            setDisabledSubmit(false)
+          if (valueLength !== 4) {
+            afterProcessing(`${item.title}을(를) 정확히 입력해주시기 바랍니다.`, item.focus())
             return false
           }
         } else if (i === 5) {
           if (shippingZipCode.trim().length === 0 || shippingAddress1.trim().length === 0) {
-            alert('검색 버튼을 클릭하여 주소를 선택해주시기 바랍니다.')
-            postButtonRef.current?.click()
-            setDisabledSubmit(false)
+            afterProcessing(`검색 버튼을 클릭하여 주소를 선택해주시기 바랍니다.`, postButtonRef.current?.click())
             return false
           }
         } else if (i === 7) {
-          if (inputsRef.current[i].value.trim().length === 0) {
-            alert(`${inputsRef.current[i].title}을(를) 입력해주시기 바랍니다.`)
-            inputsRef.current[i].focus()
-            setDisabledSubmit(false)
+          if (valueLength === 0) {
+            afterProcessing(`${item.title}을(를) 정확히 입력해주시기 바랍니다.`, item.focus())
             return false
           }
         } else if (i === 8) {
-          if (props.listLength === 0 && !isUpdate) {
-            param.shippingDefault = 1
-          }
-        } else if (i === 9) {
           if (deliveryRequest === '7' && deliveryRequestDirect.trim().length == 0) {
-            alert(`${inputsRef.current[i].title}을 입력해주시기 바랍니다.`)
-            inputsRef.current[i].focus()
-            setDisabledSubmit(false)
+            afterProcessing(`${item.title}을(를) 정확히 입력해주시기 바랍니다.`, item.focus())
             return false
           }
         }
       }
+
+      if (props.listLength === 0 && !isUpdate) {
+        param.shippingDefault = 1
+      }
+
       updateShippingAPI.mutate(param)
     }
   }
@@ -405,9 +410,6 @@ export default function ModalDelivery(props: {
                     onChange={(e) => common.CommonHandleChangeValue('check', e, inputs, setInputs)}
                     checked={inputs.shippingDefault ? true : false}
                     disabled={isUpdate && initShippingDefault != 0 ? true : false}
-                    ref={(el) => {
-                      el && inputsRef.current ? (inputsRef.current[8] = el) : null
-                    }}
                   ></input>{' '}
                   기본 배송지 설정
                 </label>
@@ -446,7 +448,7 @@ export default function ModalDelivery(props: {
                     title="배송 요청사항 세부내용"
                     onChange={(e) => common.CommonHandleChangeValue('maxLength30', e, inputs, setInputs)}
                     ref={(el) => {
-                      el && inputsRef.current ? (inputsRef.current[9] = el) : null
+                      el && inputsRef.current ? (inputsRef.current[8] = el) : null
                     }}
                   ></input>
                   <i className="leading-7 ml-2">({inputs.deliveryRequestDirect.length}/30)</i>

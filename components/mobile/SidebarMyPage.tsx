@@ -14,7 +14,7 @@ export default function SidebarMyPage() {
         {Object.keys(mypageList).map((key) => {
           return (
             <li key={key}>
-              <Link href={`/mobile/mypage/${key}`}>
+              <Link href={`/mobile/mypage/${key}`} passHref>
                 <a className={`${router.pathname.substring(8) === key ? 'font-semibold' : ''}`}>{mypageList[key]}</a>
               </Link>
             </li>

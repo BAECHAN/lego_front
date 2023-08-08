@@ -42,19 +42,14 @@ export default function Banner() {
           <p title="배너 제목" className="mx-2 my-3">
             {thisMonth && thisMonth + 1}월 신제품 출시!
           </p>
-          <Link href="/themes">
+          <Link href="/themes" passHref>
             <a title="상품 보러가기 링크" className="hover:text-blue-600">
               보러가기
               <FontAwesomeAngleRight />
             </a>
           </Link>
           <span style={{ flexGrow: 1 }}></span>
-          <button
-            id="bannerClose"
-            className="mr-5 -ml-5 text-gray-500 hover:cursor-pointer hover:text-black"
-            onClick={handleClickClose}
-            title="오늘 하루 보지 않기"
-          >
+          <button id="bannerClose" className="mr-5 -ml-5 text-gray-500 hover:cursor-pointer hover:text-black" onClick={handleClickClose} title="오늘 하루 보지 않기">
             <FontAwesomeIcon icon={faSquareXmark} width="25px" height="25px" />
           </button>
           <style jsx>{`

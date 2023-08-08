@@ -14,8 +14,11 @@ div#__next {
   height: 100%;
 }
 
-button.btn-common {
+.btn-common {
+  display: inline-block;
+  text-align: center;
   height: 50px;
+  line-height: 40px;
   margin-top: 17px;
   box-sizing: border-box;
   outline: 0;
@@ -46,6 +49,7 @@ button.btn-common {
 
   &.h-33{
     height: 33px;
+    line-height: 25px;
   }
 
   &.fs-14{

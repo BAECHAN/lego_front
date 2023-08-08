@@ -4,11 +4,12 @@ import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 
 import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
-import Router, { useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import axiosRequest from 'pages/api/axios'
 import { EventTargetT, InputRefsT, InputTNotPwchk, ObjT_Bln, UserPasswordSubmitT } from 'types'
 import { isPassRegExpInput } from '@components/common/event/CommonFunction'
+import HomeIconLink from '@components/HomeIconLink'
 
 export default function ResetPassword() {
   const router = useRouter()
@@ -102,7 +103,7 @@ export default function ResetPassword() {
               router.push('/mypage/user_info')
             } else {
               alert('비밀번호가 변경되었습니다.\r로그인 페이지로 이동합니다.')
-              Router.push('/login')
+              router.push('/login')
             }
           } else {
             alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
@@ -147,11 +148,7 @@ export default function ResetPassword() {
           {!isLoading ? (
             !isExpired ? (
               <form name="loginForm" className="login-box" onSubmit={handleSubmit}>
-                <Link href="/">
-                  <a>
-                    <Image src="/main.svg" width="50px" height="50px" alt="메인으로" />
-                  </a>
-                </Link>
+                <HomeIconLink />
                 <label>
                   <span>비밀번호</span>
                   <FontAwesomeAsterisk />
@@ -200,7 +197,7 @@ export default function ResetPassword() {
                   인증시간이 만료되었습니다.
                   <br /> 처음부터 다시 진행해주시기 바랍니다.
                 </p>
-                <Link href="/login/find_password">
+                <Link href="/login/find_password" passHref>
                   <a title="비밀번호 찾기 페이지로 이동" className="go-find-password ">
                     비밀번호 찾기
                   </a>

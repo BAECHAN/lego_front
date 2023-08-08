@@ -1,5 +1,6 @@
 import useIsMobile from '@components/common/custom/isMobile'
 import ProductInCart from '@components/product/ProductInCart'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import useProductCartList from 'pages/api/query/useProductCartList'
 import React, { useEffect } from 'react'
@@ -46,10 +47,6 @@ export default function ContentsCart() {
     selectedOrder.length > 0 ? (isMobile ? router.push('/mobile/order') : router.push('/order')) : alert('상품이미지 왼쪽의 체크박스를 체크하여\r주문할 상품을 선택 후 주문해주시기 바랍니다.')
   }
 
-  const handleClickShopping = () => {
-    router.push('/themes')
-  }
-
   return (
     <div>
       {isFetched ? (
@@ -81,9 +78,11 @@ export default function ContentsCart() {
           <div className="text-xl">
             <div>해당하는 상품이 없습니다.</div>
             <div className="flex justify-center mt-52">
-              <button type="button" title="쇼핑하러 가기 버튼" id="btnShopRouter" className="btn-common desktop:min-w-[500px] mobile:w-80" onClick={handleClickShopping}>
-                쇼핑하러 가기
-              </button>
+              <Link href="/themes" passHref>
+                <a title="쇼핑하러 가기 버튼" id="btnShopRouter" className="btn-common desktop:min-w-[500px] mobile:w-80">
+                  쇼핑하러 가기
+                </a>
+              </Link>
             </div>
           </div>
         )

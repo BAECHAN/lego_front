@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 import EmptyLayout from '../components/EmptyLayout'
+import Link from 'next/link'
 
 export default function NotFound() {
   const router = useRouter()
@@ -14,12 +15,8 @@ export default function NotFound() {
       <div className="guide">
         <strong>404 Not Found</strong>
         <p>Sorry, that page can`t be found</p>
-        <button
-          className="btn-common"
-          title="홈페이지로 이동 버튼"
-          onClick={() => router.push(`/`)}
-        >
-          <span>
+        <Link href="/" passHref>
+          <a className="btn-common" title="홈페이지로 이동 버튼">
             Go to Homepage
             <FontAwesomeIcon
               icon={faAngleRight}
@@ -31,8 +28,8 @@ export default function NotFound() {
                 display: 'inline',
               }}
             ></FontAwesomeIcon>
-          </span>
-        </button>
+          </a>
+        </Link>
       </div>
 
       <style jsx>{`

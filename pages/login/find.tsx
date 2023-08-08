@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { useState, FormEvent, useRef, useEffect } from 'react'
 import ButtonFindAccountToggle from '@components/login/ButtonFindAccountToggle'
 import FontAwesomeAngleRight from '@components/FontAwesomeAngleRight'
@@ -10,6 +9,7 @@ import { useRecoilValue } from 'recoil'
 import Spinner from '@components/Spinner'
 import Portal from '@components/Portal'
 import InputEmail from '@components/common/input/InputEmail'
+import HomeIconLink from '@components/HomeIconLink'
 
 export default function Find() {
   const findAccountType = useRecoilValue(findAccountSelector)
@@ -73,16 +73,7 @@ export default function Find() {
           </Portal>
         )}
         <form onSubmit={findId} className="find-box">
-          <Link href="/">
-            <a title="홈페이지로 이동 링크">
-              <Image
-                src="/main.svg"
-                width="50px"
-                height="50px"
-                alt="메인으로"
-              />
-            </a>
-          </Link>
+          <HomeIconLink />
           <h1 className="text-3xl">Account</h1>
 
           <ButtonFindAccountToggle isLoading={isLoading} />
@@ -102,8 +93,7 @@ export default function Find() {
               <p className="text-2xl">사용자 비밀번호를 잊으셨나요?</p>
               <br />
               <p>
-                비밀번호의 경우 암호화 저장되어 분실 시 찾아드릴 수 없는 정보
-                입니다.
+                비밀번호의 경우 암호화 저장되어 분실 시 찾아드릴 수 없는 정보 입니다.
                 <br />
                 본인 확인을 통해 비밀번호를 재설정 하실 수 있습니다.
               </p>
@@ -120,11 +110,8 @@ export default function Find() {
                     회원가입 된 아이디입니다. <br />
                     해당 계정으로 로그인해주시기 바랍니다.
                   </div>
-                  <Link href="/login">
-                    <a
-                      title="로그인 페이지로 이동"
-                      className="hover:underline hover:text-blue-600"
-                    >
+                  <Link href="/login" passHref>
+                    <a title="로그인 페이지로 이동" className="hover:underline hover:text-blue-600">
                       로그인 하러가기
                       <FontAwesomeAngleRight />
                     </a>
@@ -133,13 +120,9 @@ export default function Find() {
               ) : (
                 <div className="text-center">
                   <div className="text-green-600 mb-3">
-                    <span className="text-blue-600">{email}</span>으로 비밀번호
-                    재설정 이메일을 발송하였습니다. <br />
+                    <span className="text-blue-600">{email}</span>으로 비밀번호 재설정 이메일을 발송하였습니다. <br />
                     <br />
-                    <p className="text-sm">
-                      이메일을 받지 못하셨다면 스팸메일함을 확인해보시거나
-                      고객센터로 문의해주시기 바랍니다.
-                    </p>
+                    <p className="text-sm">이메일을 받지 못하셨다면 스팸메일함을 확인해보시거나 고객센터로 문의해주시기 바랍니다.</p>
                   </div>
                 </div>
               )
@@ -150,11 +133,8 @@ export default function Find() {
                   <br />
                   계정이 없으시다면 해당 아이디로 회원가입 해주시기 바랍니다.
                 </div>
-                <Link href="/login/create_account">
-                  <a
-                    title="회원가입 페이지로 이동"
-                    className="hover:underline hover:text-blue-600"
-                  >
+                <Link href="/login/create_account" passHref>
+                  <a title="회원가입 페이지로 이동" className="hover:underline hover:text-blue-600">
                     회원가입 하러가기
                     <FontAwesomeAngleRight />
                   </a>
@@ -169,26 +149,19 @@ export default function Find() {
                   <p className="text-sm">
                     계정이 없으시다면 회원가입을 진행해주시기를 바랍니다.
                     <br />
-                    혹여나 아이디(이메일)을 잊으신 경우, 먼저 아이디(이메일)
-                    찾기를 진행해주시기를 바랍니다.
+                    혹여나 아이디(이메일)을 잊으신 경우, 먼저 아이디(이메일) 찾기를 진행해주시기를 바랍니다.
                   </p>
                 </div>
                 <div className="flex justify-around">
                   <div />
-                  <Link href="/login/create_account">
-                    <a
-                      title="회원가입 페이지로 이동"
-                      className="hover:underline hover:text-blue-600"
-                    >
+                  <Link href="/login/create_account" passHref>
+                    <a title="회원가입 페이지로 이동" className="hover:underline hover:text-blue-600">
                       회원가입 하러가기
                       <FontAwesomeAngleRight />
                     </a>
                   </Link>
-                  <Link href="/login/find_account">
-                    <a
-                      title="이메일 찾기 페이지로 이동"
-                      className="hover:underline hover:text-blue-600"
-                    >
+                  <Link href="/login/find_account" passHref>
+                    <a title="이메일 찾기 페이지로 이동" className="hover:underline hover:text-blue-600">
                       아이디(이메일)찾기
                       <FontAwesomeAngleRight />
                     </a>
@@ -201,11 +174,7 @@ export default function Find() {
 
           <button
             type="submit"
-            title={
-              findAccountType === 'email'
-                ? '아이디 존재 유무 확인 버튼'
-                : '새 비밀번호를 발급받기 위한 인증번호를 이메일로 전송하기'
-            }
+            title={findAccountType === 'email' ? '아이디 존재 유무 확인 버튼' : '새 비밀번호를 발급받기 위한 인증번호를 이메일로 전송하기'}
             className="btn-common h-33 fs-14 desktop:min-w-[500px] mobile:w-full"
           >
             {findAccountType === 'email' ? '검색' : '비밀번호 찾기'}
