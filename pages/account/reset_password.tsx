@@ -3,23 +3,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 
-import React, {
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import Router, { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import axiosRequest from 'pages/api/axios'
-import {
-  EventTargetT,
-  InputRefsT,
-  InputTNotPwchk,
-  ObjT_Bln,
-  UserPasswordSubmitT,
-} from 'types'
+import { EventTargetT, InputRefsT, InputTNotPwchk, ObjT_Bln, UserPasswordSubmitT } from 'types'
 import { isPassRegExpInput } from '@components/common/event/CommonFunction'
 
 export default function ResetPassword() {
@@ -106,34 +94,24 @@ export default function ResetPassword() {
         token: token,
       }
 
-      axiosRequest(
-        'patch',
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/update-password`,
-        userInfo
-      )
+      axiosRequest('patch', `${process.env.NEXT_PUBLIC_SERVER_URL}/api/update-password`, userInfo)
         .then((response) => {
           if (response?.status === 204) {
-            if (router.query.callbackPage == 'user_info') {
-              alert(
-                '비밀번호가 변경되었습니다.\r회원 정보 페이지로 이동합니다.'
-              )
+            if (router.query.callbackPage === 'user_info') {
+              alert('비밀번호가 변경되었습니다.\r회원 정보 페이지로 이동합니다.')
               router.push('/mypage/user_info')
             } else {
               alert('비밀번호가 변경되었습니다.\r로그인 페이지로 이동합니다.')
               Router.push('/login')
             }
           } else {
-            alert(
-              '의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.'
-            )
+            alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
             console.error(`HTTP status : ${response?.status}`)
           }
         })
         .catch((error) => {
           console.log(error)
-          alert(
-            '비밀번호 변경이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-          )
+          alert('비밀번호 변경이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.')
           setDisabledSubmit(false)
           return false
         })
@@ -168,19 +146,10 @@ export default function ResetPassword() {
         <div className="h-full relative top-[10%]">
           {!isLoading ? (
             !isExpired ? (
-              <form
-                name="loginForm"
-                className="login-box"
-                onSubmit={handleSubmit}
-              >
+              <form name="loginForm" className="login-box" onSubmit={handleSubmit}>
                 <Link href="/">
                   <a>
-                    <Image
-                      src="/main.svg"
-                      width="50px"
-                      height="50px"
-                      alt="메인으로"
-                    />
+                    <Image src="/main.svg" width="50px" height="50px" alt="메인으로" />
                   </a>
                 </Link>
                 <label>
@@ -192,13 +161,7 @@ export default function ResetPassword() {
                     id="pw"
                     name="pw"
                     title="새 비밀번호 입력란"
-                    className={`${
-                      !pw
-                        ? 'border-gray'
-                        : !isPassRegExp.pw
-                        ? 'border-red'
-                        : 'border-green'
-                    }`}
+                    className={`${!pw ? 'border-gray' : !isPassRegExp.pw ? 'border-red' : 'border-green'}`}
                     value={pw}
                     onChange={(event) => handleChangeInput(event)}
                     ref={inputRefs.pw}
@@ -206,13 +169,7 @@ export default function ResetPassword() {
                     autoComplete="off"
                   />
                 </label>
-                {pw ? (
-                  !isPassRegExp.pw ? (
-                    <span className="text-red-500">
-                      8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
-                    </span>
-                  ) : null
-                ) : null}
+                {pw ? !isPassRegExp.pw ? <span className="text-red-500">8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.</span> : null : null}
 
                 <label>
                   <span>비밀번호확인</span>
@@ -223,13 +180,7 @@ export default function ResetPassword() {
                     id="pwChk"
                     name="pwChk"
                     title="새 비밀번호 확인 입력란"
-                    className={`${
-                      !pwChk
-                        ? 'border-gray'
-                        : pw !== pwChk
-                        ? 'border-red'
-                        : 'border-green'
-                    }`}
+                    className={`${!pwChk ? 'border-gray' : pw !== pwChk ? 'border-red' : 'border-green'}`}
                     value={pwChk}
                     onChange={(event) => handleChangeInput(event)}
                     ref={inputRefs.pwChk}
@@ -237,20 +188,9 @@ export default function ResetPassword() {
                     autoComplete="off"
                   />
                 </label>
-                {pwChk ? (
-                  !isMatchPw ? (
-                    <span className="text-red-500">
-                      비밀번호가 일치하지 않습니다.
-                    </span>
-                  ) : null
-                ) : null}
+                {pwChk ? !isMatchPw ? <span className="text-red-500">비밀번호가 일치하지 않습니다.</span> : null : null}
 
-                <button
-                  type="submit"
-                  className="btn-common min-w-[330px] h-33 fs-14"
-                  disabled={disabledSubmit}
-                  title="비밀번호 변경하기 버튼"
-                >
+                <button type="submit" className="btn-common min-w-[330px] h-33 fs-14" disabled={disabledSubmit} title="비밀번호 변경하기 버튼">
                   비밀번호 변경하기
                 </button>
               </form>
@@ -261,10 +201,7 @@ export default function ResetPassword() {
                   <br /> 처음부터 다시 진행해주시기 바랍니다.
                 </p>
                 <Link href="/login/find_password">
-                  <a
-                    title="비밀번호 찾기 페이지로 이동"
-                    className="go-find-password "
-                  >
+                  <a title="비밀번호 찾기 페이지로 이동" className="go-find-password ">
                     비밀번호 찾기
                   </a>
                 </Link>

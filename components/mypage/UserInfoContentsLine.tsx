@@ -5,14 +5,7 @@ import ButtonSave from './ButtonSave'
 import ButtonUploadFile from './ButtonUploadFile'
 import useIsMobile from '@components/common/custom/isMobile'
 
-export default function UserInfoContentsLine(props: {
-  infoKey: string
-  infoName: string
-  infoValue?: any
-  infoUpdate: boolean
-  email: string
-  onConnect?: boolean
-}) {
+export default function UserInfoContentsLine(props: { infoKey: string; infoName: string; infoValue?: any; infoUpdate: boolean; email: string; onConnect?: boolean }) {
   const [isChange, setIsChange] = useState(false)
   const [value, setValue] = useState(props.infoValue)
   const [newValue, setNewValue] = useState('')
@@ -39,30 +32,16 @@ export default function UserInfoContentsLine(props: {
   const changeComponent = (
     <div className="info-update-button flex desktop:w-2/6 desktop:flex-row-reverse mobile:justify-center mobile:mt-3">
       {props.infoUpdate ? (
-        props.infoKey == 'image' ? (
+        props.infoKey === 'image' ? (
           isChange ? (
-            <ButtonUploadFile
-              newValue={newValue}
-              setNewValue={setNewValue}
-              setUploadFile={setUploadFile}
-            />
+            <ButtonUploadFile newValue={newValue} setNewValue={setNewValue} setUploadFile={setUploadFile} />
           ) : (
-            <ButtonChange
-              infoKey={props.infoKey}
-              infoName={props.infoName}
-              isChange={isChange}
-              setIsChange={setIsChange}
-            />
+            <ButtonChange infoKey={props.infoKey} infoName={props.infoName} isChange={isChange} setIsChange={setIsChange} />
           )
         ) : isChange ? null : (
-          <ButtonChange
-            infoKey={props.infoKey}
-            infoName={props.infoName}
-            isChange={isChange}
-            setIsChange={setIsChange}
-          />
+          <ButtonChange infoKey={props.infoKey} infoName={props.infoName} isChange={isChange} setIsChange={setIsChange} />
         )
-      ) : props.infoKey == 'onKakao' || props.infoKey == 'onGoogle' ? (
+      ) : props.infoKey === 'onKakao' || props.infoKey === 'onGoogle' ? (
         props.onConnect ? (
           <p className="text-blue-600 font-bold">ON</p>
         ) : (
@@ -74,11 +53,7 @@ export default function UserInfoContentsLine(props: {
 
   return (
     <>
-      <div
-        className={`user-info-line desktop:flex mobile:block w-full ${
-          props.infoKey == 'image' ? 'h-56' : ''
-        } my-4`}
-      >
+      <div className={`user-info-line desktop:flex mobile:block w-full ${props.infoKey === 'image' ? 'h-56' : ''} my-4`}>
         <div className="user-info-cell w-full flex items-center">
           <div className="info-name desktop:w-1/6 mobile:w-1/2 mobile:ml-3">
             <span title="회원정보 항목명">{props.infoName}</span>
@@ -87,17 +62,11 @@ export default function UserInfoContentsLine(props: {
           <div className="desktop:w-1/6" />
 
           <div className="info-value">
-            {props.infoKey == 'image' ? (
+            {props.infoKey === 'image' ? (
               isChange ? (
                 <>
                   <Image
-                    src={
-                      newValue != '' && newValue.length > 0
-                        ? newValue
-                        : props.infoValue
-                        ? props.infoValue
-                        : '/default_profile.png'
-                    }
+                    src={newValue != '' && newValue.length > 0 ? newValue : props.infoValue ? props.infoValue : '/default_profile.png'}
                     width="200px"
                     height="200px"
                     alt="프로필 사진"
@@ -121,9 +90,7 @@ export default function UserInfoContentsLine(props: {
                 </>
               ) : (
                 <Image
-                  src={
-                    props.infoValue ? props.infoValue : '/default_profile.png'
-                  }
+                  src={props.infoValue ? props.infoValue : '/default_profile.png'}
                   width="200px"
                   height="200px"
                   alt="프로필 사진"
@@ -134,7 +101,7 @@ export default function UserInfoContentsLine(props: {
               )
             ) : isChange ? (
               <div className="info-update-contents">
-                {props.infoKey == 'name' ? (
+                {props.infoKey === 'name' ? (
                   <>
                     <ul className="text-xs">
                       <li>※ 2~16자로 작성해주세요.</li>

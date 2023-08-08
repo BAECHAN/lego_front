@@ -15,13 +15,7 @@ export default function SidebarMyPage() {
           return (
             <li key={key}>
               <Link href={`/mypage/${key}`}>
-                <a
-                  className={`${
-                    router.pathname.substring(8) == key ? 'font-semibold' : ''
-                  }`}
-                >
-                  {mypageList[key]}
-                </a>
+                <a className={`${router.pathname.substring(8) === key ? 'font-semibold' : ''}`}>{mypageList[key]}</a>
               </Link>
             </li>
           )

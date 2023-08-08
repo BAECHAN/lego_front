@@ -4,24 +4,17 @@ import { faPenSquare } from '@fortawesome/free-solid-svg-icons'
 import { useRouter } from 'next/router'
 import useIsMobile from '@components/common/custom/isMobile'
 
-export default function ButtonChange(props: {
-  infoKey: string
-  infoName: string
-  isChange: boolean
-  setIsChange: React.Dispatch<React.SetStateAction<boolean>>
-}) {
+export default function ButtonChange(props: { infoKey: string; infoName: string; isChange: boolean; setIsChange: React.Dispatch<React.SetStateAction<boolean>> }) {
   const router = useRouter()
 
   const isMobile = useIsMobile()
 
   const handleClickButton = () => {
-    if (props.infoKey == 'password') {
+    if (props.infoKey === 'password') {
       router.push('/account/check_password')
-    } else if (props.infoKey == 'address') {
-      isMobile
-        ? router.push('/mobile/mypage/delivery')
-        : router.push('/mypage/delivery')
-    } else if (props.infoKey == 'image') {
+    } else if (props.infoKey === 'address') {
+      isMobile ? router.push('/mobile/mypage/delivery') : router.push('/mypage/delivery')
+    } else if (props.infoKey === 'image') {
       props.setIsChange(!props.isChange)
     } else {
       props.setIsChange(!props.isChange)
@@ -29,19 +22,9 @@ export default function ButtonChange(props: {
   }
 
   return (
-    <button
-      type="button"
-      title="정보 수정 버튼"
-      className="flex h-8 leading-5 whitespace-nowrap"
-      onClick={handleClickButton}
-    >
+    <button type="button" title="정보 수정 버튼" className="flex h-8 leading-5 whitespace-nowrap" onClick={handleClickButton}>
       {props.infoName}&nbsp;변경하기
-      <FontAwesomeIcon
-        icon={faPenSquare}
-        width="23px"
-        height="23px"
-        style={{ marginLeft: '3px' }}
-      />
+      <FontAwesomeIcon icon={faPenSquare} width="23px" height="23px" style={{ marginLeft: '3px' }} />
       <style jsx>{`
         button {
           background-color: gray;
@@ -49,7 +32,7 @@ export default function ButtonChange(props: {
           padding: 5px 10px;
           border-radius: 4px;
 
-          :hover {
+          &:hover {
             background-color: #000;
           }
         }

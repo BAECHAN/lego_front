@@ -5,10 +5,7 @@ import React, { forwardRef } from 'react'
 import { useRecoilValue } from 'recoil'
 import { isOpenMobileSidebarSelector } from 'state/atoms'
 
-function MobileHeaderSidebar(
-  props: {},
-  sidebarRef: React.LegacyRef<HTMLUListElement> | undefined
-) {
+function MobileHeaderSidebar(props: {}, sidebarRef: React.LegacyRef<HTMLUListElement> | undefined) {
   const { data: session, status } = useSession()
 
   const isMobile = useIsMobile()
@@ -17,13 +14,9 @@ function MobileHeaderSidebar(
 
   return (
     <div className={isOpenBars ? '' : 'relative overflow-hidden'}>
-      <aside
-        className={`mobile-header-sidebar shadow-md ${
-          isOpenBars ? 'active' : ''
-        }`}
-      >
+      <aside className={`mobile-header-sidebar shadow-md ${isOpenBars ? 'active' : ''}`}>
         <div className="mobile-header-sidebar-items flex flex-col">
-          {session && status == 'authenticated' ? (
+          {session && status === 'authenticated' ? (
             <ul ref={sidebarRef}>
               <li>
                 <Link href="/mobile/mypage">
@@ -31,13 +24,7 @@ function MobileHeaderSidebar(
                 </Link>
               </li>
               <li>
-                <Link
-                  href={
-                    isMobile
-                      ? `/mobile/mypage/viewed_products`
-                      : `/mypage/viewed_products`
-                  }
-                >
+                <Link href={isMobile ? `/mobile/mypage/viewed_products` : `/mypage/viewed_products`}>
                   <a className="relative">최근 본 상품</a>
                 </Link>
               </li>

@@ -1,11 +1,7 @@
 import React from 'react'
 import Image from 'next/image'
 
-export default function RadioButton(props: {
-  group: string
-  contents: string
-  isChecked: boolean
-}) {
+export default function RadioButton(props: { group: string; contents: string; isChecked: boolean }) {
   return (
     <label>
       <input type="radio" name={props.group} defaultChecked={props.isChecked} />
@@ -14,12 +10,7 @@ export default function RadioButton(props: {
         <span>{props.contents}</span>
       ) : (
         <span className="relative top-1 ml-1">
-          <Image
-            src="/payment_icon_yellow_medium.png"
-            width="85px"
-            height="40px"
-            alt="카카오페이로 결제"
-          />
+          <Image src="/payment_icon_yellow_medium.png" width="85px" height="40px" alt="카카오페이로 결제" />
         </span>
       )}
 
@@ -42,32 +33,32 @@ export default function RadioButton(props: {
           width: 1.25em;
           height: 1.25em;
           transition: border 0.5s ease-in-out;
-        }
 
-        [type='radio']:checked {
-          border: 0.4em solid blue;
-        }
+          &:checked {
+            border: 0.4em solid blue;
+          }
 
-        [type='radio']:focus-visible {
-          outline-offset: max(2px, 0.1em);
-          outline: max(2px, 0.1em) dotted blue;
-        }
+          &:focus-visible {
+            outline-offset: max(2px, 0.1em);
+            outline: max(2px, 0.1em) dotted blue;
+          }
 
-        [type='radio']:hover {
-          box-shadow: 0 0 0 max(4px, 0.2em) lightgray;
-          cursor: pointer;
-        }
+          &:hover {
+            box-shadow: 0 0 0 max(4px, 0.2em) lightgray;
+            cursor: pointer;
+          }
 
-        [type='radio']:disabled {
-          background-color: lightgray;
-          box-shadow: none;
-          opacity: 0.7;
-          cursor: not-allowed;
-        }
+          &:disabled {
+            background-color: lightgray;
+            box-shadow: none;
+            opacity: 0.7;
+            cursor: not-allowed;
+          }
 
-        [type='radio']:disabled + span {
-          opacity: 0.7;
-          cursor: not-allowed;
+          &:disabled + span {
+            opacity: 0.7;
+            cursor: not-allowed;
+          }
         }
 
         /* Global CSS */

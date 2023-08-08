@@ -7,10 +7,7 @@ import SidebarFilterItem from './SidebarFilterItem'
 import { productFilterInfoSelector } from 'state/atoms'
 import { useRecoilValue } from 'recoil'
 
-export default function SidebarFilterAccordian(props: {
-  label: string
-  themes: ThemeT
-}) {
+export default function SidebarFilterAccordian(props: { label: string; themes: ThemeT }) {
   const [isOpen, setIsOpen] = useState(true)
 
   const { data: filters } = useFilters(props.themes)
@@ -144,11 +141,7 @@ export default function SidebarFilterAccordian(props: {
 
   return (
     <div>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        title="필터 항목 열기"
-        className="btn-accordion w-full my-3"
-      >
+      <button onClick={() => setIsOpen(!isOpen)} title="필터 항목 열기" className="btn-accordion w-full my-3">
         <span className="btn-label float-left">{props.label}</span>
         <FontAwesomeIcon
           icon={isOpen ? faAngleUp : faAngleDown}
@@ -163,91 +156,51 @@ export default function SidebarFilterAccordian(props: {
           }}
         />
 
-        {props.label == '가격(원)' ? (
+        {props.label === '가격(원)' ? (
           <div className="btn-option">
             <ul className={isOpen ? 'open' : ''}>
               {filterInfo.filterPriceObjArr.map((filterObj) => {
-                return (
-                  filterCount[filterObj.id] > 0 && (
-                    <SidebarFilterItem
-                      key={filterObj.id}
-                      filterObj={filterObj}
-                      filterCount={filterCount}
-                    />
-                  )
-                )
+                return filterCount[filterObj.id] > 0 && <SidebarFilterItem key={filterObj.id} filterObj={filterObj} filterCount={filterCount} />
               })}
             </ul>
           </div>
         ) : null}
 
-        {props.label == '연령' ? (
+        {props.label === '연령' ? (
           <div className="btn-option">
             <ul className={isOpen ? 'open' : ''}>
               {filterInfo.filterAgeObjArr.map((filterObj) => {
-                return (
-                  filterCount[filterObj.id] > 0 && (
-                    <SidebarFilterItem
-                      key={filterObj.id}
-                      filterObj={filterObj}
-                      filterCount={filterCount}
-                    />
-                  )
-                )
+                return filterCount[filterObj.id] > 0 && <SidebarFilterItem key={filterObj.id} filterObj={filterObj} filterCount={filterCount} />
               })}
             </ul>
           </div>
         ) : null}
 
-        {props.label == '구매가능' ? (
+        {props.label === '구매가능' ? (
           <div className="btn-option">
             <ul className={isOpen ? 'open' : ''}>
               {filterInfo.filterSaleEnabledObjArr.map((filterObj) => {
-                return (
-                  filterCount[filterObj.id] > 0 && (
-                    <SidebarFilterItem
-                      key={filterObj.id}
-                      filterObj={filterObj}
-                      filterCount={filterCount}
-                    />
-                  )
-                )
+                return filterCount[filterObj.id] > 0 && <SidebarFilterItem key={filterObj.id} filterObj={filterObj} filterCount={filterCount} />
               })}
             </ul>
           </div>
         ) : null}
 
-        {props.label == '할인여부' ? (
+        {props.label === '할인여부' ? (
           <div className="btn-option">
             <ul className={isOpen ? 'open' : ''}>
               {filterInfo.filterDiscountingObjArr.map((filterObj) => {
-                return (
-                  filterCount[filterObj.id] > 0 && (
-                    <SidebarFilterItem
-                      key={filterObj.id}
-                      filterObj={filterObj}
-                      filterCount={filterCount}
-                    />
-                  )
-                )
+                return filterCount[filterObj.id] > 0 && <SidebarFilterItem key={filterObj.id} filterObj={filterObj} filterCount={filterCount} />
               })}
             </ul>
           </div>
         ) : null}
 
-        {props.label == '부품수' ? (
+        {props.label === '부품수' ? (
           <div className="btn-option mb-5">
             <ul className={isOpen ? 'open' : ''}>
               {filterInfo.filterPiecesObjArr.map((filterObj) => {
-                return (
-                  filterCount[filterObj.id] > 0 && (
-                    <SidebarFilterItem
-                      key={filterObj.id}
-                      filterObj={filterObj}
-                      filterCount={filterCount}
-                    />
-                  )
-                )
+                return filterCount[filterObj.id] > 0 && <SidebarFilterItem key={filterObj.id} filterObj={filterObj} filterCount={filterCount} />
               })}
             </ul>
           </div>

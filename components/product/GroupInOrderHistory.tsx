@@ -12,10 +12,7 @@ import { queryKeys } from 'pages/api/query/queryKeys'
 import ProductInOrderHistory from './ProductInOrderHistory'
 import { useRecoilValue } from 'recoil'
 import { deliveryRequestOptions } from 'pages/api/common/deliveryRequestOptions'
-export default function GroupInOrderHistory(props: {
-  orderGroup: OrderGroupT
-  order: OrderT[]
-}) {
+export default function GroupInOrderHistory(props: { orderGroup: OrderGroupT; order: OrderT[] }) {
   const { data: session, status } = useSession()
 
   const queryClient = useQueryClient()
@@ -30,14 +27,14 @@ export default function GroupInOrderHistory(props: {
   const [isOpenDetail, setIsOpenDetail] = useState(false)
 
   useEffect(() => {
-    if (props.orderGroup.state == 7) {
+    if (props.orderGroup.state === 7) {
       setIsRefund(true)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleClickRefund = () => {
-    if (status == 'authenticated' && session?.user && session.user.email) {
+    if (status === 'authenticated' && session?.user && session.user.email) {
       if (!confirm('환불처리 하시겠습니까?')) {
         return false
       }
@@ -49,22 +46,16 @@ export default function GroupInOrderHistory(props: {
 
       updOrderRefundAPI.mutate(param)
     } else {
-      alert(
-        '회원정보를 불러오는 중입니다.\r잠시후에 다시 시도해주시기 바랍니다.'
-      )
+      alert('회원정보를 불러오는 중입니다.\r잠시후에 다시 시도해주시기 바랍니다.')
       return false
     }
   }
 
   const updOrderRefundAPI = useMutation(
     async (param: { email: string; order_group_id: number }) => {
-      return await axios.patch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-order-refund`,
-        JSON.stringify(param),
-        {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
-        }
-      )
+      return await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-order-refund`, JSON.stringify(param), {
+        headers: { 'Content-Type': `application/json; charset=utf-8` },
+      })
     },
     {
       onSuccess: async (response) => {
@@ -109,70 +100,40 @@ export default function GroupInOrderHistory(props: {
             <Link href={`/products/${props.order[0].product_number}`}>
               <a className="prod-title">{props.order[0].title}</a>
             </Link>
-            <p className="text-xs text-gray-500 text-right">
-              포함 총 {props.orderGroup.product_count} 건
-            </p>
+            <p className="text-xs text-gray-500 text-right">포함 총 {props.orderGroup.product_count} 건</p>
           </div>
         </div>
-        <div
-          title="주문한 시간"
-          className="w-1/12 flex items-center text-center"
-        >
+        <div title="주문한 시간" className="w-1/12 flex items-center text-center">
           {orderTime}
         </div>
-        <div className="w-1/12 text-center">
-          {props.orderGroup.order_group_id}
-        </div>
+        <div className="w-1/12 text-center">{props.orderGroup.order_group_id}</div>
 
         <div className="flex-col flex items-center w-2/12">
-          <div title="상품별 주문한 금액">
-            {props.orderGroup.total_price.toLocaleString('ko-kr')} 원
-          </div>
+          <div title="상품별 주문한 금액">{props.orderGroup.total_price.toLocaleString('ko-kr')} 원</div>
           <div className="text-gray-500">
-            <div title="주문한 상품 항목 수">
-              {props.orderGroup.product_count} 건
-            </div>
+            <div title="주문한 상품 항목 수">{props.orderGroup.product_count} 건</div>
           </div>
         </div>
 
         <div className="flex text-center w-2/12 items-center justify-center">
           <b className="mr-2" title="주문 상태">
-            {props.orderGroup.state == 2
-              ? '결제완료'
-              : props.orderGroup.state == 7 || isRefund
-              ? '환불완료'
-              : '환불대기'}
+            {props.orderGroup.state === 2 ? '결제완료' : props.orderGroup.state == 7 || isRefund ? '환불완료' : '환불대기'}
           </b>
-          {props.orderGroup.state == 2 && !isRefund ? (
-            <button
-              type="button"
-              title="환불 요청 버튼"
-              className="btn-refund flex h-8 leading-5 min-w-[84px]"
-              onClick={handleClickRefund}
-            >
+          {props.orderGroup.state === 2 && !isRefund ? (
+            <button type="button" title="환불 요청 버튼" className="btn-refund flex h-8 leading-5 min-w-[84px]" onClick={handleClickRefund}>
               환불요청
             </button>
           ) : null}
         </div>
         <div className="flex text-center w-2/12 items-center justify-center">
-          {props.orderGroup.state == 2 && !isRefund ? (
-            <button
-              type="button"
-              title={`배송지 정보 ${isOpenDelivery ? '닫기' : '보기'} 버튼`}
-              className="btn-delivery min-w-[106px]"
-              onClick={() => setIsOpenDelivery(!isOpenDelivery)}
-            >
+          {props.orderGroup.state === 2 && !isRefund ? (
+            <button type="button" title={`배송지 정보 ${isOpenDelivery ? '닫기' : '보기'} 버튼`} className="btn-delivery min-w-[106px]" onClick={() => setIsOpenDelivery(!isOpenDelivery)}>
               {`배송지 ${isOpenDelivery ? '닫기' : '보기'}`}
             </button>
           ) : null}
         </div>
         <div className="flex text-center w-2/12 items-center justify-center">
-          <button
-            type="button"
-            title={`주문상세 ${isOpenDetail ? '닫기' : '보기'} 버튼`}
-            className="btn-delivery min-w-[106px]"
-            onClick={() => setIsOpenDetail(!isOpenDetail)}
-          >
+          <button type="button" title={`주문상세 ${isOpenDetail ? '닫기' : '보기'} 버튼`} className="btn-delivery min-w-[106px]" onClick={() => setIsOpenDetail(!isOpenDetail)}>
             {`주문상세 ${isOpenDetail ? '닫기' : '보기'}`}
           </button>
         </div>
@@ -188,12 +149,7 @@ export default function GroupInOrderHistory(props: {
             <p>
               요청사항 :&nbsp;
               {deliveryRequestOptions.map((value: string, index: number) => {
-                return props.orderGroup.delivery_request ===
-                  (index + 1).toString()
-                  ? index + 1 === 7
-                    ? props.orderGroup.delivery_request_direct
-                    : value
-                  : null
+                return props.orderGroup.delivery_request === (index + 1).toString() ? (index + 1 === 7 ? props.orderGroup.delivery_request_direct : value) : null
               })}
             </p>
           </div>
@@ -204,19 +160,12 @@ export default function GroupInOrderHistory(props: {
           <ul className="flex flex-wrap">
             {props.order.length > 0
               ? props.order?.map((orderProduct: OrderT, index: number) => {
-                  return (
-                    <ProductInOrderHistory order={orderProduct} key={index} />
-                  )
+                  return <ProductInOrderHistory order={orderProduct} key={index} />
                 })
               : null}
           </ul>
           <div className="flex text-center items-center justify-center my-4">
-            <button
-              type="button"
-              title="주문상세 닫기 버튼"
-              className="btn-delivery min-w-[106px]"
-              onClick={() => setIsOpenDetail(!isOpenDetail)}
-            >
+            <button type="button" title="주문상세 닫기 버튼" className="btn-delivery min-w-[106px]" onClick={() => setIsOpenDetail(!isOpenDetail)}>
               주문상세 닫기
             </button>
           </div>

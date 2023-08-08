@@ -22,18 +22,10 @@ export default function ShippingItem(props: {
       {/** 배송지 */}
       <div className="flex flex-col w-[15%]">
         <div className="truncate">{props.shipping.recipient}</div>
-        <div className="text-sm opacity-75 truncate">
-          {props.shipping.shipping_name == props.shipping.recipient
-            ? `${props.shipping.recipient}님의 배송지`
-            : props.shipping.shipping_name}
-        </div>
+        <div className="text-sm opacity-75 truncate">{props.shipping.shipping_name === props.shipping.recipient ? `${props.shipping.recipient}님의 배송지` : props.shipping.shipping_name}</div>
       </div>
 
-      <div className="w-[10%]">
-        {props.shipping.shipping_default === 1 ? (
-          <span className="text-blue-600">기본배송지</span>
-        ) : null}
-      </div>
+      <div className="w-[10%]">{props.shipping.shipping_default === 1 ? <span className="text-blue-600">기본배송지</span> : null}</div>
 
       {/** 주소 */}
       <div className="w-1/2 text-left">

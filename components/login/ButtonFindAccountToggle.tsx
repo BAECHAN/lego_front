@@ -3,30 +3,19 @@ import { useRecoilState } from 'recoil'
 import { findAccountSelector } from 'state/atoms'
 
 export default function ButtonFindAccountToggle(props: { isLoading: boolean }) {
-  const [findAccountType, setFindAccountType] =
-    useRecoilState(findAccountSelector)
+  const [findAccountType, setFindAccountType] = useRecoilState(findAccountSelector)
 
   const handleClickToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (event.currentTarget.className.includes('active') || props.isLoading) {
       return false
     }
 
-    event.currentTarget.id == 'findIdBtn'
-      ? setFindAccountType('email')
-      : setFindAccountType('password')
+    event.currentTarget.id === 'findIdBtn' ? setFindAccountType('email') : setFindAccountType('password')
   }
 
   return (
     <div className="btn-find-group">
-      <button
-        type="button"
-        id="findIdBtn"
-        title="아이디 찾기 페이지로 전환"
-        onClick={(event) => handleClickToggle(event)}
-        className={`btn-find-toggle ${
-          findAccountType === 'email' ? 'active' : ''
-        }`}
-      >
+      <button type="button" id="findIdBtn" title="아이디 찾기 페이지로 전환" onClick={(event) => handleClickToggle(event)} className={`btn-find-toggle ${findAccountType === 'email' ? 'active' : ''}`}>
         아이디 찾기
       </button>
       <button
@@ -34,9 +23,7 @@ export default function ButtonFindAccountToggle(props: { isLoading: boolean }) {
         id="findPwBtn"
         title="비밀번호 찾기 페이지로 전환"
         onClick={(event) => handleClickToggle(event)}
-        className={`btn-find-toggle ${
-          findAccountType === 'password' ? 'active' : ''
-        }`}
+        className={`btn-find-toggle ${findAccountType === 'password' ? 'active' : ''}`}
       >
         비밀번호 찾기
       </button>

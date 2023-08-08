@@ -8,39 +8,25 @@ import { ProductCartT, ProductUpdateCartSubmitT } from 'types'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 
-export default function ProductQuantity(props: {
-  product: ProductCartT
-  quantity: number
-  setQuantity: React.Dispatch<React.SetStateAction<number>>
-}) {
+export default function ProductQuantity(props: { product: ProductCartT; quantity: number; setQuantity: React.Dispatch<React.SetStateAction<number>> }) {
   const { data: session, status } = useSession()
 
-  const [minusDisabled, setMinusDisabled] = useState(
-    props.product.order_quantity > 1 ? false : true
-  )
-  const [plusDisabled, setPlusDisabled] = useState(
-    props.product.order_quantity + props.product.ea >
-      props.product.order_quantity
-      ? false
-      : true
-  )
+  const [minusDisabled, setMinusDisabled] = useState(props.product.order_quantity > 1 ? false : true)
+  const [plusDisabled, setPlusDisabled] = useState(props.product.order_quantity + props.product.ea > props.product.order_quantity ? false : true)
 
   let [totalPrice, setTotalPrice] = useRecoilState(orderPriceSelector)
 
   let plusOrMinus = ''
 
-  const handleClickQuantity = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    clickOption: string
-  ) => {
+  const handleClickQuantity = (e: React.MouseEvent<HTMLButtonElement>, clickOption: string) => {
     plusOrMinus = clickOption
 
-    if (props.quantity && status == 'authenticated' && session.user?.email) {
+    if (props.quantity && status === 'authenticated' && session.user?.email) {
       let reqParam: ProductUpdateCartSubmitT = {
         email: session.user.email,
         cart_id: Number(e.currentTarget.name.substring(12)),
         product_id: props.product.product_id,
-        state: plusOrMinus == 'plus' ? 'updateAdd' : 'updateSub',
+        state: plusOrMinus === 'plus' ? 'updateAdd' : 'updateSub',
       }
 
       updateQuantityAPI.mutate(reqParam)
@@ -49,13 +35,9 @@ export default function ProductQuantity(props: {
 
   const updateQuantityAPI = useMutation(
     async (param: ProductUpdateCartSubmitT) => {
-      return await axios.patch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-cart`,
-        JSON.stringify(param),
-        {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
-        }
-      )
+      return await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-cart`, JSON.stringify(param), {
+        headers: { 'Content-Type': `application/json; charset=utf-8` },
+      })
     },
     {
       onMutate: () => {
@@ -68,26 +50,18 @@ export default function ProductQuantity(props: {
           minusDisabled: minusDisabled,
         }
 
-        if (plusOrMinus == 'plus') {
+        if (plusOrMinus === 'plus') {
           props.setQuantity(props.quantity + 1)
 
-          if (
-            props.product.discounting == 1 &&
-            props.product.rate_discount > 0
-          ) {
-            price =
-              props.product.price *
-              (1 - Number(props.product.rate_discount) / 100)
+          if (props.product.discounting === 1 && props.product.rate_discount > 0) {
+            price = props.product.price * (1 - Number(props.product.rate_discount) / 100)
           } else {
             price = props.product.price
           }
 
           setTotalPrice((totalPrice) => totalPrice + price)
 
-          if (
-            props.quantity + 1 >=
-            props.product.ea + props.product.order_quantity
-          ) {
+          if (props.quantity + 1 >= props.product.ea + props.product.order_quantity) {
             setPlusDisabled(true)
           } else {
             setPlusDisabled(false)
@@ -96,13 +70,8 @@ export default function ProductQuantity(props: {
         } else {
           props.setQuantity(props.quantity - 1)
 
-          if (
-            props.product.discounting == 1 &&
-            props.product.rate_discount > 0
-          ) {
-            price =
-              props.product.price *
-              (1 - Number(props.product.rate_discount) / 100)
+          if (props.product.discounting === 1 && props.product.rate_discount > 0) {
+            price = props.product.price * (1 - Number(props.product.rate_discount) / 100)
           } else {
             price = props.product.price
           }
@@ -132,9 +101,7 @@ export default function ProductQuantity(props: {
         }
       },
       onError: (error, values, rollback) => {
-        alert(
-          '수량을 변경하는데 문제가 발생하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-        )
+        alert('수량을 변경하는데 문제가 발생하였습니다.\r고객센터에 문의해주시기 바랍니다.')
         console.log(error)
         if (rollback) {
           props.setQuantity(rollback.quantity)
@@ -156,10 +123,7 @@ export default function ProductQuantity(props: {
         }}
         disabled={minusDisabled}
       >
-        <FontAwesomeIcon
-          icon={faMinus}
-          className={`w-5 ${minusDisabled ? 'opacity-20' : 'opacity-100'}`}
-        />
+        <FontAwesomeIcon icon={faMinus} className={`w-5 ${minusDisabled ? 'opacity-20' : 'opacity-100'}`} />
       </button>
       <div title="주문할 상품 수량">{props.quantity}</div>
       <button
@@ -170,10 +134,7 @@ export default function ProductQuantity(props: {
         }}
         disabled={plusDisabled}
       >
-        <FontAwesomeIcon
-          icon={faPlus}
-          className={`w-5 ${plusDisabled ? 'opacity-20' : 'opacity-100'}`}
-        />
+        <FontAwesomeIcon icon={faPlus} className={`w-5 ${plusDisabled ? 'opacity-20' : 'opacity-100'}`} />
       </button>
       <style jsx>{`
         .product-in-cart-quantity {

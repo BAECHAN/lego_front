@@ -26,15 +26,12 @@ export default function ContentsDelivery() {
 
   useEffect(() => {
     if (isFetched && router.query.from === 'order') {
-      data.shippingList.length == 0 ? setModalOpen(true) : null
+      data.shippingList.length === 0 ? setModalOpen(true) : null
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
-  const handleClickModalOpen = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    shipping?: ShippingT
-  ) => {
+  const handleClickModalOpen = (event: React.MouseEvent<HTMLButtonElement>, shipping?: ShippingT) => {
     shipping ? setModalShippingData(shipping) : setModalShippingData(undefined)
 
     !modalOpen ? setModalOpen(true) : setModalOpen(false)
@@ -100,12 +97,7 @@ export default function ContentsDelivery() {
       )}
       <div className="text-xl">
         <div className="flex justify-center my-10">
-          <button
-            type="button"
-            title="배송지 등록 버튼"
-            className="btn-add-address"
-            onClick={(event) => handleClickModalOpen(event)}
-          >
+          <button type="button" title="배송지 등록 버튼" className="btn-add-address" onClick={(event) => handleClickModalOpen(event)}>
             배송지 등록
           </button>
           {modalOpen && data && (

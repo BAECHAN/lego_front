@@ -10,9 +10,9 @@ export default function ButtonUploadFile(props: {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleClickButton = (type: string) => {
-    if (type == 'defaultImage') {
+    if (type === 'defaultImage') {
       props.setNewValue('/default_profile.png')
-    } else if (type == 'searchImage') {
+    } else if (type === 'searchImage') {
       fileInputRef.current ? fileInputRef.current.click() : null
     }
   }
@@ -41,45 +41,17 @@ export default function ButtonUploadFile(props: {
 
   return (
     <div className="flex justify-around relative -left-2">
-      <button
-        type="button"
-        className="flex h-8 leading-5 mr-3"
-        title="사진 파일 찾기 버튼"
-        onClick={() => handleClickButton('searchImage')}
-      >
+      <button type="button" className="flex h-8 leading-5 mr-3" title="사진 파일 찾기 버튼" onClick={() => handleClickButton('searchImage')}>
         사진 선택
-        <FontAwesomeIcon
-          icon={faEdit}
-          width="23px"
-          height="23px"
-          style={{ marginLeft: '3px' }}
-        />
+        <FontAwesomeIcon icon={faEdit} width="23px" height="23px" style={{ marginLeft: '3px' }} />
       </button>
 
-      <button
-        type="button"
-        className="flex h-8 leading-5"
-        title="기본 사진으로 변경 버튼"
-        onClick={() => handleClickButton('defaultImage')}
-      >
+      <button type="button" className="flex h-8 leading-5" title="기본 사진으로 변경 버튼" onClick={() => handleClickButton('defaultImage')}>
         기본이미지로 변경
-        <FontAwesomeIcon
-          icon={faEdit}
-          width="23px"
-          height="23px"
-          style={{ marginLeft: '3px' }}
-        />
+        <FontAwesomeIcon icon={faEdit} width="23px" height="23px" style={{ marginLeft: '3px' }} />
       </button>
 
-      <input
-        type="file"
-        name="image_URL"
-        accept="image/*"
-        className="hidden"
-        title="input image hidden"
-        ref={fileInputRef}
-        onChange={handleChangeImage}
-      />
+      <input type="file" name="image_URL" accept="image/*" className="hidden" title="input image hidden" ref={fileInputRef} onChange={handleChangeImage} />
 
       <style jsx>{`
         button {
