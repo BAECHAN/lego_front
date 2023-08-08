@@ -1,11 +1,6 @@
 import React, { useEffect, MouseEvent } from 'react'
 
-import {
-  faAngleLeft,
-  faAngleRight,
-  faAngleDoubleLeft,
-  faAngleDoubleRight,
-} from '@fortawesome/free-solid-svg-icons'
+import { faAngleLeft, faAngleRight, faAngleDoubleLeft, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PageNumber from './PageNumber'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
@@ -23,7 +18,7 @@ export default function Pagination(props: {
   const { data, status } = useDeliveryShippingList(props.page)
 
   useEffect(() => {
-    if (status == 'success' && props.setTotalPage) {
+    if (status === 'success' && props.setTotalPage) {
       props.setTotalPage(Math.ceil(Number(data.shippingListCount / 5)))
     }
   }, [data, props, status])
@@ -39,13 +34,11 @@ export default function Pagination(props: {
     const pageButtonInfo: PageButtonInfo = {
       prevPage: {
         setPageValue: props.page - 1 - ((props.page - 1) % pageCount),
-        setStartPageValue:
-          props.page - pageCount - ((props.page - 1) % pageCount),
+        setStartPageValue: props.page - pageCount - ((props.page - 1) % pageCount),
       },
       nextPage: {
         setPageValue: props.page + pageCount - ((props.page - 1) % pageCount),
-        setStartPageValue:
-          props.page + pageCount - ((props.page - 1) % pageCount),
+        setStartPageValue: props.page + pageCount - ((props.page - 1) % pageCount),
       },
       firstPage: {
         setPageValue: 1,
@@ -68,14 +61,7 @@ export default function Pagination(props: {
   }
 
   for (let i = 1; i <= props.totalPage; i++) {
-    arr.push(
-      <PageNumber
-        key={i}
-        page={i}
-        handleClickPageButton={handleClickPageButton}
-        isActive={props.page === i ? true : false}
-      />
-    )
+    arr.push(<PageNumber key={i} page={i} handleClickPageButton={handleClickPageButton} isActive={props.page === i ? true : false} />)
   }
 
   return (
@@ -86,8 +72,8 @@ export default function Pagination(props: {
           name="firstPage"
           title="첫 페이지로 이동"
           onClick={(event) => handleClickPageButton(event)}
-          disabled={props.page == 1}
-          className={`${props.page == 1 ? 'fa-disabled' : ''}`}
+          disabled={props.page === 1}
+          className={`${props.page === 1 ? 'fa-disabled' : ''}`}
         >
           <FontAwesomeIcon
             icon={faAngleDoubleLeft}
@@ -106,10 +92,8 @@ export default function Pagination(props: {
         name="prevPage"
         title="이전 페이지 그룹으로 이동"
         onClick={(event) => handleClickPageButton(event)}
-        disabled={Math.floor((props.page - 1) / pageCount) == 0}
-        className={`${
-          Math.floor((props.page - 1) / pageCount) == 0 ? 'fa-disabled' : ''
-        }`}
+        disabled={Math.floor((props.page - 1) / pageCount) === 0}
+        className={`${Math.floor((props.page - 1) / pageCount) === 0 ? 'fa-disabled' : ''}`}
       >
         <FontAwesomeIcon
           icon={faAngleLeft}
@@ -123,10 +107,7 @@ export default function Pagination(props: {
         />
       </button>
       {arr.map((item, index) => {
-        if (
-          index >= props.startPage - 1 &&
-          index <= pageCount + props.startPage - 2
-        ) {
+        if (index >= props.startPage - 1 && index <= pageCount + props.startPage - 2) {
           return item
         }
       })}
@@ -135,14 +116,8 @@ export default function Pagination(props: {
         name="nextPage"
         title="다음 페이지 그룹으로 이동"
         onClick={(event) => handleClickPageButton(event)}
-        disabled={
-          props.totalPage - props.startPage <= pageCount - 1 ? true : false
-        }
-        className={`${
-          props.totalPage - props.startPage <= pageCount - 1
-            ? 'fa-disabled'
-            : ''
-        }`}
+        disabled={props.totalPage - props.startPage <= pageCount - 1 ? true : false}
+        className={`${props.totalPage - props.startPage <= pageCount - 1 ? 'fa-disabled' : ''}`}
       >
         <FontAwesomeIcon
           icon={faAngleRight}
@@ -161,8 +136,8 @@ export default function Pagination(props: {
           name="lastPage"
           title="마지막 페이지로 이동"
           onClick={(event) => handleClickPageButton(event)}
-          disabled={props.page == props.totalPage}
-          className={`${props.page == props.totalPage ? 'fa-disabled' : ''}`}
+          disabled={props.page === props.totalPage}
+          className={`${props.page === props.totalPage ? 'fa-disabled' : ''}`}
         >
           <FontAwesomeIcon
             icon={faAngleDoubleRight}

@@ -22,7 +22,7 @@ export default function CheckPassword() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    if (session?.user?.email && status == 'authenticated') {
+    if (session?.user?.email && status === 'authenticated') {
       if (!password && passwordRef.current) {
         alert(`${passwordRef.current.title}을 확인해주시기 바랍니다.`)
         passwordRef.current.focus()
@@ -43,18 +43,12 @@ export default function CheckPassword() {
         pw: hashedPassword,
       }
 
-      axiosRequest(
-        'post',
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/password-chk`,
-        param
-      )
+      axiosRequest('post', `${process.env.NEXT_PUBLIC_SERVER_URL}/api/password-chk`, param)
         .then((response) => {
           const data = response?.data
 
           if (Object.entries(data).length === 1) {
-            router.push(
-              `/account/reset_password?token=${data.token}&callbackPage=user_info`
-            )
+            router.push(`/account/reset_password?token=${data.token}&callbackPage=user_info`)
           } else {
             alert('비밀번호가 일치하지 않습니다.')
             passwordRef.current?.focus()
@@ -63,9 +57,7 @@ export default function CheckPassword() {
         })
         .catch((error) => {
           console.log(error)
-          alert(
-            '비밀번호 확인을 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-          )
+          alert('비밀번호 확인을 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.')
           return false
         })
     } else {
@@ -85,25 +77,12 @@ export default function CheckPassword() {
           <form name="loginForm" className="login-box" onSubmit={handleSubmit}>
             <Link href="/">
               <a>
-                <Image
-                  src="/main.svg"
-                  width="50px"
-                  height="50px"
-                  alt="메인으로"
-                />
+                <Image src="/main.svg" width="50px" height="50px" alt="메인으로" />
               </a>
             </Link>
-            <InputPassword
-              password={password}
-              setPassword={setPassword}
-              ref={passwordRef}
-            />
+            <InputPassword password={password} setPassword={setPassword} ref={passwordRef} />
 
-            <button
-              type="submit"
-              className="btn-common min-w-[330px] h-33 fs-14"
-              title="기존 비밀번호 검사 버튼"
-            >
+            <button type="submit" className="btn-common min-w-[330px] h-33 fs-14" title="기존 비밀번호 검사 버튼">
               비밀번호 확인
             </button>
           </form>

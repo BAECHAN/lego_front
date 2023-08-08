@@ -13,32 +13,19 @@ export default function ProductCheckbox(props: { product: ProductCartT }) {
     let price = 0
 
     if (e.currentTarget.checked) {
-      setSelectedOrder((selectedOrder) => [
-        ...selectedOrder,
-        Number(e.currentTarget.name.substring(17)),
-      ])
+      setSelectedOrder((selectedOrder) => [...selectedOrder, Number(e.currentTarget.name.substring(17))])
 
-      if (props.product.discounting == 1 && props.product.rate_discount > 0) {
-        price =
-          props.product.price *
-          (1 - Number(props.product.rate_discount) / 100) *
-          quantity
+      if (props.product.discounting === 1 && props.product.rate_discount > 0) {
+        price = props.product.price * (1 - Number(props.product.rate_discount) / 100) * quantity
       } else {
         price = props.product.price * quantity
       }
       setTotalPrice((totalPrice) => totalPrice + price)
     } else {
-      setSelectedOrder(
-        selectedOrder.filter(
-          (item) => item !== Number(e.currentTarget.name.substring(17))
-        )
-      )
+      setSelectedOrder(selectedOrder.filter((item) => item !== Number(e.currentTarget.name.substring(17))))
 
-      if (props.product.discounting == 1 && props.product.rate_discount > 0) {
-        price =
-          props.product.price *
-          (1 - Number(props.product.rate_discount) / 100) *
-          quantity
+      if (props.product.discounting === 1 && props.product.rate_discount > 0) {
+        price = props.product.price * (1 - Number(props.product.rate_discount) / 100) * quantity
       } else {
         price = props.product.price * quantity
       }
@@ -48,14 +35,7 @@ export default function ProductCheckbox(props: { product: ProductCartT }) {
 
   return (
     <div>
-      <input
-        type="checkbox"
-        className="product-checkbox mx-7"
-        title="주문할 상품 선택"
-        name={`product_checkbox_${props.product.cart_id}`}
-        onInput={handleChangeCheck}
-        defaultChecked
-      />
+      <input type="checkbox" className="product-checkbox mx-7" title="주문할 상품 선택" name={`product_checkbox_${props.product.cart_id}`} onInput={handleChangeCheck} defaultChecked />
       <style jsx>{`
         input[type='checkbox'].product-checkbox {
           width: 25px;

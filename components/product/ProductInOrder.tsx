@@ -38,20 +38,14 @@ export default function ProductInOrder(props: { product: ProductCartT }) {
         <p className="font-semibold">배송비 무료</p>
       </div>
       <div title="상품에 대한 주문할 금액" className="w-1/12 text-right">
-        {props.product.discounting == 1 && props.product.rate_discount > 0 ? (
+        {props.product.discounting === 1 && props.product.rate_discount > 0 ? (
           <>
-            <b className="product-price">{`${(
-              props.product.price *
-              props.product.order_quantity *
-              (1 - Number(props.product.rate_discount) / 100)
-            ).toLocaleString('ko-KR')}`}</b>
+            <b className="product-price">{`${(props.product.price * props.product.order_quantity * (1 - Number(props.product.rate_discount) / 100)).toLocaleString('ko-KR')}`}</b>
             <b> 원</b>
           </>
         ) : (
           <>
-            <b className="product-price">{`${(
-              props.product.price * props.product.order_quantity
-            ).toLocaleString('ko-KR')}`}</b>
+            <b className="product-price">{`${(props.product.price * props.product.order_quantity).toLocaleString('ko-KR')}`}</b>
             <b>원</b>
           </>
         )}

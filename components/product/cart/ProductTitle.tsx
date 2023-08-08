@@ -13,20 +13,13 @@ export default function ProductCartTitle(props: { product: ProductCartT }) {
       </Link>
       {!isMobile && (
         <div className="">
-          {props.product.discounting == 1 && props.product.rate_discount > 0 ? (
+          {props.product.discounting === 1 && props.product.rate_discount > 0 ? (
             <span>
-              <b className="line-through">{`${props.product.price.toLocaleString(
-                'ko-KR'
-              )} 원`}</b>
-              <b className="text-red-600 text-lg ml-3">{`${(
-                props.product.price *
-                (1 - Number(props.product.rate_discount) / 100)
-              ).toLocaleString('ko-KR')} 원`}</b>
+              <b className="line-through">{`${props.product.price.toLocaleString('ko-KR')} 원`}</b>
+              <b className="text-red-600 text-lg ml-3">{`${(props.product.price * (1 - Number(props.product.rate_discount) / 100)).toLocaleString('ko-KR')} 원`}</b>
             </span>
           ) : (
-            <b className="text-lg">{`${props.product.price.toLocaleString(
-              'ko-KR'
-            )} 원`}</b>
+            <b className="text-lg">{`${props.product.price.toLocaleString('ko-KR')} 원`}</b>
           )}
         </div>
       )}

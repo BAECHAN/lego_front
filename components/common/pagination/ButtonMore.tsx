@@ -1,18 +1,12 @@
 import React from 'react'
-import {
-  FetchNextPageOptions,
-  InfiniteData,
-  InfiniteQueryObserverResult,
-} from '@tanstack/react-query'
+import { FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult } from '@tanstack/react-query'
 import { ButtonMoreType } from 'types'
 
 export default function ButtonMore(props: {
   page: number
   setPage: React.Dispatch<React.SetStateAction<number>>
   type: ButtonMoreType
-  fetchNextPage: (
-    options?: FetchNextPageOptions | undefined
-  ) => Promise<InfiniteQueryObserverResult<any, unknown>>
+  fetchNextPage: (options?: FetchNextPageOptions | undefined) => Promise<InfiniteQueryObserverResult<any, unknown>>
   hasNextPage: boolean
   isFetchingNextPage: boolean
   data: InfiniteData<any> | undefined
@@ -23,10 +17,16 @@ export default function ButtonMore(props: {
       props.setPage(props.page + 1)
     } else if (props.type === 'product') {
       /** 더보기 클릭 시 중복 데이터 가져옴 방지 */
-      if (props?.data?.pages.length) {
-        props.fetchNextPage({ pageParam: props.data.pages.length + 1 })
-        props.setPage(props.data.pages.length + 1)
+
+      if (props.data) {
+        if (props.data.pages.length) {
+          props.fetchNextPage({ pageParam: props.data.pages.length + 1 })
+          props.setPage(props.data.pages.length + 1)
+        } else {
+          return false
+        }
       } else {
+        alert('전달받은 데이터가 없습니다.')
         return false
       }
     } else {
@@ -43,11 +43,7 @@ export default function ButtonMore(props: {
       onClick={handleClickMoreProduct}
       disabled={!props.hasNextPage || props.isFetchingNextPage}
     >
-      {props.isFetchingNextPage
-        ? '불러오는 중...'
-        : props.hasNextPage
-        ? '더보기'
-        : '없음'}
+      {props.isFetchingNextPage ? '불러오는 중...' : props.hasNextPage ? '더보기' : '없음'}
     </button>
   )
 }

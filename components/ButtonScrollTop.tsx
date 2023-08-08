@@ -3,19 +3,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 
 export default function ButtonScrollTop() {
-  let [display, setDisplay] = useState(false)
+  let [isShow, setIsShow] = useState(false)
 
   useEffect(() => {
     window.onscroll = () => {
-      document.body.scrollTop > 400 || document.documentElement.scrollTop > 400
-        ? setDisplay(true)
-        : setDisplay(false)
+      document.body.scrollTop > 400 || document.documentElement.scrollTop > 400 ? setIsShow(true) : setIsShow(false)
     }
   }, [])
 
   return (
     <div>
-      {display ? (
+      {isShow && (
         <FontAwesomeIcon
           icon={faChevronCircleUp}
           onClick={() => {
@@ -25,10 +23,7 @@ export default function ButtonScrollTop() {
           className="fixed bottom-5 right-5 h-8 cursor-pointer"
           title="스크롤 최상단으로 이동"
         />
-      ) : null}
-      <style jsx>{`
-        // TODO: scroll animation 추가
-      `}</style>
+      )}
     </div>
   )
 }

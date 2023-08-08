@@ -3,13 +3,8 @@ import { useRecoilState } from 'recoil'
 import { selectedFilterSelector } from 'state/atoms'
 import { ObjT_Str, ProductFilterCountT } from 'types'
 
-export default function SidebarFilterItem(props: {
-  filterObj: ObjT_Str
-  filterCount: ProductFilterCountT
-}) {
-  const [selectedFilter, setSelectedFilter] = useRecoilState(
-    selectedFilterSelector
-  )
+export default function SidebarFilterItem(props: { filterObj: ObjT_Str; filterCount: ProductFilterCountT }) {
+  const [selectedFilter, setSelectedFilter] = useRecoilState(selectedFilterSelector)
 
   const [isChecked, setIsChecked] = useState(false)
 
@@ -22,24 +17,13 @@ export default function SidebarFilterItem(props: {
   }
 
   useEffect(() => {
-    selectedFilter[props.filterObj.id] == 0
-      ? setIsChecked(false)
-      : setIsChecked(true)
+    selectedFilter[props.filterObj.id] === 0 ? setIsChecked(false) : setIsChecked(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFilter[props.filterObj.id]])
 
   return (
-    <li
-      className="flex"
-      onClick={(event) => event.stopPropagation()}
-      title={props.filterObj.title}
-    >
-      <input
-        type="checkbox"
-        onChange={handleChangeCheck}
-        id={props.filterObj.id}
-        checked={isChecked}
-      />
+    <li className="flex" onClick={(event) => event.stopPropagation()} title={props.filterObj.title}>
+      <input type="checkbox" onChange={handleChangeCheck} id={props.filterObj.id} checked={isChecked} />
       <label htmlFor={props.filterObj.id}>
         {props.filterObj.label}&nbsp;
         <span>[{props.filterCount[props.filterObj.id]}]</span>

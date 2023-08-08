@@ -9,21 +9,12 @@ export default function ButtonLoginKakao() {
   }
 
   return (
-    <button
-      onClick={loginKakao}
-      className="flex justify-center relative left-9"
-    >
-      <Image
-        src="/kakao_login_medium_wide.png"
-        width="328px"
-        height="50px"
-        alt="카카오계정으로 로그인"
-        quality={100}
-      ></Image>
+    <button onClick={loginKakao} className="flex justify-center relative left-9">
+      <Image src="/kakao_login_medium_wide.png" width="328px" height="50px" alt="카카오계정으로 로그인" quality={100}></Image>
       <style jsx>{`
         button {
           margin-bottom: 20px;
-          :hover {
+          &:hover {
             cursor: pointer;
             position: relative;
             top: 3px;

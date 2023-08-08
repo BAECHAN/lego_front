@@ -10,17 +10,17 @@ export async function middleware(request: NextRequest, response: NextResponse) {
 
   if (!request.nextUrl.pathname.startsWith('/account')) {
     if (session?.state) {
-      if (session.state == 7) {
+      if (session.state === 7) {
         const url = request.nextUrl.clone()
         url.pathname = '/account/account_expired'
         url.searchParams.set('state', String(session.state))
         return NextResponse.redirect(url)
-      } else if (session.state == 8) {
+      } else if (session.state === 8) {
         const url = request.nextUrl.clone()
         url.pathname = '/account/account_locked'
         url.searchParams.set('state', String(session.state))
         return NextResponse.redirect(url)
-      } else if (session.state == 9) {
+      } else if (session.state === 9) {
         const url = request.nextUrl.clone()
         url.pathname = '/account/account_withdraw'
         url.searchParams.set('state', String(session.state))
@@ -29,12 +29,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     } else {
       const url = request.nextUrl.clone()
 
-      if (
-        session?.email &&
-        (session.provider == 'kakao' || session.provider == 'google') &&
-        url.pathname == '/' &&
-        !url.search.includes('onConnect')
-      ) {
+      if (session?.email && (session.provider === 'kakao' || session.provider === 'google') && url.pathname === '/' && !url.search.includes('onConnect')) {
         const requestURL = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user-info-oauth`
 
         const response = await fetch(requestURL, {
@@ -64,10 +59,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     }
   } else {
     if (!session) {
-      if (
-        request.nextUrl.pathname.indexOf('reset_password') > -1 &&
-        request.nextUrl.search.indexOf('callbackPage') < 0
-      ) {
+      if (request.nextUrl.pathname.indexOf('reset_password') > -1 && request.nextUrl.search.indexOf('callbackPage') < 0) {
       } else {
         const url = request.nextUrl.clone()
         url.pathname = '/login'
@@ -79,10 +71,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     }
   }
 
-  if (
-    request.nextUrl.pathname.startsWith('/mypage') ||
-    request.nextUrl.pathname.indexOf('/mobile/mypage') > -1
-  ) {
+  if (request.nextUrl.pathname.startsWith('/mypage') || request.nextUrl.pathname.indexOf('/mobile/mypage') > -1) {
     if (!session) {
       const url = request.nextUrl.clone()
       url.pathname = '/login'
@@ -90,13 +79,10 @@ export async function middleware(request: NextRequest, response: NextResponse) {
     }
   }
 
-  if (request.nextUrl.pathname == '/mypage') {
+  if (request.nextUrl.pathname === '/mypage') {
     if (request) {
       const userAgent: string = request.headers.get('user-agent') as string
-      const isMobile =
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          userAgent
-        )
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)
 
       if (isMobile) {
         const url = request.nextUrl.clone()
@@ -121,14 +107,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
       // 이전 경로가 order나 mypage가 아니면 redirect
       const referer = request.headers.get('referer')
 
-      if (
-        !(
-          referer &&
-          (referer.includes('/mypage/cart') ||
-            referer.includes('/mypage/delivery?from=order') ||
-            referer.includes('/order'))
-        )
-      ) {
+      if (!(referer && (referer.includes('/mypage/cart') || referer.includes('/mypage/delivery?from=order') || referer.includes('/order')))) {
         const url = request.nextUrl.clone()
         url.pathname = '/'
         return NextResponse.redirect(url)

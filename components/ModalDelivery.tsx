@@ -1,12 +1,6 @@
 import { faSquareXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, {
-  ChangeEvent,
-  useRef,
-  useState,
-  useEffect,
-  FormEvent,
-} from 'react'
+import React, { ChangeEvent, useRef, useState, useEffect, FormEvent } from 'react'
 import Postcode from './Postcode'
 import { DeliverySubmitT, ShippingT } from 'types'
 import { useSession } from 'next-auth/react'
@@ -51,19 +45,7 @@ export default function ModalDelivery(props: {
     deliveryRequestDirect: '',
   })
 
-  let {
-    recipient,
-    shippingName,
-    telNumberFront,
-    telNumberMiddle,
-    telNumberBack,
-    shippingZipCode,
-    shippingAddress1,
-    shippingAddress2,
-    shippingDefault,
-    deliveryRequest,
-    deliveryRequestDirect,
-  } = inputs
+  let { recipient, shippingName, telNumberFront, telNumberMiddle, telNumberBack, shippingZipCode, shippingAddress1, shippingAddress2, shippingDefault, deliveryRequest, deliveryRequestDirect } = inputs
   const inputsRef = useRef<HTMLInputElement[]>([])
   const selectsRef = useRef<HTMLSelectElement[]>([])
 
@@ -102,7 +84,7 @@ export default function ModalDelivery(props: {
 
       setInitShippingDefault(props.shipping.shipping_default)
 
-      if (props.shipping.delivery_request == '7') {
+      if (props.shipping.delivery_request === '7') {
         setDirectOpen(true)
       } else {
         setDirectOpen(false)
@@ -114,7 +96,7 @@ export default function ModalDelivery(props: {
   const handleChangeSelect = (e: ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.currentTarget
 
-    if (value == '7') {
+    if (value === '7') {
       setDirectOpen(true)
       setInputs({ ...inputs, [name]: value })
     } else {
@@ -127,17 +109,9 @@ export default function ModalDelivery(props: {
     setDisabledSubmit(true)
     event.preventDefault()
 
-    if (
-      inputsRef?.current &&
-      status == 'authenticated' &&
-      session.user &&
-      session.user.email
-    ) {
+    if (inputsRef?.current && status === 'authenticated' && session.user && session.user.email) {
       let param = {
-        shippingId:
-          props.shipping && props.shipping.shipping_id
-            ? props.shipping.shipping_id
-            : 0,
+        shippingId: props.shipping && props.shipping.shipping_id ? props.shipping.shipping_id : 0,
         email: session.user.email,
         recipient,
         shippingName,
@@ -153,54 +127,44 @@ export default function ModalDelivery(props: {
       }
 
       for (let i = 0; i < inputsRef.current.length; i++) {
-        if (i == 1) {
+        if (i === 1) {
           if (inputsRef.current[i].value.trim().length == 0) {
             param.shippingName = recipient
           }
         } else if (i == 2) {
           if (inputsRef.current[i].value.trimEnd().length != 3) {
-            alert(
-              `${inputsRef.current[i].title}을(를) 정확히 입력해주시기 바랍니다.`
-            )
+            alert(`${inputsRef.current[i].title}을(를) 정확히 입력해주시기 바랍니다.`)
             inputsRef.current[i].focus()
             setDisabledSubmit(false)
             return false
           }
-        } else if (i == 3 || i == 4) {
+        } else if (i === 3 || i === 4) {
           if (inputsRef.current[i].value.trimEnd().length != 4) {
-            alert(
-              `${inputsRef.current[i].title}을(를) 정확히 입력해주시기 바랍니다.`
-            )
+            alert(`${inputsRef.current[i].title}을(를) 정확히 입력해주시기 바랍니다.`)
             inputsRef.current[i].focus()
             setDisabledSubmit(false)
             return false
           }
-        } else if (i == 5) {
-          if (
-            shippingZipCode.trim().length == 0 ||
-            shippingAddress1.trim().length == 0
-          ) {
+        } else if (i === 5) {
+          if (shippingZipCode.trim().length === 0 || shippingAddress1.trim().length === 0) {
             alert('검색 버튼을 클릭하여 주소를 선택해주시기 바랍니다.')
             postButtonRef.current?.click()
             setDisabledSubmit(false)
             return false
           }
-        } else if (i == 7) {
-          if (inputsRef.current[i].value.trim().length == 0) {
+        } else if (i === 7) {
+          if (inputsRef.current[i].value.trim().length === 0) {
             alert(`${inputsRef.current[i].title}을(를) 입력해주시기 바랍니다.`)
             inputsRef.current[i].focus()
             setDisabledSubmit(false)
             return false
           }
-        } else if (i == 8) {
-          if (props.listLength == 0 && !isUpdate) {
+        } else if (i === 8) {
+          if (props.listLength === 0 && !isUpdate) {
             param.shippingDefault = 1
           }
-        } else if (i == 9) {
-          if (
-            deliveryRequest == '7' &&
-            deliveryRequestDirect.trim().length == 0
-          ) {
+        } else if (i === 9) {
+          if (deliveryRequest === '7' && deliveryRequestDirect.trim().length == 0) {
             alert(`${inputsRef.current[i].title}을 입력해주시기 바랍니다.`)
             inputsRef.current[i].focus()
             setDisabledSubmit(false)
@@ -214,13 +178,9 @@ export default function ModalDelivery(props: {
 
   const updateShippingAPI = useMutation(
     async (param: any) => {
-      return await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/manage-shipping`,
-        JSON.stringify(param),
-        {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
-        }
-      )
+      return await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/manage-shipping`, JSON.stringify(param), {
+        headers: { 'Content-Type': `application/json; charset=utf-8` },
+      })
     },
     {
       onSuccess: (response) => {
@@ -229,7 +189,7 @@ export default function ModalDelivery(props: {
             swal.SweetAlertSuccess('배송지를 수정하였습니다.')
           } else {
             swal.SweetAlertSuccess('배송지를 등록하였습니다.')
-            if (props.listLength == 5) {
+            if (props.listLength === 5) {
               // 페이지 내 게시물 개수 가 5인 경우
 
               if (props.totalPage - props.startPage > 9) {
@@ -244,25 +204,21 @@ export default function ModalDelivery(props: {
                     props.setPage(props.totalPage + 1)
                   } else {
                     props.setTotalPage(props.totalPage + 1)
-                    props.setStartPage(
-                      props.totalPage - ((props.totalPage - 1) % 10)
-                    )
+                    props.setStartPage(props.totalPage - ((props.totalPage - 1) % 10))
                     props.setPage(props.totalPage + 1)
                   }
                 } else {
                   // 만약 마지막 페이지의 게시물 개수가 5가 아니면 setTotalPage 필요 없음
-                  props.setStartPage(
-                    props.totalPage - ((props.totalPage - 1) % 10)
-                  )
+                  props.setStartPage(props.totalPage - ((props.totalPage - 1) % 10))
                   props.setPage(props.totalPage)
                 }
               } else {
                 // 만약 현재 페이지와 마지막 페이지의 startPage가 같다면
 
-                if (props.shippingListCount % 5 == 0) {
+                if (props.shippingListCount % 5 === 0) {
                   // 만약 마지막 페이지의 게시물 개수가 5이면 setTotalPage필요
 
-                  if (props.totalPage % 10 == 0) {
+                  if (props.totalPage % 10 === 0) {
                     props.setTotalPage(props.totalPage + 1)
                     props.setStartPage(props.totalPage + 1)
                     props.setPage(props.totalPage + 1)
@@ -290,11 +246,7 @@ export default function ModalDelivery(props: {
       },
       onError: (error) => {
         console.log(error)
-        alert(
-          `${
-            isUpdate ? '배송지 수정' : '배송지 등록'
-          } 이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.`
-        )
+        alert(`${isUpdate ? '배송지 수정' : '배송지 등록'} 이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.`)
         setDisabledSubmit(false)
         return false
       },
@@ -317,17 +269,10 @@ export default function ModalDelivery(props: {
     <div className="modal-wrap">
       <div className="modal">
         <div className="flex flex-row-reverse">
-          <button
-            id="bannerClose"
-            className="btn-modal-close"
-            onClick={props.onClose}
-            title={`배송지 ${isUpdate ? '수정' : '등록'} 창 닫기`}
-          ></button>
+          <button id="bannerClose" className="btn-modal-close" onClick={props.onClose} title={`배송지 ${isUpdate ? '수정' : '등록'} 창 닫기`}></button>
         </div>
         <div className="modal-body">
-          <h2 className="text-xl font-bold">
-            {isUpdate ? '배송지 수정' : '신규 배송지'}
-          </h2>
+          <h2 className="text-xl font-bold">{isUpdate ? '배송지 수정' : '신규 배송지'}</h2>
 
           <form name="delivery-form" onSubmit={handleSubmit}>
             <div className="text-sm">
@@ -337,14 +282,7 @@ export default function ModalDelivery(props: {
                   type="text"
                   name="recipient"
                   className="modal-input medium"
-                  onChange={(e) =>
-                    common.CommonHandleChangeValue(
-                      'maxLength20',
-                      e,
-                      inputs,
-                      setInputs
-                    )
-                  }
+                  onChange={(e) => common.CommonHandleChangeValue('maxLength20', e, inputs, setInputs)}
                   value={inputs.recipient}
                   title="수령인 입력란"
                   ref={(el) => {
@@ -360,23 +298,14 @@ export default function ModalDelivery(props: {
                   type="text"
                   name="shippingName"
                   className="modal-input medium"
-                  onChange={(e) =>
-                    common.CommonHandleChangeValue(
-                      'maxLength20',
-                      e,
-                      inputs,
-                      setInputs
-                    )
-                  }
+                  onChange={(e) => common.CommonHandleChangeValue('maxLength20', e, inputs, setInputs)}
                   value={inputs.shippingName}
                   title="배송지명(선택)"
                   ref={(el) => {
                     el && inputsRef.current ? (inputsRef.current[1] = el) : null
                   }}
                 ></input>
-                <i className="leading-7 ml-2">
-                  ({inputs.shippingName.length}/20)
-                </i>
+                <i className="leading-7 ml-2">({inputs.shippingName.length}/20)</i>
               </div>
 
               <div className="flex my-5">
@@ -385,14 +314,7 @@ export default function ModalDelivery(props: {
                   type="text"
                   name="telNumberFront"
                   className="modal-input x-small mr-2"
-                  onChange={(e) =>
-                    common.CommonHandleChangeValue(
-                      'number3',
-                      e,
-                      inputs,
-                      setInputs
-                    )
-                  }
+                  onChange={(e) => common.CommonHandleChangeValue('number3', e, inputs, setInputs)}
                   value={inputs.telNumberFront}
                   title="휴대폰 번호 앞자리"
                   ref={(el) => {
@@ -404,14 +326,7 @@ export default function ModalDelivery(props: {
                   type="text"
                   name="telNumberMiddle"
                   className="modal-input x-small mx-2"
-                  onChange={(e) =>
-                    common.CommonHandleChangeValue(
-                      'number4',
-                      e,
-                      inputs,
-                      setInputs
-                    )
-                  }
+                  onChange={(e) => common.CommonHandleChangeValue('number4', e, inputs, setInputs)}
                   value={inputs.telNumberMiddle}
                   title="휴대폰 번호 가운데자리"
                   ref={(el) => {
@@ -423,14 +338,7 @@ export default function ModalDelivery(props: {
                   type="text"
                   name="telNumberBack"
                   className="modal-input x-small ml-2"
-                  onChange={(e) =>
-                    common.CommonHandleChangeValue(
-                      'number4',
-                      e,
-                      inputs,
-                      setInputs
-                    )
-                  }
+                  onChange={(e) => common.CommonHandleChangeValue('number4', e, inputs, setInputs)}
                   value={inputs.telNumberBack}
                   title="휴대폰 번호 뒷자리"
                   ref={(el) => {
@@ -452,11 +360,7 @@ export default function ModalDelivery(props: {
                     el && inputsRef.current ? (inputsRef.current[5] = el) : null
                   }}
                 ></input>
-                <Postcode
-                  inputs={inputs}
-                  setInputs={setInputs}
-                  ref={postButtonRef}
-                />
+                <Postcode inputs={inputs} setInputs={setInputs} ref={postButtonRef} />
               </div>
 
               <div className="flex my-5">
@@ -482,21 +386,12 @@ export default function ModalDelivery(props: {
                   className="modal-input large"
                   value={inputs.shippingAddress2}
                   title="배송지 상세주소"
-                  onChange={(e) =>
-                    common.CommonHandleChangeValue(
-                      'maxLength30',
-                      e,
-                      inputs,
-                      setInputs
-                    )
-                  }
+                  onChange={(e) => common.CommonHandleChangeValue('maxLength30', e, inputs, setInputs)}
                   ref={(el) => {
                     el && inputsRef.current ? (inputsRef.current[7] = el) : null
                   }}
                 ></input>
-                <i className="leading-7 ml-2">
-                  ({inputs.shippingAddress2.length}/30)
-                </i>
+                <i className="leading-7 ml-2">({inputs.shippingAddress2.length}/30)</i>
               </div>
 
               <div className="flex my-5">
@@ -507,22 +402,11 @@ export default function ModalDelivery(props: {
                     name="shippingDefault"
                     className="modal-input w-4 mr-2 cursor-pointer"
                     title="기본 배송지 설정 유무"
-                    onChange={(e) =>
-                      common.CommonHandleChangeValue(
-                        'check',
-                        e,
-                        inputs,
-                        setInputs
-                      )
-                    }
+                    onChange={(e) => common.CommonHandleChangeValue('check', e, inputs, setInputs)}
                     checked={inputs.shippingDefault ? true : false}
-                    disabled={
-                      isUpdate && initShippingDefault != 0 ? true : false
-                    }
+                    disabled={isUpdate && initShippingDefault != 0 ? true : false}
                     ref={(el) => {
-                      el && inputsRef.current
-                        ? (inputsRef.current[8] = el)
-                        : null
+                      el && inputsRef.current ? (inputsRef.current[8] = el) : null
                     }}
                   ></input>{' '}
                   기본 배송지 설정
@@ -538,20 +422,16 @@ export default function ModalDelivery(props: {
                   value={inputs.deliveryRequest}
                   title="배송 요청사항"
                   ref={(el) => {
-                    el && selectsRef.current
-                      ? (selectsRef.current[0] = el)
-                      : null
+                    el && selectsRef.current ? (selectsRef.current[0] = el) : null
                   }}
                 >
-                  {deliveryRequestOptions.map(
-                    (value: string, index: number) => {
-                      return (
-                        <option value={index + 1} key={index + 1}>
-                          {value}
-                        </option>
-                      )
-                    }
-                  )}
+                  {deliveryRequestOptions.map((value: string, index: number) => {
+                    return (
+                      <option value={index + 1} key={index + 1}>
+                        {value}
+                      </option>
+                    )
+                  })}
                 </select>
               </div>
 
@@ -564,42 +444,21 @@ export default function ModalDelivery(props: {
                     className="modal-input large"
                     value={inputs.deliveryRequestDirect}
                     title="배송 요청사항 세부내용"
-                    onChange={(e) =>
-                      common.CommonHandleChangeValue(
-                        'maxLength30',
-                        e,
-                        inputs,
-                        setInputs
-                      )
-                    }
+                    onChange={(e) => common.CommonHandleChangeValue('maxLength30', e, inputs, setInputs)}
                     ref={(el) => {
-                      el && inputsRef.current
-                        ? (inputsRef.current[9] = el)
-                        : null
+                      el && inputsRef.current ? (inputsRef.current[9] = el) : null
                     }}
                   ></input>
-                  <i className="leading-7 ml-2">
-                    ({inputs.deliveryRequestDirect.length}/30)
-                  </i>
+                  <i className="leading-7 ml-2">({inputs.deliveryRequestDirect.length}/30)</i>
                 </div>
               ) : null}
             </div>
 
             <div className="flex justify-center">
-              <button
-                type="button"
-                className="btn-cancle mx-1"
-                title={`배송지 ${isUpdate ? '수정' : '등록'} 창 닫기 버튼`}
-                onClick={props.onClose}
-              >
+              <button type="button" className="btn-cancle mx-1" title={`배송지 ${isUpdate ? '수정' : '등록'} 창 닫기 버튼`} onClick={props.onClose}>
                 취소
               </button>
-              <button
-                type="submit"
-                className="btn-submit mx-1"
-                title={`배송지 ${isUpdate ? '저장' : '등록'} 버튼`}
-                disabled={disabledSubmit}
-              >
+              <button type="submit" className="btn-submit mx-1" title={`배송지 ${isUpdate ? '저장' : '등록'} 버튼`} disabled={disabledSubmit}>
                 {isUpdate ? '저장' : '등록'}
               </button>
             </div>

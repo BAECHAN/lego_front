@@ -1,11 +1,7 @@
 import axios from 'axios'
 import { ParamT } from 'types'
 
-export default async function axiosRequest(
-  method: string,
-  url: string,
-  param: ParamT
-) {
+export default async function axiosRequest(method: string, url: string, param: ParamT) {
   const JSONParam = JSON.stringify(param)
   const config = {
     headers: { 'Content-Type': `application/json; charset=utf-8` },
@@ -16,12 +12,12 @@ export default async function axiosRequest(
 
   let response
 
-  if (method == 'post') {
+  if (method === 'post') {
     return (response = await axios.post(url, JSONParam, config))
-  } else if (method == 'get') {
+  } else if (method === 'get') {
     param && console.error('Send parameters as a query string in GET METHOD')
     return (response = await axios.get(url, config))
-  } else if (method == 'patch') {
+  } else if (method === 'patch') {
     return (response = await axios.patch(url, JSONParam, config))
   }
 }

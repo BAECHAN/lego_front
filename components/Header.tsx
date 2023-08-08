@@ -17,7 +17,7 @@ export default function Header() {
       </Link>
       <div className="flex-grow" />
 
-      {session && status == 'authenticated' ? (
+      {session && status === 'authenticated' ? (
         <div className="flex desktop:space-x-4">
           <span className="relative">{session.user?.name}님</span>
           <Link href="/mypage">
