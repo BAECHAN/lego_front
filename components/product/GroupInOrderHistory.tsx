@@ -79,7 +79,7 @@ export default function GroupInOrderHistory(props: { orderGroup: OrderGroupT; or
       <div className="product-in-order w-full flex justify-start items-center">
         <div className="w-2/12 flex-col flex justify-center m-3">
           <div className="product-in-order-image w-32 scale-75 hover:scale-90 transition-all ease-in-out mb-1">
-            <Link href={`/products/${props.order[0].product_number}`}>
+            <Link href={`/products/${props.order[0].product_number}`} passHref>
               <a>
                 <Image
                   src={props.order[0].image}
@@ -97,7 +97,7 @@ export default function GroupInOrderHistory(props: { orderGroup: OrderGroupT; or
             </Link>
           </div>
           <div className="product-in-order-content">
-            <Link href={`/products/${props.order[0].product_number}`}>
+            <Link href={`/products/${props.order[0].product_number}`} passHref>
               <a className="prod-title">{props.order[0].title}</a>
             </Link>
             <p className="text-xs text-gray-500 text-right">포함 총 {props.orderGroup.product_count} 건</p>

@@ -9,6 +9,7 @@ import axiosRequest from 'pages/api/axios'
 import { useSession } from 'next-auth/react'
 import InputPassword from '@components/common/input/InputPassword'
 import ButtonFindAccount from '@components/login/ButtonFindAccount'
+import HomeIconLink from '@components/HomeIconLink'
 
 export default function CheckPassword() {
   const { data: session, status } = useSession()
@@ -75,11 +76,7 @@ export default function CheckPassword() {
       <div className="flex justify-center items-center w-full bg-gray-200 h-[38rem]">
         <div className="h-full relative top-[10%]">
           <form name="loginForm" className="login-box" onSubmit={handleSubmit}>
-            <Link href="/">
-              <a>
-                <Image src="/main.svg" width="50px" height="50px" alt="메인으로" />
-              </a>
-            </Link>
+            <HomeIconLink />
             <InputPassword password={password} setPassword={setPassword} ref={passwordRef} />
 
             <button type="submit" className="btn-common min-w-[330px] h-33 fs-14" title="기존 비밀번호 검사 버튼">

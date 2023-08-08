@@ -11,6 +11,7 @@ import { ProductCartT, ShippingT } from 'types'
 import Payment from '@components/common/pay/Payment'
 import { useSession } from 'next-auth/react'
 import { deliveryRequestOptions } from 'pages/api/common/deliveryRequestOptions'
+import Link from 'next/link'
 
 export default function Order() {
   const router = useRouter()
@@ -38,7 +39,7 @@ export default function Order() {
   })
   const inputsRef = useRef<HTMLInputElement[]>([])
   const selectsRef = useRef<HTMLSelectElement[]>([])
-  const buttonRef = useRef<HTMLButtonElement>(null)
+  const AnchorRef = useRef<HTMLAnchorElement>(null)
 
   const [submits, setSubmits] = useState({
     email: '',
@@ -118,7 +119,7 @@ export default function Order() {
 
   useEffect(() => {
     if (isShippingButtonBlinking) {
-      buttonRef.current?.focus()
+      AnchorRef.current?.focus()
 
       setTimeout(() => {
         setIsShippingBlinking(false)
@@ -153,10 +154,6 @@ export default function Order() {
     }
   }
 
-  const handleClickChangeShipping = () => {
-    router.push(`/mypage/delivery?from=order`)
-  }
-
   return (
     <div className="min-h-[602px]">
       {cartFetched && shippingFetched ? (
@@ -184,9 +181,11 @@ export default function Order() {
                       )
                     })}
                   </div>
-                  <button type="button" title="배송지 변경 버튼" className="btn-delivery-change ml-3" onClick={handleClickChangeShipping}>
-                    배송지 변경
-                  </button>
+                  <Link href="/mypage/delivery?from=order" passHref>
+                    <a title="배송지 변경 버튼" className="btn-delivery-change ml-3">
+                      배송지 변경
+                    </a>
+                  </Link>
                 </div>
                 <div className="delivery-info">
                   <div>이름 / 연락처</div>
@@ -246,9 +245,11 @@ export default function Order() {
                 </div>
               </div>
             ) : (
-              <button type="button" title="배송지 등록 버튼" className={`btn-delivery-change ${isShippingButtonBlinking ? 'blinking' : ''}`} ref={buttonRef} onClick={handleClickChangeShipping}>
-                배송지 등록
-              </button>
+              <Link href="/mypage/delivery?from=order" passHref>
+                <a title="배송지 등록 버튼" className={`btn-delivery-change ${isShippingButtonBlinking ? 'blinking' : ''}`} ref={AnchorRef}>
+                  배송지 등록
+                </a>
+              </Link>
             )}
           </div>
           <div className="p-3 mt-3">
@@ -315,7 +316,7 @@ export default function Order() {
           }
         }
 
-        button.btn-delivery-change {
+        .btn-delivery-change {
           background-color: gray;
           color: #fff;
           padding: 5px 10px;

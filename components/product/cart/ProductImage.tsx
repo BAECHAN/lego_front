@@ -6,7 +6,7 @@ import { ProductCartT } from 'types'
 export default function ProductCartImage(props: { product: ProductCartT }) {
   return (
     <div className="product-in-cart-image mobile:w-64 mobile:scale-100 desktop:w-32 desktop:scale-75 desktop:hover:scale-90 desktop:transition-all desktop:ease-in-out">
-      <Link href={`/products/${props.product.product_number}`}>
+      <Link href={`/products/${props.product.product_number}`} passHref>
         <a>
           <Image
             src={props.product.image}

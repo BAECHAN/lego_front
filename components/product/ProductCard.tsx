@@ -10,7 +10,6 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
 
   const handleClickProduct = () => {
     sessionStorage.setItem('scrollY', `${window.scrollY}`)
-    router.push(`/products/${props.product.product_number}?title=${props.product.title}`)
   }
 
   return (
@@ -18,20 +17,22 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
       <div id={String(props.product.product_id)}>
         <ButtonWish product_id={props.product.product_id} text={true} />
         <div className="item-img mb-12 scale-75 hover:scale-90 transition-all ease-in-out">
-          <a onClick={handleClickProduct}>
-            <Image
-              src={props.product.image}
-              width="40vw"
-              height="20vw"
-              alt={props.product.title}
-              style={{ cursor: 'pointer' }}
-              priority
-              quality={30}
-              placeholder="blur"
-              blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
-              layout="responsive"
-            />
-          </a>
+          <Link href={`/products/${props.product.product_number}?title=${props.product.title}`} passHref>
+            <a onClick={handleClickProduct}>
+              <Image
+                src={props.product.image}
+                width="40vw"
+                height="20vw"
+                alt={props.product.title}
+                style={{ cursor: 'pointer' }}
+                priority
+                quality={30}
+                placeholder="blur"
+                blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
+                layout="responsive"
+              />
+            </a>
+          </Link>
         </div>
         <div className="item-sale mb-3">
           {props.product.discounting === 1 && props.product.rate_discount > 0 ? (
@@ -41,9 +42,11 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
           )}
         </div>
         <div className="item-content">
-          <a onClick={handleClickProduct} className="prod-title">
-            {props.product.title}
-          </a>
+          <Link href={`/products/${props.product.product_number}?title=${props.product.title}`} passHref>
+            <a onClick={handleClickProduct} className="prod-title">
+              {props.product.title}
+            </a>
+          </Link>
           <div>
             {props.product.discounting === 1 && props.product.rate_discount > 0 ? (
               <span>

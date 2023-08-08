@@ -17,7 +17,7 @@ export default function NavigationBar() {
       {router.pathname === '/' ? (
         <strong>{home}</strong>
       ) : (
-        <Link href="/">
+        <Link href="/" passHref>
           <a>{home}</a>
         </Link>
       )}
@@ -34,7 +34,7 @@ export default function NavigationBar() {
           router.pathname.indexOf(`/mypage/${key}`) > -1 && (
             <Fragment key={key}>
               <FontAwesomeAngleRight />
-              <Link href={`/mypage`}>
+              <Link href={`/mypage`} passHref>
                 <a>{mypage}</a>
               </Link>
 
@@ -48,12 +48,12 @@ export default function NavigationBar() {
       {router.pathname.startsWith('/order') && (
         <>
           <FontAwesomeAngleRight />
-          <Link href={`/mypage`}>
+          <Link href={`/mypage`} passHref>
             <a>{mypage}</a>
           </Link>
 
           <FontAwesomeAngleRight />
-          <Link href={`/mypage/cart`}>
+          <Link href={`/mypage/cart`} passHref>
             <a>장바구니</a>
           </Link>
 
@@ -72,7 +72,7 @@ export default function NavigationBar() {
       {router.pathname === '/themes/[theme_title_en]' && (
         <>
           <FontAwesomeAngleRight />
-          <Link href={`/themes`}>
+          <Link href={`/themes`} passHref>
             <a>{series}</a>
           </Link>
 
@@ -84,12 +84,12 @@ export default function NavigationBar() {
       {router.pathname === '/products/[product_number]' && (
         <>
           <FontAwesomeAngleRight />
-          <Link href={`/themes`}>
+          <Link href={`/themes`} passHref>
             <a>{series}</a>
           </Link>
 
           <FontAwesomeAngleRight />
-          <Link href={`/themes/${theme.theme_title_en}?theme_title=${theme.theme_title}&theme_id=${theme.theme_id}`}>
+          <Link href={`/themes/${theme.theme_title_en}?theme_title=${theme.theme_title}&theme_id=${theme.theme_id}`} passHref>
             <a>{theme.theme_title}</a>
           </Link>
 

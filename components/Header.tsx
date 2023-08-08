@@ -1,18 +1,15 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSession, signIn, signOut } from 'next-auth/react'
+import HomeIconLink from './HomeIconLink'
 
 export default function Header() {
   const { data: session, status } = useSession()
 
   return (
     <header className="flex items-center p-3 bg-yellow-400">
-      <Link href="/">
-        <a>
-          <Image src="/main.svg" width="50px" height="50px" alt="메인으로" />
-        </a>
-      </Link>
-      <Link href="/themes">
+      <HomeIconLink />
+      <Link href="/themes" passHref>
         <a>레고 제품 쇼핑</a>
       </Link>
       <div className="flex-grow" />
@@ -20,11 +17,11 @@ export default function Header() {
       {session && status === 'authenticated' ? (
         <div className="flex desktop:space-x-4">
           <span className="relative">{session.user?.name}님</span>
-          <Link href="/mypage">
+          <Link href="/mypage" passHref>
             <a className="relative">마이페이지</a>
           </Link>
           <div>|</div>
-          <Link href="/mypage/viewed_products">
+          <Link href="/mypage/viewed_products" passHref>
             <a className="relative">최근 본 상품</a>
           </Link>
           <div>|</div>
@@ -33,7 +30,7 @@ export default function Header() {
       ) : (
         <div className="">
           <button onClick={() => signIn()}>로그인</button>
-          <Link href="/login/create_account">
+          <Link href="/login/create_account" passHref>
             <a>회원가입</a>
           </Link>
         </div>

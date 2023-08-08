@@ -19,12 +19,12 @@ function MobileHeaderSidebar(props: {}, sidebarRef: React.LegacyRef<HTMLUListEle
           {session && status === 'authenticated' ? (
             <ul ref={sidebarRef}>
               <li>
-                <Link href="/mobile/mypage">
+                <Link href="/mobile/mypage" passHref>
                   <a className="relative">마이페이지</a>
                 </Link>
               </li>
               <li>
-                <Link href={isMobile ? `/mobile/mypage/viewed_products` : `/mypage/viewed_products`}>
+                <Link href={isMobile ? `/mobile/mypage/viewed_products` : `/mypage/viewed_products`} passHref>
                   <a className="relative">최근 본 상품</a>
                 </Link>
               </li>
@@ -38,7 +38,7 @@ function MobileHeaderSidebar(props: {}, sidebarRef: React.LegacyRef<HTMLUListEle
                 <button onClick={() => signIn()}>로그인</button>
               </li>
               <li>
-                <Link href="/login/create_account">
+                <Link href="/login/create_account" passHref>
                   <a>회원가입</a>
                 </Link>
               </li>
