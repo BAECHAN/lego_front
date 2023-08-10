@@ -162,7 +162,7 @@ export default function CreateAccount() {
                   <FontAwesomeAsterisk />
                 </span>
                 <div className="flex-grow"></div>
-                <i className="text-[8px] leading-6 text-gray-600">사용하고 계시는 이메일을 입력해주세요.</i>
+                <em className="text-[8px] leading-6 text-gray-600">사용하고 계시는 이메일을 입력해주세요.</em>
               </div>
               <input
                 type="text"

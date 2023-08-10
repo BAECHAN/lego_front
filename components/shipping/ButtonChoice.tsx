@@ -5,7 +5,7 @@ import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { useSession } from 'next-auth/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { useRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 import { useRouter } from 'next/router'
 import { selectedShippingSelector } from 'state/atoms'
 import { queryKeys } from 'pages/api/query/queryKeys'
@@ -16,9 +16,7 @@ export default function ButtonChoice(props: { shipping: ShippingT }) {
 
   const queryClient = useQueryClient()
 
-  const [selectedShipping, setSelectedShipping] = useRecoilState(
-    selectedShippingSelector
-  )
+  const setSelectedShipping = useSetRecoilState(selectedShippingSelector)
 
   const handleClickButton = () => {
     if (session.data?.user?.email) {
@@ -36,13 +34,9 @@ export default function ButtonChoice(props: { shipping: ShippingT }) {
 
   const choiceShippingAPI = useMutation(
     async (param: any) => {
-      const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-shipping-priority`,
-        JSON.stringify(param),
-        {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
-        }
-      )
+      const res = await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/upd-shipping-priority`, JSON.stringify(param), {
+        headers: { 'Content-Type': `application/json; charset=utf-8` },
+      })
       return res
     },
     {
@@ -59,27 +53,15 @@ export default function ButtonChoice(props: { shipping: ShippingT }) {
       },
       onError: (error) => {
         console.log(error)
-        alert(
-          '배송지 선택이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-        )
+        alert('배송지 선택이 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.')
         return false
       },
     }
   )
 
   return (
-    <button
-      type="button"
-      title="배송지 선택"
-      className="btn-choice-shipping"
-      onClick={handleClickButton}
-    >
-      <FontAwesomeIcon
-        icon={faCircleCheck}
-        width="36px"
-        height="36px"
-        style={{ marginLeft: '3px' }}
-      />
+    <button type="button" title="배송지 선택" className="btn-choice-shipping" onClick={handleClickButton}>
+      <FontAwesomeIcon icon={faCircleCheck} width="36px" height="36px" style={{ marginLeft: '3px' }} />
 
       <style jsx>{`
         button.btn-choice-shipping {

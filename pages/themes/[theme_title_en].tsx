@@ -4,12 +4,8 @@ import Navbar from '../../components/NavigationBar'
 import { ThemeT, ProductT } from 'types'
 import ProductCard from '@components/product/ProductCard'
 import React, { useEffect, useState } from 'react'
-import {
-  selectedFilterSelector,
-  sortSelector,
-  themeSelector,
-} from 'state/atoms'
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
+import { selectedFilterSelector, sortSelector, themeSelector } from 'state/atoms'
+import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil'
 import useProductList from 'pages/api/query/useProductList'
 
 import axios from 'axios'
@@ -26,7 +22,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 export default function Theme(props: ThemeT) {
   const [page, setPage] = useState(1)
   const [sort, setSort] = useRecoilState(sortSelector)
-  const [theme, setTheme] = useRecoilState(themeSelector)
+  const setTheme = useSetRecoilState(themeSelector)
 
   const take = 15
   const filter = useRecoilValue(selectedFilterSelector)
@@ -50,12 +46,7 @@ export default function Theme(props: ThemeT) {
     })
   }
 
-  const {
-    data: productList,
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage,
-  } = useProductList(axiosGets)
+  const { data: productList, hasNextPage, isFetchingNextPage, fetchNextPage } = useProductList(axiosGets)
 
   /** 상세페이지에서 뒤로가기 시 스크롤 위치 가져오기 */
   useEffect(() => {
@@ -85,9 +76,7 @@ export default function Theme(props: ThemeT) {
       <Navbar />
       <div>
         <div className="list-summary flex mx-7 my-3">
-          <div className="list-count">
-            {productList?.pages[0].data.productListCount}개 제품 표시
-          </div>
+          <div className="list-count">{productList?.pages[0].data.productListCount}개 제품 표시</div>
           <div className="flex-grow" />
           <div className="list-sort">
             <select
@@ -116,12 +105,7 @@ export default function Theme(props: ThemeT) {
                 <React.Fragment key={index}>
                   {page.data.productList.length > 0 ? (
                     page.data.productList?.map((product: ProductT) => {
-                      return (
-                        <ProductCard
-                          product={product}
-                          key={product.product_id}
-                        />
-                      )
+                      return <ProductCard product={product} key={product.product_id} />
                     })
                   ) : (
                     <div className="text-xl">해당하는 상품이 없습니다.</div>
@@ -131,15 +115,7 @@ export default function Theme(props: ThemeT) {
             </ul>
 
             {hasNextPage ? (
-              <ButtonMore
-                type="product"
-                page={page}
-                setPage={setPage}
-                fetchNextPage={fetchNextPage}
-                hasNextPage={hasNextPage}
-                isFetchingNextPage={isFetchingNextPage}
-                data={productList}
-              />
+              <ButtonMore type="product" page={page} setPage={setPage} fetchNextPage={fetchNextPage} hasNextPage={hasNextPage} isFetchingNextPage={isFetchingNextPage} data={productList} />
             ) : (
               <br />
             )}

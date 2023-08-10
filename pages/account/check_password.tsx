@@ -1,14 +1,10 @@
 import Layout from '@components/Layout'
-import Link from 'next/link'
-import Image from 'next/image'
-
 import React, { FormEvent, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
 import axiosRequest from 'pages/api/axios'
 import { useSession } from 'next-auth/react'
 import InputPassword from '@components/common/input/InputPassword'
-import ButtonFindAccount from '@components/login/ButtonFindAccount'
 import HomeIconLink from '@components/HomeIconLink'
 
 export default function CheckPassword() {

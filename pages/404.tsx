@@ -1,14 +1,11 @@
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
 import React from 'react'
 import EmptyLayout from '../components/EmptyLayout'
 import Link from 'next/link'
 
 export default function NotFound() {
-  const router = useRouter()
-
   return (
     <div className="contents">
       <Image src="/404.png" width="500px" height="500px" alt="404-lego"></Image>

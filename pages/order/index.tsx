@@ -1,7 +1,6 @@
 import Layout from '@components/Layout'
 import ProductInOrder from '@components/product/ProductInOrder'
 import * as common from '@components/common/event/CommonFunction'
-import { useRouter } from 'next/router'
 import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
 import useProductCartList from 'pages/api/query/useProductCartList'
 import React, { useEffect, useState, ChangeEvent, useRef } from 'react'
@@ -14,8 +13,6 @@ import { deliveryRequestOptions } from 'pages/api/common/deliveryRequestOptions'
 import Link from 'next/link'
 
 export default function Order() {
-  const router = useRouter()
-
   const { data: session, status } = useSession()
 
   const { data: product, isFetched: cartFetched } = useProductCartList()
@@ -239,7 +236,7 @@ export default function Order() {
                           el && inputsRef.current ? (inputsRef.current[0] = el) : null
                         }}
                       ></input>
-                      <i className="leading-7 ml-1">({inputs.deliveryRequestDirect.length}/30)</i>
+                      <em className="leading-7 ml-1">({inputs.deliveryRequestDirect.length}/30)</em>
                     </div>
                   ) : null}
                 </div>
