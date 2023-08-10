@@ -1499,7 +1499,7 @@ export default function Postcode(props: {
 2) RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED=false 선언
 3) node-module/recoil 폴더 들어가서 에러메세지 띄우는 부분 주석처리하기
 
-1번의 경우로 원래는 작업을 해왔지만 새로고침 recoil 전역 변수가 초기화되는 상황이 발생함( 장바구니에 담고 주문하기 페이지로 이동 후 새로고침 시 )
+1번의 경우로 원래는 작업을 해왔지만 새로고침 시 recoil 전역 변수가 초기화되는 상황이 발생함( 장바구니에 담고 주문하기 페이지로 이동 후 새로고침 시 )
 
 그래서 새로고침 시에도 recoil의 데이터를 유지하고 싶었음
 
