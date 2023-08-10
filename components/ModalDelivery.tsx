@@ -294,7 +294,7 @@ export default function ModalDelivery(props: {
                     el && inputsRef.current ? (inputsRef.current[0] = el) : null
                   }}
                 ></input>
-                <i className="leading-7 ml-2">({inputs.recipient.length}/20)</i>
+                <em className="leading-7 ml-2">({inputs.recipient.length}/20)</em>
               </div>
 
               <div className="flex my-5">
@@ -310,7 +310,7 @@ export default function ModalDelivery(props: {
                     el && inputsRef.current ? (inputsRef.current[1] = el) : null
                   }}
                 ></input>
-                <i className="leading-7 ml-2">({inputs.shippingName.length}/20)</i>
+                <em className="leading-7 ml-2">({inputs.shippingName.length}/20)</em>
               </div>
 
               <div className="flex my-5">
@@ -396,7 +396,7 @@ export default function ModalDelivery(props: {
                     el && inputsRef.current ? (inputsRef.current[7] = el) : null
                   }}
                 ></input>
-                <i className="leading-7 ml-2">({inputs.shippingAddress2.length}/30)</i>
+                <em className="leading-7 ml-2">({inputs.shippingAddress2.length}/30)</em>
               </div>
 
               <div className="flex my-5">
@@ -451,7 +451,7 @@ export default function ModalDelivery(props: {
                       el && inputsRef.current ? (inputsRef.current[8] = el) : null
                     }}
                   ></input>
-                  <i className="leading-7 ml-2">({inputs.deliveryRequestDirect.length}/30)</i>
+                  <em className="leading-7 ml-2">({inputs.deliveryRequestDirect.length}/30)</em>
                 </div>
               ) : null}
             </div>

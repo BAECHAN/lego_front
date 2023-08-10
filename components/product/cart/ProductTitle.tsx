@@ -8,7 +8,7 @@ export default function ProductCartTitle(props: { product: ProductCartT }) {
 
   return (
     <div className="product-in-cart-content flex desktop:content-around mobile:content-center mobile:justify-center mobile:text-center">
-      <Link href={`/products/${props.product.product_number}`} passHref>
+      <Link href={`/products/${props.product.product_number}?title=${props.product.title}`} passHref>
         <a className="prod-title">{props.product.title}</a>
       </Link>
       {!isMobile && (

@@ -1,6 +1,5 @@
 import Layout from '@components/Layout'
 import Link from 'next/link'
-import Image from 'next/image'
 import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 
 import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'

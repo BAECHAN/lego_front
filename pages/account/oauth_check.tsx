@@ -1,5 +1,3 @@
-import Link from 'next/link'
-import Image from 'next/image'
 import React, { useState } from 'react'
 import { signOut, useSession } from 'next-auth/react'
 import crypto from 'crypto-js'

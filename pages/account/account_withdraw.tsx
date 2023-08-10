@@ -1,12 +1,10 @@
 import Layout from '@components/Layout'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import styles from 'styles/account.module.scss'
 
 export default function AccountExpiredAccount() {
-  const router = useRouter()
   const session = useSession()
 
   useEffect(() => {

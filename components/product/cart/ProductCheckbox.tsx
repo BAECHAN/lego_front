@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { useRecoilState } from 'recoil'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import { orderPriceSelector, selectedOrderSelector } from 'state/atoms'
 import { ProductCartT } from 'types'
 
 export default function ProductCheckbox(props: { product: ProductCartT }) {
   let [selectedOrder, setSelectedOrder] = useRecoilState(selectedOrderSelector)
-  let [totalPrice, setTotalPrice] = useRecoilState(orderPriceSelector)
+  let setTotalPrice = useSetRecoilState(orderPriceSelector)
 
   const [quantity, setQuantity] = useState(props.product.order_quantity)
 

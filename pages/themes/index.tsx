@@ -40,7 +40,7 @@ export default function Themes() {
                         {theme.theme_title}
                       </a>
                     </Link>
-                    <i className="text-sm">{theme.theme_dscrp}</i>
+                    <em className="text-sm">{theme.theme_dscrp}</em>
                   </li>
                 )
               })}

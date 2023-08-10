@@ -7,7 +7,7 @@ import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import ButtonWish from '@components/product/ButtonWish'
 import useProduct from 'pages/api/query/useProduct'
 import axios from 'axios'
-import { useRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 import { themeSelector } from 'state/atoms'
 import { useRouter } from 'next/router'
 import ButtonAddCart from '@components/product/ButtonAddCart'
@@ -28,7 +28,7 @@ export default function Product(props: ProductT) {
 
   const { data: product, isLoading } = useProduct(props)
 
-  const [theme, setTheme] = useRecoilState(themeSelector)
+  const setTheme = useSetRecoilState(themeSelector)
 
   const router = useRouter()
 

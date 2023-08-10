@@ -1,14 +1,12 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
-import { useRecoilState } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 import { findAccountSelector } from 'state/atoms'
 import { FindAccountT } from 'types'
 
 export default function ButtonFindAccount(props: { type: FindAccountT }) {
-  const router = useRouter()
-
-  const [findAccountType, setFindAccountType] = useRecoilState(findAccountSelector)
+  const setFindAccountType = useSetRecoilState(findAccountSelector)
 
   const handleClickFindButton = (type: FindAccountT) => {
     setFindAccountType(type)

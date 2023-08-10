@@ -1,6 +1,5 @@
 import Layout from '@components/Layout'
 import Link from 'next/link'
-import Image from 'next/image'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
