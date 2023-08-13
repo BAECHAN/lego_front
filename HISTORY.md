@@ -13,7 +13,7 @@ Mybatis
  
 HTML5 /
 CSS3 /
-ES6 + Typescript /
+Typescript /
 React /
 recoil - 클라이언트 상태 관리 /
 react-query - 서버 상태 관리 /
