@@ -1,6 +1,7 @@
-import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 import { ThemeT } from 'types'
+
 import { queryKeys } from './queryKeys'
 
 const useFilters = (props: ThemeT) => {
@@ -9,9 +10,7 @@ const useFilters = (props: ThemeT) => {
   return useQuery(
     [queryKey],
     async () => {
-      return await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}?theme_id=${props.theme_id}`
-      )
+      return await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}?theme_id=${props.theme_id}`)
     },
     {
       onSuccess: (response) => {

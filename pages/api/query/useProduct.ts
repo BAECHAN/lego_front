@@ -1,6 +1,7 @@
-import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
 import { ProductT } from 'types'
+
 import { queryKeys } from './queryKeys'
 
 const useProduct = (props: ProductT) => {
@@ -9,11 +10,7 @@ const useProduct = (props: ProductT) => {
   return useQuery(
     [queryKey],
     async () => {
-      return await axios.get(
-        `${
-          process.env.NEXT_PUBLIC_SERVER_URL
-        }/api/${queryKey}?product_number=${Number(props.product_number)}`
-      )
+      return await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/${queryKey}?product_number=${Number(props.product_number)}`)
     },
     {
       onSuccess: (response) => {

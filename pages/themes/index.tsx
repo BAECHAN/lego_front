@@ -1,9 +1,11 @@
+import Image from 'next/image'
+import Link from 'next/link'
+import { ThemeT } from 'types'
+
+import useThemes from 'pages/api/query/useThemes'
+
 import Layout from '../../components/Layout'
 import Navbar from '../../components/NavigationBar'
-import Link from 'next/link'
-import Image from 'next/image'
-import useThemes from 'pages/api/query/useThemes'
-import { ThemeT } from 'types'
 
 export default function Themes() {
   const { data: themes, isFetched } = useThemes()

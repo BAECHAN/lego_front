@@ -1,13 +1,14 @@
-import React from 'react'
-import { ShippingT } from 'types'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleCheck } from '@fortawesome/free-solid-svg-icons'
-import { useSession } from 'next-auth/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { useSetRecoilState } from 'recoil'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import React from 'react'
+import { useSetRecoilState } from 'recoil'
 import { selectedShippingSelector } from 'state/atoms'
+import { ShippingT } from 'types'
+
 import { queryKeys } from 'pages/api/query/queryKeys'
 
 export default function ButtonChoice(props: { shipping: ShippingT }) {

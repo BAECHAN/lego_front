@@ -1,11 +1,13 @@
-import Layout from '@components/Layout'
-import { signOut, useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 import { faPhone } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import styles from 'styles/account.module.scss'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+
+import Layout from '@components/Layout'
+
+import styles from 'styles/account.module.scss'
 
 export default function AccountExpiredAccount() {
   const router = useRouter()

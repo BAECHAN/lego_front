@@ -1,16 +1,16 @@
-import Layout from '@components/Layout'
-import Link from 'next/link'
-import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
-import * as swal from '@components/common/custom/SweetAlert'
-
-import React, { ChangeEvent, useState, FocusEvent, FormEvent, useRef } from 'react'
-import { EventTargetT, InputRefsT, InputTNotPwchk, ObjT_Bln, UserCreateT } from 'types'
 import crypto from 'crypto-js'
-import axiosRequest from 'pages/api/axios'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+import React, { ChangeEvent, FocusEvent, FormEvent, useRef, useState } from 'react'
+import { EventTargetT, InputRefsT, InputTNotPwchk, ObjT_Bln, UserCreateT } from 'types'
 
-import { checkOverlapInput, isPassRegExpInput } from '@components/common/event/CommonFunction'
+import axiosRequest from 'pages/api/axios'
+
+import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 import HomeIconLink from '@components/HomeIconLink'
+import Layout from '@components/Layout'
+import * as swal from '@components/common/custom/SweetAlert'
+import { checkOverlapInput, isPassRegExpInput } from '@components/common/event/CommonFunction'
 
 export default function CreateAccount() {
   const router = useRouter()

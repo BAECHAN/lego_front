@@ -1,15 +1,16 @@
-import Link from 'next/link'
-import { useState, FormEvent, useRef, useEffect } from 'react'
-import ButtonFindAccountToggle from '@components/login/ButtonFindAccountToggle'
-import FontAwesomeAngleRight from '@components/FontAwesomeAngleRight'
-import { checkOverlapInput } from '@components/common/event/CommonFunction'
 import axios from 'axios'
-import { findAccountSelector } from 'state/atoms'
+import Link from 'next/link'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import { useRecoilValue } from 'recoil'
-import Spinner from '@components/Spinner'
-import Portal from '@components/Portal'
-import InputEmail from '@components/common/input/InputEmail'
+import { findAccountSelector } from 'state/atoms'
+
+import FontAwesomeAngleRight from '@components/FontAwesomeAngleRight'
 import HomeIconLink from '@components/HomeIconLink'
+import Portal from '@components/Portal'
+import Spinner from '@components/Spinner'
+import { checkOverlapInput } from '@components/common/event/CommonFunction'
+import InputEmail from '@components/common/input/InputEmail'
+import ButtonFindAccountToggle from '@components/login/ButtonFindAccountToggle'
 
 export default function Find() {
   const findAccountType = useRecoilValue(findAccountSelector)

@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
-import { signOut, useSession } from 'next-auth/react'
 import crypto from 'crypto-js'
-import * as common from '@components/common/event/CommonFunction'
-import axiosRequest from 'pages/api/axios'
-import { useRouter } from 'next/router'
-import { UserOAuthSubmitT } from 'types'
 import { GetServerSidePropsContext } from 'next'
-import styles from 'styles/account.module.scss'
+import { signOut, useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import React, { useState } from 'react'
+import { UserOAuthSubmitT } from 'types'
+
+import axiosRequest from 'pages/api/axios'
+
 import HomeIconLink from '@components/HomeIconLink'
+import * as common from '@components/common/event/CommonFunction'
+
+import styles from 'styles/account.module.scss'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {

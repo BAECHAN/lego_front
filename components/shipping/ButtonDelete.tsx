@@ -3,9 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
-import { queryKeys } from 'pages/api/query/queryKeys'
 import React from 'react'
 import { ShippingT } from 'types'
+
+import { queryKeys } from 'pages/api/query/queryKeys'
 
 export default function ButtonDelete(props: {
   shipping: ShippingT
@@ -23,9 +24,7 @@ export default function ButtonDelete(props: {
 
   const handleClickButton = () => {
     if (props.shipping.shipping_default == 1) {
-      alert(
-        '기본 배송지는 삭제할 수 없습니다.\r기본 배송지를 변경 후 삭제해주시기 바랍니다.'
-      )
+      alert('기본 배송지는 삭제할 수 없습니다.\r기본 배송지를 변경 후 삭제해주시기 바랍니다.')
       return false
     }
 
@@ -43,13 +42,9 @@ export default function ButtonDelete(props: {
 
   const deleteShippingAPI = useMutation(
     async (param: any) => {
-      return await axios.patch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-shipping`,
-        JSON.stringify(param),
-        {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
-        }
-      )
+      return await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-shipping`, JSON.stringify(param), {
+        headers: { 'Content-Type': `application/json; charset=utf-8` },
+      })
     },
     {
       onSuccess: (response) => {
@@ -87,27 +82,15 @@ export default function ButtonDelete(props: {
       },
       onError: (error) => {
         console.log(error)
-        alert(
-          '배송지 삭제가 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.'
-        )
+        alert('배송지 삭제가 실패하였습니다.\r고객센터에 문의해주시기 바랍니다.')
       },
     }
   )
 
   return (
-    <button
-      type="button"
-      title="배송지 삭제"
-      className="btn-delete-shipping"
-      onClick={handleClickButton}
-    >
+    <button type="button" title="배송지 삭제" className="btn-delete-shipping" onClick={handleClickButton}>
       삭제
-      <FontAwesomeIcon
-        icon={faTrashCan}
-        width="23px"
-        height="23px"
-        style={{ marginLeft: '3px' }}
-      />
+      <FontAwesomeIcon icon={faTrashCan} width="23px" height="23px" style={{ marginLeft: '3px' }} />
       <style jsx>{`
         button.btn-delete-shipping {
           display: flex;

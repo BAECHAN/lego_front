@@ -1,7 +1,7 @@
-import React from 'react'
-import { ProductCartT } from 'types'
 import Image from 'next/image'
 import Link from 'next/link'
+import React from 'react'
+import { ProductCartT } from 'types'
 
 export default function ProductInOrder(props: { product: ProductCartT }) {
   return (

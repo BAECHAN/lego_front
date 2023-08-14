@@ -1,9 +1,11 @@
-import React, { KeyboardEvent, useEffect, useRef, useState } from 'react'
-import ButtonChange from './ButtonChange'
 import Image from 'next/image'
+import React, { KeyboardEvent, useEffect, useRef, useState } from 'react'
+
+import useIsMobile from '@components/common/custom/isMobile'
+
+import ButtonChange from './ButtonChange'
 import ButtonSave from './ButtonSave'
 import ButtonUploadFile from './ButtonUploadFile'
-import useIsMobile from '@components/common/custom/isMobile'
 
 export default function UserInfoContentsLine(props: { infoKey: string; infoName: string; infoValue?: any; infoUpdate: boolean; email: string; onConnect?: boolean }) {
   const [isChange, setIsChange] = useState(false)

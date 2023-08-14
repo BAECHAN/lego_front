@@ -20,8 +20,7 @@ function Postcode(
         extraAddress += data.bname
       }
       if (data.buildingName !== '') {
-        extraAddress +=
-          extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName
+        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : ''
     }
@@ -40,13 +39,7 @@ function Postcode(
   }
 
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      title="주소 찾기 버튼"
-      className="btn-search ml-2"
-      ref={postButtonRef}
-    >
+    <button type="button" onClick={handleClick} title="주소 찾기 버튼" className="btn-search ml-2" ref={postButtonRef}>
       검색
       <style jsx>{`
         .btn-search {

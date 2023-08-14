@@ -1,5 +1,5 @@
-import ReactDOM from 'react-dom'
 import { ReactNode, useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
 
 type Portal = {
   children: ReactNode

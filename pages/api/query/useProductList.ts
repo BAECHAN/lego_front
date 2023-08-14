@@ -1,11 +1,10 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { selectedFilterSelector, sortSelector } from 'state/atoms'
 import { useRecoilValue } from 'recoil'
+import { selectedFilterSelector, sortSelector } from 'state/atoms'
+
 import { queryKeys } from './queryKeys'
 
-const useProductList = (
-  axiosGets: ({ pageParam }: { pageParam?: number }) => Promise<any>
-) => {
+const useProductList = (axiosGets: ({ pageParam }: { pageParam?: number }) => Promise<any>) => {
   const sort = useRecoilValue(sortSelector)
   const filter = useRecoilValue(selectedFilterSelector)
 

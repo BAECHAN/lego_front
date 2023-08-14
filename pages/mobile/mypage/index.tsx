@@ -1,6 +1,7 @@
+import React from 'react'
+
 import LayoutMobile from '@components/LayoutMobile'
 import MobileSidebarMyPage from '@components/mobile/SidebarMyPage'
-import React from 'react'
 
 export default function MobileMypage() {
   return (

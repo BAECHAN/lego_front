@@ -1,18 +1,21 @@
-import Layout from '../../components/Layout'
-import Carousel from '../../components/common/custom/Carousel'
-import Navbar from '@components/NavigationBar'
-import { useEffect, useState } from 'react'
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
-import ButtonWish from '@components/product/ButtonWish'
-import useProduct from 'pages/api/query/useProduct'
 import axios from 'axios'
+import { GetServerSidePropsContext } from 'next'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { useSetRecoilState } from 'recoil'
 import { themeSelector } from 'state/atoms'
-import { useRouter } from 'next/router'
-import ButtonAddCart from '@components/product/ButtonAddCart'
-import { GetServerSidePropsContext } from 'next'
 import { ProductT } from 'types'
+
+import useProduct from 'pages/api/query/useProduct'
+
+import Navbar from '@components/NavigationBar'
+import ButtonAddCart from '@components/product/ButtonAddCart'
+import ButtonWish from '@components/product/ButtonWish'
+
+import Layout from '../../components/Layout'
+import Carousel from '../../components/common/custom/Carousel'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {

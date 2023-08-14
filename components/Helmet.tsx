@@ -8,11 +8,7 @@ type HelmetType = {
 export default function Helmet({ pathname }: HelmetType) {
   const router = useRouter()
 
-  const title = router.query.theme_title_en
-    ? `${router.query.theme_title_en} | Lego`
-    : pathname
-    ? `${pathname} | Lego`
-    : 'Lego'
+  const title = router.query.theme_title_en ? `${router.query.theme_title_en} | Lego` : pathname ? `${pathname} | Lego` : 'Lego'
 
   return (
     <Head>

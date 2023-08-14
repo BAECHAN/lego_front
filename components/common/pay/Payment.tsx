@@ -2,32 +2,24 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import React from 'react'
+
 import * as swal from '@components/common/custom/SweetAlert'
 
 declare const window: typeof globalThis & {
   IMP: any
 }
-export default function Payment(props: {
-  price: number
-  submits: {}
-  enabled: boolean
-  setIsShippingBlinking: React.Dispatch<React.SetStateAction<boolean>>
-}) {
+export default function Payment(props: { price: number; submits: {}; enabled: boolean; setIsShippingBlinking: React.Dispatch<React.SetStateAction<boolean>> }) {
   const router = useRouter()
 
   const onClickPayment = () => {
     if (!props.enabled) {
-      alert(
-        '배송지를 선택해주시기 바랍니다.\r만약 배송지가 없을 경우 배송지등록을 먼저 진행해주시기 바랍니다.'
-      )
+      alert('배송지를 선택해주시기 바랍니다.\r만약 배송지가 없을 경우 배송지등록을 먼저 진행해주시기 바랍니다.')
       window.scrollTo(0, 0)
       props.setIsShippingBlinking(true)
       return false
     }
 
-    alert(
-      '결제 테스트 모달화면이 보여지게 됩니다.\rPG테스트모드이므로 환불이 어려울 수 있으며, 해당 사이트는 테스트 사이트이기 때문에 결제 취소하셔도 주문되도록 처리하였습니다.'
-    )
+    alert('결제 테스트 모달화면이 보여지게 됩니다.\rPG테스트모드이므로 환불이 어려울 수 있으며, 해당 사이트는 테스트 사이트이기 때문에 결제 취소하셔도 주문되도록 처리하였습니다.')
 
     /* 1. 가맹점 식별하기 */
     const { IMP } = window
@@ -60,30 +52,21 @@ export default function Payment(props: {
       alert('결제 성공')
       insertOrderAPI.mutate(props.submits)
     } else {
-      alert(
-        `결제 실패: ${error_msg}\r테스트 사이트이기 때문에 결제취소하여도 주문되도록 처리하였습니다.`
-      )
+      alert(`결제 실패: ${error_msg}\r테스트 사이트이기 때문에 결제취소하여도 주문되도록 처리하였습니다.`)
       insertOrderAPI.mutate(props.submits)
     }
   }
 
   const insertOrderAPI = useMutation(
     async (param: any) => {
-      return await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/add-order`,
-        JSON.stringify(param),
-        {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
-        }
-      )
+      return await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/add-order`, JSON.stringify(param), {
+        headers: { 'Content-Type': `application/json; charset=utf-8` },
+      })
     },
     {
       onSuccess: async (response) => {
         if (response.status === 201) {
-          swal.SweetAlertSuccess(
-            '주문이 완료되었습니다.',
-            '주문 내역 페이지로 이동합니다.'
-          )
+          swal.SweetAlertSuccess('주문이 완료되었습니다.', '주문 내역 페이지로 이동합니다.')
           router.push('/mypage/order_history')
         } else {
           alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
@@ -95,11 +78,7 @@ export default function Payment(props: {
   )
 
   return (
-    <button
-      onClick={onClickPayment}
-      title="결제창 열기 버튼"
-      className="btn-common min-w-[500px]"
-    >
+    <button onClick={onClickPayment} title="결제창 열기 버튼" className="btn-common min-w-[500px]">
       {props.price.toLocaleString('ko-kr')} 원 결제하기
     </button>
   )
