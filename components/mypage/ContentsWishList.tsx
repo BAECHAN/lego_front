@@ -1,7 +1,9 @@
-import ProductCard from '@components/product/ProductCard'
-import useProductWishList from 'pages/api/query/useProductWishList'
 import React from 'react'
 import { ProductT } from 'types'
+
+import useProductWishList from 'pages/api/query/useProductWishList'
+
+import ProductCard from '@components/product/ProductCard'
 
 export default function ContentsWishList() {
   const { data: product, isFetched } = useProductWishList()

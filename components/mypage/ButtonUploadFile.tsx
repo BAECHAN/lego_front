@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useRef } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { ChangeEvent, useRef } from 'react'
 
 export default function ButtonUploadFile(props: {
   newValue: string

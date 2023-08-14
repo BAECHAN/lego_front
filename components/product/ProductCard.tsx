@@ -1,9 +1,10 @@
-import { ProductT } from 'types'
 import Image from 'next/image'
 import Link from 'next/link'
-import ButtonWish from './ButtonWish'
 import { useRouter } from 'next/router'
+import { ProductT } from 'types'
+
 import ButtonAddCart from './ButtonAddCart'
+import ButtonWish from './ButtonWish'
 
 export default function ProductCard(props: { product: ProductT; key: number }) {
   const router = useRouter()

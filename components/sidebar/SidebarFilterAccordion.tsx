@@ -1,11 +1,13 @@
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
-import useFilters from 'pages/api/query/useFilters'
-import { ProductFilterCountT, ProductFilterT, ThemeT } from 'types'
-import SidebarFilterItem from './SidebarFilterItem'
-import { productFilterInfoSelector } from 'state/atoms'
 import { useRecoilValue } from 'recoil'
+import { productFilterInfoSelector } from 'state/atoms'
+import { ProductFilterCountT, ProductFilterT, ThemeT } from 'types'
+
+import useFilters from 'pages/api/query/useFilters'
+
+import SidebarFilterItem from './SidebarFilterItem'
 
 export default function SidebarFilterAccordian(props: { label: string; themes: ThemeT }) {
   const [isOpen, setIsOpen] = useState(true)

@@ -1,13 +1,15 @@
-import Link from 'next/link'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
-import { useSession, signIn, signOut } from 'next-auth/react'
-import FontAwesomeMobileBars from '@components/FontAwesomeMobileBars'
-import { forwardRef, useCallback, useEffect, useState } from 'react'
-import MobileHeaderSidebar from './HeaderSidebar'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { isOpenMobileSidebarSelector } from 'state/atoms'
+import { forwardRef, useCallback, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
+import { isOpenMobileSidebarSelector } from 'state/atoms'
+
+import FontAwesomeMobileBars from '@components/FontAwesomeMobileBars'
 import HomeIconLink from '@components/HomeIconLink'
+
+import MobileHeaderSidebar from './HeaderSidebar'
 
 export default function MobileHeader(props: { sidebarRef: React.MutableRefObject<null> }) {
   const [isOpenBars, setIsOpenBars] = useRecoilState(isOpenMobileSidebarSelector)

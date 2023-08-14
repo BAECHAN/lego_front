@@ -1,7 +1,8 @@
-import useIsMobile from '@components/common/custom/isMobile'
 import Link from 'next/link'
 import React from 'react'
 import { ProductCartT } from 'types'
+
+import useIsMobile from '@components/common/custom/isMobile'
 
 export default function ProductCartTitle(props: { product: ProductCartT }) {
   const isMobile = useIsMobile()

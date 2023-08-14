@@ -1,6 +1,7 @@
-import Link from 'next/link'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
-import { useSession, signIn, signOut } from 'next-auth/react'
+import Link from 'next/link'
+
 import HomeIconLink from './HomeIconLink'
 
 export default function Header() {

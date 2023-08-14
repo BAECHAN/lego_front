@@ -16,7 +16,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["components/*"],
+      "@components/*": ["components/*"]
     },
     "types": ["@emotion/react/types/css-prop"]
   },

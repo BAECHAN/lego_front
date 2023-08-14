@@ -1,37 +1,24 @@
-import { ThemeT } from 'types'
-import SidebarFilterAccordian from './SidebarFilterAccordion'
-import SidebarFilterSelected from './SidebarFilterSelected'
 import { useRecoilValue } from 'recoil'
 import { selectedFilterSelector } from 'state/atoms'
+import { ThemeT } from 'types'
+
+import SidebarFilterAccordian from './SidebarFilterAccordion'
+import SidebarFilterSelected from './SidebarFilterSelected'
 
 export default function SidebarFilter(props: { themes: ThemeT }) {
   const selectedFilter = useRecoilValue(selectedFilterSelector)
 
-  const labelList: string[] = [
-    '가격(원)',
-    '연령',
-    '구매가능',
-    '할인여부',
-    '부품수',
-  ]
+  const labelList: string[] = ['가격(원)', '연령', '구매가능', '할인여부', '부품수']
 
   return (
     <aside className="filter mx-5 h-[40rem] sticky top-0 overflow-y-scroll overflow-x-hidden desktop:w-96 desktop:min-w-[240px] mobile:w-64">
       <div>
         <div className="filter-option mb-3">
-          {Object.values(selectedFilter).indexOf(1) > -1 ? (
-            <SidebarFilterSelected />
-          ) : null}
+          {Object.values(selectedFilter).indexOf(1) > -1 ? <SidebarFilterSelected /> : null}
           <hr />
 
           {labelList.map((item: string, index: number) => {
-            return (
-              <SidebarFilterAccordian
-                key={index}
-                label={item}
-                themes={props.themes}
-              />
-            )
+            return <SidebarFilterAccordian key={index} label={item} themes={props.themes} />
           })}
         </div>
       </div>

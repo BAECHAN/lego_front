@@ -1,17 +1,19 @@
-import Layout from '../../components/Layout'
-import SidebarFilter from '../../components/sidebar/SidebarFilter'
-import Navbar from '../../components/NavigationBar'
-import { ThemeT, ProductT } from 'types'
-import ProductCard from '@components/product/ProductCard'
+import axios from 'axios'
+import { GetServerSidePropsContext } from 'next'
 import React, { useEffect, useState } from 'react'
-import { selectedFilterSelector, sortSelector, themeSelector } from 'state/atoms'
 import { useRecoilState, useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil'
+import { selectedFilterSelector, sortSelector, themeSelector } from 'state/atoms'
+import { ProductT, ThemeT } from 'types'
+
+import { queryKeys } from 'pages/api/query/queryKeys'
 import useProductList from 'pages/api/query/useProductList'
 
-import axios from 'axios'
-import { queryKeys } from 'pages/api/query/queryKeys'
-import { GetServerSidePropsContext } from 'next'
 import ButtonMore from '@components/common/pagination/ButtonMore'
+import ProductCard from '@components/product/ProductCard'
+
+import Layout from '../../components/Layout'
+import Navbar from '../../components/NavigationBar'
+import SidebarFilter from '../../components/sidebar/SidebarFilter'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   return {

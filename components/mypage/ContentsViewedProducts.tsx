@@ -1,7 +1,9 @@
-import ProductCard from '@components/product/ProductCard'
-import useProductViewedList from 'pages/api/query/useProductViewedList'
 import React, { useEffect } from 'react'
 import { ProductT } from 'types'
+
+import useProductViewedList from 'pages/api/query/useProductViewedList'
+
+import ProductCard from '@components/product/ProductCard'
 
 export default function ContentsViewedProducts() {
   const { data: product, isFetched } = useProductViewedList()
@@ -26,9 +28,7 @@ export default function ContentsViewedProducts() {
           )}
         </ul>
       ) : null}
-      <p className="text-gray-600 mt-1 text-right">
-        ※ 최근 본 상품은 10개 까지만 보여집니다.
-      </p>
+      <p className="text-gray-600 mt-1 text-right">※ 최근 본 상품은 10개 까지만 보여집니다.</p>
     </div>
   )
 }

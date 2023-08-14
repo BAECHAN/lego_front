@@ -1,17 +1,8 @@
 import React, { MouseEvent } from 'react'
 
-export default function PageNumber(props: {
-  page: number
-  handleClickPageButton: (event: MouseEvent<HTMLButtonElement>) => void
-  isActive: boolean
-}) {
+export default function PageNumber(props: { page: number; handleClickPageButton: (event: MouseEvent<HTMLButtonElement>) => void; isActive: boolean }) {
   return (
-    <button
-      type="button"
-      title={`${props.page} 페이지로 이동`}
-      className={`${props.isActive ? 'active' : ''}`}
-      onClick={props.handleClickPageButton}
-    >
+    <button type="button" title={`${props.page} 페이지로 이동`} className={`${props.isActive ? 'active' : ''}`} onClick={props.handleClickPageButton}>
       {props.page}
 
       <style jsx>{`

@@ -1,7 +1,8 @@
-import { ObjT_Str } from 'types'
-import Layout from '../components/Layout'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ObjT_Str } from 'types'
+
+import Layout from '../components/Layout'
 
 export async function getStaticProps() {
   // 빌드 타임에 이미지 데이터를 불러옵니다.

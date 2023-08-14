@@ -1,6 +1,8 @@
-import axiosRequest from 'pages/api/axios'
 import React, { ChangeEvent } from 'react'
 import { InputT } from 'types'
+
+import axiosRequest from 'pages/api/axios'
+
 import { inputRegExp } from '../custom/RegExp'
 
 export function CommonHandleChangeValue(option: string, e: ChangeEvent<HTMLInputElement>, inputs: any, setInputs: React.Dispatch<React.SetStateAction<any>>) {

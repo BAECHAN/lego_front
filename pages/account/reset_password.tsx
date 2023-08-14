@@ -1,14 +1,15 @@
-import Layout from '@components/Layout'
-import Link from 'next/link'
-import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
-
-import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/router'
 import crypto from 'crypto-js'
-import axiosRequest from 'pages/api/axios'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import React, { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import { EventTargetT, InputRefsT, InputTNotPwchk, ObjT_Bln, UserPasswordSubmitT } from 'types'
-import { isPassRegExpInput } from '@components/common/event/CommonFunction'
+
+import axiosRequest from 'pages/api/axios'
+
+import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 import HomeIconLink from '@components/HomeIconLink'
+import Layout from '@components/Layout'
+import { isPassRegExpInput } from '@components/common/event/CommonFunction'
 
 export default function ResetPassword() {
   const router = useRouter()

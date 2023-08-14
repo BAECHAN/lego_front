@@ -1,11 +1,12 @@
-import React, { useEffect, MouseEvent } from 'react'
-
-import { faAngleLeft, faAngleRight, faAngleDoubleLeft, faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDoubleLeft, faAngleDoubleRight, faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import PageNumber from './PageNumber'
-import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
-import useIsMobile from '../custom/isMobile'
+import React, { MouseEvent, useEffect } from 'react'
 import { PageButtonInfo } from 'types'
+
+import useDeliveryShippingList from 'pages/api/query/useDeliveryShippingList'
+
+import useIsMobile from '../custom/isMobile'
+import PageNumber from './PageNumber'
 
 export default function Pagination(props: {
   page: number

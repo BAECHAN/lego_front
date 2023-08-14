@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import FontAwesomeAngleRight from './FontAwesomeAngleRight'
+import React, { Fragment } from 'react'
 import { useRecoilValue } from 'recoil'
 import { mypageListSelector, themeSelector } from 'state/atoms'
-import React, { Fragment } from 'react'
+
+import FontAwesomeAngleRight from './FontAwesomeAngleRight'
 
 export default function NavigationBar() {
   const router = useRouter()

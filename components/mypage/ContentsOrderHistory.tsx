@@ -1,19 +1,16 @@
-import useOrderList from 'pages/api/query/useOrderList'
 import React, { useState } from 'react'
 import { OrderGroupT } from 'types'
-import ButtonMore from '../common/pagination/ButtonMore'
+
+import useOrderList from 'pages/api/query/useOrderList'
+
 import GroupInOrderHistory from '@components/product/GroupInOrderHistory'
+
+import ButtonMore from '../common/pagination/ButtonMore'
 
 export default function ContentsOrderHistory() {
   const [page, setPage] = useState(1)
 
-  const {
-    data: orderData,
-    isFetched,
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage,
-  } = useOrderList()
+  const { data: orderData, isFetched, hasNextPage, isFetchingNextPage, fetchNextPage } = useOrderList()
 
   return (
     <div className="desktop:min-h-[602px]">
@@ -34,23 +31,15 @@ export default function ContentsOrderHistory() {
               {orderData?.pages.map((item, index1) => (
                 <React.Fragment key={index1}>
                   {item.data.orderGroupList.length > 0 ? (
-                    item.data.orderGroupList?.map(
-                      (orderGroup: OrderGroupT, index2: number) => {
-                        return (
-                          <GroupInOrderHistory
-                            orderGroup={orderGroup}
-                            order={orderData.pages[
-                              index1
-                            ].data.orderList.filter(
-                              (item: { order_group_id: number }) =>
-                                item.order_group_id ===
-                                orderGroup.order_group_id
-                            )}
-                            key={index2}
-                          />
-                        )
-                      }
-                    )
+                    item.data.orderGroupList?.map((orderGroup: OrderGroupT, index2: number) => {
+                      return (
+                        <GroupInOrderHistory
+                          orderGroup={orderGroup}
+                          order={orderData.pages[index1].data.orderList.filter((item: { order_group_id: number }) => item.order_group_id === orderGroup.order_group_id)}
+                          key={index2}
+                        />
+                      )
+                    })
                   ) : (
                     <div className="text-2xl m-auto">주문 내역이 없습니다.</div>
                   )}
@@ -59,15 +48,7 @@ export default function ContentsOrderHistory() {
             </ul>
 
             {hasNextPage ? (
-              <ButtonMore
-                type="order"
-                page={page}
-                setPage={setPage}
-                fetchNextPage={fetchNextPage}
-                hasNextPage={hasNextPage}
-                isFetchingNextPage={isFetchingNextPage}
-                data={orderData}
-              />
+              <ButtonMore type="order" page={page} setPage={setPage} fetchNextPage={fetchNextPage} hasNextPage={hasNextPage} isFetchingNextPage={isFetchingNextPage} data={orderData} />
             ) : (
               <br />
             )}

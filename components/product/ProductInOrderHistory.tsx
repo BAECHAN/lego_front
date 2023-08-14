@@ -1,7 +1,7 @@
-import React from 'react'
-import { OrderT } from 'types'
 import Image from 'next/image'
 import Link from 'next/link'
+import React from 'react'
+import { OrderT } from 'types'
 
 export default function ProductInOrderHistory(props: { order: OrderT }) {
   return (
@@ -34,9 +34,7 @@ export default function ProductInOrderHistory(props: { order: OrderT }) {
         </div>
 
         <div className="flex-col flex items-center w-2/12">
-          <div title="상품별 주문한 금액">
-            {props.order.pay_price.toLocaleString('ko-kr')} 원
-          </div>
+          <div title="상품별 주문한 금액">{props.order.pay_price.toLocaleString('ko-kr')} 원</div>
         </div>
 
         <div>

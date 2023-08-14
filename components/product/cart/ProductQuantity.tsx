@@ -1,12 +1,12 @@
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useMutation } from '@tanstack/react-query'
+import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import React, { useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { orderPriceSelector } from 'state/atoms'
 import { ProductCartT, ProductUpdateCartSubmitT } from 'types'
-import { useMutation } from '@tanstack/react-query'
-import axios from 'axios'
 
 export default function ProductQuantity(props: { product: ProductCartT; quantity: number; setQuantity: React.Dispatch<React.SetStateAction<number>> }) {
   const { data: session, status } = useSession()

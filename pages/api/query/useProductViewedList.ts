@@ -1,7 +1,8 @@
-import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
-import { queryKeys } from './queryKeys'
+import axios from 'axios'
 import qs from 'qs'
+
+import { queryKeys } from './queryKeys'
 
 const useProductViewedList = () => {
   const queryKey = queryKeys.productViewedList
@@ -11,9 +12,7 @@ const useProductViewedList = () => {
   let viewedProductsJSON: string[] = []
 
   if (typeof window !== 'undefined') {
-    viewedProductsJSON = JSON.parse(
-      localStorage.getItem('viewed_products') as string
-    )
+    viewedProductsJSON = JSON.parse(localStorage.getItem('viewed_products') as string)
   }
 
   const params = {

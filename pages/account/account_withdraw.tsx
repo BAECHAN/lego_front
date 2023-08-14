@@ -1,7 +1,9 @@
-import Layout from '@components/Layout'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useEffect } from 'react'
+
+import Layout from '@components/Layout'
+
 import styles from 'styles/account.module.scss'
 
 export default function AccountExpiredAccount() {

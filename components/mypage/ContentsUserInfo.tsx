@@ -1,7 +1,9 @@
+import React from 'react'
+
+import useUser from 'pages/api/query/useUser'
+
 import ButtonUserWithdraw from '@components/mypage/ButtonUserWithdraw'
 import UserInfoContentsLine from '@components/mypage/UserInfoContentsLine'
-import useUser from 'pages/api/query/useUser'
-import React from 'react'
 
 export default function ContentsUserInfo() {
   const { data: userInfo, isFetched, status } = useUser()

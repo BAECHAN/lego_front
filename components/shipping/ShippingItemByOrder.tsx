@@ -1,11 +1,14 @@
 import React from 'react'
 import { ShippingT } from 'types'
-import ButtonEdit from './ButtonEdit'
-import ButtonDelete from './ButtonDelete'
-import ButtonChoice from './ButtonChoice'
-import useIsMobile from '@components/common/custom/isMobile'
+
 import { deliveryRequestOptions } from 'pages/api/common/deliveryRequestOptions'
+
+import useIsMobile from '@components/common/custom/isMobile'
 import * as common from '@components/common/event/CommonFunction'
+
+import ButtonChoice from './ButtonChoice'
+import ButtonDelete from './ButtonDelete'
+import ButtonEdit from './ButtonEdit'
 
 const ShippingItemByOrder = (props: {
   shipping: ShippingT
@@ -22,17 +25,7 @@ const ShippingItemByOrder = (props: {
 }) => {
   const isMobile = useIsMobile()
 
-  const {
-    shipping_name,
-    recipient,
-    shipping_default,
-    shipping_zipcode,
-    shipping_address1,
-    shipping_address2,
-    tel_number,
-    delivery_request,
-    delivery_request_direct,
-  } = props.shipping
+  const { shipping_name, recipient, shipping_default, shipping_zipcode, shipping_address1, shipping_address2, tel_number, delivery_request, delivery_request_direct } = props.shipping
 
   const getDeliveryRequestLabel = () => {
     const index = parseInt(delivery_request, 10) - 1
@@ -46,16 +39,10 @@ const ShippingItemByOrder = (props: {
         <div className="flex">
           <div className="flex flex-col text-[12px] items-start w-3/4">
             <div className="font-bold">
-              <span>
-                {shipping_name === recipient
-                  ? `${recipient}님의 배송지`
-                  : shipping_name}
-              </span>
+              <span>{shipping_name === recipient ? `${recipient}님의 배송지` : shipping_name}</span>
               <span className="mx-1">/</span>
               <span>{recipient}</span>
-              {shipping_default === 1 && (
-                <span className="text-blue-600 ml-1">기본배송지</span>
-              )}
+              {shipping_default === 1 && <span className="text-blue-600 ml-1">기본배송지</span>}
             </div>
             <div>
               <span>[{shipping_zipcode}]</span>
@@ -63,9 +50,7 @@ const ShippingItemByOrder = (props: {
               <span>&nbsp;{shipping_address2}</span>
             </div>
             <div>
-              <span className="text-gray-500">
-                {common.formattedTelNumber(tel_number)}
-              </span>
+              <span className="text-gray-500">{common.formattedTelNumber(tel_number)}</span>
             </div>
             <div>
               <span className="text-gray-500">{getDeliveryRequestLabel()}</span>

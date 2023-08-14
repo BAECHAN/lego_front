@@ -1,9 +1,9 @@
-import { ProductWishSubmitT } from 'types'
-import axios from 'axios'
 import { useMutation } from '@tanstack/react-query'
-import { Dispatch, SetStateAction } from 'react'
-import { signIn } from 'next-auth/react'
+import axios from 'axios'
 import { Session } from 'next-auth'
+import { signIn } from 'next-auth/react'
+import { Dispatch, SetStateAction } from 'react'
+import { ProductWishSubmitT } from 'types'
 
 const HandleClickWishButton = (
   wishInfo: {
@@ -20,13 +20,9 @@ const HandleClickWishButton = (
 ) => {
   const addWishAPI = useMutation(
     async (param: ProductWishSubmitT) => {
-      return await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/add-wish`,
-        JSON.stringify(param),
-        {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
-        }
-      )
+      return await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/add-wish`, JSON.stringify(param), {
+        headers: { 'Content-Type': `application/json; charset=utf-8` },
+      })
     },
     {
       onMutate: async () => {
@@ -42,9 +38,7 @@ const HandleClickWishButton = (
         }
       },
       onError: (error, values, rollback) => {
-        alert(
-          '좋아요 버튼을 반영하는데 문제가 발생하였습니다.\r같은 상황이 지속 된다면 고객센터에 문의해주시기 바랍니다.'
-        )
+        alert('좋아요 버튼을 반영하는데 문제가 발생하였습니다.\r같은 상황이 지속 된다면 고객센터에 문의해주시기 바랍니다.')
         console.log(error)
         if (rollback) {
           setWishInfo({
@@ -58,13 +52,9 @@ const HandleClickWishButton = (
 
   const delWishAPI = useMutation(
     async (param: ProductWishSubmitT) => {
-      return await axios.patch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-wish`,
-        JSON.stringify(param),
-        {
-          headers: { 'Content-Type': `application/json; charset=utf-8` },
-        }
-      )
+      return await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-wish`, JSON.stringify(param), {
+        headers: { 'Content-Type': `application/json; charset=utf-8` },
+      })
     },
     {
       onMutate: async () => {
@@ -80,9 +70,7 @@ const HandleClickWishButton = (
         }
       },
       onError: (error, values, rollback) => {
-        alert(
-          '좋아요 버튼을 반영하는데 문제가 발생하였습니다.\r같은 상황이 지속 된다면 고객센터에 문의해주시기 바랍니다.'
-        )
+        alert('좋아요 버튼을 반영하는데 문제가 발생하였습니다.\r같은 상황이 지속 된다면 고객센터에 문의해주시기 바랍니다.')
         console.log(error)
         if (rollback) {
           setWishInfo({

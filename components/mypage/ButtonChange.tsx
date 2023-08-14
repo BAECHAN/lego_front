@@ -1,7 +1,8 @@
-import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenSquare } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useRouter } from 'next/router'
+import React from 'react'
+
 import useIsMobile from '@components/common/custom/isMobile'
 
 export default function ButtonChange(props: { infoKey: string; infoName: string; isChange: boolean; setIsChange: React.Dispatch<React.SetStateAction<boolean>> }) {

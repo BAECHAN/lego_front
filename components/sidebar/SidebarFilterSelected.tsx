@@ -1,11 +1,10 @@
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import { productFilterInfoSelector, selectedFilterSelector } from 'state/atoms'
+
 import FontAwesomeXmark from '../FontAwesomeXmark'
 
 export default function SidebarFilterSelected() {
-  const [selectedFilter, setSelectedFilter] = useRecoilState(
-    selectedFilterSelector
-  )
+  const [selectedFilter, setSelectedFilter] = useRecoilState(selectedFilterSelector)
 
   const handleClickRecoilReset = useResetRecoilState(selectedFilterSelector)
 
@@ -23,24 +22,13 @@ export default function SidebarFilterSelected() {
       <hr />
       <div className="py-3 w-full">
         <div>선택한 필터</div>
-        <button
-          type="button"
-          title="선택한 필터 모두 삭제"
-          onClick={handleClickRecoilReset}
-          className="btn-selected-filter reset"
-        >
+        <button type="button" title="선택한 필터 모두 삭제" onClick={handleClickRecoilReset} className="btn-selected-filter reset">
           모든 필터 삭제
         </button>
         {filterInfo.filterPriceObjArr.map(({ id, label, title }) => {
           return (
             selectedFilter[id] === 1 && (
-              <button
-                type="button"
-                key={id}
-                title={`${title} 필터 삭제 버튼`}
-                className="btn-selected-filter"
-                onClick={() => handleClickDeleteTag(id)}
-              >
+              <button type="button" key={id} title={`${title} 필터 삭제 버튼`} className="btn-selected-filter" onClick={() => handleClickDeleteTag(id)}>
                 {label}
                 <FontAwesomeXmark />
               </button>
@@ -51,13 +39,7 @@ export default function SidebarFilterSelected() {
         {filterInfo.filterAgeObjArr.map(({ id, label, title }) => {
           return (
             selectedFilter[id] === 1 && (
-              <button
-                type="button"
-                key={id}
-                title={`${title} 필터 삭제 버튼`}
-                className="btn-selected-filter"
-                onClick={() => handleClickDeleteTag(id)}
-              >
+              <button type="button" key={id} title={`${title} 필터 삭제 버튼`} className="btn-selected-filter" onClick={() => handleClickDeleteTag(id)}>
                 연령 {label}
                 <FontAwesomeXmark />
               </button>
@@ -68,13 +50,7 @@ export default function SidebarFilterSelected() {
         {filterInfo.filterSaleEnabledObjArr.map(({ id, label, title }) => {
           return (
             selectedFilter[id] === 1 && (
-              <button
-                type="button"
-                key={id}
-                title={`${title} 필터 삭제 버튼`}
-                className="btn-selected-filter"
-                onClick={() => handleClickDeleteTag(id)}
-              >
+              <button type="button" key={id} title={`${title} 필터 삭제 버튼`} className="btn-selected-filter" onClick={() => handleClickDeleteTag(id)}>
                 {label}
                 <FontAwesomeXmark />
               </button>
@@ -85,13 +61,7 @@ export default function SidebarFilterSelected() {
         {filterInfo.filterDiscountingObjArr.map(({ id, label, title }) => {
           return (
             selectedFilter[id] === 1 && (
-              <button
-                type="button"
-                key={id}
-                title={`${title} 필터 삭제 버튼`}
-                className="btn-selected-filter"
-                onClick={() => handleClickDeleteTag(id)}
-              >
+              <button type="button" key={id} title={`${title} 필터 삭제 버튼`} className="btn-selected-filter" onClick={() => handleClickDeleteTag(id)}>
                 {label}
                 <FontAwesomeXmark />
               </button>
@@ -102,13 +72,7 @@ export default function SidebarFilterSelected() {
         {filterInfo.filterPiecesObjArr.map(({ id, label, title }) => {
           return (
             selectedFilter[id] === 1 && (
-              <button
-                type="button"
-                key={id}
-                title={`${title} 필터 삭제 버튼`}
-                className="btn-selected-filter"
-                onClick={() => handleClickDeleteTag(id)}
-              >
+              <button type="button" key={id} title={`${title} 필터 삭제 버튼`} className="btn-selected-filter" onClick={() => handleClickDeleteTag(id)}>
                 부품수 {label}
                 <FontAwesomeXmark />
               </button>

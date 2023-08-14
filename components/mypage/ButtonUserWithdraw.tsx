@@ -1,7 +1,8 @@
 import { signOut } from 'next-auth/react'
+import React from 'react'
+
 import axiosRequest from 'pages/api/axios'
 import useUser from 'pages/api/query/useUser'
-import React from 'react'
 
 export default function ButtonUserWithdraw() {
   const { data: userInfo, isFetched, status } = useUser()
