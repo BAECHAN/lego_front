@@ -28,6 +28,7 @@ export default function ProductCard(props: { product: ProductT; key: number }) {
                 style={{ cursor: 'pointer' }}
                 priority
                 quality={30}
+                draggable={false}
                 placeholder="blur"
                 blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
                 layout="responsive"

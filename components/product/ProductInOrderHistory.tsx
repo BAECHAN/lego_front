@@ -3,31 +3,16 @@ import Link from 'next/link'
 import React from 'react'
 import { OrderT } from 'types'
 
+import ProductCartImage from './cart/ProductImage'
+
 export default function ProductInOrderHistory(props: { order: OrderT }) {
   return (
     <div className="w-1/2">
       <div className="product-in-order w-full flex justify-start items-center">
         <div className="w-6/12 flex-col flex justify-center m-3">
-          <div className="product-in-order-image w-32 scale-75 hover:scale-90 transition-all ease-in-out mb-1">
-            <Link href={`/products/${props.order.product_number}`}>
-              <a>
-                <Image
-                  src={props.order.image}
-                  width="40vw"
-                  height="20vw"
-                  alt={props.order.title}
-                  style={{ cursor: 'pointer' }}
-                  priority
-                  placeholder="blur"
-                  blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
-                  quality={100}
-                  layout="responsive"
-                />
-              </a>
-            </Link>
-          </div>
+          <ProductCartImage product={props.order} />
           <div className="product-in-order-content">
-            <Link href={`/products/${props.order.product_number}`}>
+            <Link href={`/products/${props.order.product_number}?title=${props.order.title}`} passHref>
               <a className="prod-title">{props.order.title}</a>
             </Link>
           </div>

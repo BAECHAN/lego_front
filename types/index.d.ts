@@ -47,6 +47,12 @@ export type ProductT = {
   ea: number
 }
 
+export type ProductImageT = {
+  product_number: number
+  title: string
+  image: string
+}
+
 export type ProductCartT = ProductT & {
   cart_id: number
   order_quantity: number

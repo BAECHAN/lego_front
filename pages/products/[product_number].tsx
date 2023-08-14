@@ -24,6 +24,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Product(props: ProductT) {
+  const router = useRouter()
+
   let [quantity, setQuantity] = useState(1)
   let [minusDisabled, setMinusDisabled] = useState(true)
   let [plusDisabled, setPlusDisabled] = useState(false)
@@ -33,9 +35,7 @@ export default function Product(props: ProductT) {
 
   const setTheme = useSetRecoilState(themeSelector)
 
-  const router = useRouter()
-
-  const handleClickQuantity = (event: React.MouseEvent<HTMLButtonElement>, plusOrMinus: string) => {
+  const handleClickQuantity = (_event: React.MouseEvent<HTMLButtonElement>, plusOrMinus: string) => {
     plusOrMinus === 'plus' ? setQuantity(quantity + 1) : setQuantity(quantity - 1)
   }
 
