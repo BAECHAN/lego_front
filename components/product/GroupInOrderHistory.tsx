@@ -4,7 +4,6 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { useRecoilValue } from 'recoil'
 import { OrderGroupT, OrderT } from 'types'
 
 import { deliveryRequestOptions } from 'pages/api/common/deliveryRequestOptions'
@@ -14,6 +13,7 @@ import * as swal from '@components/common/custom/SweetAlert'
 import * as common from '@components/common/event/CommonFunction'
 
 import ProductInOrderHistory from './ProductInOrderHistory'
+import ProductCartImage from './cart/ProductImage'
 
 export default function GroupInOrderHistory(props: { orderGroup: OrderGroupT; order: OrderT[] }) {
   const { data: session, status } = useSession()
@@ -81,26 +81,9 @@ export default function GroupInOrderHistory(props: { orderGroup: OrderGroupT; or
     <div className="w-full desktop:min-w-[788px]">
       <div className="product-in-order w-full flex justify-start items-center">
         <div className="w-2/12 flex-col flex justify-center m-3">
-          <div className="product-in-order-image w-32 scale-75 hover:scale-90 transition-all ease-in-out mb-1">
-            <Link href={`/products/${props.order[0].product_number}`} passHref>
-              <a>
-                <Image
-                  src={props.order[0].image}
-                  width="40vw"
-                  height="20vw"
-                  alt={props.order[0].title}
-                  style={{ cursor: 'pointer' }}
-                  priority
-                  placeholder="blur"
-                  blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
-                  quality={100}
-                  layout="responsive"
-                />
-              </a>
-            </Link>
-          </div>
+          <ProductCartImage product={props.order[0]} />
           <div className="product-in-order-content">
-            <Link href={`/products/${props.order[0].product_number}`} passHref>
+            <Link href={`/products/${props.order[0].product_number}?title=${props.order[0].title}`} passHref>
               <a className="prod-title">{props.order[0].title}</a>
             </Link>
             <p className="text-xs text-gray-500 text-right">포함 총 {props.orderGroup.product_count} 건</p>
