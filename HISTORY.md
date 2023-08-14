@@ -1865,6 +1865,60 @@ cdn 서버에서 format=webp 형식으로 변경해서 이미지를 가져오는
 ### 페이지네이션에서 page 버튼에 들어가는 값 객체화하여 처리
 ### 모달창 오픈 시 ESC 버튼 키입력 들어왔을 때도 닫히도록 처리하고 이미지도 X버튼 -> ESC 로 수정
 
+<hr />
+
+## prettier-plugin-sort-imports
+
+```https://github.com/sweepline/eslint-plugin-unused-imports```
+
+
+상단의 import 키워드를 사용하여 컴포넌트나 라이브러리들을 사용하는 경우가 있는데
+개발을 하다보면 코드를 작성하다가 import를 자동으로 추가해주다보니 추가한 순서대로 내림차순 되는 경우가 많다.
+이 경우 내가 원하는 import 코드가 잘 보이지 않는 경우가 있기 때문에
+한눈에 빠르게 파악하기 위해 prettier-plugin-sort-imports 라는 라이브러리를 추가하였다.
+
+1. 명령어
+```yarn add --dev @trivago/prettier-plugin-sort-imports```
+
+2. .prettierrc.js파일에 설정 추가
+
+js파일이 아니고 .prettierrc파일로 되어있는 경우 
+외부라이브러리를 사용할 필요가 있을 시 js파일로 수정이 필요함
+
+2-1) .prettierrc => .prettierrc.js  
+2-2) 입맛에 따라 아래와 같이 환경세팅
+
+```
+// .prettierrc.js
+module.exports = {
+  plugins: ['@trivago/prettier-plugin-sort-imports'],
+  importOrder: [
+    '^@utils/(.*)$',
+    '^@apis/(.*)$',
+    '^@hooks/(.*)$',
+    '^@recoils/(.*)$',
+    '<THIRD_PARTY_MODULES>',
+    '^@base/(.*)$',
+    '^pages/(.*)$',
+    '^@components/(.*)$',
+    '^@common/(.*)$',
+    '^styles/(.*)$',
+    '^[./]',
+  ],
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true,
+  semi: false,
+  singleQuote: true,
+  tabWidth: 2,
+  useTabs: false,
+  printWidth: 200,
+}
+```
+
+3. prettier 적용
+```npx prettier . --write``` ( prettier를 전역적으로 처리하여 실제 파일에 적용하기 )
+
+
 
 
 ## 설계  
