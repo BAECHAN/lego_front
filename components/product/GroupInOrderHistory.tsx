@@ -145,7 +145,7 @@ export default function GroupInOrderHistory(props: { orderGroup: OrderGroupT; or
         <div className="border-2 border-black border-solid">
           <ul className="flex flex-wrap">
             {props.order.length > 0
-              ? props.order?.map((orderProduct: OrderT, index: number) => {
+              ? props.order.map((orderProduct: OrderT, index: number) => {
                   return <ProductInOrderHistory order={orderProduct} key={index} />
                 })
               : null}
