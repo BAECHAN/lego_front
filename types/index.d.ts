@@ -102,12 +102,14 @@ export type ProductFilterCountT = {
   [key: string]: number
 }
 
+export type ProductFilterArrT = { id: string; label: string; title: string }[]
+
 export type ProductFilterInfoT = {
-  filterPriceObjArr: { id: string; label: string; title: string }[]
-  filterAgeObjArr: { id: string; label: string; title: string }[]
-  filterSaleEnabledObjArr: { id: string; label: string; title: string }[]
-  filterDiscountingObjArr: { id: string; label: string; title: string }[]
-  filterPiecesObjArr: { id: string; label: string; title: string }[]
+  filterPriceObjArr: ProductFilterArrT
+  filterAgeObjArr: ProductFilterArrT
+  filterSaleEnabledObjArr: ProductFilterArrT
+  filterDiscountingObjArr: ProductFilterArrT
+  filterPiecesObjArr: ProductFilterArrT
 }
 
 export type ThemeT = {

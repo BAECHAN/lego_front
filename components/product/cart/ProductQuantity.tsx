@@ -87,7 +87,7 @@ export default function ProductQuantity(props: { product: ProductCartT; quantity
 
         return prevInfo
       },
-      onSuccess: (response, variables, rollback) => {
+      onSuccess: (response, _variables, rollback) => {
         if (!(response.status === 204)) {
           alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
           console.error(`HTTP status : ${response?.status}`)
@@ -100,7 +100,7 @@ export default function ProductQuantity(props: { product: ProductCartT; quantity
           }
         }
       },
-      onError: (error, values, rollback) => {
+      onError: (error, _values, rollback) => {
         alert('수량을 변경하는데 문제가 발생하였습니다.\r고객센터에 문의해주시기 바랍니다.')
         console.log(error)
         if (rollback) {

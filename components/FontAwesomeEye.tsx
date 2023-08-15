@@ -1,6 +1,6 @@
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React from 'react'
 import { useRecoilState } from 'recoil'
 import { passwordEyeSelector } from 'state/atoms'
 
