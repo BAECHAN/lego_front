@@ -1452,8 +1452,7 @@ export default function ModalDelivery({ onClose }: any) {
 PostCode.tsx					- 다음카카오 주소찾기 API 소스가 들어 있음
 PostCode사용할 페이지.tsx			- PostCode.tsx 컴포넌트를 추가하면 됩니다.
 
-````
-
+```
 PostCode.tsx
 import React from 'react'
 import { useDaumPostcodePopup } from 'react-daum-postcode'
@@ -1520,6 +1519,7 @@ return (
       />
 
 ```
+
 #### ※ 주의. recoil Duplicate key 에러 발생 시 해결방법
 
 1) key에다가 UUID 넣어서 중복되지 않도록 ( 이 경우 recoil-persist 안될 것으로 보임)
@@ -1969,8 +1969,81 @@ module.exports = {
 3. prettier 적용
 ```npx prettier . --write``` ( prettier를 전역적으로 처리하여 실제 파일에 적용하기 )
 
+### 상품 목록에서 선택된 필터 버튼들 컴포넌트로 분리
 
+다른 tsx파일로 분리하려 했으나, 똑같은 style을 쓰게하기 위해 buttonStyles라는 변수로 style 속성들을 선언한 후  
+style jsx에서 변수선언하여 style 일괄 적용, 또한 원래 "선택된 필터 버튼" 관련된 로직을 컴포넌트로 분리할까 싶었지만  
+따로 재사용하진 않을 것 같아 분리하지 않고 하나의 tsx파일에서 관리하는 것이 한눈에 보기 편할 거라고 판단하였음  
 
+```
+
+export default function SidebarFilterSelected() {
+  ...
+
+  const filterInfo = useRecoilValue(productFilterInfoSelector)
+
+  const SelectedFilterButton = (props: { arr: ProductFilterArrT }) => {
+    return (
+      <div>
+        {props.arr.map(({ id, label, title }) => {
+          let labelPrefix = ''
+
+          if (props.arr === filterInfo.filterAgeObjArr) {
+            labelPrefix = '연령 '
+          } else if (props.arr === filterInfo.filterPiecesObjArr) {
+            labelPrefix = '부품수 '
+          }
+
+          return (
+            selectedFilter[id] === 1 && (
+              <button type="button" key={id} title={`${title} 필터 삭제 버튼`} className="btn-selected-filter" onClick={() => handleClickDeleteTag(id)}>
+                {labelPrefix}
+                {label}
+                <FontAwesomeXmark />
+              </button>
+            )
+          )
+        })}
+      </div>
+    )
+  }
+
+  const buttonStyles = `
+    .btn-selected-filter {
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 14px;
+      line-height: 20px;
+      margin-top: 12px;
+      margin-right: 8px;
+      border: 0.5px solid black;
+      color: gray;
+    }
+    .reset {
+      color: white;
+      background-color: black;
+    }
+  `
+
+  return (
+    <div>
+      <hr />
+      <div className="py-3 w-full">
+        <div>선택한 필터</div>
+        <button type="button" title="선택한 필터 모두 삭제" onClick={handleClickRecoilReset} className="btn-selected-filter reset">
+          모든 필터 삭제
+        </button>
+        <SelectedFilterButton arr={filterInfo.filterPriceObjArr} />
+        <SelectedFilterButton arr={filterInfo.filterAgeObjArr} />
+        <SelectedFilterButton arr={filterInfo.filterSaleEnabledObjArr} />
+        <SelectedFilterButton arr={filterInfo.filterDiscountingObjArr} />
+        <SelectedFilterButton arr={filterInfo.filterPiecesObjArr} />
+      </div>
+      <style jsx>{buttonStyles}</style>
+    </div>
+  )
+}
+```
 
 ## 설계
 1. 프로젝트 진행 시 컴포넌트 디자인 패턴을 고려하여 컴포넌트를 재활용하고 확장성있게 설계할 필요성이 있다. StoryBook 같은 라이브러리를 활용
