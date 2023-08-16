@@ -4,11 +4,11 @@ import { FormEvent, useEffect, useRef, useState } from 'react'
 import { useRecoilValue } from 'recoil'
 import { findAccountSelector } from 'state/atoms'
 
-import FontAwesomeAngleRight from '@components/FontAwesomeAngleRight'
 import HomeIconLink from '@components/HomeIconLink'
 import Portal from '@components/Portal'
 import Spinner from '@components/Spinner'
 import { checkOverlapInput } from '@components/common/event/CommonFunction'
+import FontAwesomeAngleRight from '@components/common/fontawesome/FontAwesomeAngleRight'
 import InputEmail from '@components/common/input/InputEmail'
 import ButtonFindAccountToggle from '@components/login/ButtonFindAccountToggle'
 

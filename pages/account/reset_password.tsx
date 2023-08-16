@@ -6,10 +6,10 @@ import { EventTargetT, InputRefsT, InputTNotPwchk, ObjT_Bln, UserPasswordSubmitT
 
 import axiosRequest from 'pages/api/axios'
 
-import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 import HomeIconLink from '@components/HomeIconLink'
 import Layout from '@components/Layout'
 import { isPassRegExpInput } from '@components/common/event/CommonFunction'
+import FontAwesomeAsterisk from '@components/common/fontawesome/FontAwesomeAsterisk'
 
 export default function ResetPassword() {
   const router = useRouter()

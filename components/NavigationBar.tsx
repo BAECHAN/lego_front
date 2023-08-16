@@ -4,7 +4,7 @@ import React, { Fragment } from 'react'
 import { useRecoilValue } from 'recoil'
 import { mypageListSelector, themeSelector } from 'state/atoms'
 
-import FontAwesomeAngleRight from './FontAwesomeAngleRight'
+import FontAwesomeAngleRight from './common/fontawesome/FontAwesomeAngleRight'
 
 export default function NavigationBar() {
   const router = useRouter()

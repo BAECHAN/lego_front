@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react'
 import { useRecoilValue } from 'recoil'
 import { passwordEyeSelector } from 'state/atoms'
 
-import FontAwesomeEye from '@components/FontAwesomeEye'
+import FontAwesomeEye from '@components/common/fontawesome/FontAwesomeEye'
 
 function InputPassword(
   props: {

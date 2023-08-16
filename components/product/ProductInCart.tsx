@@ -20,7 +20,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
       {isMobile ? (
         <div className="flex flex-col my-10">
           <div className="flex justify-start items-center">
-            <ProductCheckbox product={props.product} />
+            <ProductCheckbox product={props.product} quantity={quantity} />
             <ProductCartImage product={props.product} />
             <ProductDeleteButton product={props.product} />
           </div>
@@ -30,7 +30,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
         </div>
       ) : (
         <div className="flex justify-start items-center">
-          <ProductCheckbox product={props.product} />
+          <ProductCheckbox product={props.product} quantity={quantity} />
           <ProductCartImage product={props.product} />
           <ProductCartTitle product={props.product} />
           <ProductQuantity product={props.product} quantity={quantity} setQuantity={setQuantity} />
