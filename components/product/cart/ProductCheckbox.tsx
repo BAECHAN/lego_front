@@ -1,35 +1,31 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { orderPriceSelector, selectedOrderSelector } from 'state/atoms'
 import { ProductCartT } from 'types'
 
-export default function ProductCheckbox(props: { product: ProductCartT }) {
+export default function ProductCheckbox(props: { product: ProductCartT; quantity: number }) {
   let [selectedOrder, setSelectedOrder] = useRecoilState(selectedOrderSelector)
   let setTotalPrice = useSetRecoilState(orderPriceSelector)
 
-  const [quantity, setQuantity] = useState(props.product.order_quantity)
-
-  const handleChangeCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const calcuratedPrice = () => {
     let price = 0
 
+    if (props.product.discounting === 1 && props.product.rate_discount > 0) {
+      price = props.product.price * (1 - Number(props.product.rate_discount) / 100) * props.quantity
+    } else {
+      price = props.product.price * props.quantity
+    }
+
+    return price
+  }
+
+  const handleChangeCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.checked) {
       setSelectedOrder((selectedOrder) => [...selectedOrder, Number(e.currentTarget.name.substring(17))])
-
-      if (props.product.discounting === 1 && props.product.rate_discount > 0) {
-        price = props.product.price * (1 - Number(props.product.rate_discount) / 100) * quantity
-      } else {
-        price = props.product.price * quantity
-      }
-      setTotalPrice((totalPrice) => totalPrice + price)
+      setTotalPrice((totalPrice) => totalPrice + calcuratedPrice())
     } else {
       setSelectedOrder(selectedOrder.filter((item) => item !== Number(e.currentTarget.name.substring(17))))
-
-      if (props.product.discounting === 1 && props.product.rate_discount > 0) {
-        price = props.product.price * (1 - Number(props.product.rate_discount) / 100) * quantity
-      } else {
-        price = props.product.price * quantity
-      }
-      setTotalPrice((totalPrice) => totalPrice - price)
+      setTotalPrice((totalPrice) => totalPrice - calcuratedPrice())
     }
   }
 

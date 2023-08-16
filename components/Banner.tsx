@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie'
 
-import FontAwesomeAngleRight from './FontAwesomeAngleRight'
+import FontAwesomeAngleRight from './common/fontawesome/FontAwesomeAngleRight'
 
 export default function Banner() {
   const [cookies, setCookie] = useCookies(['lego-cookie'])

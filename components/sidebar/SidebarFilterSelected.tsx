@@ -2,7 +2,7 @@ import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil'
 import { productFilterInfoSelector, selectedFilterSelector } from 'state/atoms'
 import { ProductFilterArrT } from 'types'
 
-import FontAwesomeXmark from '../FontAwesomeXmark'
+import FontAwesomeXmark from '../../components/common/fontawesome/FontAwesomeXmark'
 
 export default function SidebarFilterSelected() {
   const [selectedFilter, setSelectedFilter] = useRecoilState(selectedFilterSelector)

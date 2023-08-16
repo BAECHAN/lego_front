@@ -6,11 +6,11 @@ import { EventTargetT, InputRefsT, InputTNotPwchk, ObjT_Bln, UserCreateT } from 
 
 import axiosRequest from 'pages/api/axios'
 
-import FontAwesomeAsterisk from '@components/FontAwesomeAsterisk'
 import HomeIconLink from '@components/HomeIconLink'
 import Layout from '@components/Layout'
 import * as swal from '@components/common/custom/SweetAlert'
 import { checkOverlapInput, isPassRegExpInput } from '@components/common/event/CommonFunction'
+import FontAwesomeAsterisk from '@components/common/fontawesome/FontAwesomeAsterisk'
 
 export default function CreateAccount() {
   const router = useRouter()

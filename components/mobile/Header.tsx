@@ -6,8 +6,8 @@ import { forwardRef, useCallback, useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { isOpenMobileSidebarSelector } from 'state/atoms'
 
-import FontAwesomeMobileBars from '@components/FontAwesomeMobileBars'
 import HomeIconLink from '@components/HomeIconLink'
+import FontAwesomeMobileBars from '@components/common/fontawesome/FontAwesomeMobileBars'
 
 import MobileHeaderSidebar from './HeaderSidebar'
 
