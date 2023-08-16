@@ -15,25 +15,31 @@ export default function ProductInCart(props: { product: ProductCartT }) {
 
   const [quantity, setQuantity] = useState(props.product.order_quantity)
 
+  const [isChecked, setIsChecked] = useState(true)
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(e.currentTarget.checked)
+  }
+
   return (
     <div className="product-in-cart w-full">
       {isMobile ? (
         <div className="flex flex-col my-10">
           <div className="flex justify-start items-center">
-            <ProductCheckbox product={props.product} quantity={quantity} />
+            <ProductCheckbox product={props.product} quantity={quantity} isChecked={isChecked} onChange={handleCheckboxChange} />
             <ProductCartImage product={props.product} />
             <ProductDeleteButton product={props.product} />
           </div>
           <ProductCartTitle product={props.product} />
-          <ProductQuantity product={props.product} quantity={quantity} setQuantity={setQuantity} />
+          <ProductQuantity product={props.product} quantity={quantity} setQuantity={setQuantity} isChecked={isChecked} />
           <ProductPrice product={props.product} quantity={quantity} setQuantity={setQuantity} />
         </div>
       ) : (
         <div className="flex justify-start items-center">
-          <ProductCheckbox product={props.product} quantity={quantity} />
+          <ProductCheckbox product={props.product} quantity={quantity} isChecked={isChecked} onChange={handleCheckboxChange} />
           <ProductCartImage product={props.product} />
           <ProductCartTitle product={props.product} />
-          <ProductQuantity product={props.product} quantity={quantity} setQuantity={setQuantity} />
+          <ProductQuantity product={props.product} quantity={quantity} setQuantity={setQuantity} isChecked={isChecked} />
           <ProductPrice product={props.product} quantity={quantity} setQuantity={setQuantity} />
           <ProductDeleteButton product={props.product} />
           <div className="text-center">

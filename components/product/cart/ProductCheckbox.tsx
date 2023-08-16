@@ -3,7 +3,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil'
 import { orderPriceSelector, selectedOrderSelector } from 'state/atoms'
 import { ProductCartT } from 'types'
 
-export default function ProductCheckbox(props: { product: ProductCartT; quantity: number }) {
+export default function ProductCheckbox(props: { product: ProductCartT; quantity: number; isChecked: boolean; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
   let [selectedOrder, setSelectedOrder] = useRecoilState(selectedOrderSelector)
   let setTotalPrice = useSetRecoilState(orderPriceSelector)
 
@@ -20,6 +20,8 @@ export default function ProductCheckbox(props: { product: ProductCartT; quantity
   }
 
   const handleChangeCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+    props.onChange(e)
+
     if (e.currentTarget.checked) {
       setSelectedOrder((selectedOrder) => [...selectedOrder, Number(e.currentTarget.name.substring(17))])
       setTotalPrice((totalPrice) => totalPrice + calcuratedPrice())
@@ -31,7 +33,14 @@ export default function ProductCheckbox(props: { product: ProductCartT; quantity
 
   return (
     <div>
-      <input type="checkbox" className="product-checkbox mx-7" title="주문할 상품 선택" name={`product_checkbox_${props.product.cart_id}`} onInput={handleChangeCheck} defaultChecked />
+      <input
+        type="checkbox"
+        className="product-checkbox mx-7"
+        title="주문할 상품 선택"
+        name={`product_checkbox_${props.product.cart_id}`}
+        onInput={handleChangeCheck}
+        defaultChecked={props.isChecked}
+      />
       <style jsx>{`
         input[type='checkbox'].product-checkbox {
           width: 25px;
