@@ -8,7 +8,7 @@ import { useRecoilState } from 'recoil'
 import { orderPriceSelector } from 'state/atoms'
 import { ProductCartT, ProductUpdateCartSubmitT } from 'types'
 
-export default function ProductQuantity(props: { product: ProductCartT; quantity: number; setQuantity: React.Dispatch<React.SetStateAction<number>> }) {
+export default function ProductQuantity(props: { product: ProductCartT; quantity: number; setQuantity: React.Dispatch<React.SetStateAction<number>>; isChecked: boolean }) {
   const { data: session, status } = useSession()
 
   const [minusDisabled, setMinusDisabled] = useState(props.product.order_quantity > 1 ? false : true)
@@ -59,7 +59,9 @@ export default function ProductQuantity(props: { product: ProductCartT; quantity
             price = props.product.price
           }
 
-          setTotalPrice((totalPrice) => totalPrice + price)
+          if (props.isChecked) {
+            setTotalPrice((totalPrice) => totalPrice + price)
+          }
 
           if (props.quantity + 1 >= props.product.ea + props.product.order_quantity) {
             setPlusDisabled(true)
@@ -75,7 +77,9 @@ export default function ProductQuantity(props: { product: ProductCartT; quantity
           } else {
             price = props.product.price
           }
-          setTotalPrice((totalPrice) => totalPrice - price)
+          if (props.isChecked) {
+            setTotalPrice((totalPrice) => totalPrice - price)
+          }
 
           if (props.quantity <= 2) {
             setMinusDisabled(true)

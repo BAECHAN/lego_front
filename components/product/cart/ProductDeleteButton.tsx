@@ -11,7 +11,7 @@ import { ProductCartT, ProductDeleteCartSubmitT } from 'types'
 import { queryKeys } from 'pages/api/query/queryKeys'
 
 export default function ProductDeleteButton(props: { product: ProductCartT }) {
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const queryClient = useQueryClient()
 
   let [selectedOrder, setSelectedOrder] = useRecoilState(selectedOrderSelector)
