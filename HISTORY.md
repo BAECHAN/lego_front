@@ -1920,7 +1920,7 @@ cdn 서버에서 format=webp 형식으로 변경해서 이미지를 가져오는
 
 ## prettier-plugin-sort-imports
 
-```https://github.com/sweepline/eslint-plugin-unused-imports```
+https://github.com/sweepline/eslint-plugin-unused-imports
 
 
 상단의 import 키워드를 사용하여 컴포넌트나 라이브러리들을 사용하는 경우가 있는데
