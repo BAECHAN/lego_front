@@ -1167,8 +1167,8 @@ const delCartAPI = useMutation(
 2) 배너에서 “오늘 하루 보지 않기” 닫기 버튼을 클릭하면 handleClickClose함수가 실행되어
 isClose 스위치 시키고 setCookie로 expires를 new Date로 계산한 후 하루를 저장시켜
 만료되면 쿠키가 삭제되게끔 함
-````
 
+```
 // 1. 최상단 Root에 추가
 // \_app.tsx
 
@@ -1238,7 +1238,6 @@ return (
 </div>
 )
 }
-
 ```
 
 #### ※ 주의 발생할 수 있는 에러
@@ -1296,7 +1295,6 @@ http://localhost:3000/login?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fthemes
 
 
 ```
-
     import { useRouter } from next/router
     const router = useRouter()
 
@@ -1309,7 +1307,6 @@ router.back()
 }else{
 router.push('/')
 }
-
 ```
 
 ### 로그인 시 middleware에서 message 전달하기
