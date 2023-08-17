@@ -1083,38 +1083,34 @@ recoil에도 초기값에 react-query의 초기 데이터를 저장시켜둠
 cart 화면 처음 페이지로 갈 때 재렌더링이 발생하다보니 selectedOrder의 값이 계속 늘어남
 ( 상품은 원래 7개 인데 6개만 체크한 상태로 화면을 이동했다가 다시 돌아오면 +7이 또 되서 13개가 됨 )
 
-````
-
+```
 useEffect(()=>{
-if(isFetched){
-data.cartList.map((item: ProductCartT, index: number) => {
-setSelectedOrder((selectedOrder) => [...selectedOrder, item.cart_id])
-})
+	if(isFetched){
+		data.cartList.map((item: ProductCartT, index: number) => {
+		setSelectedOrder((selectedOrder) => [...selectedOrder, item.cart_id])
+	})
 }
 // eslint-disable-next-line react-hooks/exhaustive-deps
 },[isFetched])
-
 ```
+
 그래서 아래와 같이 useResetRecoilState를 사용
 ```
-
 const { data, isFetched } = useProductCartList()
 const [selectedOrder,setSelectedOrder] = useRecoilState(selectedOrderSelector)
 
 const handleClickRecoilReset = useResetRecoilState(selectedOrderSelector)
 
 useEffect(()=>{
-if(isFetched){
-handleClickRecoilReset()
+	if(isFetched){
+		handleClickRecoilReset()
 
-      data.cartList.map((item: ProductCartT, index: number) => {
-        setSelectedOrder((selectedOrder) => [...selectedOrder, item.cart_id])
-      })
-    }
-
+      		data.cartList.map((item: ProductCartT, index: number) => {
+       			setSelectedOrder((selectedOrder) => [...selectedOrder, item.cart_id])
+     	 	})
+    	}
 // eslint-disable-next-line react-hooks/exhaustive-deps
 },[isFetched])
-
 ```
 
 ### useMutation 후 useQuery의 데이터를 refetch처리하기
@@ -1123,43 +1119,43 @@ handleClickRecoilReset()
 useMutation onSuccess 후 useQuery를 refetch 처리함
 
 useMutation하여 update하는 patch api 요청 후 refetch() 함수 실행하여 해당 장바구니 화면에서 바로 삭제시킴
-```
 
+```
 const { data, refetch } = useProductCartList()
 
 const handleClickDelete =(e: React.MouseEvent<HTMLButtonElement>) => {
-if (session?.user?.email) {
-let param: ProductUpdateCartSubmitT = {
-email: session.user.email,
-cart_id: Number(e.currentTarget.name.substring(15))
-}
-delCartAPI.mutate(param)
-}
+	if (session?.user?.email) {
+		let param: ProductUpdateCartSubmitT = {
+			email: session.user.email,
+			cart_id: Number(e.currentTarget.name.substring(15))
+		}
+		delCartAPI.mutate(param)
+	}
 }
 
 const delCartAPI = useMutation(
-async (param: ProductUpdateCartSubmitT) => {
-const res = await axios.patch(
-'http://localhost:5000/api/del-cart',
-JSON.stringify(param),
-{
-headers: { 'Content-Type': `application/json; charset=utf-8` },
-}
+	async (param: ProductUpdateCartSubmitT) => {
+		const res = await axios.patch(
+			'http://localhost:5000/api/del-cart',
+			JSON.stringify(param),
+			{
+				headers: { 'Content-Type': `application/json; charset=utf-8` },
+			}
+		)
+		return res.data
+	},
+	{
+		onSuccess: (data) => {
+			console.log(data)
+			if(data.result == 1){
+				refetch()
+			}
+		},
+		onError: (error) => console.log(error)
+	}
 )
-return res.data
-},
-{
-onSuccess: (data) => {
-console.log(data)
-if(data.result == 1){
-refetch()
-}
-},
-onError: (error) => console.log(error)
-}
-)
+```
 
-````
 ### React-cookie
 ```yarn add react-cookie```
 
