@@ -17,16 +17,12 @@ export default function ProductInCart(props: { product: ProductCartT }) {
 
   const [isChecked, setIsChecked] = useState(true)
 
-  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(e.currentTarget.checked)
-  }
-
   return (
     <div className="product-in-cart w-full">
       {isMobile ? (
         <div className="flex flex-col my-10">
           <div className="flex justify-start items-center">
-            <ProductCheckbox product={props.product} quantity={quantity} isChecked={isChecked} onChange={handleCheckboxChange} />
+            <ProductCheckbox product={props.product} quantity={quantity} isChecked={isChecked} setIsChecked={setIsChecked} />
             <ProductCartImage product={props.product} />
             <ProductDeleteButton product={props.product} />
           </div>
@@ -36,7 +32,7 @@ export default function ProductInCart(props: { product: ProductCartT }) {
         </div>
       ) : (
         <div className="flex justify-start items-center">
-          <ProductCheckbox product={props.product} quantity={quantity} isChecked={isChecked} onChange={handleCheckboxChange} />
+          <ProductCheckbox product={props.product} quantity={quantity} isChecked={isChecked} setIsChecked={setIsChecked} />
           <ProductCartImage product={props.product} />
           <ProductCartTitle product={props.product} />
           <ProductQuantity product={props.product} quantity={quantity} setQuantity={setQuantity} isChecked={isChecked} />
