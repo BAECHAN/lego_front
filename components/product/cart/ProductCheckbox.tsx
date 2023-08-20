@@ -3,7 +3,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil'
 import { orderPriceSelector, selectedOrderSelector } from 'state/atoms'
 import { ProductCartT } from 'types'
 
-export default function ProductCheckbox(props: { product: ProductCartT; quantity: number; isChecked: boolean; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
+export default function ProductCheckbox(props: { product: ProductCartT; quantity: number; isChecked: boolean; setIsChecked: React.Dispatch<React.SetStateAction<boolean>> }) {
   let [selectedOrder, setSelectedOrder] = useRecoilState(selectedOrderSelector)
   let setTotalPrice = useSetRecoilState(orderPriceSelector)
 
@@ -20,7 +20,7 @@ export default function ProductCheckbox(props: { product: ProductCartT; quantity
   }
 
   const handleChangeCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    props.onChange(e)
+    props.setIsChecked(e.currentTarget.checked)
 
     if (e.currentTarget.checked) {
       setSelectedOrder((selectedOrder) => [...selectedOrder, Number(e.currentTarget.name.substring(17))])

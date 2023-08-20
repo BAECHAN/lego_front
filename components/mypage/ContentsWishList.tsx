@@ -14,7 +14,7 @@ export default function ContentsWishList() {
         <ul className="flex flex-wrap desktop:min-w-[588px]">
           {product?.data && product.data.wishList.length > 0 ? (
             product.data.wishList?.map((item: ProductT, index: number) => {
-              return <ProductCard product={item} key={index} />
+              return <ProductCard product={item} key={item.product_id} />
             })
           ) : (
             <div className="text-xl">해당하는 상품이 없습니다.</div>
