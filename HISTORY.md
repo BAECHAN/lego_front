@@ -2038,6 +2038,80 @@ export default function SidebarFilterSelected() {
 }
 ```
 
+### 좋아요 목록에서 wish : false 이면 목록에 바로 반영하여 리스트에서 제외처리
+
+기존 좋아요 목록에서는 wish가 false 되도 화면에 일단 보여주고 새로고침 시 데이터를 새로 가져와서 처리하였었는데  
+현재는 wish가 false 되면 목록에서 바로 제외되도록 처리하였다.  
+
+기존에는 wish : false 시 바로 적용할 필요가 없다고 생각했지만  
+사용자 경험상 바로 적용하는게 제대로 반영된 게 아닌가 라는 생각이 들어서 위와 같이 처리  
+
+ButtonWish 컴포넌트에서 handleClickLike 함수는 따로 ts파일로 분리하여 처리했었지만  
+useQuery로 지정된 wishList를 ts파일에서 useQuery로 불러올 수 없기도 했고 ButtonWish 컴포넌트에서만 사용되는 handleClickLike 함수이므로  
+다시 ButtonWish 컴포넌트에 합쳐서 처리하였다.  
+
+```
+// 에러내용
+React Hook "useProductWishList" cannot be called at the top level. React Hooks must be called in a React function component or a custom React Hook function.eslintreact-hooks/rules-of-hooks
+```
+
+
+또한 delWishAPI 라는 사용자 wish를 false로 update 처리하는 api 요청 후  
+onSuccess 로 useQuery로 지정된 wishList를 queryClient.invalidate처리하여 초기화 처리  
+처리함과 동시에 wishList의 경우 재정렬하지 않기 때문에 key를 index로 두었지만  product_id로 변경  
+
+나중에 test 코드 작성할 때는 key가 index 인지 체크하는 것도 필요함 ( 애초에 index로 두지 않는게 좋겠지만 불가피한 경우도 있을 수 있으니 )
+
+Q. 현재는 좋아요 취소버튼 클릭 시 해당 queryClient.invalidate 처리한다고 하지만 좋아요 목록이 아닌  
+일반 상품목록에서 좋아요 버튼 취소할 때는 invalidate 처리할 필요가 없지 않을까  
+
+Q. QueryClient.invalidateQueries vs refetch() 둘 중 무엇을 써야되나..?
+
+하나의 상품에 대해 취소버튼 클릭 시 리스트에서 해당 상품이 제외되며 데이터를 다시 가져오는데  
+
+1. 취소된 상품의 데이터만 무효화하고 다른 상품들은 캐시에 있던 데이터를 다시 불러오게함
+2. 목록 자체를 다시 가져옴
+
+나는 1번처럼 동작하기를 원한다.  
+refetch의 경우 어느 경우든 간에 2번인거고, QueryClient.invalidateQueries는 1번을 우선적으로 하려하고 안되면 2번인데  
+로직으로는 QueryClient.invalidateQueries 처리하려고 함  
+
+![image](https://github.com/BAECHAN/lego_front/assets/54573684/0feb83d1-381e-4a23-a690-6caa75e4829f)
+
+챗지피티를 100% 확신할 수 없기 때문에 해당 내용이 true인지를 확인해볼 필요가 있다.
+
+
+
+```
+const delWishAPI = useMutation(
+    async (param: ProductWishSubmitT) => {
+      return await axios.patch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/del-wish`, JSON.stringify(param), {
+        headers: { 'Content-Type': `application/json; charset=utf-8` },
+      })
+    },
+    {
+      onMutate: async () => {
+        setWishInfo({
+          ...wishInfo,
+          wish: false,
+        })
+      },
+      onSuccess: (response) => {
+        if (!(response.status === 204)) {
+          alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
+          console.error(`HTTP status : ${response?.status}`)
+        }
+        // 좋아요 취소 후 좋아요 목록에서 제거하도록 초기화
+        queryClient.invalidateQueries([queryKeys.productWishList])
+      },
+      onError: (error, values, rollback) => {
+        ...
+      },
+    }
+```
+
+
+
 ## 설계
 1. 프로젝트 진행 시 컴포넌트 디자인 패턴을 고려하여 컴포넌트를 재활용하고 확장성있게 설계할 필요성이 있다. StoryBook 같은 라이브러리를 활용
 2. 변수명 규칙을 정해놓자
@@ -2047,4 +2121,3 @@ export default function SidebarFilterSelected() {
 6. 사용자가 HTML을 편집하여 상품 가격을 조작하는 경우, 서버가 제대로 가격을 검증하지 않으면 가격을 조작하여 할인 또는 높은 가격을 적용할 수 있음
     이를 방지하기 위해서는 서버 측에서 주문을 처리할 때 상품 가격을 신뢰할 수 있는 방식으로 계산하도록 해야  ( 추가로 재고문제 등도 대비해야함 )
 나중에 스터디할 때도 이를 신경쓰자
-```
