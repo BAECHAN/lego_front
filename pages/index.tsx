@@ -26,8 +26,7 @@ export default function Home({ data }: { data: ObjT_Str }) {
             src={data.imageUrl}
             alt="레고 홈 화면 이미지"
             layout="fill"
-            //priority={true}
-            loading="lazy"
+            priority
             placeholder="blur"
             blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
           />

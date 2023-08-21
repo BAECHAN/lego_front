@@ -32,8 +32,8 @@ export default function Themes() {
                           placeholder="blur"
                           blurDataURL={`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPgvCAACGQES86Y9kwAAAABJRU5ErkJggg==`}
                           layout="responsive"
-                          priority
                           quality={30}
+                          loading="lazy"
                         />
                       </a>
                     </Link>
