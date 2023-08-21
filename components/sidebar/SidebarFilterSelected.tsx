@@ -18,6 +18,23 @@ export default function SidebarFilterSelected() {
 
   const filterInfo = useRecoilValue(productFilterInfoSelector)
 
+  const buttonStyles = `
+    .btn-selected-filter {
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 14px;
+      line-height: 20px;
+      margin-top: 12px;
+      margin-right: 8px;
+      border: 0.5px solid black;
+      color: gray;
+    }
+    .reset {
+      color: white;
+      background-color: black;
+    }
+  `
+
   const SelectedFilterButton = (props: { arr: ProductFilterArrT }) => {
     return (
       <div>
@@ -36,6 +53,7 @@ export default function SidebarFilterSelected() {
                 {labelPrefix}
                 {label}
                 <FontAwesomeXmark />
+                <style jsx>{buttonStyles}</style>
               </button>
             )
           )
@@ -43,23 +61,6 @@ export default function SidebarFilterSelected() {
       </div>
     )
   }
-
-  const buttonStyles = `
-    .btn-selected-filter {
-      padding: 4px 12px;
-      border-radius: 9999px;
-      font-size: 14px;
-      line-height: 20px;
-      margin-top: 12px;
-      margin-right: 8px;
-      border: 0.5px solid black;
-      color: gray;
-    }
-    .reset {
-      color: white;
-      background-color: black;
-    }
-  `
 
   return (
     <div>

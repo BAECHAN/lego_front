@@ -90,8 +90,8 @@ export default function ButtonWish(props: { product_id: number; text: boolean })
           alert('의도하지 않은 응답입니다.\r고객센터에 문의해주시기 바랍니다.')
           console.error(`HTTP status : ${response?.status}`)
         }
-        // 좋아요 취소 후 좋아요 목록에서 제거하도록 초기화
-        queryClient.invalidateQueries([queryKeys.productWishList])
+        // 좋아요 취소 후 좋아요 목록에서 제거하도록 초기화 ( refetchType은 default가 active이기 때문에 생략 가능 )
+        queryClient.invalidateQueries({ queryKey: [queryKeys.productWishList], refetchType: 'active' })
       },
       onError: (error, values, rollback) => {
         alert('좋아요 버튼을 반영하는데 문제가 발생하였습니다.\r같은 상황이 지속 된다면 고객센터에 문의해주시기 바랍니다.')
